@@ -20,10 +20,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.OtherIncomeAmountPYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, OtherIncomeAmountPY}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.QuestionViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountPY
 
-class OtherIncomeAmountPYViewSpec extends QuestionViewBehaviours[OtherIncomeAmountPY] {
+class OtherIncomeAmountPYViewSpec extends NewQuestionViewBehaviours[OtherIncomeAmountPY] {
 
   override val form = new OtherIncomeAmountPYForm(frontendAppConfig).apply()
 
@@ -50,8 +50,6 @@ class OtherIncomeAmountPYViewSpec extends QuestionViewBehaviours[OtherIncomeAmou
 
   "contain the currencySymbol class and £ " in {
     val doc = asDocument(createView())
-
-    assertRenderedByCssSelector(doc, ".currencySymbol")
 
     val parentCurrencySymbol = doc.getElementById("parentOtherIncomeAmountPY").firstElementSibling().text()
     val partnerCurrencySymbol = doc.getElementById("partnerOtherIncomeAmountPY").firstElementSibling().text()

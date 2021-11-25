@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
 
-class WhatToTellTheCalculatorViewSpec extends ViewBehaviours {
+class WhatToTellTheCalculatorViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[whatToTellTheCalculator]
 
-  def createView = () => view(frontendAppConfig)(fakeRequest, messages)
+  def createView = () => view()(fakeRequest, messages)
 
   "whatToTellTheCalculator view" must {
 

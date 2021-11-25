@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfoPY
 
-class YourIncomeInfoPYViewSpec extends ViewBehaviours {
+class YourIncomeInfoPYViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[yourIncomeInfoPY]
   val taxYearInfo = new TaxYearInfo
@@ -35,7 +35,7 @@ class YourIncomeInfoPYViewSpec extends ViewBehaviours {
 
     "contain the link for parent paid work for previous year" in {
       val doc = asDocument(createView())
-      val continueLink = doc.getElementById("target-page-link")
+      val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))
       continueLink.attr("href") mustBe routes.YouGetSameIncomePreviousYearController.onPageLoad(NormalMode).url

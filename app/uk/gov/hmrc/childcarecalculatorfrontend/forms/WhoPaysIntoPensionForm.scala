@@ -40,10 +40,18 @@ object WhoPaysIntoPensionForm extends FormErrorHelper {
     Form(single("value" -> of(WhoPaysIntoPensionFormatter)))
 
   def options = Seq(
-    InputOption("whoPaysIntoPension", YouPartnerBothEnum.YOU.toString),
-    InputOption("whoPaysIntoPension", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoPaysIntoPension", YouPartnerBothEnum.BOTH.toString)
+    whoPaysIntoPensionInputOption("value", YouPartnerBothEnum.YOU.toString),
+    whoPaysIntoPensionInputOption("value-2", YouPartnerBothEnum.PARTNER.toString),
+    whoPaysIntoPensionInputOption("value-3", YouPartnerBothEnum.BOTH.toString)
   )
+
+  private def whoPaysIntoPensionInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"whoPaysIntoPension.$option"
+    )
+  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

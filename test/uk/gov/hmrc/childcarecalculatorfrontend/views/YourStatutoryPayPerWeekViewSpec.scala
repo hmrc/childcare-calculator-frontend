@@ -20,10 +20,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayPerWeekForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWeek
 
-class YourStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
+class YourStatutoryPayPerWeekViewSpec extends NewBigDecimalViewBehaviours {
 
   val view = app.injector.instanceOf[yourStatutoryPayPerWeek]
   val messageKeyPrefix = "yourStatutoryPayPerWeek"
@@ -41,10 +41,13 @@ class YourStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
 
   "YourStatutoryPayPerWeek view" must {
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
-      title = messages(s"$messageKeyPrefix.title", statutoryType),
-      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages(s"$messageKeyPrefix.title", "maternity"),
+      heading = Some(messages(s"$messageKeyPrefix.heading", "maternity")),
+      expectedGuidanceKeys = Seq(),
+      args = "maternity"
       )
 
     behave like pageWithBackLink(createView)
@@ -53,7 +56,7 @@ class YourStatutoryPayPerWeekViewSpec extends BigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourStatutoryPayPerWeekController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info", statutoryType.toString) + " " + messages("site.in.pounds"))
+      Some(messages(s"$messageKeyPrefix.info", statutoryType.toString) + messages(""))
     )
   }
 

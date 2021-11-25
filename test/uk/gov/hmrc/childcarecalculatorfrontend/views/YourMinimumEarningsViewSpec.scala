@@ -17,17 +17,17 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
 
-class YourMinimumEarningsViewSpec extends YesNoViewBehaviours {
+class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
 
   val view = app.injector.instanceOf[yourMinimumEarnings]
   val messageKeyPrefix = "yourMinimumEarnings"
+  override val form: Form[Boolean] = BooleanForm()
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, 0)(fakeRequest, messages)
 
@@ -37,7 +37,15 @@ class YourMinimumEarningsViewSpec extends YesNoViewBehaviours {
 
   "YourMinimumEarnings view" must {
 
-    behave like normalPageWithTitleAsString(createView, messageKeyPrefix, messages("yourMinimumEarnings.heading", 0))
+    behave like normalPageWithTitleAsString(
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages("yourMinimumEarnings.heading", 0),
+      heading = Some(""),
+      expectedGuidanceKeys= Seq(),
+      args = 0
+    )
 
     behave like pageWithBackLink(createView)
 
@@ -57,4 +65,5 @@ class YourMinimumEarningsViewSpec extends YesNoViewBehaviours {
       assertContainsText(doc, messages("yourMinimumEarnings.heading", amount))
     }
   }
+
 }

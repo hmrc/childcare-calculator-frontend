@@ -28,10 +28,20 @@ object LocationForm extends FormErrorHelper {
   def apply(): Form[Location.Value] =
     Form(single("value" -> of(LocationFormatter)))
 
-  def options: Seq[InputOption] = Location.values.map {
-    value =>
-      InputOption("location", value.toString)
-  }.toSeq
+  def options: Seq[InputOption] = Seq(
+    locationInputOption(Location.ENGLAND.toString, "value"),
+    locationInputOption(Location.SCOTLAND.toString, "value-2"),
+    locationInputOption(Location.WALES.toString, "value-3"),
+    locationInputOption(Location.NORTHERN_IRELAND.toString, "value-4")
+  )
+
+  private def locationInputOption(option: String, id: String) = {
+    new InputOption(
+      id =  id,
+      value = option,
+      messageKey = s"location.$option"
+    )
+  }
 
   private def LocationFormatter = new Formatter[Location.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {

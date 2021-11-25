@@ -74,11 +74,11 @@ class WhichChildrenDisabilityController @Inject()(
       }
   }
 
-  private def options(values: Map[String, Int]): Map[String, String] =
+  private def options(values: Map[String, Int]): Seq[(String, String)] =
     values.map {
       case (k, v) =>
         (k, v.toString)
-    }
+    }.toSeq
 
   private def withValues(block: Map[String, Int] => Future[Result])
                         (implicit request: DataRequest[AnyContent]): Future[Result] = {

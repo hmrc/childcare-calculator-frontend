@@ -19,20 +19,22 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 
-trait StringViewBehaviours extends QuestionViewBehaviours[String] {
+trait NewIntViewBehaviours extends NewQuestionViewBehaviours[Int] {
 
-  val testData = "A123"
+  val number = 12
 
-  def textPage(createView: (Form[String]) => HtmlFormat.Appendable,
+  def intPage(createView: (Form[Int]) => HtmlFormat.Appendable,
               messageKeyPrefix: String,
-              expectedFormAction: String) = {
+              expectedFormAction: String,
+              messageDynamicValue: Option[String] = None) = {
 
-    "behave like a page with an text value field" when {
+    "behave like a page with an integer value field" when {
       "rendered" must {
 
         "contain a label for the value" in {
           val doc = asDocument(createView(form))
-          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.title"))
+          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.title", messageDynamicValue.getOrElse(""))
+          )
         }
 
         "contain an input for the value" in {
@@ -43,8 +45,8 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
 
       "rendered with a valid form" must {
         "include the form's value in the value input" in {
-          val doc = asDocument(createView(form.fill(testData)))
-          doc.getElementById("value").attr("value") mustBe testData
+          val doc = asDocument(createView(form.fill(number)))
+          doc.getElementById("value").attr("value") mustBe number.toString
         }
       }
 
@@ -52,13 +54,13 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
 
         "show an error summary" in {
           val doc = asDocument(createView(form.withError(error)))
-          assertRenderedById(doc, "error-summary-heading")
+          assertRenderedById(doc, "error-summary-title")
         }
 
         "show an error in the value field's label" in {
           val doc = asDocument(createView(form.withError(error)))
-          val errorSpan = doc.getElementsByClass("error-notification").first
-          errorSpan.text mustBe messages(errorMessage)
+          val errorSpan = doc.getElementsByClass("govuk-error-message").first
+          errorSpan.text must include(messages(errorMessage))
         }
       }
     }

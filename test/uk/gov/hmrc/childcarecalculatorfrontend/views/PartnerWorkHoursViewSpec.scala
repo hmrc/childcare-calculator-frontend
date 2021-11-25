@@ -20,18 +20,18 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerWorkHoursForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
 
-class PartnerWorkHoursViewSpec extends BigDecimalViewBehaviours {
+class PartnerWorkHoursViewSpec extends NewBigDecimalViewBehaviours {
 
   val view = app.injector.instanceOf[partnerWorkHours]
 
   val messageKeyPrefix = "partnerWorkHours"
 
-  def createView = () => view(frontendAppConfig, new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(form, NormalMode)(fakeRequest, messages)
 
   val form = new PartnerWorkHoursForm(appConfig = frontendAppConfig).apply()
 

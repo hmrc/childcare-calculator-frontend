@@ -29,6 +29,6 @@ class SessionExpiredController @Inject()(val appConfig: FrontendAppConfig,
                                          session_expired: session_expired) extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = Action { implicit request =>
-    Ok(session_expired(appConfig))
+    Ok(session_expired(appConfig)).withNewSession
   }
 }

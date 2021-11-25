@@ -19,13 +19,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPay
 
-class PartnerStatutoryPayViewSpec extends YesNoViewBehaviours {
+class PartnerStatutoryPayViewSpec extends NewYesNoViewBehaviours {
 
+  override val form = BooleanForm()
   val taxYearInfo = new TaxYearInfo
 
   val view = app.injector.instanceOf[partnerStatutoryPay]
@@ -40,9 +41,8 @@ class PartnerStatutoryPayViewSpec extends YesNoViewBehaviours {
 
     "have the correct banner title" in {
       val doc = asDocument(createView())
-      val nav = doc.getElementById("proposition-menu")
-      val span = nav.children.first
-      span.text mustBe messages("site.service_name")
+      val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+      nav.text mustBe messages("site.service_name")
     }
 
     "display the correct browser title" in {
@@ -70,7 +70,7 @@ class PartnerStatutoryPayViewSpec extends YesNoViewBehaviours {
 
     "display a beta banner" in {
       val doc = asDocument(createView())
-      assertRenderedByCssSelector(doc, ".beta-banner")
+      assertRenderedByCssSelector(doc, ".govuk-phase-banner")
     }
 
     "not display HMRC branding" in {

@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayTypeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayType
 
-class YourStatutoryPayTypeViewSpec extends ViewBehaviours {
+class YourStatutoryPayTypeViewSpec extends NewViewBehaviours {
 
   val view = app.injector.instanceOf[yourStatutoryPayType]
   val messageKeyPrefix = "yourStatutoryPayType"

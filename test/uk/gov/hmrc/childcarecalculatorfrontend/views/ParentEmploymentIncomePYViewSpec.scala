@@ -21,10 +21,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentEmploymentIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomePY
 
-class ParentEmploymentIncomePYViewSpec extends BigDecimalViewBehaviours {
+class ParentEmploymentIncomePYViewSpec extends NewBigDecimalViewBehaviours {
 
   val view = app.injector.instanceOf[parentEmploymentIncomePY]
   val taxYearInfo = new TaxYearInfo
@@ -45,7 +45,7 @@ class ParentEmploymentIncomePYViewSpec extends BigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.ParentEmploymentIncomePYController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info") + " " + messages("site.in.pounds"))
+      Some(messages(s"$messageKeyPrefix.info"))
     )
 
     "contain tax year info" in {

@@ -144,6 +144,15 @@ object WhichBenefitsEnum extends Enumeration {
   val enumWrites: Writes[WhichBenefitsEnum] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[WhichBenefitsEnum] = EnumUtils.enumFormat(WhichBenefitsEnum)
+
+  val sortedWhichBenefits =
+    Seq(
+      DISABILITYBENEFITS,
+      HIGHRATEDISABILITYBENEFITS,
+      SEVEREDISABILITYPREMIUM,
+      CARERSALLOWANCE,
+      INCOMEBENEFITS,
+    )
 }
 
 object DisabilityBenefits extends Enumeration {
@@ -155,9 +164,14 @@ object DisabilityBenefits extends Enumeration {
   val writes: Writes[Value] = EnumUtils.enumWrites
 
   implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(DisabilityBenefits)
+
+  val sortedDisabilityBenefits = Seq(DISABILITY_BENEFITS, HIGHER_DISABILITY_BENEFITS)
 }
 
 object ChildcarePayFrequency extends Enumeration {
+
+  val WEEKLY_KEY = "value"
+  val MONTHLY_KEY = "value-2"
 
   val WEEKLY = Value("weekly")
   val MONTHLY = Value("monthly")

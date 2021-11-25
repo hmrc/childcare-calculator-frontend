@@ -15,38 +15,49 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+@this(
+    layout: Layout,
+    errorSummary: playComponents.error_summary,
+    formWithCSRF: FormWithCSRF,
+    heading: playComponents.heading,
+    inputCheckBox: playComponents.input_check_box,
+    submitButton: playComponents.submit_button
+)
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@(appConfig: FrontendAppConfig, form: Form[_], options: Seq[(String, String)], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@(appConfig: FrontendAppConfig, form: Form[_], options: Map[String, String], mode: Mode)(implicit request: Request[_], messages: Messages)
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("whichChildrenDisability.title")) else messages("whichChildrenDisability.title")
+}
 
-@main_template(
-    title = messages("whichChildrenDisability.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
+@layout(
+    pageTitle = title
+) {
 
-    @back_link()
+    @errorSummary(form.errors)
 
-    @error_summary(form.errors)
-
-    @heading("whichChildrenDisability.heading")
-
-    <p>@messages("whichBenefits.select.all")</p>
+    @heading(messages("whichChildrenDisability.heading"))
 
     @formWithCSRF(action = WhichChildrenDisabilityController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @input_check_box(
+        @inputCheckBox(
+            viewModel = InputViewModel("value", form),
             field = form("value"),
             legend = messages("whichChildrenDisability.heading"),
-            legendClass = Some("visually-hidden"),
-            inputs = options
+            legendClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("whichBenefits.select.all")),
+            inputs = options.map { checkboxOption =>
+                CheckboxItem(
+                    content = HtmlContent((s"${checkboxOption._1}")),
+                    value = checkboxOption._2.toString
+                )
+            }
         )
 
-        @submit_button()
+        @submitButton()
     }
 }

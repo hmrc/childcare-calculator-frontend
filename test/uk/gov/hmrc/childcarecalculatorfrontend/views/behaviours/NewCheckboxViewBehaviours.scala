@@ -18,19 +18,26 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import play.api.data.{Form, FormError}
 import play.twirl.api.Html
-import uk.gov.hmrc.childcarecalculatorfrontend.views.ViewSpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.views.NewViewSpecBase
 
-trait CheckboxViewBehaviours[A] extends ViewSpecBase {
+trait NewCheckboxViewBehaviours[A] extends NewViewSpecBase {
 
   def form: Form[Set[A]]
   def createView(form: Form[Set[A]]): Html
   def createView(): Html = createView(form)
-  def values: Map[String, A]
+  def values: Seq[(String, String)]
 
   def fieldKey: String
   def errorMessage: String
   def messageKeyPrefix: String
   lazy val error = FormError(fieldKey, errorMessage)
+
+  def fieldId(index: Int): String = {
+    index + 1 match {
+      case 1 => "value"
+      case i => form(fieldKey)(s"[$i]").id.replace("_", "-")
+    }
+  }
 
   def checkboxPage(legend: Option[String] = None): Unit = {
 
@@ -45,43 +52,41 @@ trait CheckboxViewBehaviours[A] extends ViewSpecBase {
 
       "contain an input for the value" in {
         val doc = asDocument(createView())
-        for { (value, i) <- values.values.zipWithIndex } yield {
-          assertRenderedById(doc, form(fieldKey)(s"[$i]").id)
+        for { (value, i) <- values.zipWithIndex } yield {
+          assertRenderedById(doc, fieldId(i))
         }
       }
 
       "contain a label for each input" in {
         val doc = asDocument(createView())
         for { ((label, value), i) <- values.zipWithIndex } yield {
-          val id = form(fieldKey)(s"[$i]").id
-          doc.select(s"label[for=$id]").text mustEqual messages(label)
+          val id = fieldId(i)
+          doc.select(s"label[for=$id]").text mustEqual messages(label).capitalize
         }
       }
 
       "have no values checked when rendered with no form" in {
         val doc = asDocument(createView())
-        for { (value, i) <- values.values.zipWithIndex } yield {
-          assert(!doc.getElementById(form(fieldKey)(s"[$i]").id).hasAttr("checked"))
+        for { (value, i) <- values.zipWithIndex } yield {
+          assert(!doc.getElementById(fieldId(i)).hasAttr("checked"))
         }
       }
 
-      values.values.zipWithIndex.foreach {
+      values.zipWithIndex.foreach {
         case (v, i) =>
           s"has correct value checked when value `$v` is given" in {
             val data: Map[String, String] = Map(
-              s"$fieldKey[$i]" -> v.toString
+              s"$fieldKey[$i]" -> v._2
             )
 
             val doc = asDocument(createView(form.bind(data)))
-            val field = form(fieldKey)(s"[$i]")
 
-            assert(doc.getElementById(field.id).hasAttr("checked"), s"${field.id} is not checked")
+            assert(doc.getElementById(fieldId(i)).hasAttr("checked"), s"${fieldId(i)} is not checked")
 
-            values.values.zipWithIndex.foreach {
+            values.zipWithIndex.foreach {
               case (value, j) =>
                 if (value != v) {
-                  val field = form(fieldKey)(s"[$j]")
-                  assert(!doc.getElementById(field.id).hasAttr("checked"), s"${field.id} is checked")
+                  assert(!doc.getElementById(fieldId(j)).hasAttr("checked"), s"${fieldId(j)} is checked")
                 }
             }
           }
@@ -96,13 +101,13 @@ trait CheckboxViewBehaviours[A] extends ViewSpecBase {
     "rendered with an error" must {
       "show an error summary" in {
         val doc = asDocument(createView(form.withError(error)))
-        assertRenderedById(doc, "error-summary-heading")
+        assertRenderedById(doc, "error-summary-title")
       }
 
       "show an error in the value field's label" in {
         val doc = asDocument(createView(form.withError(error)))
-        val errorSpan = doc.getElementsByClass("error-notification").first
-        errorSpan.text mustBe messages(errorMessage)
+        val errorSpan = doc.getElementsByClass("govuk-error-message").first
+        errorSpan.text mustBe "Error: " + messages(errorMessage)
       }
     }
   }

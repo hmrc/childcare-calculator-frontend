@@ -19,12 +19,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 
-class ChildRegisteredBlindViewSpec extends YesNoViewBehaviours {
+class ChildRegisteredBlindViewSpec extends NewYesNoViewBehaviours {
 
+  override val form = BooleanForm()
   val messageKeyPrefix = "childRegisteredBlind"
   val view = application.injector.instanceOf[childRegisteredBlind]
 
@@ -37,8 +38,11 @@ class ChildRegisteredBlindViewSpec extends YesNoViewBehaviours {
     behave like normalPageWithTitleAsString(
       createView,
       messageKeyPrefix,
+      messageKeyPostfix = "",
       messages(s"$messageKeyPrefix.title"),
-      Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+      expectedGuidanceKeys = Seq(),
+      args = ("Foo")
     )
 
     behave like pageWithBackLink(createView)

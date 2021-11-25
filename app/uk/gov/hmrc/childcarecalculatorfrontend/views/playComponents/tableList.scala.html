@@ -14,19 +14,21 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.AnswerSection
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html._
+@this()
 
-@this(answer_row: components.answer_row)
+@(
+    tableDataOpt: Option[Map[String, String]]
+)(implicit messages: Messages)
 
-@(answerSection: AnswerSection)(implicit messages: Messages)
-
-@if(answerSection.headingKey.isDefined){
-    <h2>@messages(answerSection.headingKey.get)</h2>
+@for(tableData <- tableDataOpt) {
+    <table class="govuk-table">
+        <tbody class="govuk-table__body">
+                @for(rowItem <- tableData) {
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">@rowItem._1</th>
+                        <td class="govuk-table__cell">@rowItem._2</td>
+                    </tr>
+                }
+        </tbody>
+    </table>
 }
-
-<ul class="tabular-data tabular-data--list">
-    @for(row <- answerSection.rows){
-        @answer_row(row)
-    }
-</ul>

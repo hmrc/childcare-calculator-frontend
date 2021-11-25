@@ -19,11 +19,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.registeredBlind
 
-class RegisteredBlindViewSpec extends YesNoViewBehaviours {
+class RegisteredBlindViewSpec extends NewYesNoViewBehaviours {
+
+  override val form = BooleanForm()
 
   val messageKeyPrefix = "registeredBlind"
 

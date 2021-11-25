@@ -39,11 +39,19 @@ object YourPartnersAgeForm extends FormErrorHelper {
     Form(single("value" -> of(YourPartnersAgeFormatter)))
 
   def options = Seq(
-    InputOption("yourPartnersAge", AgeEnum.UNDER18.toString),
-    InputOption("yourPartnersAge", AgeEnum.EIGHTEENTOTWENTY.toString),
-    InputOption("yourPartnersAge", AgeEnum.TWENTYONETOTWENTYTWO.toString),
-    InputOption("yourPartnersAge", AgeEnum.OVERTWENTYTWO.toString)
+    yourPartnersAgeInputOption("value", AgeEnum.UNDER18.toString),
+    yourPartnersAgeInputOption("value-2", AgeEnum.EIGHTEENTOTWENTY.toString),
+    yourPartnersAgeInputOption("value-3", AgeEnum.TWENTYONETOTWENTYTWO.toString),
+    yourPartnersAgeInputOption("value-4", AgeEnum.OVERTWENTYTWO.toString)
   )
+
+  private def yourPartnersAgeInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"yourPartnersAge.$option"
+    )
+  }
 
   def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }

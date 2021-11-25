@@ -20,29 +20,34 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenBlindForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{CheckboxViewBehaviours, ViewBehaviours}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 
-class WhichChildrenBlindViewSpec extends ViewBehaviours with CheckboxViewBehaviours[Int] {
+class WhichChildrenBlindViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[Int] {
 
   val view = app.injector.instanceOf[whichChildrenBlind]
   val messageKeyPrefix = "whichChildrenBlind"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
 
-  val values: Map[String, Int] = Map(
-    "Foo" -> 0,
-    "Bar" -> 1
+  val values: Seq[(String, String)] = Seq(
+    "Foo" -> "0",
+    "Bar" -> "1"
   )
 
-  val strValues: Map[String, String] = values.map {
+  val strValues: Seq[(String, String)] = values.map {
     case (k, v) => (k, v.toString)
   }
 
   def form: Form[Set[Int]] = WhichChildrenBlindForm(0, 1)
 
   def createView(form: Form[Set[Int]] = form): Html =
-    view(frontendAppConfig, form, NormalMode, strValues)(fakeRequest, messages)
+    view(
+      frontendAppConfig,
+      form,
+      NormalMode,
+      strValues
+    )(fakeRequest, messages)
 
   "WhichChildrenBlind view" must {
 

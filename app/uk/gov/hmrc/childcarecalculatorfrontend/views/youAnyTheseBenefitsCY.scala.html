@@ -15,48 +15,63 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+@this(
+        layout: Layout,
+        formWithCSRF: FormWithCSRF,
+        errorSummary: playComponents.error_summary,
+        heading: playComponents.heading,
+        submitButton: playComponents.submit_button,
+        inputYesNo: playComponents.input_yes_no,
+)
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@(
+        appConfig: FrontendAppConfig,
+        form: Form[Boolean],
+        mode: Mode,
+        taxYearInfo: TaxYearInfo
+)(
+        implicit request: Request[_],
+        messages: Messages
+)
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages(s"youAnyTheseBenefitsCY.title")) else messages(s"youAnyTheseBenefitsCY.title")
+}
 
-@main_template(
-    title = messages("youAnyTheseBenefitsCY.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
-
-    @back_link()
-
-    @error_summary(form.errors)
-
-    @heading("youAnyTheseBenefitsCY.heading", "heading-xlarge")
-
+@layout(
+    pageTitle = title
+) {
     @formWithCSRF(action = YouAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("youAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
+    @errorSummary(form.errors)
 
-        <ul class="bullets">
-            <li>@messages("youAnyTheseBenefitsCY.li.income_support")</li>
-            <li>@messages("youAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
-            <li>@messages("youAnyTheseBenefitsCY.li.carers")</li>
-            <li>@messages("youAnyTheseBenefitsCY.li.employment_support")</li>
-            <li>@messages("youAnyTheseBenefitsCY.li.pensions")</li>
-            <li>@messages("youAnyTheseBenefitsCY.li.disability")</li>
-        </ul>
+    @heading(messages("youAnyTheseBenefitsCY.heading"))
 
-    @input_yes_no(
-        InputViewModel[Boolean]("value", form),
+        <p class="govuk-body">@messages("youAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
+
+        <ul class="govuk-list--bullet">
+        @playComponents.list(
+            bulletList = Seq (
+            messages("youAnyTheseBenefitsCY.li.income_support"),
+            messages("youAnyTheseBenefitsCY.li.jobseekers_allowance"),
+            messages("youAnyTheseBenefitsCY.li.carers"),
+            messages("youAnyTheseBenefitsCY.li.employment_support"),
+            messages("youAnyTheseBenefitsCY.li.pensions"),
+            messages("youAnyTheseBenefitsCY.li.disability")
+        ))</ul>
+
+    @inputYesNo(
+        viewModel = InputViewModel("value", form),
         label = messages("youAnyTheseBenefitsCY.heading"),
-        labelClass = Some("visually-hidden")
+        labelClass = Some("govuk-visually-hidden"),
+        field = form("value")
     )
 
-        @submit_button()
+        @submitButton()
     }
 }

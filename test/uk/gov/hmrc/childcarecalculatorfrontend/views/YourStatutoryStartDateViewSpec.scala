@@ -21,10 +21,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryStartDateForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.DateViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewDateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
-class YourStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
+class YourStatutoryStartDateViewSpec extends NewDateViewBehaviours[LocalDate] {
 
   val view = app.injector.instanceOf[yourStatutoryStartDate]
   val messageKeyPrefix = "yourStatutoryStartDate"
@@ -40,10 +40,13 @@ class YourStatutoryStartDateViewSpec extends DateViewBehaviours[LocalDate] {
   "YourStatutoryStartDate view" must {
 
     behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
-      title = messages(s"$messageKeyPrefix.title", statutoryType),
-      heading = Some(messages(s"$messageKeyPrefix.title", statutoryType))
+      view = createView,
+      messageKeyPrefix = messageKeyPrefix,
+      messageKeyPostfix = "",
+      title = messages(s"$messageKeyPrefix.title", "maternity"),
+      heading = Some(messages(s"$messageKeyPrefix.heading", "maternity")),
+      expectedGuidanceKeys = Seq(),
+      args = "maternity"
     )
 
     behave like pageWithBackLink(createView)

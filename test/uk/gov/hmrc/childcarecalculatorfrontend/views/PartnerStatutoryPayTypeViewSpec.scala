@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryPayTypeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayType
 
-class PartnerStatutoryPayTypeViewSpec extends ViewBehaviours {
+class PartnerStatutoryPayTypeViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryPayType"
 

@@ -14,12 +14,20 @@
  * limitations under the License.
  *@
 
-@this()
+@this(
+        govukErrorSummary : GovukErrorSummary
+)
 
-@(
-messageKey: String = "",
-href: Call,
-id: String = "target-page-link")(implicit request: Request[_], messages: Messages)
+@(errors: Seq[FormError])(implicit messages: Messages)
 
-    <a id ="@id" href="@href" role="button" class="button"  onclick="ga('send', 'event', 'button-click', '@request.uri', 'Continue')">@messages(messageKey)</a>
-
+@if(errors.nonEmpty) {
+    @govukErrorSummary(ErrorSummary(
+        title       = Text(messages("error.summary.title")),
+        errorList   = for(error <- errors) yield {
+            ErrorLink(
+                href    = Some(s"#${error.key}"),
+                content = Text(messages(error.message, error.args:_*))
+            )
+        }
+    ))
+}

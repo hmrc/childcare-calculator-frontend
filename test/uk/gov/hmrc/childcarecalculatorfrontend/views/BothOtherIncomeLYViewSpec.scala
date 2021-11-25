@@ -19,13 +19,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.YesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothOtherIncomeLY
 
-class BothOtherIncomeLYViewSpec extends YesNoViewBehaviours {
+class BothOtherIncomeLYViewSpec extends NewYesNoViewBehaviours {
 
+  override val form = BooleanForm()
   val taxYearInfo = new TaxYearInfo
 
   val view = application.injector.instanceOf[bothOtherIncomeLY]

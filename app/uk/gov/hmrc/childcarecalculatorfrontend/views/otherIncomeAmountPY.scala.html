@@ -15,41 +15,49 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, OtherIncomeAmountPY}
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@this(layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    heading: playComponents.heading,
+    submit_button: playComponents.submit_button,
+    error_summary: playComponents.error_summary,
+    inputNumber: playComponents.input_number
+)
 
 @(appConfig: FrontendAppConfig, form: Form[OtherIncomeAmountPY], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("otherIncomeAmountPY.title"),
-    appConfig = appConfig,
-    bodyClasses = None) {
-
-    @back_link()
-
+@layout(
+    pageTitle= if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("otherIncomeAmountPY.title"))
+    } else {
+        messages("otherIncomeAmountPY.title")
+    }
+) {
     @error_summary(form.errors)
 
-    @heading("otherIncomeAmountPY.heading", "heading-xlarge")
+    @heading(messages("otherIncomeAmountPY.heading", "heading-xlarge"))
 
     @formWithCSRF(action = OtherIncomeAmountPYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-        @input_number(
-            InputViewModel[OtherIncomeAmountPY]("parentOtherIncomeAmountPY", form),
-            currencySymbol=Some("true"),
-            label = messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")
-            )
+        @inputNumber(
+            label = heading(messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")),
+            stringLabel = Some(messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")),
+            labelClass = Some("govuk-body"),
+            currency = true,
+            field = form("parentOtherIncomeAmountPY")
+        )
 
-        @input_number(
-            InputViewModel[OtherIncomeAmountPY]("partnerOtherIncomeAmountPY", form),
-            currencySymbol=Some("true"),
-            label = messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY")
-            )
+        @inputNumber(
+            label = heading(messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY")),
+            stringLabel = Some(messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY")),
+            labelClass = Some("govuk-body"),
+            currency = true,
+            field = form("partnerOtherIncomeAmountPY")
+        )
 
         @submit_button()
     }

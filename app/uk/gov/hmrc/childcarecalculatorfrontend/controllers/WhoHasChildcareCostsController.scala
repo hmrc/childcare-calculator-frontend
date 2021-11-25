@@ -53,7 +53,7 @@ class WhoHasChildcareCostsController @Inject()(
             case None => WhoHasChildcareCostsForm()
             case Some(value) => WhoHasChildcareCostsForm().fill(value)
           }
-          Future.successful(Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, options(values,childrenUnderSixteen))))
+          Future.successful(Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, options(values,childrenUnderSixteen).toSeq)))
       }
   }
 
@@ -64,7 +64,7 @@ class WhoHasChildcareCostsController @Inject()(
           val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
           WhoHasChildcareCostsForm(values.values.toSeq: _*).bindFromRequest().fold(
             (formWithErrors: Form[_]) => {
-              Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values,childrenUnderSixteen))))
+              Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values,childrenUnderSixteen).toSeq)))
             },
             value => {
               dataCacheConnector.save[Set[Int]](request.sessionId, WhoHasChildcareCostsId.toString, value).map {

@@ -15,61 +15,53 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.play.views.html._
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 @import scala.collection.immutable.ListMap
 
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
-
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, input_yes_no: components.input_yes_no, button_link: components.button_link, input_check_box: components.input_check_box, detail_summary: components.detail_summary)
+@this(
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    inputYesNo: playComponents.input_yes_no,
+    submitButton: playComponents.submit_button,
+    tableList: playComponents.tableList
+)
 
 @(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo, incomeSummary: Option[ListMap[String,String]] = None)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("youGetSameIncomePreviousYear.title"),
-    appConfig = appConfig,
-    bodyClasses = Some("sameIncomePY")) {
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("youGetSameIncomePreviousYear.title")) else messages("youGetSameIncomePreviousYear.title")
+}
 
-    @back_link()
+@layout(
+    pageTitle = title
+) {
 
-    @error_summary(form.errors)
+    @errorSummary(form.errors)
 
-    @heading("youGetSameIncomePreviousYear.heading", "heading-xlarge")
+    @heading(messages("youGetSameIncomePreviousYear.heading", "heading-xlarge"))
 
     <div class="panel-indent panel-border-wide panel-info">
-        <p>@messages("youGetSameIncomePreviousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+        <p class="govuk-inset-text">@messages("youGetSameIncomePreviousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     </div>
 
     @formWithCSRF(action = YouGetSameIncomePreviousYearController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p>@messages("youGetSameIncomePreviousYear.info.summary")</p>
+        <p class="govuk-body">@messages("youGetSameIncomePreviousYear.info.summary")</p>
 
-        @{
-            incomeSummary.map(summary => {
-                <table>
-                    <tbody>
-                    {
-                        summary.map(section => {
-                            <tr>
-                                <th scope="row">{s"${section._1}"}</th>
-                                <td>{s"${section._2}"}</td>
-                            </tr>
-                        })
-                    }
-                    </tbody>
-                </table>
-            })
-        }
+        @tableList(incomeSummary)
 
-        @input_yes_no(
-            InputViewModel[Boolean]("value", form),
+        @inputYesNo(
+            viewModel = InputViewModel("value", form),
             label = messages("youGetSameIncomePreviousYear.heading"),
-            labelClass = Some("visually-hidden")
+            labelClass = Some("govuk-visually-hidden"),
+            field = form("value")
         )
 
-        @submit_button()
+        @submitButton()
     }
 }

@@ -18,10 +18,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.StringViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewStringViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 
-class SurveyDoNotUnderstandViewSpec extends StringViewBehaviours {
+class SurveyDoNotUnderstandViewSpec extends NewStringViewBehaviours {
 
   val messageKeyPrefix = "surveyDoNotUnderstand"
 

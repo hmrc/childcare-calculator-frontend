@@ -20,11 +20,10 @@ import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.ViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.components.scheme_result
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultNotEligible
 
-class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
+class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
 
   lazy val appResultNotEligible = app.injector.instanceOf[resultNotEligible]
 
@@ -35,7 +34,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
     "contain results" when {
       "We don't have free hours value" in {
         val model = ResultsViewModel(freeHours = None, taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages))
+        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "Free childcare hours")
         view.getElementById("notEligibleFreeHours").text() mustBe messages("result.free.hours.not.eligible")
@@ -44,7 +43,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
       "User is not eligible for TC scheme" in {
         val tcSchemeIneligibleMsg = "Not eligible for Tax credit"
         val model = ResultsViewModel(tc = None, taxCreditsOrUC = None, tcSchemeInEligibilityMsg = tcSchemeIneligibleMsg, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages))
+        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "Tax credits")
         view.getElementById("notEligibleTC1").text() mustBe tcSchemeIneligibleMsg +" " +messages("result.tc.scheme.guidance.link") +
@@ -53,7 +52,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
       "User answered UC to do you get tax credits or universal credits " in {
         val model = ResultsViewModel(taxCreditsOrUC = Some("uc"), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages))
+        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "Tax credits")
         view.getElementById("notEligibleTC1").text() mustBe messages("result.uc.not.eligible.para")
@@ -61,14 +60,14 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
       "User answered UC to do you get tax credits or universal credits and hideTC is true " in {
         val model = ResultsViewModel(taxCreditsOrUC = Some("uc"), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model, hideTC = true)(fakeRequest, messages))
+        val view = asDocument(appResultNotEligible(model, hideTC = true)(fakeRequest, messages, lang))
 
         assertNotContainsText(view, "Tax credits")
       }
 
       "User is not eligible for TFC scheme" in {
         val model = ResultsViewModel(tfc = None, taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages))
+        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "Tax-Free Childcare")
         view.getElementById("notEligibleTFC").text() mustBe messages("result.tfc.not.eligible")
@@ -77,7 +76,7 @@ class ResultNotEligibleViewSpec extends ViewBehaviours with MockitoSugar {
 
       "User is not eligible for ESC scheme" in {
         val model = ResultsViewModel(esc = None, taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages))
+        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "Childcare vouchers")
         view.getElementById("notEligibleESC1").text() mustBe messages("result.esc.not.eligible.para1")

@@ -38,9 +38,18 @@ object WhoGotStatutoryPayForm extends FormErrorHelper {
   def apply(): Form[YouPartnerBothEnum.Value] =
     Form(single("value" -> of(WhoGotStatutoryPayFormatter)))
 
-  def options: Seq[InputOption] = Seq(InputOption("whoGotStatutoryPay", YouPartnerBothEnum.YOU.toString),
-    InputOption("whoGotStatutoryPay", YouPartnerBothEnum.PARTNER.toString),
-    InputOption("whoGotStatutoryPay", YouPartnerBothEnum.BOTH.toString))
+  def options: Seq[InputOption] = Seq(
+    whoGotStatutoryPayInputOption("value", YouPartnerBothEnum.YOU.toString),
+    whoGotStatutoryPayInputOption("value-2", YouPartnerBothEnum.PARTNER.toString),
+    whoGotStatutoryPayInputOption("value-3", YouPartnerBothEnum.BOTH.toString))
+
+  private def whoGotStatutoryPayInputOption(id: String, option: String): InputOption = {
+    new InputOption(
+      id = id,
+      value = option,
+      messageKey = s"whoGotStatutoryPay.$option"
+    )
+  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

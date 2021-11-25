@@ -65,6 +65,7 @@ session_expired.heading = For your security, we cleared your details
 session_expired.guidance = You can
 session_expired.link.text= go back and start again.
 
+service.name = Childcare calculator
 
 site.back = Back
 site.delete = Remove
@@ -79,6 +80,7 @@ site.textarea.char_limit = (Limit is {0} characters)
 site.in.pounds = in pounds
 site.colon = :
 site.opens.new.tab = (opens in new tab)
+site.title.error = Error: {0}
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -542,7 +544,7 @@ partnerEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 
 employmentIncome.error.invalid = Enter a number between 0 and 999999.99
 
-parentPaidWorkCY.title = You are not working now, but have you had any paid work this year
+parentPaidWorkCY.title = You are not working now, but have you had any paid work this year?
 parentPaidWorkCY.heading = You are not working now, but have you had any paid work this year?
 parentPaidWorkCY.checkYourAnswersLabel = You are not working now, but have you had any paid work this year
 parentPaidWorkCY.error.notCompleted = Select yes if you had any paid work this year
@@ -554,9 +556,9 @@ partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but 
 partnerPaidWorkCY.error.notCompleted = Select yes if your partner had any paid work this year
 partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
-bothPaidWorkCY.title = You and your partner aren’t working now, but have you and your partner had any paid work this year?
-bothPaidWorkCY.heading = You and your partner aren’t working now, but have you and your partner had any paid work this year?
-bothPaidWorkCY.checkYourAnswersLabel = You and your partner aren’t working now, but have you and your partner had any paid work this year?
+bothPaidWorkCY.title = You and your partner are not working now, but have you and your partner had any paid work this year?
+bothPaidWorkCY.heading = You and your partner are not working now, but have you and your partner had any paid work this year?
+bothPaidWorkCY.checkYourAnswersLabel = You and your partner are not working now, but have you and your partner had any paid work this year?
 bothPaidWorkCY.error.notCompleted = Select yes if you and your partner had any paid work this year
 bothPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
@@ -951,8 +953,8 @@ childDisabilityBenefits.error.notCompleted = Select yes if {0} gets any of these
 
 childcarePayFrequency.title = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.heading = How often do you pay or expect to pay {0}’s childcare costs?
-childcarePayFrequency.weekly = weekly
-childcarePayFrequency.monthly = monthly
+childcarePayFrequency.weekly = Weekly
+childcarePayFrequency.monthly = Monthly
 childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.error.notCompleted = Select how often you pay or expect to pay for childcare costs
 
@@ -1074,7 +1076,7 @@ whichDisabilityBenefits.pip = Personal Independence Payment
 whichDisabilityBenefits.types.higher = Types of higher rate disability benefits
 whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate care component)
 whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
-whichDisabilityBenefits.error.notCompleted = Select yes if {0} gets any of these disability benefits
+whichDisabilityBenefits.error.notCompleted = Select the disability benefits that {0} gets
 
 expectedChildcareCosts.title = What are your expected childcare costs?
 expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
@@ -1148,10 +1150,10 @@ partnerStatutoryWeeks.error.required = Enter how many weeks of {2} pay your part
 partnerStatutoryWeeks.error.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay your partner took
 partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
 
-statutoryWeeks.maternity.guidance = This is usually taken as {0} weeks
-statutoryWeeks.paternity.guidance = This is usually taken as {0} weeks
-statutoryWeeks.adoption.guidance = This is usually taken as {0} weeks
-statutoryWeeks.shared-parental.guidance = This is usually taken as {0} weeks between both parents
+statutoryWeeks.maternity.guidance = This is usually taken as {0} weeks.
+statutoryWeeks.paternity.guidance = This is usually taken as {0} weeks.
+statutoryWeeks.adoption.guidance = This is usually taken as {0} weeks.
+statutoryWeeks.shared-parental.guidance = This is usually taken as {0} weeks between both parents.
 
 yourStatutoryStartDate.title = When did your {0} pay start?
 yourStatutoryStartDate.heading = When did your {0} pay start?
@@ -1201,9 +1203,6 @@ result.heading = Help you could get with your childcare costs
 result.eligible.heading = You are eligible for:
 result.heading.not.eligible = Help you could get with your childcare costs
 result.guidance = You answered that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
-result.single.eligibility.heading = You are eligible for help from 1 scheme
-result.multiple.eligibility.heading = You are eligible for help from {0} schemes
-
 result.more.info.title = How the schemes work together
 result.more.info.para = Of the childcare schemes available to you:
 result.schemes.free.hours.eligibility.guidance.bullet = free childcare hours can be used with any of the other schemes

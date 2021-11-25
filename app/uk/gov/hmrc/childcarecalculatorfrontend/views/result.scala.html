@@ -18,67 +18,62 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 
-@this(main_template: main_template, formWithCSRF: FormWithCSRF, back_link: components.back_link, error_summary: components.error_summary, heading: components.heading, input_text: components.input_text, submit_button: components.submit_button, input_date: components.input_date, input_number: components.input_number, input_radio: components.input_radio, resultEligible: resultEligible, resultNotEligible: resultNotEligible)
+@this(
+    layout: Layout,
+    heading: playComponents.heading,
+    resultEligible: resultEligible,
+    resultNotEligible: resultNotEligible
+)
 
-@(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, model: ResultsViewModel, links: List[Map[String, String]], summary: Option[String], utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages, lang: Lang)
 
-    @pagetitle = {
-        @if(model.noOfEligibleSchemes(hideTC) > 0) {
-            @messages("result.heading")
+    @title = @{
+        if(model.noOfEligibleSchemes(hideTC) > 0) {
+            messages("result.heading")
         } else {
-            @messages("result.heading.not.eligible")
+            messages("result.heading.not.eligible")
         }
     }
 
     @resultsEstimateInformationContent = {
-        <p>@messages("result.estimates.income.para1")</p>
+        <p class="govuk-body">@messages("result.estimates.income.para1")</p>
     }
 
 
 
-    @main_template(
-        title = pagetitle.toString.trim,
-        appConfig = appConfig,
-        urBanner = true,
-        timeout = false,
-        bodyClasses = Some("result")) {
+    @layout(
+        pageTitle = title,
+        timeoutEnabled = false,
+        urBanner = true
+    ) {
 
-        @back_link()
-
-        @heading(pagetitle.toString, "heading-xlarge")
+        @heading(title.toString)
 
         @if(!model.isEligibleOnlyToMinimumFreeHours && model.noOfEligibleSchemes(hideTC) > 0) {
-            <p>@model.firstParagraph</p>
+            <p class="govuk-body">@model.firstParagraph</p>
         }
         @resultsEstimateInformationContent
 
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
 
         @if(model.noOfEligibleSchemes(hideTC) > 0) {
-            <h2 class="resultEligibleHeading visuallyhidden">
-            @if(model.noOfEligibleSchemes(hideTC) == 1) {
-                @messages("result.single.eligibility.heading")
-            } else {
-                @messages("result.multiple.eligibility.heading", model.noOfEligibleSchemes(hideTC))
-            }
-            </h2>
-            <h2 class="heading-large">@messages("result.eligible.subheading")</h2>
+
+            @heading(heading = messages("result.eligible.subheading"), headingSize = "heading-l")
             @resultEligible(model, utils, hideTC)
 
             @if(!model.isEligibleToAllSchemes(hideTC)) {
-                <h2 class="resultNotEligibleHeading visuallyhidden">@messages("result.not.eligible.title")</h2>
-                <h2 class="heading-large">@messages("result.not.eligible.subheading")</h2>
+                <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
+                @heading(heading = messages("result.not.eligible.subheading"), headingSize = "heading-l")
                 @resultNotEligible(model, hideTC)
             }
 
 
             @if(model.showTwoYearOldInfo(hideTC) && model.isEligibleToAllSchemes(hideTC)) {
-                <div class="twoYearsOld">
-                    <h2 class="heading-medium">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
-                    <p>@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
-                    <p>@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
+                <div>
+                    @heading(heading=messages(s"results.two.years.old.guidance.${model.location}.title"), headingSize = "heading-m")
+                    <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
+                    <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
                         @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
                     </a>
                         @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
@@ -87,62 +82,70 @@
             }
 
             @if(model.noOfEligibleSchemes(hideTC) > 1) {
-                <h2 class="heading-large">@messages("result.further.information.subheading")</h2>
-                <h2 class="heading-medium">@messages("result.more.info.title")</h2>
+                @heading(heading=messages("result.further.information.subheading"), headingSize = "heading-l")
+                @heading(heading=messages("result.more.info.title"), headingSize = "heading-m")
 
                 @if(model.noOfEligibleSchemes(hideTC) == 4) {
-                    <p>@messages("result.more.info.para")</p>
-                    <ul class="bullets">
-                        <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
-                        <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")</li>
-                        <li>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")</li>
-                    </ul>
+                    <p class="govuk-body">@messages("result.more.info.para")</p>
+                    @playComponents.list(
+                        bulletList = Seq (
+                            messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
+                            messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"),
+                            messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")
+                        )
+                    )
                 } else {
                     @if(model.isEligibleForAllButVouchers) {
-                        <p>@messages("result.more.info.para")</p>
-                        <ul class="bullets">
-                            <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
-                            <li>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")</li>
-                        </ul>
+                        <p class="govuk-body">@messages("result.more.info.para")</p>
+                        @playComponents.list(
+                            bulletList = Seq (
+                                messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
+                                messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")
+                            )
+                        )
                     }
                     @if(model.isEligibleForAllButTc) {
-                        <p>@messages("result.more.info.para")</p>
-                        <ul class="bullets">
-                            <li>@messages("result.schemes.free.hours.eligibility.guidance.bullet")</li>
-                            <li>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")</li>
-                        </ul>
+                        <p class="govuk-body">@messages("result.more.info.para")</p>
+                        @playComponents.list(
+                            bulletList = Seq (
+                                messages("result.schemes.free.hours.eligibility.guidance.bullet"),
+                                messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")
+                            )
+                        )
                     }
 
                     @if(model.isEligibleForAllButTfc) {
-                        <p>@messages("result.more.info.para")</p>
-                        <ul class="bullets">
-                            <li>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet")</li>
-                            <li>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")</li>
-                        </ul>
+                        <p class="govuk-body">@messages("result.more.info.para")</p>
+                        @playComponents.list(
+                            bulletList = Seq (
+                                messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
+                                messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")
+                            )
+                        )
                     }
 
                     @if(model.isEligibleForAllButFreeHours) {
-                        <p>@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
+                        <p class="govuk-body">@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
                     }
 
                     @if(model.isEligibleOnlyForFreeHoursAndTc) {
-                        <p>@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
+                        <p class="govuk-body">@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
                     }
 
                     @if(model.isEligibleOnlyForTCAndEsc) {
-                        <p>@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
+                        <p class="govuk-body">@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
                     }
 
                     @if(model.isEligibleOnlyForFreeHoursAndTfc || model.isEligibleOnlyForFreeHoursAndEsc) {
-                        <p>@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
+                        <p class="govuk-body">@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
                     }
 
                     @if(model.isEligibleOnlyForTfcAndEsc) {
-                        <p>@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
+                        <p class="govuk-body">@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
                     }
 
                     @if(model.isEligibleOnlyForTCAndTfc) {
-                        <p>@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
+                        <p class="govuk-body">@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
                     }
                 }
                 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
@@ -150,25 +153,25 @@
 
             @if(links.nonEmpty){
                 <div class="moreInfo">
-                    <h2 class="heading-medium">@messages("aboutYourResults.more.info.title")</h2>
-                    <p>@messages("aboutYourResults.more.info.para1")</p>
-                        <ul class="list list-bullet">
+                    @heading(heading=messages("aboutYourResults.more.info.title"), headingSize="heading-m")
+                    <p class="govuk-body">@messages("aboutYourResults.more.info.para1")</p>
+                        <ul class="govuk-list govuk-list--bullet">
                         @for(link <- links) {
-                            <li><a target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href="@link("link")">@link("title") <span>@messages("site.opens.new.tab")</span></a></li>
+                            <li><a class="govuk-link" target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href="@link("link")">@link("title") <span>@messages("site.opens.new.tab")</span></a></li>
                         }
                         </ul>
-                    <p>@summary.getOrElse("")</p>
+                    <p class="govuk-body">@summary.getOrElse("")</p>
                 </div>
                 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
             }
         } else {
-            <h2 class="resultNotEligibleHeading visually-hidden">@messages("result.not.eligible.title")</h2>
-            <h2 class="heading-large">@messages("result.not.eligible.subheading")</h2>
+            <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
+            @heading(heading=messages("result.not.eligible.subheading"), headingSize="heading-l")
             @resultNotEligible(model, hideTC)
         }
-        <div class="panel panel-border-wide survey">
-            <p> <a rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
-                @messages("results.feedback.survey.link.text") <span class="visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span></a> @messages("results.feedback.survey.text.after.link")
+        <div>
+            <p class="govuk-body"> <a class="govuk-link" rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
+                @messages("results.feedback.survey.link.text") <span class="govuk-visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span></a> @messages("results.feedback.survey.text.after.link")
             </p>
         </div>
     }

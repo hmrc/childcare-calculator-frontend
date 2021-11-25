@@ -20,10 +20,10 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourOtherIncomeAmountCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.BigDecimalViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourOtherIncomeAmountCY
 
-class YourOtherIncomeAmountCYViewSpec extends BigDecimalViewBehaviours {
+class YourOtherIncomeAmountCYViewSpec extends NewBigDecimalViewBehaviours {
 
   val view = app.injector.instanceOf[yourOtherIncomeAmountCY]
   val messageKeyPrefix = "yourOtherIncomeAmountCY"
@@ -43,7 +43,7 @@ class YourOtherIncomeAmountCYViewSpec extends BigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourOtherIncomeAmountCYController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info") + " " + messages("site.in.pounds"))
+      Some(messages(s"$messageKeyPrefix.info"))
     )
   }
 }
