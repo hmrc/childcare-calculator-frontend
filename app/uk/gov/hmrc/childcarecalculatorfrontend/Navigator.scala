@@ -47,10 +47,7 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
   override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call =
     navigators.map(_.nextPage(id, mode)).reduce(_ orElse _)
       .getOrElse {
-        mode match {
-          case NormalMode =>
             _ => routes.WhatToTellTheCalculatorController.onPageLoad
-        }
       }
   }
 
@@ -61,11 +58,7 @@ trait Navigator {
   protected def editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
 
   def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = {
-    answers =>
-      mode match {
-        case NormalMode =>
-          routeMap.getOrElse(id, (_: UserAnswers) => routes.WhatToTellTheCalculatorController.onPageLoad)(answers)
-      }
+    answers => routeMap.getOrElse(id, (_: UserAnswers) => routes.WhatToTellTheCalculatorController.onPageLoad)(answers)
   }
 }
 
