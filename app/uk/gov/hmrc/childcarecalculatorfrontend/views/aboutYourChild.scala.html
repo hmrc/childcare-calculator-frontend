@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, AboutYourChild}
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 
 @this(
@@ -41,10 +40,6 @@
         messages: Messages
 )
 
-@title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages(s"aboutYourChild.title")) else messages(s"aboutYourChild.title")
-}
-
 @headingText = @{
     if (total == 1) {
         messages(s"aboutYourChild.heading")
@@ -53,34 +48,56 @@
     }
 }
 
+@title = @{
+    val titleText = if (total == 1) {
+        messages(s"aboutYourChild.heading")
+    } else {
+        messages(s"aboutYourChild.heading.nth", messages(s"nth.$index"))
+    }
+    if(form.errors.nonEmpty) messages("site.title.error", titleText) else titleText
+}
+
+@nameText = @{
+    if (total == 1) {
+        messages(s"aboutYourChild.name")
+    } else {
+        messages(s"aboutYourChild.name.nth", messages(s"nth.$index"))
+    }
+}
+
+@dateText =  @{
+    if (total == 1) {
+        messages(s"aboutYourChild.dob")
+    } else {
+        messages(s"aboutYourChild.dob.nth", messages(s"nth.$index"))
+    }
+}
+
 @layout(
     pageTitle = title
 ) {
     @errorSummary(form.errors)
+    @heading(headingText)
+
+    @if(index == 0) {
+        <div class="panel-indent panel-border-wide panel-info">
+            <p class="govuk-inset-text">@messages("aboutYourChild.lede")</p>
+        </div>
+    }
 
     @formWithCSRF(action = AboutYourChildController.onSubmit(mode, index), 'autoComplete -> "off", 'novalidate -> "") {
 
-
-        @heading(messages(headingText))
-
-        @if(index == 0) {
-            <div class="panel-indent panel-border-wide panel-info">
-                <p class="govuk-inset-text">@messages("aboutYourChild.lede")</p>
-            </div>
-        }
-
         @inputText(
-            label = messages("aboutYourChild.name"),
+            label = nameText,
             smallText = true,
             field = form("name")
         )
 
         @inputDate(
-            content = messages("aboutYourChild.dob"),
+            content = dateText,
             hintContent = Some(messages("aboutYourChild.hint")),
             smallText = true,
             field = form("dob")
-
         )
 
         @submitButton()

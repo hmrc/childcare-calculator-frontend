@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -34,15 +33,12 @@
 @layout(
     pageTitle = title,
 ) {
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = YourOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("yourOtherIncomeAmountCY.heading"))
-
         @inputNumber(
-            label = heading(messages("yourOtherIncomeAmountCY.info")),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("yourOtherIncomeAmountCY.heading"))),
             currency = true,
             field = form("value")
         )

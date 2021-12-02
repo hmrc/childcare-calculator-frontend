@@ -17,8 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
     layout: Layout,
@@ -40,20 +38,15 @@
     pageTitle = title,
 ) {
 
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = DoYouLiveWithPartnerController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("doYouLiveWithPartner.heading"))
-
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("doYouLiveWithPartner.heading"),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("doYouLiveWithPartner.heading"))),
             hint = Some(messages("doYouLiveWithPartner.para1")),
             field = form("value")
         )
-
         @submitButton()
     }
 }

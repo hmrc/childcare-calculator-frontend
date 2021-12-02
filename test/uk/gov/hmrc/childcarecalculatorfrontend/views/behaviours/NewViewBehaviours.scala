@@ -36,6 +36,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
         "display the correct browser title" in {
           val doc = asDocument(view())
           assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title")+" - "+messages("site.service_name")+" - GOV.UK")
+          assertNotContainsValue(doc, "title", "{}")
         }
 
         "display the correct page title" in {
@@ -99,6 +100,53 @@ trait NewViewBehaviours extends NewViewSpecBase {
         "display the correct browser title" in {
           val doc = asDocument(view())
           assertEqualsValue(doc, "title", title + " - " + messages("site.service_name") + " - GOV.UK")
+          assertNotContainsValue(doc, "title", "{}")
+        }
+
+        "display the correct page title" in {
+          val doc = asDocument(view())
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading$messageKeyPostfix", args: _*)
+        }
+
+        "display the correct guidance" in {
+          val doc = asDocument(view())
+          for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
+        }
+
+        "display a beta banner" in {
+          val doc = asDocument(view())
+          assertRenderedByCssSelector(doc, ".govuk-phase-banner")
+        }
+
+        "not display HMRC branding" in {
+          val doc = asDocument(view())
+          assertNotRenderedByCssSelector(doc, ".organisation-logo")
+        }
+      }
+    }
+  }
+
+  def normalPageWithTitleParameters(
+                                   view: () => HtmlFormat.Appendable,
+                                   messageKeyPrefix: String,
+                                   messageKeyPostfix: String,
+                                   expectedGuidanceKeys: Seq[String],
+                                   args: Seq[String] = Nil,
+                                   titleArgs: Seq[String] = Nil
+                                 ) {
+
+    "behave like a normal page" when {
+      "rendered" must {
+        "have the correct banner title" in {
+          val doc = asDocument(view())
+          val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+          nav.text mustBe messages("site.service_name")
+        }
+
+        "display the correct browser title" in {
+          val doc = asDocument(view())
+          assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title", titleArgs: _*) + " - " + messages("site.service_name") + " - GOV.UK")
+          assertNotContainsValue(doc, "title", "{}")
         }
 
         "display the correct page title" in {

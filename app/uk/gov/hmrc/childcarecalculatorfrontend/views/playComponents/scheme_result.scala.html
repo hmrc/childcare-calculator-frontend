@@ -47,7 +47,7 @@
         displayTCGuidanceLink: Boolean = false
 )(implicit messages: Messages, lang: Lang)
 
-@heading(heading=title, headingSize = "heading-m", id = Some("id"))
+@heading(heading=title, headingSize = "heading-m", id = id)
 
 @if(warningMessage.isDefined) {
     @govukWarningText(WarningText(

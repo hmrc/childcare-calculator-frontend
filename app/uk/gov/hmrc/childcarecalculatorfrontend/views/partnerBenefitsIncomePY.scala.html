@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -38,15 +37,12 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = PartnerBenefitsIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("partnerBenefitsIncomePY.heading"))
-
         @inputNumber(
-            label = heading(messages("partnerBenefitsIncomePY.info")),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("partnerBenefitsIncomePY.heading"))),
             currency = true,
             field = form("value")
         )

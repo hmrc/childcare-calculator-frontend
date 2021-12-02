@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -39,25 +38,24 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
+    @heading(messages("youAnyTheseBenefitsPY.heading"))
+    <p class="govuk-body">@messages("youAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("youAnyTheseBenefitsPY.li.income_support")</li>
+        <li>@messages("youAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
+        <li>@messages("youAnyTheseBenefitsPY.li.carers")</li>
+        <li>@messages("youAnyTheseBenefitsPY.li.employment_support")</li>
+        <li>@messages("youAnyTheseBenefitsPY.li.pensions")</li>
+        <li>@messages("youAnyTheseBenefitsPY.li.disability")</li>
+
+    </ul>
     @formWithCSRF(action = YouAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("youAnyTheseBenefitsPY.heading"))
-        <p class="govuk-body">@messages("youAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("youAnyTheseBenefitsPY.li.income_support")</li>
-            <li>@messages("youAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
-            <li>@messages("youAnyTheseBenefitsPY.li.carers")</li>
-            <li>@messages("youAnyTheseBenefitsPY.li.employment_support")</li>
-            <li>@messages("youAnyTheseBenefitsPY.li.pensions")</li>
-            <li>@messages("youAnyTheseBenefitsPY.li.disability")</li>
-
-        </ul>
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("youAnyTheseBenefitsPY.heading"),
+            label = Text(messages("youAnyTheseBenefitsPY.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

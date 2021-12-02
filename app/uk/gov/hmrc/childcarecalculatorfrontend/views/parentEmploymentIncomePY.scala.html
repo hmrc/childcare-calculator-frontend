@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 
@@ -40,16 +39,15 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
 
+    @heading(messages("parentEmploymentIncomePY.heading"))
+    <p class = "govuk-body">@messages("parentEmploymentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+    <p class = "govuk-body">@messages("parentEmploymentIncomePY.hint")</p>
     @formWithCSRF(action = ParentEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
-        @errorSummary(form.errors)
-
-        @heading(messages("parentEmploymentIncomePY.heading"))
-        <p class = "govuk-body">@messages("parentEmploymentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-        <p class = "govuk-body">@messages("parentEmploymentIncomePY.hint")</p>
 
         @inputNumber(
-            label = heading(messages("parentEmploymentIncomePY.info")),
+            label = Text(messages("parentEmploymentIncomePY.info")),
             labelClass = Some("govuk-visually-hidden"),
             currency = true,
             field = form("value")

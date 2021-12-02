@@ -22,7 +22,7 @@
     hintLine2: Option[String] = None,
     labelClass: Option[String] = None,
     currency: Boolean = false,
-    inputType: String = "text",
+    inputMode: Option[String] = None,
     autoComplete: Option[String] = None,
     isPageHeading: Boolean = false,
     smallText: Boolean = false,
@@ -48,7 +48,7 @@
     classes = if (shortAnswer) "govuk-input--width-5" else "govuk-input--width-10" ,
     spellcheck = Some(!currency),
     autocomplete = autoComplete,
-    inputType = inputType,
+    inputmode = inputMode,
     prefix = if(currency) Some(PrefixOrSuffix(content = Text("£"))) else None
 ).withFormField(field))
 

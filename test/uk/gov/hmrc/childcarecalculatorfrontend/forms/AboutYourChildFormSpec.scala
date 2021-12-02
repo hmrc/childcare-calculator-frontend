@@ -20,6 +20,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
 
 class AboutYourChildFormSpec extends FormBehaviours {
 
@@ -29,12 +30,13 @@ class AboutYourChildFormSpec extends FormBehaviours {
     "dob.month" -> "2",
     "dob.year"  -> "2017"
   )
+  implicit val messages = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
 
   val form = AboutYourChildForm()
 
   val duplicateChild = Some(Map(0 -> AboutYourChild("Foo", new LocalDate(2017, 2, 1))))
 
-  val formDuplicateChildren = AboutYourChildForm(1, duplicateChild)
+  val formDuplicateChildren = AboutYourChildForm(1, children = duplicateChild)
 
   "AboutYourChild form" must {
 

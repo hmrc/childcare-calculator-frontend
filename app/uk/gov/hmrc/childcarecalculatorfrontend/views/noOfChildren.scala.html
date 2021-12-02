@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -41,15 +40,16 @@
 
     @formWithCSRF(action = NoOfChildrenController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-    @input_number(label = heading(messages("noOfChildren.heading")),
-        hint = Some(messages("noOfChildren.hint.text")),
-        currency = false,
-        field = form("value"),
-        labelClass = Some("govuk-label--m"),
-        shortAnswer = true
-    )
+        @input_number(label = HtmlContent(heading(messages("noOfChildren.heading"))),
+            hint = Some(messages("noOfChildren.hint.text")),
+            currency = false,
+            field = form("value"),
+            labelClass = Some("govuk-label--m"),
+            inputMode = Some("numeric"),
+            shortAnswer = true
+        )
 
-    @submit_button()
+        @submit_button()
 
     }
 }

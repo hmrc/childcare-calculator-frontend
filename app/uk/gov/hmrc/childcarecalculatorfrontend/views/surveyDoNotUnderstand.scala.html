@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 
 @this(
@@ -44,18 +43,12 @@
     pageTitle = title
 ){
 
+    @errorSummary(form.errors)
     @formWithCSRF(action = SurveyDoNotUnderstandController.onSubmit(), 'autoComplete -> "off", 'novalidate -> "") {
 
-    @errorSummary(form.errors)
-
-    @heading(messages("surveyDoNotUnderstand.heading"))
-
-        <p class="govuk-body">@messages("surveyDoNotUnderstand.guidance")</p>
-
         @inputTextarea(
-            InputViewModel("value", form),
             label = messages("surveyDoNotUnderstand.heading"),
-            labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("surveyDoNotUnderstand.guidance")),
             field = form("value")
         )
 

@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 
@@ -44,21 +43,20 @@
 
     @heading(messages("bothAnyTheseBenefitsCY.title"))
 
-    @formWithCSRF(action = BothAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
-        <p class="govuk-body">@messages("bothAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
+    <p class="govuk-body">@messages("bothAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("bothAnyTheseBenefitsCY.li.income_support")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.carers")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.employment_support")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.pensions")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.disability")</li>
-        </ul>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("bothAnyTheseBenefitsCY.li.income_support")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.carers")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.employment_support")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.pensions")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.disability")</li>
+    </ul>
+    @formWithCSRF(action = BothAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputYesNo(
-            InputViewModel[Boolean]("value", form),
-            label = messages("bothAnyTheseBenefitsCY.heading"),
+            label = Text(messages("bothAnyTheseBenefitsCY.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

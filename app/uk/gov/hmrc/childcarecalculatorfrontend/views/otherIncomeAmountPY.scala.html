@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, OtherIncomeAmountPY}
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 
 @this(layout: Layout,
@@ -44,16 +43,14 @@
     @formWithCSRF(action = OtherIncomeAmountPYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = heading(messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")),
-            stringLabel = Some(messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")),
+            label = Text(messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")),
             labelClass = Some("govuk-body"),
             currency = true,
             field = form("parentOtherIncomeAmountPY")
         )
 
         @inputNumber(
-            label = heading(messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY")),
-            stringLabel = Some(messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY")),
+            label = Text(messages("otherIncomeAmountPY.partnerOtherIncomeAmountPY")),
             labelClass = Some("govuk-body"),
             currency = true,
             field = form("partnerOtherIncomeAmountPY")

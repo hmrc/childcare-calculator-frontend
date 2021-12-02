@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -41,17 +40,15 @@
 
     @heading(messages("partnerAnyOtherIncomeThisYear.heading"))
 
+    <p class="govuk-body">@messages("partnerAnyOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
     @formWithCSRF(action = PartnerAnyOtherIncomeThisYearController.onSubmit(mode), 'autoComplete -> "off") {
 
-    <p class="govuk-body">@messages("partnerAnyOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
-
-    @inputYesNo(
-        viewModel = InputViewModel("value", form),
-        label = messages("partnerAnyOtherIncomeThisYear.heading"),
-        labelClass = Some("govuk-visually-hidden"),
-        hint = Some(messages("partnerAnyOtherIncomeThisYear.hint.text")),
-        field = form("value")
-    )
-    @submit_button()
+        @inputYesNo(
+            label = Text(messages("partnerAnyOtherIncomeThisYear.heading")),
+            labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("partnerAnyOtherIncomeThisYear.hint.text")),
+            field = form("value")
+        )
+        @submit_button()
     }
 }

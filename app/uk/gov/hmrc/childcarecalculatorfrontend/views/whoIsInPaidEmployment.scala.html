@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoIsInPaidEmploymentForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -38,12 +37,10 @@
 @layout(
     pageTitle = title
 ) {
+    @errorSummary(form.errors)
     @formWithCSRF(action = WhoIsInPaidEmploymentController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
         @inputRadio(
-            viewModel = InputViewModel[String]("value", form),
             legend = heading(messages("whoIsInPaidEmployment.heading")),
             hint = Some(messages("whoIsInPaidEmployment.para1")),
             inputs = WhoIsInPaidEmploymentForm.options map { radioOptions =>

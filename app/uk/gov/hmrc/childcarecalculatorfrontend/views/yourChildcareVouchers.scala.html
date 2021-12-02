@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
         layout: Layout,
@@ -41,16 +40,12 @@
 }
 
 @layout(pageTitle = title) {
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = YourChildcareVouchersController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("yourChildcareVouchers.heading"))
-
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("yourChildcareVouchers.heading"),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("yourChildcareVouchers.heading"))),
             field = form("value")
         )
 

@@ -19,8 +19,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
     layout: Layout,
@@ -33,7 +31,7 @@
 @(appConfig: FrontendAppConfig, form: Form[ChildcarePayFrequency.Value], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("childcarePayFrequency.title", name)) else messages("childcarePayFrequency.title", name)
+    if(form.errors.nonEmpty) messages("site.title.error", messages("childcarePayFrequency.title", messages(s"nth.$index"))) else messages("childcarePayFrequency.title", messages(s"nth.$index"))
 }
 
 @layout(
@@ -45,7 +43,6 @@ pageTitle = title
 @formWithCSRF(action = ChildcarePayFrequencyController.onSubmit(mode, index), 'autoComplete -> "off") {
 
 @inputRadio(
-    viewModel = InputViewModel[ChildcarePayFrequency.Value]("value", form),
     legend = heading(messages("childcarePayFrequency.heading", name)),
     inputs = ChildcarePayFrequencyForm.options map { radioOptions =>
     RadioItem(

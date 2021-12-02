@@ -41,7 +41,7 @@ class PartnerOtherIncomeAmountCYViewSpec extends NewBigDecimalViewBehaviours {
     behave like bigDecimalPage(createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerOtherIncomeAmountCYController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info"))
+      Some(messages(s"$messageKeyPrefix.heading"))
     )
   }
 }
