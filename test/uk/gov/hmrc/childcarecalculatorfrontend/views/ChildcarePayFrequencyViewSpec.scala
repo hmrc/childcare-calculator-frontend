@@ -33,16 +33,17 @@ class ChildcarePayFrequencyViewSpec extends NewViewBehaviours {
   def createViewUsingForm = (form: Form[ChildcarePayFrequency.Value]) =>
     view(frontendAppConfig, form, 0, "Foo", NormalMode)(fakeRequest, messages)
 
+  val cardinal = messages("nth.0")
+
   "ChildcarePayFrequency view" must {
 
-    behave like normalPageWithTitleAsString(
+    behave like normalPageWithTitleParameters(
       view = createView,
       messageKeyPrefix = messageKeyPrefix,
       messageKeyPostfix = "",
-      title = messages(s"$messageKeyPrefix.title"),
-      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
       expectedGuidanceKeys = Seq(),
-      args = "Foo"
+      args = Seq("Foo"),
+      titleArgs = Seq(cardinal)
     )
 
     behave like pageWithBackLink(createView)

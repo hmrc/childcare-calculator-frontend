@@ -17,8 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
     layout: Layout,
@@ -44,7 +42,7 @@
         @inputText(
             label = messages("partnerWorkHours.heading"),
             isPageHeading = true,
-            inputType = "numeric",
+            inputMode = Some("numeric"),
             hintLine1 = Some(messages("partnerWorkHours.para1")),
             shortAnswer = true,
             field = form("value")

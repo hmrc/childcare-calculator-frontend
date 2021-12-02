@@ -35,15 +35,12 @@
     pageTitle = title,
 ) {
 
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = PartnerOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("partnerOtherIncomeAmountCY.heading"))
-
         @inputNumber(
-            label = heading(messages("partnerOtherIncomeAmountCY.info")),
-            labelClass=Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("partnerOtherIncomeAmountCY.heading"))),
             currency = true,
             field = form("value")
         )

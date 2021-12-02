@@ -17,9 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-
 
 @this(
     layout: Layout,
@@ -40,27 +38,26 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
+    @heading(messages("partnerAnyTheseBenefitsCY.heading"))
+
+    <p class="govuk-body">@messages("partnerAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("partnerAnyTheseBenefitsCY.li.income_support")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.employment_support")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.pensions")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.disability")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.attendance")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.independance")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.carers")</li>
+    </ul>
     @formWithCSRF(action = PartnerAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("partnerAnyTheseBenefitsCY.heading"))
-
-        <p class="govuk-body">@messages("partnerAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
-
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("partnerAnyTheseBenefitsCY.li.income_support")</li>
-            <li>@messages("partnerAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
-            <li>@messages("partnerAnyTheseBenefitsCY.li.employment_support")</li>
-            <li>@messages("partnerAnyTheseBenefitsCY.li.pensions")</li>
-            <li>@messages("partnerAnyTheseBenefitsCY.li.disability")</li>
-            <li>@messages("partnerAnyTheseBenefitsCY.li.attendance")</li>
-            <li>@messages("partnerAnyTheseBenefitsCY.li.independance")</li>
-            <li>@messages("partnerAnyTheseBenefitsCY.li.carers")</li>
-        </ul>
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("partnerAnyTheseBenefitsCY.heading"),
+            label = Text(messages("partnerAnyTheseBenefitsCY.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

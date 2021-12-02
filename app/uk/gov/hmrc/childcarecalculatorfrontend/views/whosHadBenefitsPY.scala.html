@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsPYForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -38,12 +37,10 @@
     pageTitle = title,
 ) {
 
+    @errorSummary(form.errors)
     @formWithCSRF(action = WhosHadBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
         @inputRadio(
-            viewModel = InputViewModel("value", form),
             legend = heading(messages("whosHadBenefitsPY.heading")),
             inputs = WhosHadBenefitsPYForm.options map { radioOptions =>
                 RadioItem(

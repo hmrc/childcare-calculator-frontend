@@ -17,8 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
         layout: Layout,
@@ -43,26 +41,25 @@
 }
 @layout(pageTitle = title) {
 
-    @formWithCSRF(action = DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
-
     @errorSummary(form.errors)
 
-        @heading(messages("doYouOrYourPartnerGetAnyBenefits.heading"))
+    @heading(messages("doYouOrYourPartnerGetAnyBenefits.heading"))
 
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("doYouGetAnyBenefits.li.carersAllowance")</li>
-            <li>@messages("doYouGetAnyBenefits.li.disabilityAllowance")</li>
-            <li>@messages("doYouGetAnyBenefits.li.attendanceAllowance")</li>
-            <li>@messages("doYouGetAnyBenefits.li.independencePayment")</li>
-            <li>@messages("doYouGetAnyBenefits.li.pensionCredit")</li>
-            <li>@messages("doYouGetAnyBenefits.li.incomeSupport")</li>
-            <li>@messages("doYouGetAnyBenefits.li.jsa")</li>
-            <li>@messages("doYouGetAnyBenefits.li.esa")</li>
-        </ul>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("doYouGetAnyBenefits.li.carersAllowance")</li>
+        <li>@messages("doYouGetAnyBenefits.li.disabilityAllowance")</li>
+        <li>@messages("doYouGetAnyBenefits.li.attendanceAllowance")</li>
+        <li>@messages("doYouGetAnyBenefits.li.independencePayment")</li>
+        <li>@messages("doYouGetAnyBenefits.li.pensionCredit")</li>
+        <li>@messages("doYouGetAnyBenefits.li.incomeSupport")</li>
+        <li>@messages("doYouGetAnyBenefits.li.jsa")</li>
+        <li>@messages("doYouGetAnyBenefits.li.esa")</li>
+    </ul>
+
+    @formWithCSRF(action = DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("doYouOrYourPartnerGetAnyBenefits.heading"),
+            label = Text(messages("doYouOrYourPartnerGetAnyBenefits.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

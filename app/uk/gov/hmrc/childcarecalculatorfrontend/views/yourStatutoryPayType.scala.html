@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryPayTypeForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -44,7 +43,6 @@
     @formWithCSRF(action = YourStatutoryPayTypeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputRadio(
-            viewModel = InputViewModel("value", form),
             legend = heading(messages("yourStatutoryPayType.heading")),
             inputs = YourStatutoryPayTypeForm.options map { radioOption =>
                 RadioItem(

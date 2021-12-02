@@ -17,9 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-
 
 @this(
     layout: Layout,
@@ -49,17 +47,15 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
+    @heading(messages("partnerAnyTheseBenefitsPY.heading"))
+    <p class="govuk-body">@messages("partnerAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+    @playComponents.list(pageKey = None, addCssClass = None, bulletList)
     @formWithCSRF(action = PartnerAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("partnerAnyTheseBenefitsPY.heading"))
-        <p class="govuk-body">@messages("partnerAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-        @playComponents.list(pageKey = None, addCssClass = None, bulletList)
-
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("partnerAnyTheseBenefitsPY.heading"),
+            label = Text(messages("partnerAnyTheseBenefitsPY.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

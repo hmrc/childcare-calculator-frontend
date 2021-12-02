@@ -17,10 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, EmploymentIncomeCY}
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-
-
 
 @this(
     layout: Layout,
@@ -41,11 +38,11 @@
     pageTitle = title
 ){
 
+    @errorSummary(form.errors)
+    @heading(messages("employmentIncomeCY.heading"))
+    <p class="govuk-body">@messages("employmentIncomeCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
+    <p class="govuk-body">@messages("employmentIncomeCY.hint")</p>
     @formWithCSRF(action = EmploymentIncomeCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
-        @errorSummary(form.errors)
-        @heading(messages("employmentIncomeCY.heading"))
-        <p class="govuk-body">@messages("employmentIncomeCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
-        <p class="govuk-body">@messages("employmentIncomeCY.hint")</p>
 
 
         @inputText(

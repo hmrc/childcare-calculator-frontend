@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 
@@ -40,17 +39,13 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = BothPaidPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("bothPaidPensionPY.heading"))
-
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("bothPaidPensionPY.heading"),
+            label = HtmlContent(heading(messages("bothPaidPensionPY.heading"))),
             hint = Some(messages("bothPaidPensionPY.tax.year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)),
-            labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )
 

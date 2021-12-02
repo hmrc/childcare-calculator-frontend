@@ -42,7 +42,7 @@ class PartnerOtherIncomeAmountPYViewSpec extends NewBigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerOtherIncomeAmountPYController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info"))
+      Some(messages(s"$messageKeyPrefix.heading"))
     )
   }
 }

@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -47,29 +46,26 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
+    @heading(messages("youStatutoryPay.heading", taxYearInfo.previousTaxYearStart))
+
+    <p class="govuk-body">@messages("statutoryPay.guidance_extra")</p>
+    <p class="govuk-body">@messages("statutoryPay.guidance")</p>
+
+    @playComponents.list(
+        bulletList = Seq(
+            messages("statutoryPay.li.maternity"),
+            messages("statutoryPay.li.paternity"),
+            messages("statutoryPay.li.adoption"),
+            messages("statutoryPay.li.shared_parental")
+        )
+    )
+
     @formWithCSRF(action = YouStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("youStatutoryPay.heading", taxYearInfo.previousTaxYearStart))
-
-        <p class="govuk-body">@messages("statutoryPay.guidance_extra")</p>
-        <p class="govuk-body">@messages("statutoryPay.guidance")</p>
-
-        <ul class="govuk-list--bullet">
-            @playComponents.list(
-                bulletList = Seq(
-                    messages("statutoryPay.li.maternity"),
-                    messages("statutoryPay.li.paternity"),
-                    messages("statutoryPay.li.adoption"),
-                    messages("statutoryPay.li.shared_parental")
-                )
-            )
-        </ul>
-
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("youStatutoryPay.heading", taxYearInfo.previousTaxYearStart),
+            label = Text(messages("youStatutoryPay.heading", taxYearInfo.previousTaxYearStart)),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

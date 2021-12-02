@@ -18,8 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.TaxOrUniversalCreditsForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
     layout: Layout,
@@ -44,7 +42,6 @@
     @formWithCSRF(action = TaxOrUniversalCreditsController.onSubmit(mode), 'autoComplete -> "off") {
 
     @inputRadio(
-        viewModel = InputViewModel[String]("value", form),
         legend = heading(messages("taxOrUniversalCredits.heading")),
         inputs = TaxOrUniversalCreditsForm.options map { radioOptions =>
             RadioItem(

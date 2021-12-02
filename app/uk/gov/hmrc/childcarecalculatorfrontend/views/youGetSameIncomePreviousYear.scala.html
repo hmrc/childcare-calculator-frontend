@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 @import scala.collection.immutable.ListMap
 
@@ -49,15 +48,14 @@
         <p class="govuk-inset-text">@messages("youGetSameIncomePreviousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     </div>
 
+    <p class="govuk-body">@messages("youGetSameIncomePreviousYear.info.summary")</p>
+
+    @tableList(incomeSummary)
+
     @formWithCSRF(action = YouGetSameIncomePreviousYearController.onSubmit(mode), 'autoComplete -> "off") {
 
-        <p class="govuk-body">@messages("youGetSameIncomePreviousYear.info.summary")</p>
-
-        @tableList(incomeSummary)
-
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("youGetSameIncomePreviousYear.heading"),
+            label = Text(messages("youGetSameIncomePreviousYear.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

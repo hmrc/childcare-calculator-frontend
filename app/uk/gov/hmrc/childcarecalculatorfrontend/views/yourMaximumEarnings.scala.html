@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -39,15 +38,11 @@
 
     @errorSummary(form.errors)
 
-    @heading(messages("yourMaximumEarnings.title"))
-
     @formWithCSRF(action = YourMaximumEarningsController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputYesNo(
-            InputViewModel[Boolean]("value", form),
-            label = messages("yourMaximumEarnings.heading"),
+            label = HtmlContent(heading(messages("yourMaximumEarnings.title"))),
             hint = Some(messages("yourMaximumEarnings.hint")),
-            labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )
         @submitButton()

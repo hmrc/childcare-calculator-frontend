@@ -14,24 +14,22 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @this(govukRadios : GovukRadios)
 
 @(
-        viewModel: InputViewModelBase,
-        label: String,
+        label: Content,
         hint: Option[String] = None,
         labelClass: Option[String] = None,
-        isPageHeading: Boolean = true,
+        isPageHeading: Boolean = false,
         field: Field,
 )(implicit messages: Messages)
 
 @govukRadios(Radios(
     fieldset = Some(Fieldset(
-        legend = Some(Legend(content = Text(label),
-            classes = s"""govuk-fieldset__legend--l ${labelClass.getOrElse("")}""",
+        legend = Some(Legend(content = label,
+            classes = labelClass.getOrElse(""),
             isPageHeading = isPageHeading
         ))
     )),

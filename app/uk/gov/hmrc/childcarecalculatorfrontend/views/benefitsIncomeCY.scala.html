@@ -17,8 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, BenefitsIncomeCY}
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
     layout: Layout,
@@ -38,11 +36,10 @@
 @layout(
     pageTitle = title
 ) {
+    @errorSummary(form.errors)
+
+    @heading(messages("benefitsIncomeCY.heading"))
     @formWithCSRF(action = BenefitsIncomeCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
-
-        @errorSummary(form.errors)
-
-        @heading(messages("benefitsIncomeCY.heading"))
 
         @inputText(
             label = messages("benefitsIncomeCY.parentBenefitsIncome"),

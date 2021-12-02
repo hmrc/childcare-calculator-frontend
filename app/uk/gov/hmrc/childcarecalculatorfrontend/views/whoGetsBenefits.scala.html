@@ -18,8 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsBenefitsForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
         layout: Layout,
@@ -45,7 +43,6 @@
         @errorSummary(form.errors)
 
         @inputRadio(
-            viewModel = InputViewModel[String]("value", form),
             legend = heading(messages("whoGetsBenefits.heading")),
             legendClass = Some("visually-hidden"),
             inputs = WhoGetsBenefitsForm.options.map { radioOptions =>

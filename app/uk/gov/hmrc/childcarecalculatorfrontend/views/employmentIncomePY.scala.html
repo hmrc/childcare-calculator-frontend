@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, EmploymentIncomePY}
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(layout: Layout,
@@ -46,16 +45,14 @@
     <p class="govuk-body">@messages("employmentIncomePY.hint")</p>
 
     @inputNumber(
-        label = heading(messages("employmentIncomePY.parentEmploymentIncomePY")),
-        stringLabel = Some(messages("employmentIncomePY.parentEmploymentIncomePY")),
+        label = Text(messages("employmentIncomePY.parentEmploymentIncomePY")),
         labelClass = Some("govuk-body"),
         currency = true,
         field = form("parentEmploymentIncomePY")
     )
 
     @inputNumber(
-        label = heading(messages("employmentIncomePY.partnerEmploymentIncomePY")),
-        stringLabel = Some(messages("employmentIncomePY.partnerEmploymentIncomePY")),
+        label = Text(messages("employmentIncomePY.partnerEmploymentIncomePY")),
         labelClass = Some("govuk-body"),
         currency = true,
         field = form("partnerEmploymentIncomePY")

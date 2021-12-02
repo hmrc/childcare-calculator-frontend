@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -46,17 +45,13 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
     @formWithCSRF(action = WhichChildrenBlindController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("whichChildrenBlind.heading"))
 
         @inputCheckBox(
-            viewModel = InputViewModel("value", form),
             field = form("value"),
             legend = messages("whichChildrenBlind.heading"),
-            legendClass = Some("govuk-visually-hidden"),
             inputs = inputs.map { checkboxOption =>
                 CheckboxItem(
                     content = HtmlContent(checkboxOption._1.toString.capitalize),

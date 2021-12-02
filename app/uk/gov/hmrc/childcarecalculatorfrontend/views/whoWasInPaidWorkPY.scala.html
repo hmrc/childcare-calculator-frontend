@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoWasInPaidWorkPYForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -44,7 +43,6 @@
     @formWithCSRF(action = WhoWasInPaidWorkPYController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputRadio(
-            viewModel = InputViewModel[String]("value", form),
             legend = heading(messages("whoWasInPaidWorkPY.heading")),
             inputs = WhoWasInPaidWorkPYForm.options map { radioOptions =>
                 RadioItem(

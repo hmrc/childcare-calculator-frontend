@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -36,16 +35,12 @@
 
 @layout(pageTitle = title) {
 
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = YourStatutoryPayBeforeTaxController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("yourStatutoryPayBeforeTax.heading", statutoryType))
-
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("yourStatutoryPayBeforeTax.heading", statutoryType),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("yourStatutoryPayBeforeTax.heading", statutoryType))),
             field = form("value")
         )
 
