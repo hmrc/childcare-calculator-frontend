@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourAgeForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
         layout: Layout,
@@ -43,14 +42,11 @@
 }
 
 @layout(pageTitle = title) {
+    @errorSummary(form.errors)
     @formWithCSRF(action = YourAgeController.onSubmit(mode), 'autoComplete -> "off") {
 
-    @errorSummary(form.errors)
-
     @inputRadio(
-        viewModel = InputViewModel[String]("value", form),
         legend = heading(messages("yourAge.title")),
-        legendClass = Some("visually-hidden"),
         inputs = YourAgeForm.options map { radioOptions =>
             RadioItem(
                 value = Some(radioOptions.value),

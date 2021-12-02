@@ -17,8 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
     layout: Layout,
@@ -41,21 +39,20 @@
 
     @errorSummary(form.errors)
 
+    @heading(messages("childrenDisabilityBenefits.heading"))
+
+    @playComponents.list(
+        bulletList = Seq(
+            messages("childrenDisabilityBenefits.disabilities.living.allowance"),
+            messages("childrenDisabilityBenefits.child.disability.payment"),
+            messages("childrenDisabilityBenefits.personal.independence.payment")
+        )
+    )
+
     @formWithCSRF(action = ChildrenDisabilityBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @heading(messages("childrenDisabilityBenefits.heading"))
-
-        @playComponents.list(
-            bulletList = Seq(
-                messages("childrenDisabilityBenefits.disabilities.living.allowance"),
-                messages("childrenDisabilityBenefits.child.disability.payment"),
-                messages("childrenDisabilityBenefits.personal.independence.payment")
-            )
-        )
-
         @inputYesNo(
-            viewModel = InputViewModel[Boolean]("value", form),
-            label = messages("childrenDisabilityBenefits.heading"),
+            label = Text(messages("childrenDisabilityBenefits.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

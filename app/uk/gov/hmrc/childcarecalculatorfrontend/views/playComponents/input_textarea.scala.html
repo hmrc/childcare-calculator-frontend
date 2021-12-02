@@ -14,26 +14,24 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
-
 @this(
         govukTextarea : GovukTextarea
 )
 
 @(
-        viewModel: InputViewModelBase,
         label: String,
         secondaryLabel: Option[String] = None,
         inputClass: Option[String] = None,
         hint: Option[String] = None,
         labelClass: Option[String] = None,
+        isPageHeading: Boolean = true,
         field: Field
 )(implicit messages: Messages)
 
 
 @govukTextarea(Textarea(
     label = Label(
-        isPageHeading = false,
+        isPageHeading = isPageHeading,
         classes = s"""govuk-label--xl ${labelClass.getOrElse("")}""",
         content = Text(label)
     ),

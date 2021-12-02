@@ -18,8 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
-
 
 @this(
         layout: Layout,
@@ -45,16 +43,12 @@
 }
 
 @layout(pageTitle = title) {
-    @formWithCSRF(action = ChildAgedTwoController.onSubmit(mode), 'autoComplete -> "off") {
-
     @errorSummary(form.errors)
 
-        @heading(messages("childAgedTwo.heading"))
+    @formWithCSRF(action = ChildAgedTwoController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("childAgedTwo.heading"),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("childAgedTwo.heading"))),
             hint = Some(messages(s"childAgedTwo.guidance.$location")),
             field = form("value")
         )

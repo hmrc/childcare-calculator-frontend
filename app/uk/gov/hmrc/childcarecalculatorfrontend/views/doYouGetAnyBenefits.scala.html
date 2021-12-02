@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -51,18 +50,15 @@ Seq(messages("doYouGetAnyBenefits.li.carersAllowance"),
 
     @heading(messages("doYouGetAnyBenefits.heading"))
 
-    @formWithCSRF(action = DoYouGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
-
     @playComponents.list(pageKey = None, addCssClass = None, bulletList)
 
-    @inputYesNo(
-        viewModel = InputViewModel("value", form),
-        label = messages("doYouGetAnyBenefits.heading"),
-        labelClass = Some("govuk-visually-hidden"),
-        field = form("value")
-    )
+    @formWithCSRF(action = DoYouGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
 
-    @submit_button()
-
+        @inputYesNo(
+            label = Text(messages("doYouGetAnyBenefits.heading")),
+            labelClass = Some("govuk-visually-hidden"),
+            field = form("value")
+        )
+        @submit_button()
     }
 }

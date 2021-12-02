@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
         layout: Layout,
@@ -43,15 +42,12 @@
 @layout(
     pageTitle = title,
 ) {
-    @formWithCSRF(action = YourStatutoryPayPerWeekController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
-
     @errorSummary(form.errors)
 
-    @heading(messages("yourStatutoryPayPerWeek.heading", statutoryType))
+    @formWithCSRF(action = YourStatutoryPayPerWeekController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = heading(messages("yourStatutoryPayPerWeek.info", statutoryType)),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("yourStatutoryPayPerWeek.heading", statutoryType))),
             currency = true,
             field = form("value")
         )

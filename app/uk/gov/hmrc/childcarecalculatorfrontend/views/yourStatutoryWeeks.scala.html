@@ -44,15 +44,12 @@
 
 @layout(pageTitle = title) {
 
-    @formWithCSRF(action = YourStatutoryWeeksController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
-
     @errorSummary(form.errors)
 
-    @heading(messages("yourStatutoryWeeks.heading", viewModel.statutoryTypeMessage))
+    @formWithCSRF(action = YourStatutoryWeeksController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = heading(messages("yourStatutoryWeeks.heading", viewModel.statutoryTypeMessage)),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("yourStatutoryWeeks.heading", viewModel.statutoryTypeMessage))),
             hint = Some(messages(s"statutoryWeeks.${viewModel.guidanceKey}.guidance", viewModel.maxWeeks)),
             currency = false,
             shortAnswer = true,

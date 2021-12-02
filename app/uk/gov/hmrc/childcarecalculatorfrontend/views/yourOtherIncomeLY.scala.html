@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -42,18 +41,15 @@
 
     @heading(messages("yourOtherIncomeLY.heading", "heading-xlarge"))
 
+    <p class="govuk-body">@messages("yourOtherIncomeLY.year.start.end.date", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     @formWithCSRF(action = YourOtherIncomeLYController.onSubmit(mode), 'autoComplete -> "off") {
 
-    <p class="govuk-body">@messages("yourOtherIncomeLY.year.start.end.date", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-
-    @inputYesNo(
-        InputViewModel[Boolean]("value", form),
-        label = messages("yourOtherIncomeLY.heading"),
-        labelClass = Some("govuk-visually-hidden"),
-        hint = Some(messages("yourOtherIncomeLY.hint.text")),
-        field = form("value")
-    )
-
-    @submitButton()
+        @inputYesNo(
+            label = Text(messages("yourOtherIncomeLY.heading")),
+            labelClass = Some("govuk-visually-hidden"),
+            hint = Some(messages("yourOtherIncomeLY.hint.text")),
+            field = form("value")
+        )
+        @submitButton()
     }
 }

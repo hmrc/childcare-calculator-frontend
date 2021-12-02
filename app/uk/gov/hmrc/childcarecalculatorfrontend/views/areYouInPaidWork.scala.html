@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 
 @this(
@@ -49,14 +48,10 @@
 
     @errorSummary(form.errors)
 
-    @heading(messages("areYouInPaidWork.heading", "heading-xlarge"))
-
     @formWithCSRF(action = AreYouInPaidWorkController.onSubmit(mode), 'autoComplete -> "off") {
 
         @inputYesNo(
-            viewModel = InputViewModel("value", form),
-            label = messages("areYouInPaidWork.heading"),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("areYouInPaidWork.heading"))),
             hint = Some(messages("areYouInPaidWork.para1")),
             field = form("value")
         )

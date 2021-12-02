@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, HowMuchBothPayPension}
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 
 @this(
@@ -39,11 +38,9 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+    @heading(messages("howMuchBothPayPension.heading"))
     @formWithCSRF(action = HowMuchBothPayPensionController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
-
-        @errorSummary(form.errors)
-
-        @heading(messages("howMuchBothPayPension.heading"))
 
         @inputText(
             label = messages("howMuchBothPayPension.yourPension"),

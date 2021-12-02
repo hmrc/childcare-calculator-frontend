@@ -44,10 +44,10 @@ class PartnerStatutoryStartDateViewSpec extends NewDateViewBehaviours[LocalDate]
       view = createView,
       messageKeyPrefix = messageKeyPrefix,
       messageKeyPostfix = "",
-      title = messages(s"$messageKeyPrefix.title"),
-      heading = Some(messages(s"$messageKeyPrefix.heading", "maternity")),
+      title = messages(s"$messageKeyPrefix.title", statutoryType),
+      heading = Some(messages(s"$messageKeyPrefix.heading", statutoryType)),
       expectedGuidanceKeys = Seq(),
-      args = "maternity"
+      args = statutoryType
     )
 
     behave like pageWithBackLink(createView)
