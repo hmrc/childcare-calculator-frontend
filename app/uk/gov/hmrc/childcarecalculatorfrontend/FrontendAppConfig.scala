@@ -37,8 +37,8 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val analyticsDimensionKey: String = loadConfig("google-analytics.dimensionKey")
   lazy val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   lazy val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
-  lazy val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
-  lazy val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
+  lazy val betaFeedbackUrl = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
+  lazy val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
   lazy val surveyUrl: String = loadConfig("feedback-survey-frontend.host")
   lazy val surveyThankYouUrl: String = loadConfig("feedback-survey-frontend.thankYou")
 
