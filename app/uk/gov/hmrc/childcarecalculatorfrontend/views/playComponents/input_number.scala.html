@@ -14,34 +14,31 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModelBase
-
 @this(govukInput : GovukInput)
 
 @(
-label: Html,
-stringLabel: Option[String] = None,
-inputClass: Option[String] = None,
+label: Content,
 hint: Option[String] = None,
 labelClass: Option[String] = None,
 currency: Boolean = false,
-inputType: String = "text",
+inputMode: Option[String] = None,
 autoComplete: Option[String] = None,
 shortAnswer: Boolean = false,
+isPageHeading: Boolean = false,
 field: Field
 )(implicit messages: Messages)
 
 @govukInput(Input(
         label = Label(
-                isPageHeading = false,
+                isPageHeading = isPageHeading,
                 classes = s"""govuk-fieldset__legend--xl ${labelClass.getOrElse("")}""",
-                content = if(stringLabel.isDefined) Text(stringLabel.get) else HtmlContent(label)
+                content = label
         ),
         hint = hint.map(hintString => Hint(content = Text(hintString))),
         classes = if (shortAnswer) "govuk-input--width-5" else "govuk-input--width-10" ,
-        spellcheck = Some(!currency),
         autocomplete = autoComplete,
-        inputType = inputType,
+        inputmode = inputMode,
+        pattern = if(inputMode == Some("numeric")) Some("[0-9]*") else None,
         prefix = if(currency) Some(PrefixOrSuffix(content = Text("£"))) else None
 ).withFormField(field))
 

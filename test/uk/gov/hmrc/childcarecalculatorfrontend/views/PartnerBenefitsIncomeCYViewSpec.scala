@@ -43,7 +43,7 @@ class PartnerBenefitsIncomeCYViewSpec extends NewBigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerBenefitsIncomeCYController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info"))
+      Some(messages(s"$messageKeyPrefix.heading"))
     )
   }
 }

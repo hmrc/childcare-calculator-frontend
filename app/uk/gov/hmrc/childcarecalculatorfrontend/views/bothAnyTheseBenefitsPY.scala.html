@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 
@@ -39,28 +38,27 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
+    @heading(messages("bothAnyTheseBenefitsPY.heading"))
+
+    <p class="govuk-body">@messages("bothAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
+
+    @playComponents.list(
+        bulletList = Seq(
+            messages("bothAnyTheseBenefitsPY.li.income_support"),
+            messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance"),
+            messages("bothAnyTheseBenefitsPY.li.carers"),
+            messages("bothAnyTheseBenefitsPY.li.employment_support"),
+            messages("bothAnyTheseBenefitsPY.li.pensions"),
+            messages("bothAnyTheseBenefitsPY.li.disability")
+        )
+    )
+
     @formWithCSRF(action = BothAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages("bothAnyTheseBenefitsPY.heading"))
-
-        <p class="govuk-body">@messages("bothAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-
-        @playComponents.list(
-            bulletList = Seq(
-                messages("bothAnyTheseBenefitsPY.li.income_support"),
-                messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance"),
-                messages("bothAnyTheseBenefitsPY.li.carers"),
-                messages("bothAnyTheseBenefitsPY.li.employment_support"),
-                messages("bothAnyTheseBenefitsPY.li.pensions"),
-                messages("bothAnyTheseBenefitsPY.li.disability")
-            )
-        )
-
         @inputYesNo(
-            InputViewModel[Boolean]("value", form),
-            label = messages("bothAnyTheseBenefitsPY.heading"),
+            label = Text(messages("bothAnyTheseBenefitsPY.heading")),
             labelClass = Some("govuk-visually-hidden"),
             field = form("value")
         )

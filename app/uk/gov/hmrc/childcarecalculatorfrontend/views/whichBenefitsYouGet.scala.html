@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -40,12 +39,11 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
     @formWithCSRF(action = WhichBenefitsYouGetController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
 
         @inputCheckBox(
-            viewModel = InputViewModel("value", form),
             legend = messages("whichBenefitsYouGet.heading"),
             hint = Some(messages("whichBenefits.select.all")),
             inputs = WhichBenefitsEnum.sortedWhichBenefits.map { checkboxOption =>

@@ -64,14 +64,13 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
 
         s"data of index: $index, name: $name" when {
 
-          behave like normalPageWithTitleAsString(
+          behave like normalPageWithTitleParameters(
             () => createView(WhichDisabilityBenefitsForm(name), index, name),
             messageKeyPrefix,
             messageKeyPostfix = "",
-            messages("whichDisabilityBenefits.title"),
-            Some(messages("whichDisabilityBenefits.heading", name)),
             Seq("help", "types", "dla", "pip", "types.higher", "dla.higher", "pip.higher"),
-            args = name
+            args = Seq(name),
+            titleArgs = Seq(messages(s"nth.$index"))
           )
         }
     }

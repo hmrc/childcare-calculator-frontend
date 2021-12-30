@@ -52,6 +52,15 @@ trait NewViewSpecBase extends SpecBase {
     assert(elements.first().html().replace("\n", "") == expectedValue)
   }
 
+  def assertNotContainsValue(doc : Document, cssSelector : String, expectedValue: String) = {
+    val elements = doc.select(cssSelector)
+
+    if(elements.isEmpty) throw new IllegalArgumentException(s"CSS Selector $cssSelector wasn't rendered.")
+
+    //<p> HTML elements are rendered out with a carriage return on some pages, so discount for comparison
+    assert(!elements.first().html().replace("\n", "").sorted.contains(expectedValue.sorted))
+  }
+
   def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*) = {
     val headers = doc.getElementsByTag("h1")
     headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")

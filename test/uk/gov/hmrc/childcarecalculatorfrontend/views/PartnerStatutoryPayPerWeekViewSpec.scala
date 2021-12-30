@@ -42,10 +42,10 @@ class PartnerStatutoryPayPerWeekViewSpec extends NewBigDecimalViewBehaviours {
       view = createView,
       messageKeyPrefix = messageKeyPrefix,
       messageKeyPostfix = "",
-      title = messages(s"$messageKeyPrefix.title", "maternity"),
-      heading = Some(messages(s"$messageKeyPrefix.heading", "maternity")),
+      title = messages(s"$messageKeyPrefix.title", statutoryType),
+      heading = Some(messages(s"$messageKeyPrefix.heading", statutoryType)),
       expectedGuidanceKeys = Seq(),
-      args = "maternity"
+      args = statutoryType
     )
 
     behave like pageWithBackLink(createView)
@@ -54,7 +54,7 @@ class PartnerStatutoryPayPerWeekViewSpec extends NewBigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.PartnerStatutoryPayPerWeekController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info"))
+      Some(messages(s"$messageKeyPrefix.heading", statutoryType))
     )
   }
 }

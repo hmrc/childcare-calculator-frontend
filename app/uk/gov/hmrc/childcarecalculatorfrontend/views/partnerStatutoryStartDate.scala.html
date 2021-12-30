@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import org.joda.time.LocalDate
 
-
 @this(
     layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -32,7 +31,7 @@
 @(appConfig: FrontendAppConfig, form: Form[LocalDate], mode: Mode, statutoryType: String)(implicit request: Request[_], messages: Messages)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("partnerStatutoryStartDate.title")) else messages("partnerStatutoryStartDate.title")
+    if(form.errors.nonEmpty) messages("site.title.error", messages("partnerStatutoryStartDate.title", statutoryType)) else messages("partnerStatutoryStartDate.title", statutoryType)
 }
 
 @layout(pageTitle = title) {

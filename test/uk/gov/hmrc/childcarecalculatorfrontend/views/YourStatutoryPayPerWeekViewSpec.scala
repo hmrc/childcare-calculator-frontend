@@ -56,7 +56,7 @@ class YourStatutoryPayPerWeekViewSpec extends NewBigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourStatutoryPayPerWeekController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info", statutoryType.toString) + messages(""))
+      Some(messages(s"$messageKeyPrefix.heading", statutoryType) + messages(""))
     )
   }
 

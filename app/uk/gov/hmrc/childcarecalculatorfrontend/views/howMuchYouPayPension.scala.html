@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 
 @this(
@@ -40,13 +39,10 @@
 ) {
     @errorSummary(form.errors)
 
-    @heading(messages("howMuchYouPayPension.heading"))
-
     @formWithCSRF(action = HowMuchYouPayPensionController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = heading(messages("howMuchYouPayPension.info")),
-            labelClass=Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages("howMuchYouPayPension.heading"))),
             currency = true,
             field = form("value")
         )

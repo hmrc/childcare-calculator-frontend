@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 
 @this(
@@ -51,24 +50,21 @@
 }
 
 @title = @{
-    if (form.errors.nonEmpty) messages("site.title.error", messages("expectedChildcareCosts.title")) else messages("expectedChildcareCosts.title")
+    val innerTitle = messages("expectedChildcareCosts.title", messages(s"childcarePayFrequency.$frequency").toLowerCase, messages(s"nth.$childIndex"))
+    if (form.errors.nonEmpty) messages("site.title.error", innerTitle) else innerTitle
 }
 
 @layout(
     pageTitle = title,
 ) {
 
+    @errorSummary(form.errors)
+
     @formWithCSRF(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off", 'novalidate -> "") {
 
-        @errorSummary(form.errors)
-
-        @heading(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name))
-
-            <p class="govuk-hint">@messages(s"expectedChildcareCosts.info$suffix")</p>
-
         @inputNumber(
-            label = heading(messages("expectedChildcareCosts.label", frequency, name)),
-            labelClass = Some("govuk-visually-hidden"),
+            label = HtmlContent(heading(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name))),
+            hint = Some(messages(s"expectedChildcareCosts.info$suffix")),
             currency = true,
             field = form("value")
         )

@@ -41,32 +41,31 @@ class ExpectedChildcareCostsViewSpec extends NewBigDecimalViewBehaviours {
     view(frontendAppConfig, form, YES, 0, WEEKLY, "Foo", NormalMode)(fakeRequest, messages)
 
   val form = ExpectedChildcareCostsForm(WEEKLY, "Foo")
+  val cardinal = messages("nth.0")
 
   "ExpectedChildcareCosts view" must {
 
     "user has costs" when {
 
-      behave like normalPageWithTitleAsString(
+      behave like normalPageWithTitleParameters(
         createView,
         messageKeyPrefix,
         messageKeyPostfix = "",
-        messages(s"$messageKeyPrefix.title"),
-        Some(messages(s"$messageKeyPrefix.heading", WEEKLY, "Foo")),
         Seq("info"),
-        args = {WEEKLY},{"Foo"}
+        args = Seq(WEEKLY.toString, "Foo"),
+        titleArgs = Seq(WEEKLY.toString, cardinal)
       )
     }
 
     "user may have costs in the future" when {
 
-      behave like normalPageWithTitleAsString(
+      behave like normalPageWithTitleParameters(
         createViewNotYet,
         messageKeyPrefix,
         messageKeyPostfix,
-        messages(s"$messageKeyPrefix.title"),
-        Some(messages(s"$messageKeyPrefix.heading$messageKeyPostfix", WEEKLY, "Foo")),
         Seq(s"info$messageKeyPostfix"),
-        args = {WEEKLY}, {"Foo"}
+        args = Seq(WEEKLY.toString, "Foo"),
+        titleArgs = Seq(WEEKLY.toString, cardinal)
       )
     }
 
@@ -76,7 +75,7 @@ class ExpectedChildcareCostsViewSpec extends NewBigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.ExpectedChildcareCostsController.onSubmit(NormalMode, 0).url,
-      Some(messages(s"$messageKeyPrefix.label", WEEKLY, "Foo"))
+      Some(messages(s"$messageKeyPrefix.heading", WEEKLY, "Foo"))
     )
   }
 }

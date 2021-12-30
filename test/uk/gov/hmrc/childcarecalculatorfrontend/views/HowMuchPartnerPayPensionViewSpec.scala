@@ -43,7 +43,7 @@ class HowMuchPartnerPayPensionViewSpec extends NewBigDecimalViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.HowMuchPartnerPayPensionController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.info"))
+      Some(messages(s"$messageKeyPrefix.heading"))
     )
   }
 }

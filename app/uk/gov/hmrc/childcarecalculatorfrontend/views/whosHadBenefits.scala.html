@@ -18,7 +18,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
         layout: Layout,
@@ -44,22 +43,19 @@
 
 @layout(pageTitle = title) {
 
+    @errorSummary(form.errors)
     @formWithCSRF(action = WhosHadBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
 
-    @errorSummary(form.errors)
-
-    @inputRadio(
-        viewModel = InputViewModel("value", form),
-        legend = heading(messages("whosHadBenefits.heading")),
-        legendClass = Some("govuk-visually-hidden"),
-        inputs = WhosHadBenefitsForm.options map { radioOption =>
-            RadioItem(
-                value = Some(radioOption.value),
-                content = HtmlContent(messages(radioOption.messageKey))
-            )
-        },
-        field = form("value")
-    )
+        @inputRadio(
+            legend = heading(messages("whosHadBenefits.heading")),
+            inputs = WhosHadBenefitsForm.options map { radioOption =>
+                RadioItem(
+                    value = Some(radioOption.value),
+                    content = HtmlContent(messages(radioOption.messageKey))
+                )
+            },
+            field = form("value")
+        )
         @submitButton()
     }
 }

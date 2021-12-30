@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
-@import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.InputViewModel
 
 @this(
     layout: Layout,
@@ -34,18 +33,16 @@
 @(appConfig: FrontendAppConfig, form: Form[Set[DisabilityBenefits.Value]], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages, lang: Lang)
 
 @title = @{
-    if (form.errors.nonEmpty) messages("site.title.error", messages("whichDisabilityBenefits.title")) else messages("whichDisabilityBenefits.title")
+    if (form.errors.nonEmpty) messages("site.title.error", messages("whichDisabilityBenefits.title", messages(s"nth.$index"))) else messages("whichDisabilityBenefits.title", messages(s"nth.$index"))
 }
 
 @layout(
     pageTitle = title,
 ) {
+    @errorSummary(form.errors)
     @formWithCSRF(action = WhichDisabilityBenefitsController.onSubmit(mode, index), 'autoComplete -> "off") {
 
-        @errorSummary(form.errors)
-
         @inputCheckBox(
-            viewModel = InputViewModel("value", form),
             field = form("value"),
             legend = messages("whichDisabilityBenefits.heading", name),
             hint = Some(messages("whichBenefits.select.all")),
