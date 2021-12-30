@@ -83,7 +83,7 @@
 @if(id.isDefined) {
     @detailSummaryComponent(
         summary = detailSummary.get,
-        id = id
+        id = id.map(_ + "-details"),
     ){
         <p class="govuk-body">@detailPara1</p>
         @if(detailPara2.isDefined) {<p class="govuk-body">@detailPara2</p>}
