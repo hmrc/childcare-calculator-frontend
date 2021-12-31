@@ -23,7 +23,6 @@
     layout: Layout,
     formWithCSRF: FormWithCSRF,
     errorSummary: playComponents.error_summary,
-    heading: playComponents.heading,
     submitButton: playComponents.submit_button,
     inputNumber: playComponents.input_number
 )
@@ -42,7 +41,8 @@
     @formWithCSRF(action = HowMuchYouPayPensionController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = HtmlContent(heading(messages("howMuchYouPayPension.heading"))),
+            label = Text(messages("howMuchYouPayPension.heading")),
+            isPageHeading = true,
             currency = true,
             field = form("value")
         )

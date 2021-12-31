@@ -22,7 +22,6 @@
         layout: Layout,
         formWithCSRF: FormWithCSRF,
         errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
         submitButton: playComponents.submit_button,
         inputNumber: playComponents.input_number
 )
@@ -47,7 +46,8 @@
     @formWithCSRF(action = YourStatutoryPayPerWeekController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = HtmlContent(heading(messages("yourStatutoryPayPerWeek.heading", statutoryType))),
+            label = Text(messages("yourStatutoryPayPerWeek.heading", statutoryType)),
+            isPageHeading = true,
             currency = true,
             field = form("value")
         )

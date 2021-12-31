@@ -24,7 +24,6 @@
     layout: Layout,
     formWithCSRF: FormWithCSRF,
     errorSummary: playComponents.error_summary,
-    heading: playComponents.heading,
     submitButton: playComponents.submit_button,
     inputNumber: playComponents.input_number
 )
@@ -42,7 +41,8 @@
     @formWithCSRF(action = PartnerStatutoryWeeksController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = HtmlContent(heading(messages("partnerStatutoryWeeks.heading", viewModel.statutoryTypeMessage))),
+            label = Text(messages("partnerStatutoryWeeks.heading", viewModel.statutoryTypeMessage)),
+            isPageHeading = true,
             hint = Some(messages(s"statutoryWeeks.${viewModel.guidanceKey}.guidance", viewModel.maxWeeks)),
             shortAnswer = true,
             field = form("value")

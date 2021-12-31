@@ -23,7 +23,6 @@
     layout: Layout,
     formWithCSRF: FormWithCSRF,
     errorSummary: playComponents.error_summary,
-    heading: playComponents.heading,
     inputNumber: playComponents.input_number,
     submitButton: playComponents.submit_button
 )
@@ -43,7 +42,8 @@
     @formWithCSRF(action = PartnerOtherIncomeAmountPYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = HtmlContent(heading(messages("partnerOtherIncomeAmountPY.heading"))),
+            label = Text(messages("partnerOtherIncomeAmountPY.heading")),
+            isPageHeading = true,
             currency = true,
             field = form("value")
         )

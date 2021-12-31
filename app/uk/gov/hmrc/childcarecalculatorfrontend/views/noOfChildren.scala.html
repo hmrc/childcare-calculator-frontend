@@ -22,7 +22,6 @@
     formWithCSRF: FormWithCSRF,
     back_link: playComponents.back_link,
     error_summary: playComponents.error_summary,
-    heading: playComponents.heading,
     submit_button: playComponents.submit_button,
     input_number: playComponents.input_number)
 
@@ -40,11 +39,11 @@
 
     @formWithCSRF(action = NoOfChildrenController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
-        @input_number(label = HtmlContent(heading(messages("noOfChildren.heading"))),
+        @input_number(label = Text(messages("noOfChildren.heading")),
+            isPageHeading = true,
             hint = Some(messages("noOfChildren.hint.text")),
             currency = false,
             field = form("value"),
-            labelClass = Some("govuk-label--m"),
             inputMode = Some("numeric"),
             shortAnswer = true
         )

@@ -23,7 +23,6 @@
     formWithCSRF: FormWithCSRF,
     errorSummary: playComponents.error_summary,
     inputNumber: playComponents.input_number,
-    heading: playComponents.heading,
     submitButton: playComponents.submit_button
 )
 @(appConfig: FrontendAppConfig, form: Form[BigDecimal], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -38,7 +37,8 @@
     @formWithCSRF(action = YourOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = HtmlContent(heading(messages("yourOtherIncomeAmountCY.heading"))),
+            label = Text(messages("yourOtherIncomeAmountCY.heading")),
+            isPageHeading = true,
             currency = true,
             field = form("value")
         )
