@@ -15,35 +15,35 @@
  *@
 
 @(
-pageKey: Option[String] = None,
-addCssClass: Option[String] = None,
-bulletList: Seq[String]
+    pageKey: Option[String] = None,
+    addCssClass: Option[String] = None,
+    bulletList: Seq[String]
 )(implicit messages: Messages)
 
 @cssClass = @{
-if(addCssClass.isDefined) s"form-group ${addCssClass.get}" else "form-group"
+    if(addCssClass.isDefined) s"form-group ${addCssClass.get}" else "form-group"
 }
 
 @text(bullet: String) = @{
-if(pageKey.isDefined) messages(s"${pageKey.get}.$bullet") else bullet
+    if(pageKey.isDefined) messages(s"${pageKey.get}.$bullet") else bullet
 }
 
 @list = {
     <ul class="govuk-list govuk-list--bullet">
         @for(bullet <- bulletList) {
-        <li id="bullet-@bullet">@text(bullet)</li>
+            <li>@text(bullet)</li>
         }
     </ul>
 }
 
 @single = {
-<p id="bullet-@{bulletList.head}">@text(bulletList.head)</p>
+    <p>@text(bulletList.head)</p>
 }
 
 <div class="@cssClass" id="component-bullet-list">
     @if(bulletList.size == 1) {
-    @single
+        @single
     } else {
-    @list
+        @list
     }
 </div>

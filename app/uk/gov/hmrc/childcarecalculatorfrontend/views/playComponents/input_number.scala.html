@@ -31,7 +31,7 @@ field: Field
 @govukInput(Input(
         label = Label(
                 isPageHeading = isPageHeading,
-                classes = s"""govuk-fieldset__legend--xl ${labelClass.getOrElse("")}""",
+                classes = s"""${if(isPageHeading) "govuk-label--xl" else ""} ${labelClass.getOrElse("")}""",
                 content = label
         ),
         hint = hint.map(hintString => Hint(content = Text(hintString))),

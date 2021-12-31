@@ -26,7 +26,6 @@
     formWithCSRF: FormWithCSRF,
     errorSummary: playComponents.error_summary,
     inputNumber: playComponents.input_number,
-    heading: playComponents.heading,
     submitButton: playComponents.submit_button
 )
 @(
@@ -63,7 +62,8 @@
     @formWithCSRF(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), 'autoComplete -> "off", 'novalidate -> "") {
 
         @inputNumber(
-            label = HtmlContent(heading(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name))),
+            label = Text(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name)),
+            isPageHeading = true,
             hint = Some(messages(s"expectedChildcareCosts.info$suffix")),
             currency = true,
             field = form("value")
