@@ -1,5 +1,5 @@
 @*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@
 @layout(
     pageTitle = title
 ) {
-    @errorSummary(form.errors)
+    @errorSummary(form.errors, key => s"$key.day")
     @heading(headingText)
 
     @if(index == 0) {
