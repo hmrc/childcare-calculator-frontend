@@ -14,7 +14,8 @@ object AppDependencies {
     "uk.gov.hmrc"        %% "play-conditional-form-mapping"      % "1.9.0-play-28",
     "uk.gov.hmrc"        %% "play-language"                      % "5.1.0-play-28",
     "uk.gov.hmrc"        %% "tax-year"                           % "1.1.0",
-    "com.typesafe.play"  %% "play-json-joda"                     % "2.9.2"
+    "com.typesafe.play"  %% "play-json-joda"                     % "2.9.2",
+    "org.reactivemongo"  %% "reactivemongo-play-json"            % "0.20.13-play28"
   )
 
   trait TestDependencies {
