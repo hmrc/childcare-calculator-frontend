@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+@import playComponents.section_break
 
 @this(
     layout: Layout,
@@ -55,7 +56,7 @@
         }
         @resultsEstimateInformationContent
 
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        @section_break()
 
         @if(model.noOfEligibleSchemes(hideTC) > 0) {
 
@@ -66,6 +67,7 @@
                 <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
                 @heading(heading = messages("result.not.eligible.subheading"), headingSize = "heading-l")
                 @resultNotEligible(model, hideTC)
+                @section_break()
             }
 
 
@@ -148,7 +150,7 @@
                         <p class="govuk-body">@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
                     }
                 }
-                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+                @section_break()
             }
 
             @if(links.nonEmpty){
@@ -162,12 +164,13 @@
                         </ul>
                     <p class="govuk-body">@summary.getOrElse("")</p>
                 </div>
-                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+                @section_break()
             }
         } else {
             <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
             @heading(heading=messages("result.not.eligible.subheading"), headingSize="heading-l")
             @resultNotEligible(model, hideTC)
+            @section_break()
         }
         <div>
             <p class="govuk-body"> <a class="govuk-link" rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
