@@ -102,10 +102,8 @@ whatToTellTheCalculator.li.benefits = any disability benefits they get
 whatToTellTheCalculator.time = It should take around 5 minutes to complete.
 whatToTellTheCalculator.indent = You can change your answers as many times as you like to recalculate and compare your results.
 whatToTellTheCalculator.tcUc = Tax credits and Universal Credit
-whatToTellTheCalculator.p1.a = If you already get tax credits or are eligible to make a
-whatToTellTheCalculator.p1.link = new claim for tax credits
-whatToTellTheCalculator.p1.b = you can use the calculator to find out how much you could claim for childcare.
-whatToTellTheCalculator.p2.a = If you are not eligible to continue claiming tax credits or make a new claim, you may need to check separately if you are eligible to
+whatToTellTheCalculator.p1.a = If you already get tax credits, you can use the calculator to find out how much you could claim for childcare.
+whatToTellTheCalculator.p2.a = If you are not eligible to continue claiming tax credits, you may need to check separately if you are eligible to
 whatToTellTheCalculator.p2.link = get help with childcare costs using Universal Credit
 
 
@@ -1277,13 +1275,16 @@ result.tc.detailPara2.tax.credit.replace.uc.link = https://www.gov.uk/help-with-
 result.tc.detailPara3 = It is for children under 16, under 18 if disabled, or under 19 if in approved education or training.
 
 result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help you need to work 16 hours or more a week if you are single. If you have a partner you need to work at least 24 hours between you (with 1 of you working at least 16 hours a week), but only one of you needs to work 16 hours if the other gets Carer’s Allowance. Your children must be under 16 and you cannot be getting Universal Credit. The amount of tax credits reduces depending on how much you earn and how many children you have.
-result.uc.not.eligible.para = You cannot get help from Tax Credits as you have told us that you were already getting Universal Credit
+result.uc.not.eligible.para = You cannot get help from Tax Credits as you have told us that you were already getting Universal Credit.
 result.tc.not.eligible.single.user.hours.less.than.16 = You cannot get childcare support from tax credits because you need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get childcare support from tax credits as both you and your partner would need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits = You cannot get childcare support from tax credits. Although your partner gets a benefit that would make them eligible, you need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits =  You cannot get childcare support from tax credits. Although you get a benefit that would make you eligible, your partner needs to work 16 hours or more a week.
 result.tc.not.eligible.user.no.child.below.16 = You cannot get childcare support from tax credits because you do not have a child under 16 (or under 17 if disabled).
-result.tc.scheme.guidance.link = You may be eligible for help through other elements of tax credits.
+result.tc.scheme.guidance.link = get help with childcare costs using Universal Credit
+
+result.tc.not.eligible.title = Childcare support from tax credits
+result.tc.not.eligible.tc.para1 = You may need to check separately if you are eligible to
 
 result.tfc.title = Tax-Free Childcare
 result.tfc.period = a year towards your childcare costs.

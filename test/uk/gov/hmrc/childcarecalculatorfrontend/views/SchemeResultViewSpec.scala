@@ -20,7 +20,7 @@ import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents.scheme_result
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.ucSchemeGuidanceLinkUrl
 
 class SchemeResultViewSpec extends NewViewBehaviours {
 
@@ -55,7 +55,7 @@ class SchemeResultViewSpec extends NewViewBehaviours {
       )(messages, lang))
 
       assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
-      view.getElementById("tcGuidanceLink").attr("href") mustBe tcSchemeGuidanceLinkUrl
+      view.getElementById("tcGuidanceLink").attr("href") mustBe ucSchemeGuidanceLinkUrl
       view.getElementById("tcGuidanceLink").text mustBe messages("result.tc.scheme.guidance.link") +
         messages("feedback.hint.link.opens.new.tab")
     }

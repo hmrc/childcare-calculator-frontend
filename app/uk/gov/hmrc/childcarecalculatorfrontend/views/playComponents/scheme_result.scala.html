@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.tcSchemeGuidanceLinkUrl
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.ucSchemeGuidanceLinkUrl
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
@@ -41,10 +41,10 @@
         detailPara3: Option[String] = None,
         detailPara3WithLink: Option[Html] = None,
         detailPara4: Option[String] = None,
-        notEligibleID1: Option[String] = None,
-        notEligibleID2: Option[String] = None,
+        notEligibleID: Tuple2[Option[String], Option[String]] = (None, None),
         warningMessage: Option[String] = None,
-        displayTCGuidanceLink: Boolean = false
+        displayTCGuidanceLink: Boolean = false,
+        sectionBreak: Boolean = true
 )(implicit messages: Messages, lang: Lang)
 
 @heading(heading=title, headingSize = "heading-m", id = id)
@@ -57,21 +57,26 @@
 }
 
 @if(couldGet.isDefined){
-<p class="govuk-inset-text">@couldGet <strong class="govuk-bold" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</strong>
-    @periodText</p>
+    <p class="govuk-inset-text">@couldGet <strong class="govuk-bold" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</strong>
+        @periodText</p>
 }
 
 @if(para1.isDefined) {
-<p class="govuk-body" @if(notEligibleID1.isDefined) {id="@notEligibleID1"}>@para1 @if(displayTCGuidanceLink){<a class="govuk-link" rel="external" target="_blank"
-                                                                                             id="tcGuidanceLink" data-journey-click="link - click:@messages("result.not.eligible.title.ga") @title:@messages("result.tc.scheme.guidance.link")" href="@tcSchemeGuidanceLinkUrl">
-    @messages("result.tc.scheme.guidance.link")<span class="govuk-visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span>
-    </a>
-    }
-</p>
+    <p class="govuk-body" @if(notEligibleID._1.isDefined) {id="@notEligibleID._1"}>@para1</p>
+}
+
+@if(displayTCGuidanceLink){
+    <p class="govuk-body" id="tcGuidance">
+        @messages("result.tc.not.eligible.tc.para1")
+        <a class="govuk-link" rel="external" target="_blank" id="tcGuidanceLink"
+           data-journey-click="link - click:@messages("result.not.eligible.title.ga") @title:@messages("result.tc.scheme.guidance.link")"
+        href="@ucSchemeGuidanceLinkUrl">
+        @messages("result.tc.scheme.guidance.link")<span class="govuk-visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span></a>.
+    </p>
 }
 
 @if(para2.isDefined) {
-<p class="govuk-body" @if(notEligibleID2.isDefined) { id="@notEligibleID2" }>@para2</p>
+<p class="govuk-body" @if(notEligibleID._2.isDefined) { id="@notEligibleID._2" }>@para2</p>
 }
 
 @if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
@@ -95,5 +100,6 @@
         @if(detailPara4.isDefined) {<p class="govuk-body">@detailPara4</p>}
     }
 }
-
-<hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+@if(sectionBreak){
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+}

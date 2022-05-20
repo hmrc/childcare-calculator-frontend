@@ -17,6 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.ucSchemeGuidanceLinkUrl
 
 @this(
     layout: Layout,
@@ -47,8 +48,8 @@
     </ul>
 
     <h2 class="govuk-heading-m">@messages("whatToTellTheCalculator.tcUc")</h2>
-    <p class="govuk-body">@messages("whatToTellTheCalculator.p1.a") <a href="https://www.gov.uk/working-tax-credit">@messages("whatToTellTheCalculator.p1.link")</a> @messages("whatToTellTheCalculator.p1.b")</p>
-    <p class="govuk-body">@messages("whatToTellTheCalculator.p2.a") <a href="https://www.gov.uk/help-with-childcare-costs/universal-credit"> @messages("whatToTellTheCalculator.p2.link")</a>.</p>
+    <p class="govuk-body">@messages("whatToTellTheCalculator.p1.a")</p>
+    <p class="govuk-body">@messages("whatToTellTheCalculator.p2.a") <a href="@ucSchemeGuidanceLinkUrl"> @messages("whatToTellTheCalculator.p2.link")</a>.</p>
 
     @buttonLink(
         messageKey = "site.save_and_continue",

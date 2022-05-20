@@ -254,7 +254,6 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         assertNotContainsText(view, messages("result.tc.detail.summary"))
         assertNotContainsText(view, messages("result.tc.detailPara1"))
         assertNotContainsText(view, messages("result.tc.detailPara2.tax.credit.replace.uc"))
-        assertNotContainsText(view, messages("result.tc.detailPara2.tax.credit.replace.uc.link.text"))
         assertNotContainsText(view, messages("result.tc.detailPara3"))
 
       }

@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
@@ -54,56 +55,69 @@ schemeResult: playComponents.scheme_result,
         @schemeResult(
             title = messages("result.free.hours.title"),
             para1 = Some(messages("result.free.hours.not.eligible")),
-            notEligibleID1 = Some("notEligibleFreeHours"))
+            notEligibleID = (Some("notEligibleFreeHours"), None),
+            sectionBreak = false
+        )
     }
 
 
 
     @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
 
-    @if(!hideTC) {
-        @if(model.taxCreditsOrUC.contains(universalCredits)) {
-            @schemeResult(
-                title = messages("result.tc.title"),
-                para1 = Some(messages("result.uc.not.eligible.para")),
-                notEligibleID1 = Some("notEligibleTC1")
-            )
-        } else {
-
-            @if(model.tc.isEmpty) {
-                @schemeResult(
-                    title = messages("result.tc.title"),
-                    para1 = Some(model.tcSchemeInEligibilityMsg),
-                    notEligibleID1 = Some("notEligibleTC1"),
-                    notEligibleID2 = Some("notEligibleTC2"),
-                    displayTCGuidanceLink = true
-                )
+        @if(!hideTC) @{
+            model.taxCreditsOrUC match {
+                case Some(ChildcareConstants.taxCredits) =>
+                    schemeResult(
+                        title = messages("result.tc.not.eligible.title"),
+                        para1 = Some(model.tcSchemeInEligibilityMsg),
+                        notEligibleID = (Some("notEligibleTC1"), None),
+                        displayTCGuidanceLink = true,
+                        sectionBreak = false
+                    )
+                case Some(ChildcareConstants.universalCredits) =>
+                    schemeResult(
+                        title = messages("result.tc.title"),
+                        para1 = Some(messages("result.uc.not.eligible.para")),
+                        notEligibleID = (Some("notEligibleTC1"), None),
+                        sectionBreak = false
+                    )
+                case _ =>
+                    if(model.tc.isEmpty) {
+                        schemeResult(
+                            title = messages("result.tc.title"),
+                            displayTCGuidanceLink = true,
+                            sectionBreak = false
+                        )
+                    }
             }
         }
-    }
 
         @if(model.tfc.isEmpty) {
             @schemeResult(
                 title = messages("result.tfc.title"),
                 para1 = Some(messages("result.tfc.not.eligible")),
                 para3 = Some(messages("result.tfc.not.eligible2")),
-                notEligibleID1 = Some("notEligibleTFC"))
+                notEligibleID = (Some("notEligibleTFC"), None),
+                sectionBreak = false
+            )
         }
 
         @if(model.esc.isEmpty) {
             @schemeResult(
                 title = messages("result.esc.title"),
                 para1 = Some(messages("result.esc.not.eligible.para1")),
-                notEligibleID1 = Some("notEligibleESC1"),
-                notEligibleID2 = Some("notEligibleESC2"))
+                notEligibleID = (Some("notEligibleESC1"), Some("notEligibleESC2")),
+                sectionBreak = false
+            )
         }
 
 
     }else{
         @schemeResult(
             title = messages("freeHoursResult.info.OtherSchemes"),
-            para1 = Some(otherChildcareSchemesContent.toString))
-
+            para1 = Some(otherChildcareSchemesContent.toString),
+            sectionBreak = false
+        )
 }
 
     @if(model.showTwoYearOldInfo(hideTC)) {
@@ -116,7 +130,6 @@ schemeResult: playComponents.scheme_result,
                 @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
             </p>
         </div>
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
     }
 
     @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider || !model.isAnyoneInPaidEmployment) {
@@ -147,5 +160,4 @@ schemeResult: playComponents.scheme_result,
             }
         }
         </p>
-        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
     }
