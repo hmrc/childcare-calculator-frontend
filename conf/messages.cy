@@ -73,6 +73,7 @@ site.textarea.char_limit=(Y terfyn yw {0} o gymeriadau)
 site.in.pounds=mewn punnoedd
 site.colon=:
 site.opens.new.tab=(yn agor tab newydd)
+site.title.error = Gwall: {0}
 unauthorised.title=Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 unauthorised.heading=Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 checkYourAnswers.title=Gwiriwch Eich Atebion
