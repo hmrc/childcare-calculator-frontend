@@ -111,7 +111,11 @@
                         @playComponents.list(
                             bulletList = Seq (
                                 messages("result.schemes.free.hours.eligibility.guidance.bullet"),
-                                messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")
+                                if(model.livesWithPartner) {
+                                    messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")
+                                } else {
+                                    messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")
+                                }
                             )
                         )
                     }
