@@ -17,8 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
-
 import play.api.i18n.Messages
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, MaxFreeHours}
@@ -53,12 +53,25 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
 
     val paidEmployment = checkIfInEmployment(answers)
 
+    def getEarnings(moreThanMinimum: Option[Boolean], moreThanMaximum: Option[Boolean]): Option[EarningsEnum] =
+      (moreThanMinimum, moreThanMaximum) match {
+        case (Some(true), Some(true)) => Some(EarningsEnum.GreaterThanMaximum)
+        case (Some(true), _)          => Some(EarningsEnum.BetweenMinimumAndMaximum)
+        case (Some(false), _)         => Some(EarningsEnum.LessThanMinimum)
+        case _                        => None
+      }
+
+    val yourEarnings = getEarnings(answers.yourMinimumEarnings, answers.yourMaximumEarnings)
+    val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
+
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
       location = location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
       tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),hasChildcareCosts = childcareCost,
       hasCostsWithApprovedProvider = approvedProvider,
       isAnyoneInPaidEmployment = paidEmployment,
-      livesWithPartner = livingWithPartner)
+      livesWithPartner = livingWithPartner,
+      yourEarnings = yourEarnings,
+      partnerEarnings = partnerEarnings)
 
     val schemeResults: Future[SchemeResults] = eligibilityService.eligibility(answers)
 

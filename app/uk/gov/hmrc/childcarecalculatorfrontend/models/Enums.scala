@@ -253,3 +253,16 @@ object TaxOrUniversalCreditsEnum extends Enumeration {
 
   implicit def enumFormats: Format[TaxOrUniversalCreditsEnum] = EnumUtils.enumFormat(TaxOrUniversalCreditsEnum)
 }
+
+object EarningsEnum extends Enumeration {
+  type EarningsEnum = Value
+
+  val LessThanMinimum = Value("lessThanMinimum")
+  val BetweenMinimumAndMaximum = Value("betweenMinimumAndMaximum")
+  val GreaterThanMaximum = Value("greaterThanMaximum")
+
+  val enumReads: Reads[EarningsEnum]   = EnumUtils.enumReads(EarningsEnum)
+  val enumWrites: Writes[EarningsEnum] = EnumUtils.enumWrites
+
+  implicit def enumFormats: Format[EarningsEnum] = EnumUtils.enumFormat(EarningsEnum)
+}

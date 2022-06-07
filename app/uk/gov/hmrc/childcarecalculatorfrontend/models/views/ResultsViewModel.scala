@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import play.api.libs.json._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum.EarningsEnum
 
 case class ResultsViewModel(firstParagraph : String = "",
                             tc: Option[BigDecimal] = None,
@@ -34,7 +35,9 @@ case class ResultsViewModel(firstParagraph : String = "",
                             hasChildcareCosts: Boolean,
                             hasCostsWithApprovedProvider: Boolean,
                             isAnyoneInPaidEmployment: Boolean,
-                            livesWithPartner: Boolean) {
+                            livesWithPartner: Boolean,
+                            yourEarnings: Option[EarningsEnum] = None,
+                            partnerEarnings: Option[EarningsEnum] = None) {
 
   def noOfEligibleSchemes(hideTC: Boolean): Int = {
     val listOfSchemes = if (hideTC) List(tfc, esc, freeHours) else List(tc, tfc, esc, freeHours)

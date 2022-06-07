@@ -45,7 +45,7 @@
                 title = messages("result.free.hours.title"),
                 id = Some("freeHours"),
                 couldGet = Some(messages("result.you.could.get.up.to")),
-                eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) hours.toString else messages("result.free.hours.twelve.and.half")) + " " + messages("result.free.hours.hours"),"freeHoursEligibility")),
+                eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) s"${hours.toString} ${messages("result.free.hours.hours")}" else messages("result.free.hours.twelve.and.half")),"freeHoursEligibility")),
                 periodText = if(model.location == Location.ENGLAND) {
                     Some(messages(s"result.free.hours.period.${model.location}", noOfHoursInAYear))
                 } else {
