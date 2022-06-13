@@ -85,7 +85,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
         }
 
         s"return a Bad Request and errors when invalid data is submitted, for id: $id" in {
-          val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+          val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
           val boundForm = ChildcarePayFrequencyForm(name).bind(Map("value" -> "invalid value"))
           val result = controller(getRequiredData).onSubmit(NormalMode, id)(postRequest)
           status(result) mustBe BAD_REQUEST
@@ -94,14 +94,14 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value)).withMethod("POST")
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual onwardRoute.url
     }
 
     "redirect to Session Expired if we can't find the name on submission" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value)).withMethod("POST")
       val result = controller(getRequiredData).onSubmit(NormalMode, 4)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -114,7 +114,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)

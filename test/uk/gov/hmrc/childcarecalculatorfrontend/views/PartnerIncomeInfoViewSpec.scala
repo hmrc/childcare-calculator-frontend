@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 class PartnerIncomeInfoViewSpec extends NewViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
-  val view = app.injector.instanceOf[partnerIncomeInfo]
+  val view = application.injector.instanceOf[partnerIncomeInfo]
 
   def createView = () => view(frontendAppConfig, Call("GET", "test"), taxYearInfo)(fakeRequest, messages)
   def createViewWithNextPageLink = (nextPage: Call) => view(frontendAppConfig, nextPage, taxYearInfo)(fakeRequest, messages)

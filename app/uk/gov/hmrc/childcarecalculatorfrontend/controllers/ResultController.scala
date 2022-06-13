@@ -49,7 +49,6 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      implicit val lang: Lang = request.lang
       request.userAnswers.location match {
         case Some(location) => renderResultsPage(hideTC = request.userAnswers.notEligibleForTaxCredits, location)
         case None           => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
@@ -57,7 +56,6 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
   }
 
   def onPageLoadHideTC: Action[AnyContent] = (getData andThen requireData).async { implicit request =>
-    implicit val lang: Lang = request.lang
     request.userAnswers.location match {
       case Some(location) => renderResultsPage(hideTC = true, location)
       case None => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))

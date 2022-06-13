@@ -62,7 +62,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", WhichBenefitsYouGetForm.options.toSeq.head._2))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", WhichBenefitsYouGetForm.options.toSeq.head._2)).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -71,7 +71,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value")).withMethod("POST")
       val boundForm = WhichBenefitsYouGetForm().bind(Map("value[0]" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -88,7 +88,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsYouGetForm.options.toSeq.head._1))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsYouGetForm.options.toSeq.head._1)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

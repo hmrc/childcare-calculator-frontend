@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.cache.client.CacheMap
 
 class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
 
-  val view = app.injector.instanceOf[maxFreeHoursInfo]
+  val view = application.injector.instanceOf[maxFreeHoursInfo]
   val messageKeyPrefix = "maxFreeHoursInfo"
 
   def answers(value: Option[Boolean] = None): UserAnswers =

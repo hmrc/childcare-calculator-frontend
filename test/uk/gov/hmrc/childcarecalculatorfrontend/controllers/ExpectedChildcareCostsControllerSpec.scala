@@ -98,7 +98,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
         }
 
         s"return a Bad Request and errors when invalid data is submitted, for id: $id" in {
-          val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+          val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
           val boundForm = ExpectedChildcareCostsForm(frequency, name).bind(Map("value" -> "invalid value"))
           val result = controller(getRequiredData(hasCosts)).onSubmit(NormalMode, id)(postRequest)
           status(result) mustBe BAD_REQUEST
@@ -107,7 +107,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -120,7 +120,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -147,7 +147,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
         ),
         ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
       )
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -180,7 +180,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
         ),
         ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
       )
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -213,7 +213,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
           "1" -> JsString(MONTHLY.toString)
         )
       )
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)

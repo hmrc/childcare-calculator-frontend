@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGotStatutoryPay
 
 class WhoGotStatutoryPayViewSpec extends NewViewBehaviours {
 
-  val view = app.injector.instanceOf[whoGotStatutoryPay]
+  val view = application.injector.instanceOf[whoGotStatutoryPay]
   val messageKeyPrefix = "whoGotStatutoryPay"
 
   def createView = () => view(frontendAppConfig, WhoGotStatutoryPayForm(), NormalMode)(fakeRequest, messages)

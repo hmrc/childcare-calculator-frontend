@@ -61,7 +61,7 @@ class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "10"), ("partnerOtherIncome", "10"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "10"), ("partnerOtherIncome", "10")).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -70,7 +70,7 @@ class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -87,7 +87,7 @@ class OtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "1"), ("partnerOtherIncome", "2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentOtherIncome", "1"), ("partnerOtherIncome", "2")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

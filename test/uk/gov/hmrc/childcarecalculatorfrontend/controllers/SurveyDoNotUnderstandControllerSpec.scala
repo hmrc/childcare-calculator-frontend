@@ -64,7 +64,7 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString)).withMethod("POST")
 
       val result = controller().onSubmit()(postRequest)
 
@@ -80,7 +80,7 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER

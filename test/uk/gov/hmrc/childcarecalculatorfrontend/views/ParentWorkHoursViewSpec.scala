@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentWorkHours
 class ParentWorkHoursViewSpec extends NewBigDecimalViewBehaviours {
 
   val messageKeyPrefix = "parentWorkHours"
-  val view = app.injector.instanceOf[parentWorkHours]
+  val view = application.injector.instanceOf[parentWorkHours]
 
   def createView = () => view(new ParentWorkHoursForm(frontendAppConfig).apply(), NormalMode)(fakeRequest, messages)
 

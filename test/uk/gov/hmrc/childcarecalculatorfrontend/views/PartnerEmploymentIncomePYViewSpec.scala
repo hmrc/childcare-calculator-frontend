@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncom
 
 class PartnerEmploymentIncomePYViewSpec extends NewBigDecimalViewBehaviours {
   val form = new PartnerEmploymentIncomePYForm(frontendAppConfig).apply()
-  val view = app.injector.instanceOf[partnerEmploymentIncomePY]
+  val view = application.injector.instanceOf[partnerEmploymentIncomePY]
 
   val taxYearInfo = new TaxYearInfo
 

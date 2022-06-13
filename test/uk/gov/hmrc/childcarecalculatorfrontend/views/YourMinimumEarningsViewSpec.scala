@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
 
 class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
 
-  val view = app.injector.instanceOf[yourMinimumEarnings]
+  val view = application.injector.instanceOf[yourMinimumEarnings]
   val messageKeyPrefix = "yourMinimumEarnings"
   override val form: Form[Boolean] = BooleanForm()
 

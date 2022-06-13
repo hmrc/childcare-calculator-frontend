@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents.error_s
 
 class ErrorSummaryViewSpec extends NewViewSpecBase {
 
-  lazy val errorSummaryView = app.injector.instanceOf[error_summary]
+  lazy val errorSummaryView = application.injector.instanceOf[error_summary]
 
   "ErrorSummary view" when {
     "contains errors" must {

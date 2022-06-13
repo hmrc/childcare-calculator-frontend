@@ -28,7 +28,7 @@ class PartnerPaidWorkPYViewSpec extends NewYesNoViewBehaviours {
 
   override val form = BooleanForm()
   val taxYearInfo = new TaxYearInfo
-  val view = app.injector.instanceOf[partnerPaidWorkPY]
+  val view = application.injector.instanceOf[partnerPaidWorkPY]
 
   val messageKeyPrefix = "partnerPaidWorkPY"
 

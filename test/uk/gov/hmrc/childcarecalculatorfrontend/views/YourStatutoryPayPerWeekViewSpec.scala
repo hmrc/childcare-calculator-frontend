@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWee
 
 class YourStatutoryPayPerWeekViewSpec extends NewBigDecimalViewBehaviours {
 
-  val view = app.injector.instanceOf[yourStatutoryPayPerWeek]
+  val view = application.injector.instanceOf[yourStatutoryPayPerWeek]
   val messageKeyPrefix = "yourStatutoryPayPerWeek"
 
   val statutoryType = "maternity"

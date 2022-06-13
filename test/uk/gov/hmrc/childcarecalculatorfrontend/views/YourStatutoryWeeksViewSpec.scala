@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
 class YourStatutoryWeeksViewSpec extends NewIntViewBehaviours {
 
-  val view = app.injector.instanceOf[yourStatutoryWeeks]
+  val view = application.injector.instanceOf[yourStatutoryWeeks]
   val messageKeyPrefix = "yourStatutoryWeeks"
 
   val statutoryType = MATERNITY

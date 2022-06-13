@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayType
 
 class YourStatutoryPayTypeViewSpec extends NewViewBehaviours {
 
-  val view = app.injector.instanceOf[yourStatutoryPayType]
+  val view = application.injector.instanceOf[yourStatutoryPayType]
   val messageKeyPrefix = "yourStatutoryPayType"
 
   val statutoryType = StatutoryPayTypeEnum.MATERNITY

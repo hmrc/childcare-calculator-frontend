@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMaximumEarnings
 
 class YourMaximumEarningsViewSpec extends NewYesNoViewBehaviours {
 
-  val view = app.injector.instanceOf[yourMaximumEarnings]
+  val view = application.injector.instanceOf[yourMaximumEarnings]
   val messageKeyPrefix = "yourMaximumEarnings"
   override val form: Form[Boolean] = BooleanForm()
 

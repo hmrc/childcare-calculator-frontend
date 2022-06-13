@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{resultEligible, resul
 
 class ResultEligibleViewSpec extends NewViewBehaviours {
 
-  lazy val appResultEligible = app.injector.instanceOf[resultEligible]
+  lazy val appResultEligible = application.injector.instanceOf[resultEligible]
 
   val utils = new Utils
 

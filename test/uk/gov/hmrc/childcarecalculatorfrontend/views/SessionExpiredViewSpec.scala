@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.session_expired
 
 class SessionExpiredViewSpec extends NewViewBehaviours {
 
-  val view = app.injector.instanceOf[session_expired]
+  val view = application.injector.instanceOf[session_expired]
 
   def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig)(fakeRequest, messages)
 

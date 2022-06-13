@@ -26,7 +26,7 @@ class PartnerStatutoryPayTypeViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryPayType"
 
-  val view = app.injector.instanceOf[partnerStatutoryPayType]
+  val view = application.injector.instanceOf[partnerStatutoryPayType]
 
   def createView = () => view(frontendAppConfig, PartnerStatutoryPayTypeForm(), NormalMode)(fakeRequest, messages)
 

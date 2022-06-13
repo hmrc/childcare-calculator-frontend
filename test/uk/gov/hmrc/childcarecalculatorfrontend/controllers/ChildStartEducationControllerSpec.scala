@@ -85,7 +85,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
         "date.day"   -> startEducationDate.dayOfMonth().get().toString,
         "date.month" -> startEducationDate.monthOfYear().get().toString,
         "date.year"  -> startEducationDate.year().get().toString
-      )
+      ).withMethod("POST")
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -93,7 +93,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody()
+      val postRequest = fakeRequest.withFormUrlEncodedBody().withMethod("POST")
       val boundForm = ChildStartEducationForm(validBirthday).bind(Map.empty[String, String])
 
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
@@ -114,7 +114,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
         "date.day"   -> "1",
         "date.month" -> "2",
         "date.year"  -> "2017"
-      )
+      ).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustBe SEE_OTHER

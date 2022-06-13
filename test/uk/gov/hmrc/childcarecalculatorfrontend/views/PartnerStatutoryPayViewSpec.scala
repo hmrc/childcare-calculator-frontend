@@ -29,7 +29,7 @@ class PartnerStatutoryPayViewSpec extends NewYesNoViewBehaviours {
   override val form = BooleanForm()
   val taxYearInfo = new TaxYearInfo
 
-  val view = app.injector.instanceOf[partnerStatutoryPay]
+  val view = application.injector.instanceOf[partnerStatutoryPay]
 
   val messageKeyPrefix = "partnerStatutoryPay"
 

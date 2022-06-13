@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youBenefitsIncomeCY
 
 class YouBenefitsIncomeCYViewSpec extends NewBigDecimalViewBehaviours {
 
-  val view = app.injector.instanceOf[youBenefitsIncomeCY]
+  val view = application.injector.instanceOf[youBenefitsIncomeCY]
   val messageKeyPrefix = "youBenefitsIncomeCY"
 
   def createView = () => view(frontendAppConfig, YouBenefitsIncomeCYForm(), NormalMode)(fakeRequest, messages)

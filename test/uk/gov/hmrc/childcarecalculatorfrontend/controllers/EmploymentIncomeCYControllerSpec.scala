@@ -73,7 +73,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2")).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -82,7 +82,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -99,7 +99,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "value 1"), ("partnerEmploymentIncomeCY", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "value 1"), ("partnerEmploymentIncomeCY", "value 2")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -107,7 +107,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000")).withMethod("POST")
 
       val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(false),
         ParentEmploymentIncomeCYId.toString -> Json.toJson("100000"),
@@ -125,7 +125,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
 
     "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000")).withMethod("POST")
 
       val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
         ParentEmploymentIncomeCYId.toString -> Json.toJson("1000000"),

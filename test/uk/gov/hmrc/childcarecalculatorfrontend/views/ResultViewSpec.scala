@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{result, resultNotElig
 
 class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
 
-  val resultView = app.injector.instanceOf[result]
+  val resultView = application.injector.instanceOf[result]
 
   val locationEngland = Location.ENGLAND
   val locationScotland = Location.SCOTLAND
