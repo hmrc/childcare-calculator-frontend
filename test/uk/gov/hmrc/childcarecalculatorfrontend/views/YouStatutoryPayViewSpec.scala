@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youStatutoryPay
 class YouStatutoryPayViewSpec extends NewYesNoViewBehaviours {
 
   override val form = BooleanForm()
-  val view = app.injector.instanceOf[youStatutoryPay]
+  val view = application.injector.instanceOf[youStatutoryPay]
   val taxYearInfo = new TaxYearInfo
 
   val messageKeyPrefix = "youStatutoryPay"

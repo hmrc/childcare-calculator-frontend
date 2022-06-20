@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
 
 class TaxOrUniversalCreditsViewSpec extends NewViewBehaviours {
 
-  val view = app.injector.instanceOf[taxOrUniversalCredits]
+  val view = application.injector.instanceOf[taxOrUniversalCredits]
 
   val messageKeyPrefix = "taxOrUniversalCredits"
 

@@ -28,7 +28,7 @@ class PartnerStatutoryStartDateViewSpec extends NewDateViewBehaviours[LocalDate]
 
   val messageKeyPrefix = "partnerStatutoryStartDate"
 
-  val view = app.injector.instanceOf[partnerStatutoryStartDate]
+  val view = application.injector.instanceOf[partnerStatutoryStartDate]
 
   val statutoryType = "maternity"
 

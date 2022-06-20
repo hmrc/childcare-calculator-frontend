@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountCY
 
 class OtherIncomeAmountCYViewSpec extends NewQuestionViewBehaviours[OtherIncomeAmountCY] {
 
-  val view = app.injector.instanceOf[otherIncomeAmountCY]
+  val view = application.injector.instanceOf[otherIncomeAmountCY]
   val messageKeyPrefix = "otherIncomeAmountCY"
 
   override val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()

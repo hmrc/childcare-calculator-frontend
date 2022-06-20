@@ -83,7 +83,7 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
         "date.day"   -> "1",
         "date.month" -> "2",
         "date.year"  -> previousTaxYear.toString
-      )
+      ).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -92,7 +92,7 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = PartnerStatutoryStartDateForm(statutoryType).bind(Map("value" -> "invalid value"))
 
       val result = controller(buildFakeRequest(statutoryTypeNameValuePair)).onSubmit(NormalMode)(postRequest)
@@ -109,7 +109,7 @@ class PartnerStatutoryStartDateControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", statutoryType))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", statutoryType)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

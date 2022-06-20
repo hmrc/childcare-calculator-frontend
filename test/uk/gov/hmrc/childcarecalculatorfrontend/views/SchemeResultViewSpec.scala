@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.ucScheme
 
 class SchemeResultViewSpec extends NewViewBehaviours {
 
-  lazy val appSchemeResult = app.injector.instanceOf[scheme_result]
+  lazy val appSchemeResult = application.injector.instanceOf[scheme_result]
 
   "Scheme Result view" must {
 

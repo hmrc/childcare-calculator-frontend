@@ -27,7 +27,7 @@ class PartnerStatutoryPayPerWeekViewSpec extends NewBigDecimalViewBehaviours {
 
   val messageKeyPrefix = "partnerStatutoryPayPerWeek"
 
-  val view = app.injector.instanceOf[partnerStatutoryPayPerWeek]
+  val view = application.injector.instanceOf[partnerStatutoryPayPerWeek]
 
   val statutoryType = "maternity"
 

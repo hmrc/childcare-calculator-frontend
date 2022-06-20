@@ -67,7 +67,7 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted and clone data" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -76,7 +76,7 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
     }
 
     "clear cloned data" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -85,7 +85,7 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = BooleanForm("bothGetSameIncomePreviousYear.error.notCompleted").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -102,7 +102,7 @@ class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

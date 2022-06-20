@@ -28,7 +28,7 @@ class ParentPaidWorkCYViewSpec extends NewYesNoViewBehaviours {
 
   override val form: Form[Boolean] = BooleanForm()
   val taxYearInfo = new TaxYearInfo
-  val view = app.injector.instanceOf[parentPaidWorkCY]
+  val view = application.injector.instanceOf[parentPaidWorkCY]
 
   val messageKeyPrefix = "parentPaidWorkCY"
 

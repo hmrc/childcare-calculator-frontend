@@ -76,7 +76,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "0")
+      val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "0").withMethod("POST")
       val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -84,7 +84,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "invalid value")
+      val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "invalid value").withMethod("POST")
       val boundForm = WhichChildrenDisabilityForm().bind(Map("value[0]" -> "invalid value"))
 
       val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
@@ -101,7 +101,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -116,7 +116,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "redirect to Session Expired for a POST if no required data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0")).withMethod("POST")
       val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

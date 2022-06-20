@@ -75,7 +75,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
         "dob.day"   -> date.getDayOfMonth.toString,
         "dob.month" -> date.getMonthOfYear.toString,
         "dob.year"  -> date.getYear.toString
-      )
+      ).withMethod("POST")
 
       val result = controller(getRelevantData).onSubmit(NormalMode, 0)(postRequest)
 
@@ -84,7 +84,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = AboutYourChildForm().bind(Map("value" -> "invalid value"))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
@@ -108,7 +108,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
         "dob.day"   -> date.getDayOfMonth.toString,
         "dob.month" -> date.getMonthOfYear.toString,
         "dob.year"  -> date.getYear.toString
-      )
+      ).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -130,7 +130,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
         "dob.day"   -> date.getDayOfMonth.toString,
         "dob.month" -> date.getMonthOfYear.toString,
         "dob.year"  -> date.getYear.toString
-      )
+      ).withMethod("POST")
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map.empty)))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)
 

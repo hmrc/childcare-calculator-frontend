@@ -58,7 +58,7 @@ class Edit$className$ControllerSpec extends ControllerSpecBase {
     "redirect to the next page when valid data is submitted" in {
       val validData = Map($pluralName$Id.toString -> Json.toJson(Seq($className$("value 1", "value 2"))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("field1", "value 1"), ("field2", "value 2")).withMethod("POST")
       val validIndex = 0
 
       val result = controller(getRelevantData).onSubmit(validIndex, NormalMode)(postRequest)

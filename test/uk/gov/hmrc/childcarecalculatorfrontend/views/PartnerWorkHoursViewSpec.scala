@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
 
 class PartnerWorkHoursViewSpec extends NewBigDecimalViewBehaviours {
 
-  val view = app.injector.instanceOf[partnerWorkHours]
+  val view = application.injector.instanceOf[partnerWorkHours]
 
   val messageKeyPrefix = "partnerWorkHours"
 

@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaidIntoPensionPY
 
 class WhoPaidIntoPensionPYViewSpec extends NewViewBehaviours {
 
-  val view = app.injector.instanceOf[whoPaidIntoPensionPY]
+  val view = application.injector.instanceOf[whoPaidIntoPensionPY]
   val messageKeyPrefix = "whoPaidIntoPensionPY"
 
   def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig, WhoPaidIntoPensionPYForm(), NormalMode)(fakeRequest, messages)

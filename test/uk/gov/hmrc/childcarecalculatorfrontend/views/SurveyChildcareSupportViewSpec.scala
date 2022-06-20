@@ -28,7 +28,7 @@ class SurveyChildcareSupportViewSpec extends NewYesNoViewBehaviours {
 
   val messageKeyPrefix = "surveyChildcareSupport"
 
-  val view = app.injector.instanceOf[surveyChildcareSupport]
+  val view = application.injector.instanceOf[surveyChildcareSupport]
 
   def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
 

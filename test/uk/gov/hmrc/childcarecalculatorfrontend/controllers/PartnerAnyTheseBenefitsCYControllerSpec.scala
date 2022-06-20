@@ -64,7 +64,7 @@ class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -73,7 +73,7 @@ class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when partner answered they get carers allowance and on current page they select 'No'" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
 
       val carerAllowance = Map(WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("carersAllowance")))
 
@@ -86,7 +86,7 @@ class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = BooleanForm(partnerAnyTheseBenefitsCYErrorKey).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -96,7 +96,7 @@ class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to next page when parent answered they get carers allowance and they select 'Yes'" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
       val carerAllowance = Map(WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("carersAllowance")))
 
@@ -116,7 +116,7 @@ class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER

@@ -31,7 +31,7 @@ class YouGetSameIncomePreviousYearViewSpec extends NewYesNoViewBehaviours with G
 
   override val form = BooleanForm()
 
-  val view = app.injector.instanceOf[youGetSameIncomePreviousYear]
+  val view = application.injector.instanceOf[youGetSameIncomePreviousYear]
   val taxYearInfo = new TaxYearInfo
 
   val messageKeyPrefix = "youGetSameIncomePreviousYear"

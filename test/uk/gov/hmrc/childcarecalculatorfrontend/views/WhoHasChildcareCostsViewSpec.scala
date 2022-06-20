@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 
 class WhoHasChildcareCostsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[Int] {
 
-  val view = app.injector.instanceOf[whoHasChildcareCosts]
+  val view = application.injector.instanceOf[whoHasChildcareCosts]
   val messageKeyPrefix = "whoHasChildcareCosts"
   val fieldKey = "value"
   val errorMessage = "error.invalid"

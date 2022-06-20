@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
 class YourStatutoryStartDateViewSpec extends NewDateViewBehaviours[LocalDate] {
 
-  val view = app.injector.instanceOf[yourStatutoryStartDate]
+  val view = application.injector.instanceOf[yourStatutoryStartDate]
   val messageKeyPrefix = "yourStatutoryStartDate"
 
   val statutoryType = "maternity"

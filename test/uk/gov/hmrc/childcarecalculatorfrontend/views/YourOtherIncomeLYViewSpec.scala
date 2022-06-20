@@ -28,7 +28,7 @@ class YourOtherIncomeLYViewSpec extends NewYesNoViewBehaviours {
 
   override val form = BooleanForm()
 
-  val view = app.injector.instanceOf[yourOtherIncomeLY]
+  val view = application.injector.instanceOf[yourOtherIncomeLY]
   val taxYearInfo = new TaxYearInfo
 
   val messageKeyPrefix = "yourOtherIncomeLY"

@@ -21,9 +21,6 @@ import play.api.data.{Form, FormError}
 import play.api.inject.Injector
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import org.scalatestplus.play.PlaySpec
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.mvc.AnyContent
-import play.api.test.FakeRequest
 
 trait FormSpec extends PlaySpec with GuiceOneAppPerSuite {
 

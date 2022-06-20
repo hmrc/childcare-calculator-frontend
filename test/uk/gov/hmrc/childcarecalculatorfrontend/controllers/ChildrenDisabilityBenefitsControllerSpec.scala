@@ -87,7 +87,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
       val result = controller(getRequiredData()).onSubmit(NormalMode)(postRequest)
 
@@ -96,7 +96,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted for a user with a single child" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = BooleanForm("childrenDisabilityBenefits.error.notCompleted").bind(Map("value" -> "invalid value"))
       val result = controller(getRequiredData()).onSubmit(NormalMode)(postRequest)
       status(result) mustBe BAD_REQUEST
@@ -104,7 +104,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted for a user with multiple children" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = BooleanForm("childrenDisabilityBenefits.error.notCompleted").bind(Map("value" -> "invalid value"))
       val result = controller(getRequiredData(2)).onSubmit(NormalMode)(postRequest)
       status(result) mustBe BAD_REQUEST
@@ -118,7 +118,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -139,7 +139,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
         "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
       ))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       val result = controller(getData).onSubmit(NormalMode)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -156,7 +156,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     "redirect to Session Expired for a POST if there is no answer for `about your child`" in {
       val data = Map(NoOfChildrenId.toString -> JsNumber(1))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true"))
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       val result = controller(getData).onSubmit(NormalMode)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)

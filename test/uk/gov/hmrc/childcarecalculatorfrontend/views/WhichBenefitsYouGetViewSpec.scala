@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
 
 class WhichBenefitsYouGetViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[String] {
 
-  val mockView = app.injector.instanceOf[whichBenefitsYouGet]
+  val mockView = application.injector.instanceOf[whichBenefitsYouGet]
   val messageKeyPrefix = "whichBenefitsYouGet"
   val fieldKey = "value"
   val errorMessage = "error.invalid"

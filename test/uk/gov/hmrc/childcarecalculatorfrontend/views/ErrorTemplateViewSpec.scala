@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template
 
 class errorTemplateViewSpec extends NewViewSpecBase {
 
-  val view = app.injector.instanceOf[error_template]
+  val view = application.injector.instanceOf[error_template]
 
   val pageTitle = "title"
   val headingText = "heading"

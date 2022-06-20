@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultNotEligible
 
 class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
 
-  lazy val appResultNotEligible = app.injector.instanceOf[resultNotEligible]
+  lazy val appResultNotEligible = application.injector.instanceOf[resultNotEligible]
 
   val answers: UserAnswers = mock[UserAnswers]
   val locationEngland = Location.ENGLAND

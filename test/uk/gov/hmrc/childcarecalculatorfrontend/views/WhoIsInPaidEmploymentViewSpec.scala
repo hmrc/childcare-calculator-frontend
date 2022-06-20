@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoIsInPaidEmployment
 
 class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours {
 
-  val view = app.injector.instanceOf[whoIsInPaidEmployment]
+  val view = application.injector.instanceOf[whoIsInPaidEmployment]
   val messageKeyPrefix = "whoIsInPaidEmployment"
 
   def createView = () => view(frontendAppConfig, WhoIsInPaidEmploymentForm(), NormalMode)(fakeRequest, messages)

@@ -29,7 +29,7 @@ class RegisteredBlindViewSpec extends NewYesNoViewBehaviours {
 
   val messageKeyPrefix = "registeredBlind"
 
-  val view = app.injector.instanceOf[registeredBlind]
+  val view = application.injector.instanceOf[registeredBlind]
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
