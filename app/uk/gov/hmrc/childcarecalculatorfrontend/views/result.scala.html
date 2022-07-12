@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import playComponents.section_break
@@ -83,92 +84,94 @@
                 </div>
             }
 
-            @if(model.noOfEligibleSchemes(hideTC) > 1) {
-                @heading(heading=messages("result.further.information.subheading"), headingSize = "heading-l")
-                @heading(heading=messages("result.more.info.title"), headingSize = "heading-m")
+            @if(model.location == Location.ENGLAND){
+                @if(model.noOfEligibleSchemes(hideTC) > 1) {
+                    @heading(heading=messages("result.further.information.subheading"), headingSize = "heading-l")
+                    @heading(heading=messages("result.more.info.title"), headingSize = "heading-m")
 
-                @if(model.noOfEligibleSchemes(hideTC) == 4) {
-                    <p class="govuk-body">@messages("result.more.info.para")</p>
-                    @playComponents.list(
-                        bulletList = Seq (
-                            messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
-                            messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"),
-                            messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")
-                        )
-                    )
-                } else {
-                    @if(model.isEligibleForAllButVouchers) {
+                    @if(model.noOfEligibleSchemes(hideTC) == 4) {
                         <p class="govuk-body">@messages("result.more.info.para")</p>
                         @playComponents.list(
                             bulletList = Seq (
                                 messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
-                                messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")
+                                messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"),
+                                messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")
                             )
                         )
-                    }
-                    @if(model.isEligibleForAllButTc) {
-                        <p class="govuk-body">@messages("result.more.info.para")</p>
-                        @playComponents.list(
-                            bulletList = Seq (
-                                messages("result.schemes.free.hours.eligibility.guidance.bullet"),
-                                if(model.livesWithPartner) {
-                                    messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")
-                                } else {
-                                    messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")
-                                }
+                    } else {
+                        @if(model.isEligibleForAllButVouchers) {
+                            <p class="govuk-body">@messages("result.more.info.para")</p>
+                            @playComponents.list(
+                                bulletList = Seq (
+                                    messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
+                                    messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet")
+                                )
                             )
-                        )
-                    }
-
-                    @if(model.isEligibleForAllButTfc) {
-                        <p class="govuk-body">@messages("result.more.info.para")</p>
-                        @playComponents.list(
-                            bulletList = Seq (
-                                messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
-                                messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")
-                            )
-                        )
-                    }
-
-                    @if(model.isEligibleForAllButFreeHours) {
-                        <p class="govuk-body">@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
-                    }
-
-                    @if(model.isEligibleOnlyForFreeHoursAndTc) {
-                        <p class="govuk-body">@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
-                    }
-
-                    @if(model.isEligibleOnlyForTCAndEsc) {
-                        <p class="govuk-body">@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
-                    }
-
-                    @if(model.isEligibleOnlyForFreeHoursAndTfc || model.isEligibleOnlyForFreeHoursAndEsc) {
-                        <p class="govuk-body">@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
-                    }
-
-                    @if(model.isEligibleOnlyForTfcAndEsc) {
-                        <p class="govuk-body">@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
-                    }
-
-                    @if(model.isEligibleOnlyForTCAndTfc) {
-                        <p class="govuk-body">@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
-                    }
-                }
-                @section_break()
-            }
-
-            @if(links.nonEmpty){
-                <div class="moreInfo">
-                    @heading(heading=messages("aboutYourResults.more.info.title"), headingSize="heading-m")
-                    <p class="govuk-body">@messages("aboutYourResults.more.info.para1")</p>
-                        <ul class="govuk-list govuk-list--bullet">
-                        @for(link <- links) {
-                            <li><a class="govuk-link" target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href="@link("link")">@link("title") <span>@messages("site.opens.new.tab")</span></a></li>
                         }
+                        @if(model.isEligibleForAllButTc) {
+                            <p class="govuk-body">@messages("result.more.info.para")</p>
+                            @playComponents.list(
+                                bulletList = Seq (
+                                    messages("result.schemes.free.hours.eligibility.guidance.bullet"),
+                                    if(model.livesWithPartner) {
+                                        messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")
+                                    } else {
+                                        messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet")
+                                    }
+                                )
+                            )
+                        }
+
+                        @if(model.isEligibleForAllButTfc) {
+                            <p class="govuk-body">@messages("result.more.info.para")</p>
+                            @playComponents.list(
+                                bulletList = Seq (
+                                    messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"),
+                                    messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet")
+                                )
+                            )
+                        }
+
+                        @if(model.isEligibleForAllButFreeHours) {
+                            <p class="govuk-body">@messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.para")</p>
+                        }
+
+                        @if(model.isEligibleOnlyForFreeHoursAndTc) {
+                            <p class="govuk-body">@messages("result.schemes.free.hours.eligibility.guidance.with.tc.para")</p>
+                        }
+
+                        @if(model.isEligibleOnlyForTCAndEsc) {
+                            <p class="govuk-body">@messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.para")</p>
+                        }
+
+                        @if(model.isEligibleOnlyForFreeHoursAndTfc || model.isEligibleOnlyForFreeHoursAndEsc) {
+                            <p class="govuk-body">@messages("result.schemes.free.hours.eligibility.guidance.para")</p>
+                        }
+
+                        @if(model.isEligibleOnlyForTfcAndEsc) {
+                            <p class="govuk-body">@messages("result.schemes.tfc.ineligibility.vouchers.guidance.para")</p>
+                        }
+
+                        @if(model.isEligibleOnlyForTCAndTfc) {
+                            <p class="govuk-body">@messages("result.schemes.tfc.ineligibility.taxCredits.guidance.para")</p>
+                        }
+                    }
+                    @section_break()
+                }
+
+                @if(links.nonEmpty){
+                    <div class="moreInfo">
+                        @heading(heading=messages("aboutYourResults.more.info.title"), headingSize="heading-m")
+                        <p class="govuk-body">@messages("aboutYourResults.more.info.para1")</p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            @for(link <- links) {
+                                <li><a class="govuk-link" target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@link("title")" href="@link("link")">@link("title") <span>@messages("site.opens.new.tab")</span></a></li>
+                            }
                         </ul>
-                    <p class="govuk-body">@summary.getOrElse("")</p>
-                </div>
-                @section_break()
+                        <p class="govuk-body">@summary.getOrElse("")</p>
+                    </div>
+                    @section_break()
+                }
             }
         } else {
             <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>

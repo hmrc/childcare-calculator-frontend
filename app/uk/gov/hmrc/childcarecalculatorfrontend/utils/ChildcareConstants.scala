@@ -75,6 +75,16 @@ object ChildcareConstants {
   val tcSchemeGuidanceLinkUrl = "https://www.gov.uk/topic/benefits-credits/tax-credits"
   val ucSchemeGuidanceLinkUrl = "https://www.gov.uk/help-with-childcare-costs/universal-credit"
 
+  val extraHelpTFCLink = "https://www.gov.uk/apply-for-tax-free-childcare"
+
+  val scotlandExtraHelpLink1 = "https://www.parentclub.scot/articles/whats-your-child-entitled-to"
+  val scotlandExtraHelpLink2 = "https://www.parentclub.scot/articles/get-grips-childcare-costs-and-benefits"
+
+  val walesExtraHelpLink1a = "https://gov.wales/childcare-support-parents-whilst-training-or-looking-work"
+  val walesExtraHelpLink1b = "https://gov.wales/childcare-3-and-4-year-olds"
+
+  val northernIrelandExtraHelpLink = "https://www.nidirect.gov.uk/articles/pre-school-education-places"
+
   val universalCredits = "uc"
   val taxCredits = "tc"
   val unknownErrorKey = "error.unknown"

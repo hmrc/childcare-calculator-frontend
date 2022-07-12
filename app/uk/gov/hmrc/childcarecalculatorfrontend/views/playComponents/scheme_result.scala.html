@@ -21,7 +21,7 @@
 @this(
     heading: heading,
     detailSummaryComponent: detail_summary,
-    govukWarningText : GovukWarningText
+    govukWarningText : GovukWarningText,
 )
 
 @(
@@ -100,6 +100,7 @@
         @if(detailPara4.isDefined) {<p class="govuk-body">@detailPara4</p>}
     }
 }
+
 @if(sectionBreak){
-    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+    @section_break()
 }

@@ -20,6 +20,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 @this(
@@ -37,19 +38,26 @@ schemeResult: playComponents.scheme_result,
                 @messages("freeHoursResult.info.OtherSchemes.approved.text")
             } else {
                 @if(!model.isAnyoneInPaidEmployment) {
-                    @if(model.location == Location.ENGLAND){
-                        @messages("freeHoursResult.info.OtherSchemes.england.paidwork.text")
-                    } else{
-                        @messages("freeHoursResult.info.OtherSchemes.otherThanEngland.paidwork.text")
-
-                    }
-
+                    @messages("freeHoursResult.info.tfcOrChildcareSupport.para.start")
+                    <a class="govuk-link" id="tfcOrChildcareSupport"
+                       href=@if(model.livesWithPartner){
+                           @routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+                       } else {
+                           @routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
+                       }>@messages("freeHoursResult.info.tfcOrChildcareSupport.para.link")</a>
+                    @messages("freeHoursResult.info.tfcOrChildcareSupport.para.end")
                 }
-
             }
         }
     }
 
+    @linkList(bullets: Seq[Tuple2[String, String]]) = {
+        <ul class="govuk-list govuk-list--bullet">
+            @for((content, link) <- bullets){
+                <li><a href="@link" rel="noreferrer noopener" target="_blank">@content @messages("feedback.hint.link.opens.new.tab")</a></li>
+            }
+        </ul>
+    }
 
     @if(model.freeHours.isEmpty) {
         @schemeResult(
@@ -111,11 +119,11 @@ schemeResult: playComponents.scheme_result,
             )
         }
 
-
     }else{
+
         @schemeResult(
-            title = messages("freeHoursResult.info.OtherSchemes"),
-            para1 = Some(otherChildcareSchemesContent.toString),
+            title = messages("freeHoursResult.info.tfcOrChildcareSupport.heading"),
+            para2 = Some(otherChildcareSchemesContent),
             sectionBreak = false
         )
 }
@@ -123,7 +131,6 @@ schemeResult: playComponents.scheme_result,
     @if(model.showTwoYearOldInfo(hideTC)) {
         <div class="twoYearsOld">
             @heading(heading=messages(s"results.two.years.old.guidance.${model.location}.title"), headingSize = "heading-m")
-            <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
             <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
                 @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
             </a>
@@ -132,32 +139,71 @@ schemeResult: playComponents.scheme_result,
         </div>
     }
 
-    @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider || !model.isAnyoneInPaidEmployment) {
+    @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider) {
 
         @heading(heading=messages("freeHoursResult.toBeEligible.heading"), headingSize = "heading-m")
 
         <p class="govuk-body">
-        @if(!model.hasChildcareCosts) {
-            @messages("freeHoursResult.toBeEligible.childcare.cost.start")
-            <a class="govuk-link" id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
-            @messages("freeHoursResult.toBeEligible.childcare.cost.end")
-
-        } else {
-            @if(!model.hasCostsWithApprovedProvider) {
+            @if(!model.hasChildcareCosts) {
+                @messages("freeHoursResult.toBeEligible.childcare.cost.start")
+                <a class="govuk-link" id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
+                @messages("freeHoursResult.toBeEligible.childcare.cost.end")
+            } else {
                 @messages("freeHoursResult.toBeEligible.approved.provider.start")
                 <a class="govuk-link" id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
                 @messages("freeHoursResult.toBeEligible.approved.provider.end")
-            } else {
-                @if(!model.isAnyoneInPaidEmployment) {
-                    @messages("freeHoursResult.toBeEligible.paid.work.start")
-                    @if(model.livesWithPartner) {
-                        <a class="govuk-link" id="free-hours-results-paid-work-link" href="@routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
-                    } else {
-                        <a class="govuk-link" id="free-hours-results-paid-work-link" href="@routes.AreYouInPaidWorkController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.paid.work.link.text")</a>
-                    }
-                    @messages("freeHoursResult.toBeEligible.paid.work.end")
+            }
+        </p>
+    }
+
+    @if(model.location != Location.ENGLAND
+        && !(model.location == Location.WALES
+            && (model.yourEarnings.exists(earnings => Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings))))) {
+
+        @playComponents.section_break()
+
+        @heading(heading=messages("freeHoursResult.info.extraHelp.heading"), headingSize = "heading-l")
+
+        <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para1")</p>
+
+        @heading(heading=messages("freeHoursResult.info.extraHelp.subheading"), headingSize = "heading-m")
+
+        <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para2")</p>
+            @{
+                val workStatus = if(!model.isAnyoneInPaidEmployment) "notWorking" else "working"
+                model.yourEarnings match {
+                    case Some(EarningsEnum.LessThanMinimum) | Some(EarningsEnum.GreaterThanMaximum) =>
+                        model.location match {
+                            case Location.SCOTLAND =>
+                                linkList(Seq(
+                                    (messages("freeHoursResult.info.extraHelp.scotland.li.1"), scotlandExtraHelpLink1),
+                                    (messages("freeHoursResult.info.extraHelp.scotland.li.2"), scotlandExtraHelpLink2)
+                                ))
+                            case Location.NORTHERN_IRELAND =>
+                                linkList(Seq(
+                                    (messages("freeHoursResult.info.extraHelp.northern-ireland.li.1"), northernIrelandExtraHelpLink)
+                                ))
+                        }
+                    case _ =>
+                        model.location match {
+                            case Location.SCOTLAND =>
+                                linkList(Seq(
+                                    (messages("freeHoursResult.info.extraHelp.scotland.li.1"), scotlandExtraHelpLink1),
+                                    (messages("freeHoursResult.info.extraHelp.scotland.li.2"), scotlandExtraHelpLink2),
+                                    (messages(s"freeHoursResult.info.extraHelp.tfc.li.$workStatus"), extraHelpTFCLink)
+                                ))
+                            case Location.WALES =>
+                                linkList(Seq(
+                                    (messages(s"freeHoursResult.info.extraHelp.wales.li.1.$workStatus"),
+                                        if(!model.isAnyoneInPaidEmployment) walesExtraHelpLink1a else walesExtraHelpLink1b),
+                                    (messages(s"freeHoursResult.info.extraHelp.tfc.li.$workStatus"), extraHelpTFCLink)
+                                ))
+                            case Location.NORTHERN_IRELAND =>
+                                linkList(Seq(
+                                    (messages("freeHoursResult.info.extraHelp.northern-ireland.li.1"), northernIrelandExtraHelpLink),
+                                    (messages(s"freeHoursResult.info.extraHelp.tfc.li.$workStatus"), extraHelpTFCLink)
+                                ))
+                        }
                 }
             }
-        }
-        </p>
     }
