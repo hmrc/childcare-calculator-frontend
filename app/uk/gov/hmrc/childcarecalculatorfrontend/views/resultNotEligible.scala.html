@@ -156,7 +156,7 @@ schemeResult: playComponents.scheme_result,
         </p>
     }
 
-    @if(model.location != Location.ENGLAND
+    @if(model.location != Location.ENGLAND && (model.childAgedTwo || model.childAgedThreeOrFour)
         && !(model.location == Location.WALES
             && (model.yourEarnings.exists(earnings => Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings))))) {
 
