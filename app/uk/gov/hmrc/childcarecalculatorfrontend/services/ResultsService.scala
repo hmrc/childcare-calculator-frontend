@@ -66,6 +66,7 @@ class ResultsService @Inject()(eligibilityService: EligibilityService,
 
     val resultViewModel = ResultsViewModel(firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
       location = location, childAgedTwo = answers.childAgedTwo.getOrElse(false),
+      childAgedThreeOrFour = answers.childAgedThreeOrFour.getOrElse(false),
       tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),hasChildcareCosts = childcareCost,
       hasCostsWithApprovedProvider = approvedProvider,
       isAnyoneInPaidEmployment = paidEmployment,
