@@ -31,8 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMaximumEarnings
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class YourMaximumEarningsController @Inject()(appConfig: FrontendAppConfig,
                                               mcc: MessagesControllerComponents,
@@ -40,7 +39,8 @@ class YourMaximumEarningsController @Inject()(appConfig: FrontendAppConfig,
                                               navigator: Navigator,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
-                                              yourMaximumEarnings: yourMaximumEarnings) extends FrontendController(mcc) with I18nSupport {
+                                              yourMaximumEarnings: yourMaximumEarnings)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

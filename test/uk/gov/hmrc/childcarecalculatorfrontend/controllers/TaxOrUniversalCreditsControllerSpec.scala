@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.TaxOrUniversalCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
 

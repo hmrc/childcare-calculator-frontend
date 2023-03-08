@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.joda.time.LocalDate
-import play.api.libs.json.JodaReads._
+import java.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -324,8 +323,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
     children.map {
       children16OrOlder =>
         children16OrOlder.filter {
-          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${now.getYear-1}-8-31")) &&
-            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${now.getYear}-09-1"))
+          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${now.getYear-1}-08-31")) &&
+            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${now.getYear}-09-01"))
         }
     }
   }

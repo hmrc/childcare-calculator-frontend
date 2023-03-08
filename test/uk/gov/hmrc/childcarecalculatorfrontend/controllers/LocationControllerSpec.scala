@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class LocationControllerSpec extends ControllerSpecBase {
 

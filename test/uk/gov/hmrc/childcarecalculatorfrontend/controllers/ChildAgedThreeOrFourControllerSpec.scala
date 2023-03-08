@@ -29,8 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[childAgedThreeOrFour]

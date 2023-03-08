@@ -24,6 +24,8 @@ import play.api.inject.Injector
 import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.FakeRequest
 
+import scala.concurrent.ExecutionContext
+
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
 
   implicit val application: Application = app
@@ -41,4 +43,6 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
   def messagesApi : MessagesApi = injector.instanceOf[MessagesApi]
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
+
+  implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
 }

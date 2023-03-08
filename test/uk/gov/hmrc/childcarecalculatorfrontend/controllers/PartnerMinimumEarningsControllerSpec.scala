@@ -32,7 +32,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerMinimumEarnin
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar{
 

@@ -48,7 +48,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = ParentPaidWorkPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = ParentPaidWorkPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("parentPaidWorkPY.heading"))),

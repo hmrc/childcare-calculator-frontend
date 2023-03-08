@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class ChildStartEducationFormSpec extends FormSpec {
@@ -28,12 +28,12 @@ class ChildStartEducationFormSpec extends FormSpec {
   )
 
   def form(dob: LocalDate) = ChildStartEducationForm(dob)
-  val validDob = new LocalDate(2000, 1, 1)
+  val validDob = LocalDate.of(2000, 1, 1)
 
   "ChildStartEducation Form" must {
 
     "successfully bind when the date is valid" in {
-      form(validDob).bind(validData).get shouldEqual new LocalDate(2017, 2, 1)
+      form(validDob).bind(validData).get shouldEqual LocalDate.of(2017, 2, 1)
     }
 
     "fail to bind when the date is omitted" in {
@@ -66,7 +66,7 @@ class ChildStartEducationFormSpec extends FormSpec {
       val futureDate = LocalDate.now.plusDays(1)
       val data = Map(
         "date.day"   -> futureDate.getDayOfMonth.toString,
-        "date.month" -> futureDate.getMonthOfYear.toString,
+        "date.month" -> futureDate.getMonthValue.toString,
         "date.year"  -> futureDate.getYear.toString
       )
       val expectedError = error("date", "childStartEducation.error.invalid")
@@ -74,7 +74,7 @@ class ChildStartEducationFormSpec extends FormSpec {
     }
 
     "fail to bind when the date is before the child's 16th birthday" in {
-      val dob = new LocalDate(2010, 1, 1)
+      val dob = LocalDate.of(2010, 1, 1)
       val expectedError = error("date", "childStartEducation.error.before16")
       checkForError(form(dob), validData, expectedError)
     }

@@ -35,7 +35,7 @@ class MaximumHoursNavigator @Inject() (
                                         esc: EmploymentSupportedChildcare
                                       ) extends ResultsNavigator {
 
-  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad
+  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
 
 
 
@@ -81,7 +81,7 @@ class MaximumHoursNavigator @Inject() (
     if (answers.areYouInPaidWork.contains(true)) {
       routes.ParentWorkHoursController.onPageLoad(NormalMode)
     } else {
-      routes.ResultController.onPageLoad
+      routes.ResultController.onPageLoad()
     }
   }
 
@@ -90,7 +90,8 @@ class MaximumHoursNavigator @Inject() (
     answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
       case `you` => routes.ParentWorkHoursController.onPageLoad(NormalMode)
       case `partner` | `both` => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
-      case `neither` => routes.ResultController.onPageLoad
+      case `neither` => routes.ResultController.onPageLoad()
+      case _ => SessionExpiredRouter.route(getClass.getName,"whoIsInPaidWorkRoute", Some(answers))
     }
   }
 
@@ -134,7 +135,7 @@ class MaximumHoursNavigator @Inject() (
     if (answers.doYouOrYourPartnerGetAnyBenefits.contains(true)) {
       routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
     } else if(isEligibleToGoToResultPage(answers)) {
-      routes.ResultController.onPageLoad
+      routes.ResultController.onPageLoad()
     } else if(answers.whoIsInPaidEmployment.contains(partner)){
       routes.YourPartnersAgeController.onPageLoad(NormalMode)
     } else if(answers.whoIsInPaidEmployment.contains(you)||answers.whoIsInPaidEmployment.contains(both)){
@@ -280,8 +281,8 @@ class MaximumHoursNavigator @Inject() (
   private def maximumEarningsRedirection(answers: UserAnswers, maxEarnings: Boolean): Call = {
 
     def getCallForVoucherValue(voucherValue: Boolean): Call =
-      if (!voucherValue.equals(true) && maxEarnings.equals(true)) {
-        routes.ResultController.onPageLoad
+      if (!voucherValue && maxEarnings) {
+        routes.ResultController.onPageLoad()
       } else {
         routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       }
@@ -302,17 +303,17 @@ class MaximumHoursNavigator @Inject() (
          tfc.eligibility(answers) == NotEligible &&
           esc.eligibility(answers) == NotEligible) {
 
-        routes.ResultController.onPageLoad
+        routes.ResultController.onPageLoad()
       } else if(answers.hasApprovedCosts.contains(true)) {
 
         if (maxHours.eligibility(answers) == Eligible) {
-          routes.MaxFreeHoursInfoController.onPageLoad
+          routes.MaxFreeHoursInfoController.onPageLoad()
         } else {
           routes.NoOfChildrenController.onPageLoad(NormalMode)
         }
 
       } else {
-        routes.ResultController.onPageLoad
+        routes.ResultController.onPageLoad()
       }
     } else {
       SessionExpiredRouter.route(getClass.getName,"taxOrUniversalCreditsRoutes",Some(answers))

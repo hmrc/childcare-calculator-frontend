@@ -42,7 +42,7 @@ amount: BigDecimal)(implicit request: Request[_], messages: Messages)
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YourMinimumEarningsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YourMinimumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("yourMinimumEarnings.heading", amount))),

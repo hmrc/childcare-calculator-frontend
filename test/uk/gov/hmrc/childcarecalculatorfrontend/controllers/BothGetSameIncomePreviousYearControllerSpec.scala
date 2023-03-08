@@ -29,7 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{IncomeSummary, TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
 
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class BothGetSameIncomePreviousYearControllerSpec extends ControllerSpecBase {
 

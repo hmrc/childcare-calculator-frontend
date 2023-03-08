@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.OtherIncomeAmountPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, OtherIncomeAmountPY}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountPY
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class OtherIncomeAmountPYControllerSpec extends ControllerSpecBase {
 

@@ -45,7 +45,7 @@
     pageTitle = title
 ){
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoHasChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoHasChildcareCostsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputCheckBox(
             field = form("value"),

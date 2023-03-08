@@ -44,7 +44,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerMaximumEarningsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("partnerMaximumEarnings.heading"))),

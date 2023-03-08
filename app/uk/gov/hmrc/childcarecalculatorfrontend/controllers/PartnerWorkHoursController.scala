@@ -29,8 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
 import uk.gov.hmrc.childcarecalculatorfrontend.Navigator
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class PartnerWorkHoursController @Inject()(
                                         mcc: MessagesControllerComponents,
@@ -39,7 +39,8 @@ class PartnerWorkHoursController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         form : PartnerWorkHoursForm,
-                                        partnerWorkHours: partnerWorkHours) extends FrontendController(mcc) with I18nSupport {
+                                        partnerWorkHours: partnerWorkHours)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

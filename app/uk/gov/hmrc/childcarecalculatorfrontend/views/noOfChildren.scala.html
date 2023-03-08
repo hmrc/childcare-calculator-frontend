@@ -37,7 +37,7 @@
 
     @error_summary(form.errors)
 
-    @formWithCSRF(action = NoOfChildrenController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = NoOfChildrenController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @input_number(label = Text(messages("noOfChildren.heading")),
             isPageHeading = true,

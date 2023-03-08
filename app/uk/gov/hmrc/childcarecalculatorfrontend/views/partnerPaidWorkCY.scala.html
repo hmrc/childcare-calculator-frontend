@@ -40,7 +40,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerPaidWorkCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerPaidWorkCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
         @inputYesNo(
             label = HtmlContent(heading(messages("partnerPaidWorkCY.heading"))),
             hint = Some(messages("partnerPaidWorkCY.currentYear.startEndDate", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)),

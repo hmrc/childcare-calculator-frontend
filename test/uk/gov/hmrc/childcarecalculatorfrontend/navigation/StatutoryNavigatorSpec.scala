@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
@@ -201,7 +201,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
       "Your Statutory Start Date route" must {
         "redirects to yourStatutoryWeeks page when user selects some value" in {
           val answers = spy(userAnswers())
-          when(answers.yourStatutoryStartDate) thenReturn Some(new LocalDate(2017, 2, 1))
+          when(answers.yourStatutoryStartDate) thenReturn Some(LocalDate.of(2017, 2, 1))
 
           navigator.nextPage(YourStatutoryStartDateId, NormalMode).value(answers) mustBe
             routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
@@ -220,7 +220,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
       "Partner Statutory Start Date route" must {
         "redirects to partnerStatutoryWeeks page when user selects some value" in {
           val answers = spy(userAnswers())
-          when(answers.partnerStatutoryStartDate) thenReturn Some(new LocalDate(2017, 2, 1))
+          when(answers.partnerStatutoryStartDate) thenReturn Some(LocalDate.of(2017, 2, 1))
 
           navigator.nextPage(PartnerStatutoryStartDateId, NormalMode).value(answers) mustBe
             routes.PartnerStatutoryWeeksController.onPageLoad(NormalMode)

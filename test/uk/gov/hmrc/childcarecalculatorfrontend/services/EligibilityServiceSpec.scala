@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
@@ -31,7 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class EligibilityServiceSpec extends SchemeSpec with MockitoSugar with ScalaFutures {
@@ -42,7 +42,7 @@ class EligibilityServiceSpec extends SchemeSpec with MockitoSugar with ScalaFutu
   val taxCredits: TaxCredits = mock[TaxCredits]
   val connector: EligibilityConnector = mock[EligibilityConnector]
   implicit val hc = HeaderCarrier()
-  implicit val ec = ExecutionContext
+  implicit val ec: ExecutionContext = ExecutionContext.global
   implicit val req: Request[_] = mock[Request[_]]
 
   def eligibilityService: EligibilityService = new EligibilityService(frontendAppConfig, utils, taxCredits, connector)

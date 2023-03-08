@@ -31,8 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayBefore
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class YourStatutoryPayBeforeTaxController @Inject()(
                                         appConfig: FrontendAppConfig,
@@ -41,7 +40,8 @@ class YourStatutoryPayBeforeTaxController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        yourStatutoryPayBeforeTax: yourStatutoryPayBeforeTax) extends FrontendController(mcc) with I18nSupport {
+                                        yourStatutoryPayBeforeTax: yourStatutoryPayBeforeTax)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   val errorKey = "yourStatutoryPayBeforeTax.error.notCompleted"
 

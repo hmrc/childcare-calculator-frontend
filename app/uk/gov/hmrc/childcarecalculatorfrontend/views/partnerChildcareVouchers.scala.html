@@ -39,7 +39,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerChildcareVouchersController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerChildcareVouchersController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("partnerChildcareVouchers.heading"))),

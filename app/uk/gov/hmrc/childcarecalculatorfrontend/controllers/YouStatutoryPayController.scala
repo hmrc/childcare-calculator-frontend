@@ -30,8 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youStatutoryPay
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class YouStatutoryPayController @Inject()(appConfig: FrontendAppConfig,
                                           mcc: MessagesControllerComponents,
@@ -40,7 +39,8 @@ class YouStatutoryPayController @Inject()(appConfig: FrontendAppConfig,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
                                           taxYearInfo: TaxYearInfo,
-                                          youStatutoryPay: youStatutoryPay) extends FrontendController(mcc) with I18nSupport {
+                                          youStatutoryPay: youStatutoryPay)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   val requiredKey: String = "youStatutoryPay.error.required"
   val requiredKeyArg: String = taxYearInfo.previousTaxYearStart

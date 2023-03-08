@@ -40,7 +40,7 @@
     pageTitle = title,
 ) {
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhichDisabilityBenefitsController.onSubmit(mode, index), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhichDisabilityBenefitsController.onSubmit(mode, index), Symbol("autoComplete") -> "off") {
 
         @inputCheckBox(
             field = form("value"),

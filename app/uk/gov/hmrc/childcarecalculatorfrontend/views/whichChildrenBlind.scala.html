@@ -46,7 +46,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhichChildrenBlindController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhichChildrenBlindController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
 
         @inputCheckBox(

@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ApprovedProviderId, 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class ApprovedProviderControllerSpec extends ControllerSpecBase {
 

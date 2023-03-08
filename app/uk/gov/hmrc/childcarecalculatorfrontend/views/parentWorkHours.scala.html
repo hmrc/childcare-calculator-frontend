@@ -36,7 +36,7 @@
 ){
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = ParentWorkHoursController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = ParentWorkHoursController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputText(
             label = messages("parentWorkHours.heading"),

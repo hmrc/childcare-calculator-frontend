@@ -37,7 +37,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = AreYouSelfEmployedOrApprenticeController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = AreYouSelfEmployedOrApprenticeController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("areYouSelfEmployedOrApprentice.heading")),

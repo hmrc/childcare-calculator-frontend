@@ -37,7 +37,7 @@
 @layout(pageTitle = title) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoGetsOtherIncomeCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoGetsOtherIncomeCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @inputRadio(
         legend = heading(messages("whoGetsOtherIncomeCY.heading")),

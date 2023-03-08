@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
 import javax.inject.Inject
 
-import org.joda.time.{LocalDate, Weeks}
+import java.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsur
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils, DateTimeUtils}
 
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits)
   extends OverallIncome {
@@ -467,7 +467,7 @@ sealed trait StatutoryPay extends TaxYearInfo {
   private def getWeeksForSingleTaxYear(weeks: Option[Int], startDate: LocalDate, endDate: LocalDate): Option[Int] = {
     weeks.map {
       statutoryWeeks =>
-        val value = statutoryWeeks - Weeks.weeksBetween(startDate, endDate).getWeeks
+        val value = statutoryWeeks - DateTimeUtils.getWeeksBetween(startDate, endDate)
         Math.max(0,value)
     }
   }
@@ -492,7 +492,7 @@ sealed trait StatutoryPay extends TaxYearInfo {
         getWeeksForSingleTaxYear(totalWeeksTaken, statutoryStartDate, previousTaxYearEndDate.minusYears(1))
       }
       else {
-        val interval = Weeks.weeksBetween(statutoryStartDate, previousTaxYearEndDate).getWeeks
+        val interval = DateTimeUtils.getWeeksBetween(statutoryStartDate, previousTaxYearEndDate)
 
         totalWeeksTaken.map {
           statutoryWeeks =>

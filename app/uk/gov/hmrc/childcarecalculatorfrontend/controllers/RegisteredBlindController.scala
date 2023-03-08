@@ -32,8 +32,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childRegisteredBlind,
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
                                           mcc: MessagesControllerComponents,
@@ -42,7 +41,8 @@ class RegisteredBlindController @Inject()(appConfig: FrontendAppConfig,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
                                           childRegisteredBlind: childRegisteredBlind,
-                                          registeredBlind: registeredBlind) extends FrontendController(mcc) with I18nSupport {
+                                          registeredBlind: registeredBlind)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>

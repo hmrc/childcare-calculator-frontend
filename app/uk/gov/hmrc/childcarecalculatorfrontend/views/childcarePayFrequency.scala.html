@@ -40,7 +40,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = ChildcarePayFrequencyController.onSubmit(mode, index), 'autoComplete -> "off") {
+    @formWithCSRF(action = ChildcarePayFrequencyController.onSubmit(mode, index), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("childcarePayFrequency.heading", name)),

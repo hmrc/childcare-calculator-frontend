@@ -30,8 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youGetSameIncomePrevio
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppConfig,
                                                        mcc: MessagesControllerComponents,
@@ -41,7 +40,8 @@ class YouGetSameIncomePreviousYearController @Inject()(appConfig: FrontendAppCon
                                                        requireData: DataRequiredAction,
                                                        taxYearInfo: TaxYearInfo,
                                                        incomeSummary: IncomeSummary,
-                                                       youGetSameIncomePreviousYear: youGetSameIncomePreviousYear) extends FrontendController(mcc) with I18nSupport {
+                                                       youGetSameIncomePreviousYear: youGetSameIncomePreviousYear)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

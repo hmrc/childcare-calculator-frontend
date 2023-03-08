@@ -27,15 +27,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class SessionManagementController @Inject()(val appConfig: FrontendAppConfig,
                                             mcc: MessagesControllerComponents,
                                             dataCacheConnector: DataCacheConnector,
                                             navigator: Navigator,
                                             getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction) extends FrontendController(mcc) with I18nSupport {
+                                            requireData: DataRequiredAction)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def extendSession: Action[AnyContent] = Action.async {
     Future.successful(Ok("OK"))

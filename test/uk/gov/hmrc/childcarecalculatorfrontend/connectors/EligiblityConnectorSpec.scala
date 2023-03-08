@@ -35,7 +35,7 @@ class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutur
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
   implicit val request = FakeRequest()
   implicit val hc = HeaderCarrier()
-  implicit val ec = ExecutionContext
+  implicit val ec: ExecutionContext = ExecutionContext.global
 
   def mockConnector: EligibilityConnector = new EligibilityConnector(frontendAppConfig, mockHttp)
 

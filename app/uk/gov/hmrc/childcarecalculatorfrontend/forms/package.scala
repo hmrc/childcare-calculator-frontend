@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.validation.Constraint
 import play.api.data.{FormError, Mapping}
 
@@ -52,11 +52,11 @@ package object forms {
 
     def bind(t: (Int, Int, Int)): LocalDate = t match {
       case (day, month, year) =>
-        new LocalDate(year, month, day)
+        LocalDate.of(year, month, day)
     }
 
     def unbind(date: LocalDate): (Int, Int, Int) = {
-      (date.getDayOfMonth, date.getMonthOfYear, date.getYear)
+      (date.getDayOfMonth, date.getMonthValue, date.getYear)
     }
 
     subMapping.verifying("error.invalidDate", validate _).transform(bind, unbind)

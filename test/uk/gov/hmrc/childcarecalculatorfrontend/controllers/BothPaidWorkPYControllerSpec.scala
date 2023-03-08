@@ -30,8 +30,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidWorkPY
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class BothPaidWorkPYControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[bothPaidWorkPY]

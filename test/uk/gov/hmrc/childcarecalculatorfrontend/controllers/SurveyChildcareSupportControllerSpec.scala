@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyCh
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
 

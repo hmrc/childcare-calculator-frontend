@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGetsVouchersId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsVouchers
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class WhoGetsVouchersControllerSpec extends ControllerSpecBase {
 

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.OptionValues
 import org.scalatestplus.play.PlaySpec
 import play.api.data.{Form, FormError}
@@ -36,7 +36,7 @@ class LocalDateMappingSpec extends PlaySpec with OptionValues {
         "date.year"  -> "2017"
       )
 
-      form.bind(data).value.value mustEqual new LocalDate(2017, 2, 1)
+      form.bind(data).value.value mustEqual LocalDate.of(2017, 2, 1)
     }
 
     "fail to bind from an invalid date" in {
@@ -91,7 +91,7 @@ class LocalDateMappingSpec extends PlaySpec with OptionValues {
         "date.year"  -> "2017"
       )
 
-      form.fill(new LocalDate(2017, 2, 1)).data mustEqual data
+      form.fill(LocalDate.of(2017, 2, 1)).data mustEqual data
     }
   }
 }

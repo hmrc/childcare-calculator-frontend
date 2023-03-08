@@ -31,8 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childApprovedEducation
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ChildApprovedEducationController @Inject() (
                                                    appConfig: FrontendAppConfig,
@@ -42,7 +41,8 @@ class ChildApprovedEducationController @Inject() (
                                                    getData: DataRetrievalAction,
                                                    requireData: DataRequiredAction,
                                                    childApprovedEducation: childApprovedEducation
-                                                ) extends FrontendController(mcc) with I18nSupport with MapFormats {
+                                                )(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport with MapFormats {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))

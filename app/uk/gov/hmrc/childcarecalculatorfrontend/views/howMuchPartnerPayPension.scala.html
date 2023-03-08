@@ -44,7 +44,7 @@
 ) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = HowMuchPartnerPayPensionController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = HowMuchPartnerPayPensionController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("howMuchPartnerPayPension.heading")),

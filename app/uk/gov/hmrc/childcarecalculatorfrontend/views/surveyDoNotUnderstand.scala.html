@@ -44,7 +44,7 @@
 ){
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = SurveyDoNotUnderstandController.onSubmit(), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = SurveyDoNotUnderstandController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputTextarea(
             label = messages("surveyDoNotUnderstand.heading"),

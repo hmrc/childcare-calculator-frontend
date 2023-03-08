@@ -60,7 +60,7 @@
         messages("youAnyTheseBenefitsCY.li.pensions"),
         messages("youAnyTheseBenefitsCY.li.disability")
     ))
-    @formWithCSRF(action = YouAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YouAnyTheseBenefitsCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @inputYesNo(
         label = Text(messages("youAnyTheseBenefitsCY.heading")),

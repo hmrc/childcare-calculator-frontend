@@ -44,7 +44,7 @@
     <p class="govuk-body">@messages("partnerEmploymentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     <p class="govuk-body">@messages("partnerEmploymentIncomePY.hint")</p>
 
-    @formWithCSRF(action = PartnerEmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = PartnerEmploymentIncomePYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("partnerEmploymentIncomePY.info")),

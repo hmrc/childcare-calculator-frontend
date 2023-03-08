@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.OptionValues
 import play.api.data.Form
 import play.api.libs.json.{JsString, JsValue, Json}
@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, Ch
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with OptionValues {
 

@@ -44,7 +44,7 @@
 ){
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = ApprovedProviderController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = ApprovedProviderController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend =  if(childcareCostsMaybeInFuture) heading(messages("approvedProvider.heading.future")) else heading(messages("approvedProvider.heading")),

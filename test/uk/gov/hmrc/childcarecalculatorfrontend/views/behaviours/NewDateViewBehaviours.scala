@@ -33,7 +33,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
           s"rendered with an error with field '$sub'" must {
             "show an error summary" in {
               val doc = asDocument(createView(form.withError(FormError(sub, "error"))))
-              assertRenderedById(doc, "error-summary-title")
+              assertRenderedByCssSelector(doc, ".govuk-error-summary__title")
             }
 
             s"show an error in the legend for fieldset when '$sub' has an error" in {

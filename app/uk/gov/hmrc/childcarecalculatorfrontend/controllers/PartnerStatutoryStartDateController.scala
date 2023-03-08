@@ -17,9 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-import org.joda.time.LocalDate
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
+import java.time.LocalDate
+
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
@@ -34,8 +33,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartD
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class PartnerStatutoryStartDateController @Inject()(
                                         appConfig: FrontendAppConfig,
@@ -45,7 +43,8 @@ class PartnerStatutoryStartDateController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         partnerStatutoryStartDate: partnerStatutoryStartDate
-                                      ) extends FrontendController(mcc) with I18nSupport {
+                                      )(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =

@@ -62,7 +62,7 @@
         )
     )
 
-    @formWithCSRF(action = YouStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YouStatutoryPayController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("youStatutoryPay.heading", taxYearInfo.previousTaxYearStart)),

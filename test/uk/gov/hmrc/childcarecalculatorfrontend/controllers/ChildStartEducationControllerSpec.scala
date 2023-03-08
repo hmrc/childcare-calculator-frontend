@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.Form
-import play.api.libs.json.JodaWrites._
+
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
@@ -30,8 +30,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMod
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class ChildStartEducationControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[childStartEducation]
@@ -41,8 +39,8 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
     new ChildStartEducationController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  val date = new LocalDate(2017, 2, 1)
-  val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)
+  val date = LocalDate.of(2017, 2, 1)
+  val validBirthday = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
   val requiredData = Map(
     AboutYourChildId.toString -> Json.obj(
       "0" -> Json.toJson(AboutYourChild("Foo", validBirthday)),
@@ -82,9 +80,9 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
       val startEducationDate = LocalDate.now
 
       val postRequest = fakeRequest.withFormUrlEncodedBody(
-        "date.day"   -> startEducationDate.dayOfMonth().get().toString,
-        "date.month" -> startEducationDate.monthOfYear().get().toString,
-        "date.year"  -> startEducationDate.year().get().toString
+        "date.day"   -> startEducationDate.getDayOfMonth.toString,
+        "date.month" -> startEducationDate.getMonthValue.toString,
+        "date.year"  -> startEducationDate.getYear.toString
       ).withMethod("POST")
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
 

@@ -29,8 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[doYouGetAnyBenefits]

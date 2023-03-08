@@ -49,7 +49,7 @@
         )
     )
 
-    @formWithCSRF(action = ChildrenDisabilityBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = ChildrenDisabilityBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("childrenDisabilityBenefits.heading")),

@@ -40,7 +40,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhichBenefitsYouGetController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhichBenefitsYouGetController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
 
         @inputCheckBox(

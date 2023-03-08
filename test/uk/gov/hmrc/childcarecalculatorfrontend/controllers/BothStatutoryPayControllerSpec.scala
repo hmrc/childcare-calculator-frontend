@@ -29,8 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothStatutoryPay
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class BothStatutoryPayControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[bothStatutoryPay]

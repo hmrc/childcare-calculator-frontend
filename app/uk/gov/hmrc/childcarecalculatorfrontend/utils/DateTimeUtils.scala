@@ -16,8 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 trait DateTimeUtils {
   def now: LocalDate = LocalDate.now()
+}
+
+object DateTimeUtils {
+  private val DAYS_IN_A_WEEK = 7
+  def getWeeksBetween(startDate: LocalDate, endDate: LocalDate): Int =
+    ((endDate.toEpochDay - startDate.toEpochDay) / DAYS_IN_A_WEEK).toInt
 }

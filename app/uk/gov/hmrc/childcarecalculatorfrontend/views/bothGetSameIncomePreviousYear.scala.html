@@ -56,7 +56,7 @@
     <p class="govuk-body">@messages("bothGetSameIncomePreviousYear.info.summary")</p>
     @tableList(incomeSummary)
 
-    @formWithCSRF(action = BothGetSameIncomePreviousYearController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = BothGetSameIncomePreviousYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("bothGetSameIncomePreviousYear.heading")),

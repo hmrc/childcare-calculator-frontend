@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import javax.inject.Inject
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.time.TaxYear
 
 class TaxYearInfo @Inject()() {

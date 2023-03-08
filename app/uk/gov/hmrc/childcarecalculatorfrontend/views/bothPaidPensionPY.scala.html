@@ -41,7 +41,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = BothPaidPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = BothPaidPensionPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("bothPaidPensionPY.heading"))),

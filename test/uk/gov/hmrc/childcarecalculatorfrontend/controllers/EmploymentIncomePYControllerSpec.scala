@@ -29,8 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomePY, Norma
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomePY
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class EmploymentIncomePYControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[employmentIncomePY]

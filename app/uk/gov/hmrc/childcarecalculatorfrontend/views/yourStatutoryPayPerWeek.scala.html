@@ -43,7 +43,7 @@
 ) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YourStatutoryPayPerWeekController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = YourStatutoryPayPerWeekController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("yourStatutoryPayPerWeek.heading", statutoryType)),

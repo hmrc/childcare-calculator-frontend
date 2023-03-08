@@ -36,24 +36,19 @@ lazy val microservice = Project(appName, file("."))
   .settings(defaultSettings(): _*)
   .settings(scoverageSettings: _*)
   .settings(
-    scalacOptions ++= Seq("-feature"),
-    targetJvm := "jvm-1.8",
-    scalaVersion := "2.12.12",
+    scalacOptions ++= Seq(
+      "-feature",
+      "-Wconf:cat=unused&src=routes/.*:s",
+      "-Wconf:cat=unused&src=views/.*:s",
+    ),
+    scalaVersion := "2.13.8",
     libraryDependencies ++= AppDependencies(),
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12", //Handle invalid Base64 will be fixed in 1.15
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     resolvers ++= Seq(
       Resolver.jcenterRepo
-    ),
-    // ***************
-    // Use the silencer plugin to suppress warnings from unused imports in compiled twirl templates
-    scalacOptions += "-P:silencer:pathFilters=views;routes",
-    libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.1" cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % "1.7.1" % Provided cross CrossVersion.full
-    ),
-    // ***************
+    )
   )
   .settings(
     // concatenate js
@@ -71,7 +66,6 @@ lazy val microservice = Project(appName, file("."))
   ).settings(
   TwirlKeys.templateImports ++= Seq(
     "uk.gov.hmrc.govukfrontend.views.html.components._",
-    "uk.gov.hmrc.govukfrontend.views.html.helpers._",
     "uk.gov.hmrc.hmrcfrontend.views.html.components._",
     "uk.gov.hmrc.hmrcfrontend.views.html.helpers._",
     "uk.gov.hmrc.govukfrontend.views.html.components.implicits._"

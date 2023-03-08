@@ -47,7 +47,7 @@
 
     @heading(messages("bothBenefitsIncomePY.heading"))
 
-    @formWithCSRF(action = BothBenefitsIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = BothBenefitsIncomePYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("bothBenefitsIncomePY.parentBenefitsIncomePY")),

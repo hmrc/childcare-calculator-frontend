@@ -37,7 +37,7 @@
 @layout(
     pageTitle = title,
 ){
-    @formWithCSRF(action = ChildcareCostsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = ChildcareCostsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors)
 

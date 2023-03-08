@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
@@ -34,17 +34,17 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
   val form = AboutYourChildForm()
 
-  val duplicateChild = Some(Map(0 -> AboutYourChild("Foo", new LocalDate(2017, 2, 1))))
+  val duplicateChild = Some(Map(0 -> AboutYourChild("Foo", LocalDate.of(2017, 2, 1))))
 
   val formDuplicateChildren = AboutYourChildForm(1, children = duplicateChild)
 
   "AboutYourChild form" must {
 
-    behave like questionForm(AboutYourChild("Foo", new LocalDate(2017, 2, 1)))
+    behave like questionForm(AboutYourChild("Foo", LocalDate.of(2017, 2, 1)))
 
     "bind when name is 35 chars long" in {
       val data = validData + ("name" -> "a" * 35)
-      form.bind(data).get shouldBe AboutYourChild("a" * 35, new LocalDate(2017, 2, 1))
+      form.bind(data).get shouldBe AboutYourChild("a" * 35, LocalDate.of(2017, 2, 1))
     }
 
     "fail to bind when name is omitted" in {
@@ -116,7 +116,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
       val data = Map(
         "name"      -> "Foo",
         "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.month" -> date.getMonthValue.toString,
         "dob.year"  -> date.getYear.toString
       )
       val expectedError = error("dob", "aboutYourChild.error.past")
@@ -128,7 +128,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
       val data = Map(
         "name"      -> "Foo",
         "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.month" -> date.getMonthValue.toString,
         "dob.year"  -> date.getYear.toString
       )
       val expectedError = error("dob", "aboutYourChild.error.future")

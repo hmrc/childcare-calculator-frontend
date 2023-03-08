@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
 

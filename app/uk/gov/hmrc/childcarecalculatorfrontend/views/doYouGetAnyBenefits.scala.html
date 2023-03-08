@@ -53,7 +53,7 @@ Seq(messages("doYouGetAnyBenefits.li.carersAllowance"),
 
     @playComponents.list(pageKey = None, addCssClass = None, bulletList)
 
-    @formWithCSRF(action = DoYouGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = DoYouGetAnyBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("doYouGetAnyBenefits.heading")),

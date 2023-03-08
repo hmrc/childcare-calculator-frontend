@@ -30,7 +30,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothAnyTheseBenefitsPY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class BothAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
 

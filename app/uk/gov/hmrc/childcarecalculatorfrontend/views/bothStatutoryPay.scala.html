@@ -52,7 +52,7 @@
     <p class="govuk-body">@messages("statutoryPay.guidance")</p>
 
     @playComponents.list(pageKey = None, addCssClass = None, bulletList)
-    @formWithCSRF(action = BothStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = BothStatutoryPayController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("bothStatutoryPay.heading", taxYearInfo.previousTaxYearStart)),

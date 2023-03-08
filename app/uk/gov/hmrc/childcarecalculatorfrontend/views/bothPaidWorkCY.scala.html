@@ -39,7 +39,7 @@
 ) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = BothPaidWorkCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = BothPaidWorkCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("bothPaidWorkCY.heading"))),

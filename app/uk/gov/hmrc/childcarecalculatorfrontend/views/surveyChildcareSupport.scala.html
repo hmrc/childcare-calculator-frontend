@@ -43,7 +43,7 @@
 ){
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = SurveyChildcareSupportController.onSubmit(), 'autoComplete -> "off") {
+    @formWithCSRF(action = SurveyChildcareSupportController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("surveyChildcareSupport.heading"))),

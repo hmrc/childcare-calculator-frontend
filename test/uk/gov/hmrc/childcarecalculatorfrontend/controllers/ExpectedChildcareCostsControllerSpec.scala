@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsNumber, JsString, JsValue, Json}
 import play.api.mvc.Call
@@ -31,8 +31,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, NormalMode, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 import uk.gov.hmrc.http.cache.client.CacheMap
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 

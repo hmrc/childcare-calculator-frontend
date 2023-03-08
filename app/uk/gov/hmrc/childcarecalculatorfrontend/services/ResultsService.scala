@@ -28,14 +28,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers}
 import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ResultsService @Inject()(eligibilityService: EligibilityService,
                                freeHours: FreeHours,
                                maxFreeHours: MaxFreeHours,
                                firstParagraphBuilder: FirstParagraphBuilder,
-                               tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder) {
+                               tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder)(implicit ec: ExecutionContext) {
   def getResultsViewModel(answers: UserAnswers, location: Location)
                          (implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 

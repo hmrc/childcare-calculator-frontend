@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerStatutoryPayTy
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryPayType
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class PartnerStatutoryPayTypeControllerSpec extends ControllerSpecBase {
 

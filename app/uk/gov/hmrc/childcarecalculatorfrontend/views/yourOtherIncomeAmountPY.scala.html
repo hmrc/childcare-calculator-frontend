@@ -37,7 +37,7 @@
 ) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YourOtherIncomeAmountPYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = YourOtherIncomeAmountPYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("yourOtherIncomeAmountPY.heading")),

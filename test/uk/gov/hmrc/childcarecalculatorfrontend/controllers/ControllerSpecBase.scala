@@ -24,7 +24,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.FakeDataRetri
 trait ControllerSpecBase extends SpecBase {
 
   val cacheMapId = "id"
-
   def emptyCacheMap = CacheMap(cacheMapId, Map())
 
   def getEmptyCacheMap = new FakeDataRetrievalAction(Some(emptyCacheMap))

@@ -48,7 +48,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = AreYouInPaidWorkController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = AreYouInPaidWorkController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("areYouInPaidWork.heading"))),

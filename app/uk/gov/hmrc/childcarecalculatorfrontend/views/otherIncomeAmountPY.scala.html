@@ -40,7 +40,7 @@
 
     @heading(messages("otherIncomeAmountPY.heading", "heading-xlarge"))
 
-    @formWithCSRF(action = OtherIncomeAmountPYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = OtherIncomeAmountPYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("otherIncomeAmountPY.parentOtherIncomeAmountPY")),

@@ -28,8 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothBenefitsIncomePYI
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, BothBenefitsIncomePY}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothBenefitsIncomePY
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class BothBenefitsIncomePYControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[bothBenefitsIncomePY]

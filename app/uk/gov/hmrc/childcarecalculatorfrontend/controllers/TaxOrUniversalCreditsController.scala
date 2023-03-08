@@ -30,8 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class TaxOrUniversalCreditsController @Inject()(
                                         appConfig: FrontendAppConfig,
@@ -40,7 +39,8 @@ class TaxOrUniversalCreditsController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        taxOrUniversalCredits: taxOrUniversalCredits) extends FrontendController(mcc) with I18nSupport {
+                                        taxOrUniversalCredits: taxOrUniversalCredits)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

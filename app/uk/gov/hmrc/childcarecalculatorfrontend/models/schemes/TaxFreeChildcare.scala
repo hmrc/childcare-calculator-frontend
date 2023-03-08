@@ -17,9 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
-
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.CARERSALLOWANCE
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 

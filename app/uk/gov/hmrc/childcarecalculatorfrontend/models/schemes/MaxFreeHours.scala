@@ -18,8 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, NotDetermined, NotEligible, Eligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.ENGLAND
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class MaxFreeHours @Inject() (freeHours: FreeHours, tfc: TaxFreeChildcare) extends Scheme {

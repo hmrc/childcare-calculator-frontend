@@ -52,7 +52,7 @@
         <li>@messages("youAnyTheseBenefitsPY.li.disability")</li>
 
     </ul>
-    @formWithCSRF(action = YouAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YouAnyTheseBenefitsPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("youAnyTheseBenefitsPY.heading")),
