@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class SessionManagementControllerSpec extends ControllerSpecBase {
 

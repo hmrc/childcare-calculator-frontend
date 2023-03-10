@@ -39,7 +39,7 @@
 
     @heading(messages("employmentIncomePY.heading", "heading-xlarge"))
 
-    @formWithCSRF(action = EmploymentIncomePYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = EmploymentIncomePYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
     <p class="govuk-body">@messages("employmentIncomePY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     <p class="govuk-body">@messages("employmentIncomePY.hint")</p>

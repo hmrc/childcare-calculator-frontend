@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.Form
-import play.api.libs.json.JodaWrites._
+
 import play.api.libs.json.{JsString, Json}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
@@ -31,7 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.time.TaxYear
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
   val view = application.injector.instanceOf[yourStatutoryStartDate]
@@ -66,13 +66,13 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(YourStatutoryStartDateId.toString -> Json.toJson(new LocalDate(previousTaxYear, 2, 1)),
+      val validData = Map(YourStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(previousTaxYear, 2, 1)),
         YourStatutoryPayTypeId.toString -> JsString(YourStatutoryPayTypeForm.options.head.value)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm(statutoryType).fill(new LocalDate(previousTaxYear, 2, 1)))
+      contentAsString(result) mustBe viewAsString(YourStatutoryStartDateForm(statutoryType).fill(LocalDate.of(previousTaxYear, 2, 1)))
     }
 
     "populate the view correctly on a GET request" in {

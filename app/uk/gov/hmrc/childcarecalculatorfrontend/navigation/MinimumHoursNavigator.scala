@@ -17,21 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Inject
-
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ApprovedProviderId, ChildAgedThreeOrFourId, ChildAgedTwoId, ChildcareCostsId, Identifier, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NormalMode, YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Scheme, Schemes}
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val schemes: Schemes) extends ResultsNavigator {
 
-  def this(freeHours: FreeHours, schemes: Scheme*) {
+  def this(freeHours: FreeHours, schemes: Scheme*) = {
     this(freeHours, new Schemes(schemes: _*))
   }
 
-  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad
+  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
@@ -55,7 +54,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad
       } else {
-        routes.ResultController.onPageLoad
+        routes.ResultController.onPageLoad()
       }
     } else {
       routes.ApprovedProviderController.onPageLoad(NormalMode)
@@ -69,7 +68,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad
       } else {
-        routes.ResultController.onPageLoad
+        routes.ResultController.onPageLoad()
       }
     } else {
       if (freeHours.eligibility(answers) == Eligible) {

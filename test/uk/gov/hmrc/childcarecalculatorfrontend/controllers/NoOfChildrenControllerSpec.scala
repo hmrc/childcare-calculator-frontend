@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.NoOfChildrenId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class NoOfChildrenControllerSpec extends ControllerSpecBase {
 

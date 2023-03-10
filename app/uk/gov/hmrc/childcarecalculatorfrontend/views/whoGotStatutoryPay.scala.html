@@ -38,7 +38,7 @@
 @layout(pageTitle = title) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoGotStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoGotStatutoryPayController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("whoGotStatutoryPay.heading")),

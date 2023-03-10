@@ -31,8 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ExpectedChildcareCostsController @Inject() (
                                                    appConfig: FrontendAppConfig,
@@ -42,7 +41,8 @@ class ExpectedChildcareCostsController @Inject() (
                                                    getData: DataRetrievalAction,
                                                    requireData: DataRequiredAction,
                                                    expectedChildcareCosts: expectedChildcareCosts
-                                                 ) extends FrontendController(mcc) with I18nSupport with MapFormats {
+                                                 )(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport with MapFormats {
 
   def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>

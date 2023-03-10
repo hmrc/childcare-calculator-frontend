@@ -44,7 +44,7 @@
 @layout(pageTitle = title) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhosHadBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhosHadBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("whosHadBenefits.heading")),

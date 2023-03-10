@@ -17,7 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-import org.joda.time.LocalDate
+import java.time.LocalDate
+
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.I18nSupport
@@ -33,8 +34,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class PartnerMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
                                                  mcc: MessagesControllerComponents,
@@ -43,8 +43,8 @@ class PartnerMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
                                                  getData: DataRetrievalAction,
                                                  requireData: DataRequiredAction,
                                                  utils: Utils,
-                                                 partnerMinimumEarnings: partnerMinimumEarnings) extends FrontendController(mcc)
-  with I18nSupport with Logging {
+                                                 partnerMinimumEarnings: partnerMinimumEarnings)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport with Logging {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

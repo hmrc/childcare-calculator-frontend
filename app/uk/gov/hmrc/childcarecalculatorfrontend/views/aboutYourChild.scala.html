@@ -85,7 +85,7 @@
         </div>
     }
 
-    @formWithCSRF(action = AboutYourChildController.onSubmit(mode, index), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = AboutYourChildController.onSubmit(mode, index), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputText(
             label = nameText,

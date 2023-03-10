@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsNumber, Json}
 import play.api.test.Helpers._
@@ -28,8 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, No
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
 import uk.gov.hmrc.http.cache.client.CacheMap
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class AboutYourChildControllerSpec extends ControllerSpecBase {
 
@@ -59,12 +57,12 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = requiredData + (AboutYourChildId.toString -> Json.obj("0" -> AboutYourChild("Foo", new LocalDate(2016, 2, 1))))
+      val validData = requiredData + (AboutYourChildId.toString -> Json.obj("0" -> AboutYourChild("Foo", LocalDate.of(2016, 2, 1))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(AboutYourChildForm().fill(AboutYourChild("Foo", new LocalDate(2016, 2, 1))))
+      contentAsString(result) mustBe viewAsString(AboutYourChildForm().fill(AboutYourChild("Foo", LocalDate.of(2016, 2, 1))))
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -73,7 +71,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "name"      -> "Foo",
         "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.month" -> date.getMonthValue.toString,
         "dob.year"  -> date.getYear.toString
       ).withMethod("POST")
 
@@ -106,7 +104,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "name"      -> "Foo",
         "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.month" -> date.getMonthValue.toString,
         "dob.year"  -> date.getYear.toString
       ).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
@@ -128,7 +126,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "name"      -> "Foo",
         "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthOfYear.toString,
+        "dob.month" -> date.getMonthValue.toString,
         "dob.year"  -> date.getYear.toString
       ).withMethod("POST")
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map.empty)))

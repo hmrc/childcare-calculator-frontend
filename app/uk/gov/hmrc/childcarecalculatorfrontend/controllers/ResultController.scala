@@ -33,8 +33,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ResultController @Inject()(val appConfig: FrontendAppConfig,
@@ -45,7 +44,8 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
                                  resultsService: ResultsService,
                                  moreInfoResults: MoreInfoService,
                                  utils: Utils,
-                                 result: result) extends FrontendController(mcc) with I18nSupport {
+                                 result: result)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>

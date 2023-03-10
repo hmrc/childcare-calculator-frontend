@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import javax.inject.Inject
-
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -26,14 +25,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 trait SubmissionService {
   def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults]
 }
 
-class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits, connector: EligibilityConnector) extends SubmissionService {
+class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits, connector: EligibilityConnector)(implicit ec: ExecutionContext)
+  extends SubmissionService {
 
   def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(appConfig, utils, tc)
 

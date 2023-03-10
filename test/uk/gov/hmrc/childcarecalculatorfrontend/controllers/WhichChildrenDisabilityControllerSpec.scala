@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.OptionValues
 import play.api.data.Form
 import play.api.libs.json._
@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, Wh
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with OptionValues {
 

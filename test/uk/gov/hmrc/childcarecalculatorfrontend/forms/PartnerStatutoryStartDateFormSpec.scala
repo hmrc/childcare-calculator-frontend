@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.time.TaxYear
@@ -41,7 +41,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
   "PartnerStatutoryStartDate Form" must {
 
     "successfully bind when the date is valid" in {
-      form.bind(validData).get shouldEqual new LocalDate(previousTaxYear, 2, 1)
+      form.bind(validData).get shouldEqual LocalDate.of(previousTaxYear, 2, 1)
     }
 
     "fail to bind when the date is omitted" in {
@@ -74,7 +74,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
       val futureDate = LocalDate.now.plusDays(1)
       val data = Map(
         "date.day"   -> futureDate.getDayOfMonth.toString,
-        "date.month" -> futureDate.getMonthOfYear.toString,
+        "date.month" -> futureDate.getMonthValue.toString,
         "date.year"  -> futureDate.getYear.toString
       )
       val expectedError = error("date", "partnerStatutoryStartDate.error.past", statutoryType)
@@ -83,7 +83,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
 
     "fail to bind when the date is more than 2 years and 1 day before 6th April of the current tax year " in {
       val mockTaxYearInfo = mock[TaxYear]
-      val taxYearStart = new LocalDate(currentTaxYear: Int, 4: Int, 5: Int)
+      val taxYearStart = LocalDate.of(currentTaxYear: Int, 4: Int, 5: Int)
 
       when(mockTaxYearInfo.starts) thenReturn taxYearStart
 
@@ -99,7 +99,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
 
     "successfully bind when the date is exactly 2 years before 6th April of the current tax year" in {
       val mockTaxYearInfo = mock[TaxYear]
-      val taxYearStart = new LocalDate(currentTaxYear: Int, 4: Int, 6: Int)
+      val taxYearStart = LocalDate.of(currentTaxYear: Int, 4: Int, 6: Int)
 
       when(mockTaxYearInfo.starts) thenReturn taxYearStart
 
@@ -109,7 +109,7 @@ class PartnerStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
         "date.year" -> (previousTaxYear-1).toString
       )
 
-      form.bind(data).get shouldEqual new LocalDate(previousTaxYear-1: Int, 4: Int, 6: Int)
+      form.bind(data).get shouldEqual LocalDate.of(previousTaxYear-1: Int, 4: Int, 6: Int)
     }
 
   }

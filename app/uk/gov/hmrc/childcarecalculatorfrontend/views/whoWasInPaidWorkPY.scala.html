@@ -40,7 +40,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = WhoWasInPaidWorkPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoWasInPaidWorkPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("whoWasInPaidWorkPY.heading")),

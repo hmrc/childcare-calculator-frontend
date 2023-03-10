@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourOtherIncomeLY
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class YourOtherIncomeLYControllerSpec extends ControllerSpecBase {
 

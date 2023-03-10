@@ -31,8 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class WhichChildrenBlindController @Inject()(
                                         appConfig: FrontendAppConfig,
@@ -41,7 +40,8 @@ class WhichChildrenBlindController @Inject()(
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        whichChildrenBlind: whichChildrenBlind) extends FrontendController(mcc) with I18nSupport {
+                                        whichChildrenBlind: whichChildrenBlind)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request: DataRequest[_] =>

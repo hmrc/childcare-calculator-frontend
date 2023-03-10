@@ -42,7 +42,7 @@
     @heading(messages("yourOtherIncomeLY.heading", "heading-xlarge"))
 
     <p class="govuk-body">@messages("yourOtherIncomeLY.year.start.end.date", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-    @formWithCSRF(action = YourOtherIncomeLYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YourOtherIncomeLYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("yourOtherIncomeLY.heading")),

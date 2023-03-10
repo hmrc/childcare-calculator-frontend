@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Call
@@ -29,8 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, Ch
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childApprovedEducation
 import uk.gov.hmrc.http.cache.client.CacheMap
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
 
@@ -46,7 +44,7 @@ class ChildApprovedEducationControllerSpec extends ControllerSpecBase {
 
   private val testDate: LocalDate = LocalDate.parse("2019-01-01")
 
-  val validBirthday: LocalDate = new LocalDate(testDate.minusYears(17).getYear, 2, 1)
+  val validBirthday: LocalDate = LocalDate.of(testDate.minusYears(17).getYear, 2, 1)
   val requiredData: Map[String, JsObject] = Map(
     AboutYourChildId.toString -> Json.obj(
       "0" -> Json.toJson(AboutYourChild("Foo", validBirthday)),

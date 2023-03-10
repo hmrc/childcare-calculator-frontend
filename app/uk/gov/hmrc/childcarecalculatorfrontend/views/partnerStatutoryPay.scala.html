@@ -53,7 +53,7 @@
     @playComponents.list(pageKey = None, addCssClass = None, bulletList)
 
     <p class="govuk-body">@messages("partnerStatutoryPay.guidance_extra")</p>
-    @formWithCSRF(action = PartnerStatutoryPayController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerStatutoryPayController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("partnerStatutoryPay.heading", taxYearInfo.previousTaxYearStart)),

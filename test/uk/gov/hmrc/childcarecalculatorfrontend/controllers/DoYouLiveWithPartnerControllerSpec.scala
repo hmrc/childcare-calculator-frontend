@@ -28,8 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouLiveWithPartnerI
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouLiveWithPartner
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class DoYouLiveWithPartnerControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[doYouLiveWithPartner]

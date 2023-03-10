@@ -17,14 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import java.text.SimpleDateFormat
+import java.time.{LocalDate, ZoneId, ZoneOffset}
 
-import org.joda.time.LocalDate
-import play.api.mvc.{AnyContent, Call}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import collection.JavaConverters._
 import play.api.Configuration
+import play.api.mvc.{AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{ccDateFormat, nmwConfigFileAbbreviation, ruleDateConfigParam}
 import uk.gov.hmrc.http.cache.client.CacheMap
+
+import scala.collection.JavaConverters._
 
 class Utils {
 
@@ -95,7 +96,7 @@ class Utils {
     val dateFormat = new SimpleDateFormat(ccDateFormat)
 
     val configs: Seq[Configuration] = configuration.underlying.getConfigList(configType)
-      .asScala.map(Configuration(_))
+      .asScala.toSeq.map(Configuration(_))
 
     val configsExcludingDefault: Seq[Configuration] = configs.filterNot(
       _.get[String](ruleDateConfigParam).contains("default")
@@ -103,9 +104,9 @@ class Utils {
       (conf1, conf2) => dateFormat.parse(conf1.getOptional[String](ruleDateConfigParam).get).after(dateFormat.parse(conf2.get[String](ruleDateConfigParam)))
     )
 
-    val result = configsExcludingDefault.find { conf =>
+    val result: Option[Configuration] = configsExcludingDefault.find { conf =>
       val ruleDate = dateFormat.parse(conf.get[String](ruleDateConfigParam))
-      currentDate.toDate.compareTo(ruleDate) >= 0
+      currentDate.compareTo(ruleDate.toInstant.atZone(ZoneId.systemDefault()).toLocalDate) >= 0
     }
 
 

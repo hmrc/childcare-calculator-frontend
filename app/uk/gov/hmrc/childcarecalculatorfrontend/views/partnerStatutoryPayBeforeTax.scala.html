@@ -37,7 +37,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerStatutoryPayBeforeTaxController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerStatutoryPayBeforeTaxController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("partnerStatutoryPayBeforeTax.heading", statutoryType))),

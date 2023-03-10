@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentPaidWorkCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class ParentPaidWorkCYControllerSpec extends ControllerSpecBase {
 

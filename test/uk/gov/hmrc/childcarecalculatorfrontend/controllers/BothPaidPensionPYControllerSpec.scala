@@ -29,8 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidPensionPY
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class BothPaidPensionPYControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[bothPaidPensionPY]

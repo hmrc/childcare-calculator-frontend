@@ -40,7 +40,7 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
             childcare: ChildcareNavigator,
             statutoryPay: StatutoryNavigator,
             survey: SurveyNavigator
-          ) {
+          ) = {
     this(Seq(minHours, maxHours, pensions, employment, benefits, otherIncome, incomeInfo, childcare, statutoryPay, survey): _*)
   }
 

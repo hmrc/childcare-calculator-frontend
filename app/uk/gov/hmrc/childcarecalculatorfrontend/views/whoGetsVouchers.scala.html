@@ -46,7 +46,7 @@
 ) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = WhoGetsVouchersController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoGetsVouchersController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @inputRadio(
         legend = heading(messages("whoGetsVouchers.heading")),

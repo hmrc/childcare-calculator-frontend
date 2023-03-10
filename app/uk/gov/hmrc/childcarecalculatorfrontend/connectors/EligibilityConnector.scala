@@ -17,17 +17,16 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
 import javax.inject.Inject
-
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.Household
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
-class EligibilityConnector @Inject()(appConfig: FrontendAppConfig, http: HttpClient) {
+import scala.concurrent.{ExecutionContext, Future}
+
+class EligibilityConnector @Inject()(appConfig: FrontendAppConfig, http: HttpClient)(implicit ec: ExecutionContext) {
 
   def getEligibility(eligibilityInput: Household)(implicit headerCarrier: HeaderCarrier): Future[SchemeResults] = {
     http.POST[Household, SchemeResults](appConfig.eligibilityUrl, eligibilityInput)

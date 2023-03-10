@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhosHadBenefitsPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefitsPY
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class WhosHadBenefitsPYControllerSpec extends ControllerSpecBase {
 

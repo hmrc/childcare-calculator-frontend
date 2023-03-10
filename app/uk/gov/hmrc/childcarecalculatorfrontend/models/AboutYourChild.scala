@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import org.joda.time.LocalDate
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
+import java.time.LocalDate
 import play.api.libs.json.Json
 
 case class AboutYourChild (name: String, dob: LocalDate)

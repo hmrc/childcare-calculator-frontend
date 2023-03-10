@@ -39,7 +39,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoPaidIntoPensionPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoPaidIntoPensionPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("whoPaidIntoPensionPY.heading")),

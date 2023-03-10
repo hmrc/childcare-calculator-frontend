@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaidIntoPensionPY
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class WhoPaidIntoPensionPYControllerSpec extends ControllerSpecBase {
 

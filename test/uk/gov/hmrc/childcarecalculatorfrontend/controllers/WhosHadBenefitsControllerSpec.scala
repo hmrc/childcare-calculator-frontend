@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBot
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefits
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class WhosHadBenefitsControllerSpec extends ControllerSpecBase {
 

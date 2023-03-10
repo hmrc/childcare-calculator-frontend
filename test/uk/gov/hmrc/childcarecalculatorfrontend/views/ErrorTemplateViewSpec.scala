@@ -33,7 +33,7 @@ class errorTemplateViewSpec extends NewViewSpecBase {
     "rendered" must {
       "have the correct banner title" in {
         val doc = asDocument(createView())
-        val nav = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
+        val nav = doc.getElementsByClass("hmrc-header__service-name")
         nav.text mustBe messages("site.service_name")
       }
     }

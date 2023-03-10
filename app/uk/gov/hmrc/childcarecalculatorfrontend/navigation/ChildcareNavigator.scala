@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Inject
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
@@ -117,7 +117,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
   private def whichChildrenDisabilityRoutes(answers: UserAnswers): Call = {
     answers.whichChildrenDisability.map {
       children =>
-        routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, children.head.toInt)
+        routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, children.head)
     }.getOrElse(SessionExpiredRouter.route(getClass.getName,"whichChildrenDisabilityRoutes",Some(answers)))
   }
 
@@ -209,8 +209,8 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
 
   private def routeToIncomeInfoPage(answers: UserAnswers) =
    utils.getCall(answers.doYouLiveWithPartner) {
-      case false => routes.YourIncomeInfoController.onPageLoad
-      case true => routes.PartnerIncomeInfoController.onPageLoad
+      case false => routes.YourIncomeInfoController.onPageLoad()
+      case true => routes.PartnerIncomeInfoController.onPageLoad()
     }
 
 
@@ -245,9 +245,9 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
 
   private def routeBasedIfPartnerOrNot(hasPartner: Boolean) = {
     if (hasPartner) {
-      routes.PartnerIncomeInfoController.onPageLoad
+      routes.PartnerIncomeInfoController.onPageLoad()
     } else {
-      routes.YourIncomeInfoController.onPageLoad
+      routes.YourIncomeInfoController.onPageLoad()
     }
   }
 

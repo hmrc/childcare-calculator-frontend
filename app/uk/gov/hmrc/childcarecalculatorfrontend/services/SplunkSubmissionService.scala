@@ -23,8 +23,7 @@ import uk.gov.hmrc.play.audit.model.DataEvent
 import uk.gov.hmrc.play.audit.DefaultAuditConnector
 import uk.gov.hmrc.play.audit.AuditExtensions._
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 sealed
 trait SubmissionStatus
@@ -33,7 +32,7 @@ object SubmissionSuccessful extends SubmissionStatus
 object SubmissionFailed extends SubmissionStatus
 
 sealed
-class SplunkSubmissionEvent @Inject() (data: Map[String, String])(implicit hc: HeaderCarrier)
+class SplunkSubmissionEvent @Inject() (data: Map[String, String])(implicit hc: HeaderCarrier, ec: ExecutionContext)
   extends DataEvent(
     auditSource = "Childcare-Calculator",
     auditType = "childcare-calculator-feedback-survey",
@@ -44,7 +43,7 @@ trait SplunkSubmissionServiceInterface {
   def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus]
 }
 
-class SplunkSubmissionService @Inject() (http: DefaultAuditConnector) extends SplunkSubmissionServiceInterface {
+class SplunkSubmissionService @Inject() (http: DefaultAuditConnector)(implicit ec: ExecutionContext) extends SplunkSubmissionServiceInterface {
 
   def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
     

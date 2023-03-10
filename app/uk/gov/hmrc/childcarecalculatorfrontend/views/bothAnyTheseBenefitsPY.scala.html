@@ -55,7 +55,7 @@
         )
     )
 
-    @formWithCSRF(action = BothAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = BothAnyTheseBenefitsPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("bothAnyTheseBenefitsPY.heading")),

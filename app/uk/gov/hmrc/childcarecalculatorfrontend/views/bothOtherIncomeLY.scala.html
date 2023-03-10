@@ -47,7 +47,7 @@
     @errorSummary(form.errors)
     @heading(messages("bothOtherIncomeLY.heading"))
     <p class="govuk-body">@messages("bothOtherIncomeLY.year.start.end.date", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
-    @formWithCSRF(action = BothOtherIncomeLYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = BothOtherIncomeLYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("bothOtherIncomeLY.heading")),

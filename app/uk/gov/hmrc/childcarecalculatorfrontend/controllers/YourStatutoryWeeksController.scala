@@ -32,8 +32,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class YourStatutoryWeeksController @Inject()(
                                         appConfig: FrontendAppConfig,
@@ -43,7 +42,8 @@ class YourStatutoryWeeksController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         yourStatutoryWeeksForm: YourStatutoryWeeksForm,
-                                        yourStatutoryWeeks: yourStatutoryWeeks) extends FrontendController(mcc)with I18nSupport {
+                                        yourStatutoryWeeks: yourStatutoryWeeks)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc)with I18nSupport {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))

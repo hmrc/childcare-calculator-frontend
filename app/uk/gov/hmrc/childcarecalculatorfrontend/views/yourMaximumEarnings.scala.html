@@ -38,7 +38,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YourMaximumEarningsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YourMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("yourMaximumEarnings.title"))),

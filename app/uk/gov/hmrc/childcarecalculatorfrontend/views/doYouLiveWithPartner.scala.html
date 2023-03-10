@@ -40,7 +40,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = DoYouLiveWithPartnerController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = DoYouLiveWithPartnerController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("doYouLiveWithPartner.heading"))),

@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerWorkHoursId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerWorkHours
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class PartnerWorkHoursControllerSpec extends ControllerSpecBase {
 

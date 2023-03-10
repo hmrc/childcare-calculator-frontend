@@ -42,7 +42,7 @@
 @layout(pageTitle = title) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YourChildcareVouchersController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YourChildcareVouchersController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("yourChildcareVouchers.heading"))),

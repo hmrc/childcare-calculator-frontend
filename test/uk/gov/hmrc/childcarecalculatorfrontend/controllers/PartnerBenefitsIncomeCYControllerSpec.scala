@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerBenefitsIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class PartnerBenefitsIncomeCYControllerSpec extends ControllerSpecBase {
 

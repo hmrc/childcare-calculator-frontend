@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfo
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class YourIncomeInfoControllerSpec extends ControllerSpecBase {
 

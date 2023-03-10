@@ -39,7 +39,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = TaxOrUniversalCreditsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = TaxOrUniversalCreditsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @inputRadio(
         legend = heading(messages("taxOrUniversalCredits.heading")),

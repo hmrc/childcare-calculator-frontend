@@ -30,8 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothOtherIncomeLY
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class BothOtherIncomeLYController @Inject()(appConfig: FrontendAppConfig,
                                             mcc: MessagesControllerComponents,
@@ -40,7 +39,8 @@ class BothOtherIncomeLYController @Inject()(appConfig: FrontendAppConfig,
                                             getData: DataRetrievalAction,
                                             requireData: DataRequiredAction,
                                             taxYearInfo: TaxYearInfo,
-                                            bothOtherIncomeLY: bothOtherIncomeLY) extends FrontendController(mcc) with I18nSupport {
+                                            bothOtherIncomeLY: bothOtherIncomeLY)(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>

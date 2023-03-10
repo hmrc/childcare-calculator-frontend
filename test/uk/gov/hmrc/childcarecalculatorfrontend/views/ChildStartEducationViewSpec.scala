@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.{Form, Forms}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
@@ -28,7 +28,7 @@ class ChildStartEducationViewSpec extends NewDateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "childStartEducation"
   val view = application.injector.instanceOf[childStartEducation]
-  val validBirthday = new LocalDate(LocalDate.now.minusYears(17).getYear, 2, 1)
+  val validBirthday = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
 
   def createView = () => view(frontendAppConfig, ChildStartEducationForm(validBirthday), NormalMode, 0, "Foo")(fakeRequest, messages)
 

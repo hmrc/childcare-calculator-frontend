@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerSelfEmployedOr
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerSelfEmployedOrApprentice
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class PartnerSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
 

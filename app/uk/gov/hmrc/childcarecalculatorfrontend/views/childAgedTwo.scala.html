@@ -45,7 +45,7 @@
 @layout(pageTitle = title) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = ChildAgedTwoController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = ChildAgedTwoController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("childAgedTwo.heading"))),

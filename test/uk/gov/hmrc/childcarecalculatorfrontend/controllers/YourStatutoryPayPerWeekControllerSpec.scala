@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayPerWeek
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class YourStatutoryPayPerWeekControllerSpec extends ControllerSpecBase with MockitoSugar{
 

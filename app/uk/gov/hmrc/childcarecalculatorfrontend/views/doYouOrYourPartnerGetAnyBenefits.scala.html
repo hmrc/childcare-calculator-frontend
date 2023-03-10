@@ -57,7 +57,7 @@
         <li>@messages("doYouGetAnyBenefits.li.esa")</li>
     </ul>
 
-    @formWithCSRF(action = DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("doYouOrYourPartnerGetAnyBenefits.heading")),

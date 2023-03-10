@@ -36,7 +36,7 @@
 
 @layout(pageTitle = title) {
     @errorSummary(form.errors)
-    @formWithCSRF(action = YourPartnersAgeController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YourPartnersAgeController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("yourPartnersAge.title")),

@@ -44,7 +44,7 @@
 
     <p class="govuk-body">@messages("yourOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
-    @formWithCSRF(action = YourOtherIncomeThisYearController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YourOtherIncomeThisYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("yourOtherIncomeThisYear.heading")),

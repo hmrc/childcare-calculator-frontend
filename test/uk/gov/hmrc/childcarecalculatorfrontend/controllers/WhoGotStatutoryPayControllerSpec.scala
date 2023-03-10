@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGotStatutoryPayId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGotStatutoryPay
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class WhoGotStatutoryPayControllerSpec extends ControllerSpecBase {
 

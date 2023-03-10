@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSugar{
 

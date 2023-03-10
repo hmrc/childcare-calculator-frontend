@@ -39,7 +39,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = ChildAgedThreeOrFourController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = ChildAgedThreeOrFourController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("childAgedThreeOrFour.heading"))),

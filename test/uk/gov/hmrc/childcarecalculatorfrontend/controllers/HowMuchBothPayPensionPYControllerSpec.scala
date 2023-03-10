@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HowMuchBothPayPension
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, HowMuchBothPayPensionPY}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchBothPayPensionPY
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class HowMuchBothPayPensionPYControllerSpec extends ControllerSpecBase {
 

@@ -17,8 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 
-import org.joda.time.LocalDate
-import play.api.libs.json.JodaWrites._
+import java.time.LocalDate
+
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{ageExactly15Relative, ageOf19YearsAgo, ageOfOver16Relative}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
@@ -32,7 +32,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   private val ageOfOver16: LocalDate        = ageOfOver16Relative(testDate)
   private val ageOfExactly15: LocalDate     = ageExactly15Relative(testDate)
 
-  private val childStartEducationDate: LocalDate = new LocalDate(2017, 2, 1)
+  private val childStartEducationDate: LocalDate = LocalDate.of(2017, 2, 1)
 
   lazy val disabilityBenefits: String = DisabilityBenefits.DISABILITY_BENEFITS.toString
   lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString

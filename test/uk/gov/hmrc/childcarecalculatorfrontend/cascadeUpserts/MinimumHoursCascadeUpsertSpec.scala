@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
-import org.joda.time.LocalDate
-import play.api.libs.json.JodaWrites._
+import java.time.LocalDate
+
 import play.api.libs.json.{JsBoolean, JsNumber, JsString, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoNotYetEnum, YesNoUnsureEnum, YouPartnerBothEnum}
@@ -84,7 +84,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           BothStatutoryPayId.toString -> JsBoolean(true),
           WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
           PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-          PartnerStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
           PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
@@ -132,7 +132,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           BothStatutoryPayId.toString -> JsBoolean(true),
           WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
           PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-          PartnerStatutoryStartDateId.toString -> Json.toJson(new LocalDate(2017, 2, 1)),
+          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
           PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))

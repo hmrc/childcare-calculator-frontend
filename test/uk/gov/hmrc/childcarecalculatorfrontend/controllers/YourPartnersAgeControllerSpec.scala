@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourPartnersAgeId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourPartnersAge
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class YourPartnersAgeControllerSpec extends ControllerSpecBase {
 

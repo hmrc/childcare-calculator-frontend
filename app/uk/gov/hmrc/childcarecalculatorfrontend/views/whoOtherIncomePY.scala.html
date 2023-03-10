@@ -39,7 +39,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoOtherIncomePYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoOtherIncomePYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("whoOtherIncomePY.heading")),

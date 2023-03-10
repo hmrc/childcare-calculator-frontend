@@ -31,8 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncom
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class PartnerEmploymentIncomeCYController @Inject()(
                                                      appConfig: FrontendAppConfig,
@@ -43,7 +42,7 @@ class PartnerEmploymentIncomeCYController @Inject()(
                                                      requireData: DataRequiredAction,
                                                      taxYearInfo: TaxYearInfo,
                                                      form: PartnerEmploymentIncomeCYForm,
-                                                     partnerEmploymentIncomeCY: partnerEmploymentIncomeCY)
+                                                     partnerEmploymentIncomeCY: partnerEmploymentIncomeCY)(implicit ec: ExecutionContext)
   extends FrontendController(mcc) with FormErrorHelper with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {

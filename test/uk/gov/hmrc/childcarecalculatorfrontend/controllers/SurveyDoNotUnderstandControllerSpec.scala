@@ -29,8 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
+
 
 class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
@@ -90,8 +90,9 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 }
 
 class FakeSplunkSubmissionService extends SplunkSubmissionServiceInterface {
+  implicit val ec: ExecutionContext = ExecutionContext.global
   def submit(date: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
-    import scala.concurrent.ExecutionContext.Implicits.global
+
     Future(SubmissionSuccessful)
   }
 }

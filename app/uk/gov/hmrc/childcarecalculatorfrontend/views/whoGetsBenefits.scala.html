@@ -38,7 +38,7 @@
     pageTitle = title
 ) {
 
-    @formWithCSRF(action = WhoGetsBenefitsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoGetsBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors)
 

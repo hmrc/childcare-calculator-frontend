@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayBefo
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryPayBeforeTax
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class YourStatutoryPayBeforeTaxControllerSpec extends ControllerSpecBase {
 

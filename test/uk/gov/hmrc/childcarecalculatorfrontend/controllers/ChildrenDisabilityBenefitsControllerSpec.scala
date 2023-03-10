@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
 import uk.gov.hmrc.http.cache.client.CacheMap
@@ -29,8 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, Ch
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenDisabilityBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childDisabilityBenefits
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
 

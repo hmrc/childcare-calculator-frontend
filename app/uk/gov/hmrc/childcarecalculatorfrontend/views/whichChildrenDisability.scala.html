@@ -39,7 +39,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = WhichChildrenDisabilityController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhichChildrenDisabilityController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputCheckBox(
             field = form("value"),

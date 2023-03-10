@@ -40,7 +40,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerSelfEmployedOrApprenticeController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerSelfEmployedOrApprenticeController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("partnerSelfEmployedOrApprentice.heading")),

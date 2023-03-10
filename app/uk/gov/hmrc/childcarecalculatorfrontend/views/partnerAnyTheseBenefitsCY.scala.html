@@ -55,7 +55,7 @@
         <li>@messages("partnerAnyTheseBenefitsCY.li.independance")</li>
         <li>@messages("partnerAnyTheseBenefitsCY.li.carers")</li>
     </ul>
-    @formWithCSRF(action = PartnerAnyTheseBenefitsCYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerAnyTheseBenefitsCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("partnerAnyTheseBenefitsCY.heading")),

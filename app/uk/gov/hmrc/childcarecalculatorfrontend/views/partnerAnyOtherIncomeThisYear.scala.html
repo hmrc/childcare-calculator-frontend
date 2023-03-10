@@ -41,7 +41,7 @@
     @heading(messages("partnerAnyOtherIncomeThisYear.heading"))
 
     <p class="govuk-body">@messages("partnerAnyOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
-    @formWithCSRF(action = PartnerAnyOtherIncomeThisYearController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerAnyOtherIncomeThisYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("partnerAnyOtherIncomeThisYear.heading")),

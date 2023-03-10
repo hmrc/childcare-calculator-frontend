@@ -36,7 +36,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerOtherIncomeAmountCYController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = PartnerOtherIncomeAmountCYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("partnerOtherIncomeAmountCY.heading")),

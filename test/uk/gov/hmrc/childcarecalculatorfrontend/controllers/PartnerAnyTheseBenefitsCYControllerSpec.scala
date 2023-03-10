@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerAnyTheseBenefitsCY
 import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 

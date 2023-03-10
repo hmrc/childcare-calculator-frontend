@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoIsInPaidEmployment
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoIsInPaidEmployment
 
-import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
 

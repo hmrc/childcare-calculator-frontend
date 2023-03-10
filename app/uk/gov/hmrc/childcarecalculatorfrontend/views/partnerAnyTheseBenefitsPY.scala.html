@@ -53,7 +53,7 @@
     @heading(messages("partnerAnyTheseBenefitsPY.heading"))
     <p class="govuk-body">@messages("partnerAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     @playComponents.list(pageKey = None, addCssClass = None, bulletList)
-    @formWithCSRF(action = PartnerAnyTheseBenefitsPYController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = PartnerAnyTheseBenefitsPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("partnerAnyTheseBenefitsPY.heading")),

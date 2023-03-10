@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc.{MessagesControllerComponents, RequestHeader, Result, Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, RequestHeader, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
@@ -30,8 +30,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpired
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class AboutYourChildController @Inject()(
                                           appConfig: FrontendAppConfig,
@@ -41,7 +41,8 @@ class AboutYourChildController @Inject()(
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
                                           aboutYourChild: aboutYourChild
-                                        ) extends FrontendController(mcc) with I18nSupport with MapFormats {
+                                        )(implicit ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport with MapFormats {
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))

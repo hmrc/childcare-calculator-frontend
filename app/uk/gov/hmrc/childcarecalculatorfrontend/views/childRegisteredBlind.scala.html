@@ -35,7 +35,7 @@
 @layout(pageTitle = title) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = RegisteredBlindController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = RegisteredBlindController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("childRegisteredBlind.heading", name))),

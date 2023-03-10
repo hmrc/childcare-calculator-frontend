@@ -38,7 +38,7 @@
     pageTitle = title
 ) {
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoIsInPaidEmploymentController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoIsInPaidEmploymentController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("whoIsInPaidEmployment.heading")),

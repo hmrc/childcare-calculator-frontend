@@ -28,8 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EitherOfYouMaximumEar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherOfYouMaximumEarnings
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class EitherOfYouMaximumEarningsControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[eitherOfYouMaximumEarnings]

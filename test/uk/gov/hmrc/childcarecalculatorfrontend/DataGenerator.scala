@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import play.api.libs.json._
-import play.api.libs.json.JodaWrites._
+
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
@@ -38,13 +38,13 @@ object DataGenerator {
   val ageOf19YearsAgo: LocalDate => LocalDate = (date : LocalDate) =>
     date.minusYears(19).minusDays(1)
   val ageOf16WithBirthdayBefore31stAugust: LocalDate => LocalDate = (date : LocalDate) =>
-    if (date.getMonthOfYear > 8) {
+    if (date.getMonthValue > 8) {
       LocalDate.parse(s"${date.minusYears(16).getYear}-07-31")
     } else {
       date.minusYears(16)
     }
   val ageOfOver16Relative: LocalDate => LocalDate = (date : LocalDate) =>
-    if (date.getMonthOfYear <= 8) {
+    if (date.getMonthValue <= 8) {
       date.minusYears(17)
     } else {
       date.minusYears(16)
@@ -52,11 +52,11 @@ object DataGenerator {
   val ageUnder16Relative: LocalDate => LocalDate = (date : LocalDate) =>
     date.minusYears(1)
   val ageExactly16Relative: LocalDate => LocalDate = (date : LocalDate) =>
-    new LocalDate(date.minusYears(16).getYear, 6, 1)
+    LocalDate.of(date.minusYears(16).getYear, 6, 1)
   val ageExactly15Relative: LocalDate => LocalDate = (date : LocalDate) =>
-    new LocalDate(date.minusYears(15).getYear, 6, 1)
+    LocalDate.of(date.minusYears(15).getYear, 6, 1)
 
-  private val childStartEducationDate = new LocalDate(2017, 2, 1)
+  private val childStartEducationDate = LocalDate.of(2017, 2, 1)
 
   lazy val disabilityBenefits: String = DisabilityBenefits.DISABILITY_BENEFITS.toString
   lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString

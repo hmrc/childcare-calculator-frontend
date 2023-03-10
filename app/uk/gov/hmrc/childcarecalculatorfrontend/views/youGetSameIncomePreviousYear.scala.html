@@ -52,7 +52,7 @@
 
     @tableList(incomeSummary)
 
-    @formWithCSRF(action = YouGetSameIncomePreviousYearController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = YouGetSameIncomePreviousYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("youGetSameIncomePreviousYear.heading")),

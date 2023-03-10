@@ -17,7 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import org.joda.time.LocalDate
+@import java.time.LocalDate
 
 @this(
     layout: Layout,
@@ -35,7 +35,7 @@
 }
 
 @layout(pageTitle = title) {
-    @formWithCSRF(action = PartnerStatutoryStartDateController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "") {
+    @formWithCSRF(action = PartnerStatutoryStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @errorSummary(form.errors, key => s"$key.day")
 

@@ -44,7 +44,7 @@
 @layout(pageTitle = title) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoPaysIntoPensionController.onSubmit(mode), 'autoComplete -> "off") {
+    @formWithCSRF(action = WhoPaysIntoPensionController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
 
     @inputRadio(

@@ -28,8 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcareCostsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcareCosts
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class ChildcareCostsControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[childcareCosts]

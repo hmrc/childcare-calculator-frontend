@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.Logging
-
 import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
@@ -33,8 +32,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class SurveyDoNotUnderstandController @Inject()(
                                         appConfig: FrontendAppConfig,
@@ -44,7 +42,7 @@ class SurveyDoNotUnderstandController @Inject()(
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         splunkSubmissionService: SplunkSubmissionServiceInterface,
-                                        surveyDoNotUnderstand: surveyDoNotUnderstand)
+                                        surveyDoNotUnderstand: surveyDoNotUnderstand)(implicit ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with Logging {
 
   def onPageLoad(): Action[AnyContent] = (getData andThen requireData) {
