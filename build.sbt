@@ -1,5 +1,5 @@
 import play.sbt.routes.RoutesKeys
-import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, scalaSettings, targetJvm}
+import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, scalaSettings}
 import scoverage._
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
