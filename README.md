@@ -1,9 +1,4 @@
-
-
 # childcare-calculator-frontend
-
-  ![Download](https://api.bintray.com/packages/hmrc/releases/childcare-calculator-frontend/images/download.svg) 
- (https://bintray.com/hmrc/releases/childcare-calculator-frontend/_latestVersion)
 
 The Childcare Calculator will help parents quickly self-assess the options for their childcare support, allowing them to
 make a decision on which scheme will best suit their needs. The Childcare Calculator will calculate the data input by
@@ -55,19 +50,17 @@ You'll then need to touch these areas yourself as needed (and the order is less 
 #### Unit Tests
 To run the unit tests for the application run the following:
 
-1. `cd $workspace`
-2. `sbt test`
+1. `sbt test`
 
 To run a single unit test/spec
 
-1. `cd $workspace`
-2. `sbt`
-3. `test-only *SpecToUse*` - Example being the class name of your UnitSpec
+1. `sbt`
+2. `test-only *SpecToUse*` - Example being the class name of your UnitSpec
 
 #### Test Coverage
-To run the test coverage suite `scoverage`
+To run the test coverage suite
 
-1. `sbt clean scoverage:test`
+1. `sbt clean coverage test coverageReport`
 
 #### Acceptance Tests
 
