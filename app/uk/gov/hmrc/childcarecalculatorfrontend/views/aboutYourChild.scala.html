@@ -76,7 +76,7 @@
 @layout(
     pageTitle = title
 ) {
-    @errorSummary(form.errors, key => s"$key.day")
+    @errorSummary(form.errors, key => if (key=="dob") s"$key.day" else s"$key")
     @heading(headingText)
 
     @if(index == 0) {
