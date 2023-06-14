@@ -1086,6 +1086,7 @@ whichChildrenDisability.error.notCompleted = Select who gets disability benefits
 
 whichChildrenBlind.title = Who’s registered blind?
 whichChildrenBlind.heading = Who’s registered blind?
+whichChildrenBlind.hint = Select all that apply.
 whichChildrenBlind.checkYourAnswersLabel = Who is registered blind?
 whichChildrenBlind.error.notCompleted = Select who’s registered blind
 

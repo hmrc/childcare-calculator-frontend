@@ -52,6 +52,7 @@
         @inputCheckBox(
             field = form("value"),
             legend = messages("whichChildrenBlind.heading"),
+            hint = Some(messages("whichChildrenBlind.hint")),
             inputs = inputs.map { checkboxOption =>
                 CheckboxItem(
                     content = HtmlContent(checkboxOption._1.toString.capitalize),

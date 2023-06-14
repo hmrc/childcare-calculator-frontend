@@ -931,6 +931,7 @@ whichChildrenDisability.selectAll=Dewiswch bawb a fydd yn eu cael.
 whichChildrenDisability.error.notCompleted=Dewiswch pwy sy’n cael budd-daliadau anabledd
 whichChildrenBlind.title=Pwy sydd wedi’i gofrestru’n ddall?
 whichChildrenBlind.heading=Pwy sydd wedi’i gofrestru’n ddall?
+whichChildrenBlind.hint=Dewiswch bob un sy’n berthnasol.
 whichChildrenBlind.checkYourAnswersLabel=Pwy sydd wedi’i gofrestru’n ddall?
 whichChildrenBlind.error.notCompleted=Dewiswch bwy sydd wedi’i gofrestru’n ddall
 whoHasChildcareCosts.title=Pwy sydd â chostau gofal plant?
