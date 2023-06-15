@@ -544,7 +544,7 @@ partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this year
 partnerIncomeInfo.li.birth_or_adoption = weeks taken off work while on statutory maternity, paternity, shared parental or adoption pay
 
 parentEmploymentIncomeCY.title = How much will you get paid this year?
-parentEmploymentIncomeCY.heading = How much will you get paid this year?
+parentEmploymentIncomeCY.heading = How much will you get paid this year in pounds?
 parentEmploymentIncomeCY.error.blank = Enter how much you will get paid this year
 parentEmploymentIncomeCY.error.invalid = Enter numbers between 1 and 999999.99 for how much you will get paid this year
 parentEmploymentIncomeCY.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that you will not earn more than £100,000 a year
@@ -755,7 +755,7 @@ youBenefitsIncomeCY.error.invalid = Enter numbers from 1 to 9999.99 for how much
 youBenefitsIncomeCY.error.required = Enter how much you will get in benefits this year
 
 howMuchYouPayPension.title = How much do you pay into your pension a month?
-howMuchYouPayPension.heading = How much do you pay into your pension a month?
+howMuchYouPayPension.heading = How much do you pay into your pension a month in pounds?
 howMuchYouPayPension.checkYourAnswersLabel = How much do you pay into your pension a month?
 howMuchYouPayPension.error.invalid = Enter numbers between 1 and 9999.99 for how much you pay into your pension a month
 howMuchYouPayPension.error.required = Enter how much you pay into your pension a month
@@ -1112,7 +1112,7 @@ whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced dai
 whichDisabilityBenefits.error.notCompleted = Select the disability benefits that {0} gets
 
 expectedChildcareCosts.title = What are your expected {0} childcare costs for your {1} child?
-expectedChildcareCosts.heading = What are your expected {0} childcare costs for {1}?
+expectedChildcareCosts.heading = What are your expected {0} childcare costs in pound for {1}?
 expectedChildcareCosts.heading.notYet = What will your expected {0} childcare costs be for {1}?
 expectedChildcareCosts.info = The schemes only offer support for costs with an approved childcare provider.
 expectedChildcareCosts.info.notYet = As you don’t have costs but think you will, you can give an estimate. The schemes only offer help towards approved childcare costs.
