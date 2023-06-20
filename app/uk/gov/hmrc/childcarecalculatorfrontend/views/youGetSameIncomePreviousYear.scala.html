@@ -27,10 +27,18 @@
     heading: playComponents.heading,
     inputYesNo: playComponents.input_yes_no,
     submitButton: playComponents.submit_button,
-    tableList: playComponents.tableList
+    summaryList: playComponents.summary_list
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo, incomeSummary: Option[ListMap[String,String]] = None)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Boolean], mode: Mode,
+    taxYearInfo: TaxYearInfo,
+    incomeSummary: Option[ListMap[String,String]] = None
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("youGetSameIncomePreviousYear.title")) else messages("youGetSameIncomePreviousYear.title")
@@ -50,7 +58,7 @@
 
     <p class="govuk-body">@messages("youGetSameIncomePreviousYear.info.summary")</p>
 
-    @tableList(incomeSummary)
+    @summaryList(incomeSummary)
 
     @formWithCSRF(action = YouGetSameIncomePreviousYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 

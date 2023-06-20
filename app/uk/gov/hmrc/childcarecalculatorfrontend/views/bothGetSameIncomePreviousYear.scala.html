@@ -28,7 +28,7 @@
         heading: playComponents.heading,
         submitButton: playComponents.submit_button,
         inputYesNo: playComponents.input_yes_no,
-        tableList: playComponents.tableList
+        summaryList: playComponents.summary_list
 )
 
 @(
@@ -42,19 +42,25 @@
         messages: Messages
 )
 
-@title = @{if(form.errors.nonEmpty) messages("site.title.error", messages("bothGetSameIncomePreviousYear.title")) else messages("bothGetSameIncomePreviousYear.title")}
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("bothGetSameIncomePreviousYear.title")) else messages("bothGetSameIncomePreviousYear.title")
+}
 
 @layout(
     pageTitle = title,
 ) {
 
     @errorSummary(form.errors)
+
     @heading(messages("bothGetSameIncomePreviousYear.heading"))
+
     <div class="panel-indent panel-border-wide panel-info">
         <p class="govuk-inset-text">@messages("bothGetSameIncomePreviousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     </div>
+
     <p class="govuk-body">@messages("bothGetSameIncomePreviousYear.info.summary")</p>
-    @tableList(incomeSummary)
+
+    @summaryList(incomeSummary)
 
     @formWithCSRF(action = BothGetSameIncomePreviousYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 

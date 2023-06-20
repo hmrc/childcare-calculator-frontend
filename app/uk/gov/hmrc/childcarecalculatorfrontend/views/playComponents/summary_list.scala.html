@@ -17,18 +17,16 @@
 @this()
 
 @(
-    tableDataOpt: Option[Map[String, String]]
+    summaryDataOpt: Option[Map[String, String]]
 )(implicit messages: Messages)
 
-@for(tableData <- tableDataOpt) {
-    <table class="govuk-table">
-        <tbody class="govuk-table__body">
-                @for(rowItem <- tableData) {
-                    <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">@rowItem._1</th>
-                        <td class="govuk-table__cell">@rowItem._2</td>
-                    </tr>
-                }
-        </tbody>
-    </table>
+@for(summaryData <- summaryDataOpt) {
+    <dl class="govuk-summary-list">
+        @for(rowItem <- summaryData) {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@rowItem._1</dt>
+                <dd class="govuk-summary-list__value">@rowItem._2</dd>
+            </div>
+        }
+    </dl>
 }
