@@ -28,7 +28,7 @@
         heading: playComponents.heading,
         submitButton: playComponents.submit_button,
         inputYesNo: playComponents.input_yes_no,
-        summaryList: playComponents.summary_list
+        govukSummaryList: GovukSummaryList
 )
 
 @(
@@ -46,6 +46,14 @@
     if(form.errors.nonEmpty) messages("site.title.error", messages("bothGetSameIncomePreviousYear.title")) else messages("bothGetSameIncomePreviousYear.title")
 }
 
+@incomeRows = @{incomeSummary match {
+        case Some(income) =>
+            income.flatMap { case (key, value) => Some(SummaryListRow(key = Key(Text(key)), value = Value(Text(value), classes = "govuk-!-width-one-quarter")))
+        }.toSeq
+        case None => Seq.empty[SummaryListRow]
+    }
+}
+
 @layout(
     pageTitle = title,
 ) {
@@ -60,7 +68,11 @@
 
     <p class="govuk-body">@messages("bothGetSameIncomePreviousYear.info.summary")</p>
 
-    @summaryList(incomeSummary)
+    @govukSummaryList(
+        SummaryList(
+            rows = incomeRows
+        )
+    )
 
     @formWithCSRF(action = BothGetSameIncomePreviousYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
