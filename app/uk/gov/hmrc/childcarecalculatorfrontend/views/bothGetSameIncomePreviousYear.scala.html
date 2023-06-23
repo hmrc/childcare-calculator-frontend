@@ -28,7 +28,7 @@
         heading: playComponents.heading,
         submitButton: playComponents.submit_button,
         inputYesNo: playComponents.input_yes_no,
-        tableList: playComponents.tableList
+        govukSummaryList: GovukSummaryList
 )
 
 @(
@@ -42,19 +42,37 @@
         messages: Messages
 )
 
-@title = @{if(form.errors.nonEmpty) messages("site.title.error", messages("bothGetSameIncomePreviousYear.title")) else messages("bothGetSameIncomePreviousYear.title")}
+@title = @{
+    if(form.errors.nonEmpty) messages("site.title.error", messages("bothGetSameIncomePreviousYear.title")) else messages("bothGetSameIncomePreviousYear.title")
+}
+
+@incomeRows = @{incomeSummary match {
+        case Some(income) =>
+            income.flatMap { case (key, value) => Some(SummaryListRow(key = Key(Text(key)), value = Value(Text(value), classes = "govuk-!-width-one-quarter")))
+        }.toSeq
+        case None => Seq.empty[SummaryListRow]
+    }
+}
 
 @layout(
     pageTitle = title,
 ) {
 
     @errorSummary(form.errors)
+
     @heading(messages("bothGetSameIncomePreviousYear.heading"))
+
     <div class="panel-indent panel-border-wide panel-info">
         <p class="govuk-inset-text">@messages("bothGetSameIncomePreviousYear.startEndDate", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
     </div>
+
     <p class="govuk-body">@messages("bothGetSameIncomePreviousYear.info.summary")</p>
-    @tableList(incomeSummary)
+
+    @govukSummaryList(
+        SummaryList(
+            rows = incomeRows
+        )
+    )
 
     @formWithCSRF(action = BothGetSameIncomePreviousYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
