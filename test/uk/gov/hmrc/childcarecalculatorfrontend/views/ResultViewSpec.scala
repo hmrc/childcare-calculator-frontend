@@ -394,8 +394,8 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
 
   "Early results page" when {
     "rendered" must {
-      "eligible for 16 free hours for scotland and not eligible for other schemes" in {
-        val model = ResultsViewModel(freeHours = Some(16), location = Location.SCOTLAND, isAnyoneInPaidEmployment = true, hasChildcareCosts = false, livesWithPartner = false, hasCostsWithApprovedProvider = false)
+      "eligible for 22 free hours for scotland and not eligible for other schemes" in {
+        val model = ResultsViewModel(freeHours = Some(22), location = Location.SCOTLAND, isAnyoneInPaidEmployment = true, hasChildcareCosts = false, livesWithPartner = false, hasCostsWithApprovedProvider = false)
         val doc = asDocument(resultView(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(doc, messages("freeHoursResult.info.entitled.scotland"))
@@ -422,8 +422,8 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         assertContainsText(doc, messages("freeHoursResult.info.entitled.england"))
       }
 
-      "eligible for 16 free hours for scotland, gets tc and not eligible for other schemes" in {
-        val model = ResultsViewModel(freeHours = Some(16), location = Location.SCOTLAND, isAnyoneInPaidEmployment = true, hasChildcareCosts = true, livesWithPartner = false, hasCostsWithApprovedProvider = true)
+      "eligible for 22 free hours for scotland, gets tc and not eligible for other schemes" in {
+        val model = ResultsViewModel(freeHours = Some(22), location = Location.SCOTLAND, isAnyoneInPaidEmployment = true, hasChildcareCosts = true, livesWithPartner = false, hasCostsWithApprovedProvider = true)
         val doc = asDocument(resultView(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(doc, messages("freeHoursResult.info.entitled.scotland"))
@@ -434,8 +434,8 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         assertContainsText(doc, messages("result.esc.not.eligible.para1"))
       }
 
-      "eligible for 16 free hours for scotland, gets uc and not eligible for other schemes" in {
-        val model = ResultsViewModel(freeHours = Some(16), location = Location.SCOTLAND, isAnyoneInPaidEmployment = true, hasChildcareCosts = true, livesWithPartner = false, hasCostsWithApprovedProvider = true)
+      "eligible for 22 free hours for scotland, gets uc and not eligible for other schemes" in {
+        val model = ResultsViewModel(freeHours = Some(22), location = Location.SCOTLAND, isAnyoneInPaidEmployment = true, hasChildcareCosts = true, livesWithPartner = false, hasCostsWithApprovedProvider = true)
         val doc = asDocument(resultView(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(doc, messages("freeHoursResult.info.entitled.scotland"))
