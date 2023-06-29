@@ -1,7 +1,6 @@
 import play.sbt.routes.RoutesKeys
 import uk.gov.hmrc.DefaultBuildSettings.{defaultSettings, scalaSettings}
 import scoverage._
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 
 
@@ -32,7 +31,6 @@ lazy val microservice = Project(appName, file("."))
   .settings(PlayKeys.playDefaultPort := 9381)
   .settings(RoutesKeys.routesImport ++= Seq("uk.gov.hmrc.childcarecalculatorfrontend.models._"))
   .settings(scalaSettings: _*)
-  .settings(publishingSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(scoverageSettings: _*)
   .settings(
