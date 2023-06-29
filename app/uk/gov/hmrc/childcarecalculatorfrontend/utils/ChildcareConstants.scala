@@ -59,7 +59,7 @@ object ChildcareConstants {
   val lastDayOfTaxYear = 5
 
   val freeHoursForEngland = 15
-  val freeHoursForScotland = 16
+  val freeHoursForScotland = 22
   val freeHoursForWales = 10
   val freeHoursForNI = 12.5
   val eligibleMaxFreeHours = 30

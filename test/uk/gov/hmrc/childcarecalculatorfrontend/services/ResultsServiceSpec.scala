@@ -354,7 +354,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
       }
 
 
-      "User is eligible for 16 free hours, lives in Scotland and not eligible for max free hours" in {
+      "User is eligible for 22 free hours, lives in Scotland and not eligible for max free hours" in {
         val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
         val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
         val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
@@ -371,7 +371,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
                                               tcSchemeIneligibilityMsgBuilder)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
-        values.freeHours mustBe Some(16)
+        values.freeHours mustBe Some(22)
       }
 
 
