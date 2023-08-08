@@ -60,13 +60,13 @@
         @section_break()
 
         @if(model.noOfEligibleSchemes(hideTC) > 0) {
+            <h2 class="govuk-heading-l">@messages("result.eligible.subheading")</h2>
 
-            @heading(heading = messages("result.eligible.subheading"), headingSize = "heading-l")
             @resultEligible(model, utils, hideTC)
 
             @if(!model.isEligibleToAllSchemes(hideTC)) {
                 <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
-                @heading(heading = messages("result.not.eligible.subheading"), headingSize = "heading-l")
+                <h2 class="govuk-heading-l">@messages("result.not.eligible.subheading")</h2>
                 @resultNotEligible(model, hideTC)
                 @section_break()
             }
@@ -74,7 +74,7 @@
 
             @if(model.showTwoYearOldInfo(hideTC) && model.isEligibleToAllSchemes(hideTC)) {
                 <div>
-                    @heading(heading=messages(s"results.two.years.old.guidance.${model.location}.title"), headingSize = "heading-m")
+                    <h2 class="govuk-heading-m">@messages(s"results.two.years.old.guidance.${model.location}.title")</h2>
                     <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.two.freehours")</p>
                     <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
                         @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
@@ -86,8 +86,8 @@
 
             @if(model.location == Location.ENGLAND){
                 @if(model.noOfEligibleSchemes(hideTC) > 1) {
-                    @heading(heading=messages("result.further.information.subheading"), headingSize = "heading-l")
-                    @heading(heading=messages("result.more.info.title"), headingSize = "heading-m")
+                    <h2 class="govuk-heading-l">@messages("result.further.information.subheading")</h2>
+                    <h3 class="govuk-heading-m">@messages("result.more.info.title")</h3>
 
                     @if(model.noOfEligibleSchemes(hideTC) == 4) {
                         <p class="govuk-body">@messages("result.more.info.para")</p>
@@ -161,7 +161,7 @@
 
                 @if(links.nonEmpty){
                     <div class="moreInfo">
-                        @heading(heading=messages("aboutYourResults.more.info.title"), headingSize="heading-m")
+                        <h2 class="govuk-heading-m">@messages("aboutYourResults.more.info.title")</h2>
                         <p class="govuk-body">@messages("aboutYourResults.more.info.para1")</p>
                         <ul class="govuk-list govuk-list--bullet">
                             @for(link <- links) {
@@ -175,7 +175,7 @@
             }
         } else {
             <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
-            @heading(heading=messages("result.not.eligible.subheading"), headingSize="heading-l")
+            <h2 class="govuk-heading-l">@messages("result.not.eligible.subheading")</h2>
             @resultNotEligible(model, hideTC)
             @section_break()
         }

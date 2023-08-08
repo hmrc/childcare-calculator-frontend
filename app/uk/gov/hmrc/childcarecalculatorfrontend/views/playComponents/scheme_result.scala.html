@@ -47,7 +47,7 @@
         sectionBreak: Boolean = true
 )(implicit messages: Messages, lang: Lang)
 
-@heading(heading=title, headingSize = "heading-m", id = id)
+<h3 class="govuk-heading-m" id="@id">@title</h3>
 
 @if(warningMessage.isDefined) {
     @govukWarningText(WarningText(

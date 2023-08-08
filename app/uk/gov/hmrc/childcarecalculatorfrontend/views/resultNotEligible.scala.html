@@ -130,7 +130,7 @@ schemeResult: playComponents.scheme_result,
 
     @if(model.showTwoYearOldInfo(hideTC)) {
         <div class="twoYearsOld">
-            @heading(heading=messages(s"results.two.years.old.guidance.${model.location}.title"), headingSize = "heading-m")
+            <h3 class="govuk-heading-m">@messages(s"results.two.years.old.guidance.${model.location}.title")</h3>
             <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
                 @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
             </a>
@@ -141,7 +141,7 @@ schemeResult: playComponents.scheme_result,
 
     @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider) {
 
-        @heading(heading=messages("freeHoursResult.toBeEligible.heading"), headingSize = "heading-m")
+        <h3 class="govuk-heading-m">@messages("freeHoursResult.toBeEligible.heading")</h3>
 
         <p class="govuk-body">
             @if(!model.hasChildcareCosts) {
@@ -162,11 +162,11 @@ schemeResult: playComponents.scheme_result,
 
         @playComponents.section_break()
 
-        @heading(heading=messages("freeHoursResult.info.extraHelp.heading"), headingSize = "heading-l")
+        <h2 class="govuk-heading-l">@messages("freeHoursResult.info.extraHelp.heading")</h2>
 
         <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para1")</p>
 
-        @heading(heading=messages("freeHoursResult.info.extraHelp.subheading"), headingSize = "heading-m")
+        <h3 class="govuk-heading-m">@messages("freeHoursResult.info.extraHelp.subheading")</h3>
 
         <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para2")</p>
             @{
