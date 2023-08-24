@@ -20,7 +20,6 @@ import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 class CacheMapClonerSpec extends SpecBase {
   "Cache map cloner" should {

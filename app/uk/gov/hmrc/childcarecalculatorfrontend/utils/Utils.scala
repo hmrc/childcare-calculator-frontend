@@ -17,15 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import java.text.SimpleDateFormat
-import java.time.{LocalDate, ZoneId, ZoneOffset}
+import java.time.{LocalDate, ZoneId}
 
 import play.api.Configuration
 import play.api.mvc.{AnyContent, Call}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{ccDateFormat, nmwConfigFileAbbreviation, ruleDateConfigParam}
-import uk.gov.hmrc.http.cache.client.CacheMap
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 class Utils {
 

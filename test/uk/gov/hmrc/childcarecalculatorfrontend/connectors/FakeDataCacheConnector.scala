@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
 import play.api.libs.json.Format
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 import scala.concurrent.{ExecutionContext, Future}
 

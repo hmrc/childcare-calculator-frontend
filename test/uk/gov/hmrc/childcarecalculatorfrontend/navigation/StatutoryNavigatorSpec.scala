@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayT
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.ModelFactory
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 
 class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {

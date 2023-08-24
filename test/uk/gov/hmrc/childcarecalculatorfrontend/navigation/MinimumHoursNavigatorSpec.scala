@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 
 class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {

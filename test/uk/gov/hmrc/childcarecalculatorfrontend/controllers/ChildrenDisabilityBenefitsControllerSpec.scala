@@ -16,19 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import java.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, ChildrenDisabilityBenefitsId, NoOfChildrenId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenDisabilityBenefits
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childDisabilityBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childDisabilityBenefits, childrenDisabilityBenefits}
+
+import java.time.LocalDate
 
 class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
 

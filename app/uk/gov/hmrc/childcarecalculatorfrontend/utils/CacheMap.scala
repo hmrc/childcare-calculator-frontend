@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
+package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.scalatestplus.play.PlaySpec
-import play.api.libs.json.JsValue
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import play.api.libs.json._
 
-trait SchemeSpec extends PlaySpec {
+case class CacheMap(id: String, data: Map[String, JsValue]) {
 
-  def helper(answers: (String, JsValue)*): UserAnswers =
-    new UserAnswers(CacheMap("", Map(answers: _*)))
+  def getEntry[T](key: String)(implicit fjs: Reads[T]): Option[T] =
+    data
+      .get(key)
+      .map(json =>
+        json
+          .validate[T]
+          .fold(
+            errors => throw new CacheEntryValidationException(key, json, CacheMap.getClass, errors),
+            valid  => valid
+          )
+      )
+}
+
+object CacheMap {
+  implicit val formats = Json.format[CacheMap]
 }

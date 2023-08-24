@@ -18,9 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
 import com.google.inject.{ImplementedBy, Inject}
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.repositories.SessionRepository
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CascadeUpsert
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, CascadeUpsert}
 
 import scala.concurrent.{ExecutionContext, Future}
 

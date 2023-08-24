@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import java.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 import scala.util.Try
 

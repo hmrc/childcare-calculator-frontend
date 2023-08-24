@@ -17,12 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import javax.inject.Inject
-
 import play.api.libs.json.{JsBoolean, JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 class PensionsCascadeUpsert @Inject()() extends SubCascadeUpsert {
 

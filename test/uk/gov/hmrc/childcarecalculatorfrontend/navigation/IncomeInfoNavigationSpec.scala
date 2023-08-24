@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId,
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionValues {
 

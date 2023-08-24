@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
   val navigator = new SurveyNavigator(new Utils(), appConfig =frontendAppConfig)

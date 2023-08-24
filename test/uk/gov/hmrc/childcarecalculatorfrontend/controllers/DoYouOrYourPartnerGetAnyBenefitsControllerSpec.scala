@@ -25,9 +25,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouOrYourPartnerGetAnyBenefitsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.doYouOrYourPartnerGetAnyBenefitsErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouOrYourPartnerGetAnyBenefits
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 class DoYouOrYourPartnerGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 

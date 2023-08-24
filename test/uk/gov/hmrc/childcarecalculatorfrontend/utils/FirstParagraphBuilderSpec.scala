@@ -25,7 +25,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildcarePayFrequencyId, DoYouLiveWithPartnerId, ExpectedChildcareCostsId, NoOfChildrenId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase {
  "First Paragraph Builder" must {

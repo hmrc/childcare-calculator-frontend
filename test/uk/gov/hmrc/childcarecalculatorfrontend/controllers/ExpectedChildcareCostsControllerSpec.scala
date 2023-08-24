@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import java.time.LocalDate
 import play.api.data.Form
 import play.api.libs.json.{JsNumber, JsString, JsValue, Json}
 import play.api.mvc.Call
@@ -29,8 +28,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, Ch
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, NormalMode, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
-import uk.gov.hmrc.http.cache.client.CacheMap
+
+import java.time.LocalDate
 
 class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 

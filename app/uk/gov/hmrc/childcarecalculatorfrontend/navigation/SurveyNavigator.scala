@@ -29,7 +29,7 @@ class SurveyNavigator @Inject()(utils: Utils,appConfig: FrontendAppConfig) exten
 
   private def doNotUnderstandRoute(answers: UserAnswers) = {
     utils.getCall(answers.surveyChildcareSupport) {
-      case false => routes.SurveyDoNotUnderstandController.onPageLoad
+      case false => routes.SurveyDoNotUnderstandController.onPageLoad()
       case true => Call("",appConfig.surveyThankYouUrl)
     }
   }

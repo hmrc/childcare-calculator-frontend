@@ -20,7 +20,6 @@ import org.mockito.Mockito.spy
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 class SessionExpiredRouterSpec extends SpecBase {
   "Session Expired Router" should {

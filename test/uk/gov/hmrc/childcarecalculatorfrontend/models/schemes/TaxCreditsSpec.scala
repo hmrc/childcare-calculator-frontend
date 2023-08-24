@@ -17,11 +17,9 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import org.mockito.Mockito._
-import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{EitherValues, OptionValues}
-import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._

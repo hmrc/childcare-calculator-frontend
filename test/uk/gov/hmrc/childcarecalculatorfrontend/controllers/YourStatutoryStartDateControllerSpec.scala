@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import java.time.LocalDate
 import play.api.data.Form
-
 import play.api.libs.json.{JsString, Json}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
@@ -27,9 +25,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.{YourStatutoryPayTypeForm, YourStatutoryStartDateForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayTypeId, YourStatutoryStartDateId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
-import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.time.TaxYear
+
+import java.time.LocalDate
 
 
 

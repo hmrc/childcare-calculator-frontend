@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerPaidWorkPYId,
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   lazy val yes: String = YesNoUnsureEnum.YES.toString

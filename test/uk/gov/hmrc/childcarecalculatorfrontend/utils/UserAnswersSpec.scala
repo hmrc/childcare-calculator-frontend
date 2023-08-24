@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import java.time.LocalDate
 import org.scalatest.OptionValues
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.http.cache.client.CacheMap
+
+import java.time.LocalDate
 
 class UserAnswersSpec extends PlaySpec with OptionValues {
 

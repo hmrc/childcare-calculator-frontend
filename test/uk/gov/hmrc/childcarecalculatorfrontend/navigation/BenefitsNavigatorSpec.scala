@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{BothBenefitsIncomePY, Ben
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
 

@@ -28,9 +28,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourAgeId, YourMinimumEarningsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 
 
