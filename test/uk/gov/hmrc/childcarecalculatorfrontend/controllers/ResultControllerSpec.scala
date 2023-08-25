@@ -29,10 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, YourChil
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
-import uk.gov.hmrc.http.cache.client.CacheMap
-
 
 import scala.concurrent.Future
 

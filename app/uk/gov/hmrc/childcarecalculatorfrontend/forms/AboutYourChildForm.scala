@@ -89,7 +89,7 @@ object AboutYourChildForm extends Mappings {
   private def isDuplicateValue(x: String, index: Int, children: Option[Map[Int, AboutYourChild]]): Boolean = children match {
     case None => true
     case Some(child) => {
-      val filtered = child.filterKeys(_ != index)
+      val filtered = child.view.filterKeys(_ != index)
       !(filtered.values.exists(_.name == x))
     }
   }

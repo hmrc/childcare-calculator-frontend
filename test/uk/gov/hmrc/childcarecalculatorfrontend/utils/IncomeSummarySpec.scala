@@ -23,7 +23,6 @@ import play.api.i18n.Messages
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 class IncomeSummarySpec extends PlaySpec with MockitoSugar with SpecBase {
   "Your Income Summary" should {

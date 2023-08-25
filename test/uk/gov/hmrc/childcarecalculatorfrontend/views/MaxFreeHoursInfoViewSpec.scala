@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviour
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
 

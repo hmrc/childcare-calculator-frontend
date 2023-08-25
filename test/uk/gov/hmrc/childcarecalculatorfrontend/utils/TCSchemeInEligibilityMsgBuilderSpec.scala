@@ -23,9 +23,8 @@ import play.api.libs.json._
 import play.api.mvc.Request
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.cache.client.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.http.HeaderCarrier
 
 class TCSchemeInEligibilityMsgBuilderSpec extends PlaySpec with MockitoSugar with SpecBase {
   "TC Scheme Ineligibility Message Builder" must {

@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSugar {
 
@@ -435,7 +435,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
 
           val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-          result mustEqual routes.YourIncomeInfoController.onPageLoad
+          result mustEqual routes.YourIncomeInfoController.onPageLoad()
         }
       }
 

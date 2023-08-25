@@ -21,8 +21,7 @@ import play.api.libs.json._
 
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.SubCascadeUpsert
-import uk.gov.hmrc.http.cache.client.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SubCascadeUpsert, CacheMap}
 
 case class DataGenerator(sample: CacheMap) extends SubCascadeUpsert{
   def overWriteObject(objectName: String, properties: JsValue) : DataGenerator = {

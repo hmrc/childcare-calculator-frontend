@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import java.time.LocalDate
 import play.api.data.Form
-
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
@@ -27,8 +25,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, ChildApprovedEducationId, ChildStartEducationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
-import uk.gov.hmrc.http.cache.client.CacheMap
+
+import java.time.LocalDate
 
 class ChildStartEducationControllerSpec extends ControllerSpecBase {
 

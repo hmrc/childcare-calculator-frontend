@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts._
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 @Singleton
 class CascadeUpsert @Inject()(pensions: PensionsCascadeUpsert,

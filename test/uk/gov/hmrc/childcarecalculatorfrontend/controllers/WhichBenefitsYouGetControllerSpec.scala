@@ -25,8 +25,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsYouGetId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
-import uk.gov.hmrc.http.cache.client.CacheMap
 
 
 
