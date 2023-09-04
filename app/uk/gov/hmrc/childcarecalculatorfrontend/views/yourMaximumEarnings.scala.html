@@ -19,14 +19,21 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
-    layout: Layout,
-    formWithCSRF: FormWithCSRF,
-    errorSummary: playComponents.error_summary,
-    heading: playComponents.heading,
-    inputYesNo: playComponents.input_yes_no,
-    submitButton: playComponents.submit_button,
+        layout: Layout,
+        formWithCSRF: FormWithCSRF,
+        errorSummary: playComponents.error_summary,
+        heading: playComponents.heading,
+        inputYesNo: playComponents.input_yes_no,
+        submitButton: playComponents.submit_button,
+        p: playComponents.p,
+        link: playComponents.link
 )
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@(
+        appConfig: FrontendAppConfig,
+        form: Form[Boolean],
+        mode: Mode
+)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("yourMaximumEarnings.title")) else messages("yourMaximumEarnings.title")
@@ -38,13 +45,25 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YourMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @heading(messages("yourMaximumEarnings.heading"))
 
+    @p() { @messages("yourMaximumEarnings.para1") }
+
+    @link(
+        appConfig.adjustedNetIncome,
+        messages("yourMaximumEarnings.linkText"),
+        isExternal = true
+    ).
+
+    @formWithCSRF(action = YourMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
         @inputYesNo(
-            label = HtmlContent(heading(messages("yourMaximumEarnings.title"))),
-            hint = Some(messages("yourMaximumEarnings.hint")),
-            field = form("value")
+            label = Text(messages("yourMaximumEarnings.form")),
+            field = form("value"),
+            isPageHeading = false,
+            labelClass = Some("govuk-fieldset__legend--l"),
+            isInline = false
         )
+
         @submitButton()
     }
 

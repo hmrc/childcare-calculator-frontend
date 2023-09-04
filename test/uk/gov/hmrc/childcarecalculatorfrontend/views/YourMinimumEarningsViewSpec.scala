@@ -36,12 +36,11 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
   def createViewWithAmount = (amount: BigDecimal) => view(frontendAppConfig, form, NormalMode, amount)(fakeRequest, messages)
 
   "YourMinimumEarnings view" must {
-
     behave like normalPageWithTitleAsString(
       view = createView,
       messageKeyPrefix = messageKeyPrefix,
       messageKeyPostfix = "",
-      title = messages("yourMinimumEarnings.heading", 0),
+      title = messages("yourMinimumEarnings.title"),
       heading = Some(""),
       expectedGuidanceKeys= Seq(),
       args = 0
@@ -53,16 +52,16 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourMinimumEarningsController.onSubmit(NormalMode).url,
-      legend = Some(messages(s"$messageKeyPrefix.heading", 0))
+      legend = Some(messages(s"$messageKeyPrefix.form", 0))
     )
 
-    "show correct hint text and value of minimum earnings" in {
-
+    "show correct guidance and value of minimum earnings" in {
       val amount = BigDecimal(40)
       val doc = asDocument(createViewWithAmount(amount))
 
-      assertContainsText(doc, messages("yourMinimumEarnings.hint"))
-      assertContainsText(doc, messages("yourMinimumEarnings.heading", amount))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.para2"))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.heading", amount))
     }
   }
 

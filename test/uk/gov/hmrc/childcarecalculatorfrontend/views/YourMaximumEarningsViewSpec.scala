@@ -34,11 +34,22 @@ class YourMaximumEarningsViewSpec extends NewYesNoViewBehaviours {
   def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "YourMaximumEarnings view" must {
-
-    behave like normalPage(createView, messageKeyPrefix, "hint")
+    behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YourMaximumEarningsController.onSubmit(NormalMode).url)
+    behave like yesNoPage(
+      createViewUsingForm,
+      messageKeyPrefix,
+      routes.YourMaximumEarningsController.onSubmit(NormalMode).url,
+      legend = Some(messages(s"$messageKeyPrefix.form"))
+    )
+
+    "show correct guidance" in {
+      val doc = asDocument(createView())
+
+      assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
+      assertContainsLinkWithHref(doc, messages(s"$messageKeyPrefix.linkText"), "https://www.gov.uk/guidance/adjusted-net-income")
+    }
   }
 }

@@ -19,18 +19,21 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
-    layout: Layout,
-    formWithCSRF: FormWithCSRF,
-    errorSummary: playComponents.error_summary,
-    heading: playComponents.heading,
-    inputYesNo: playComponents.input_yes_no,
-    submitButton: playComponents.submit_button,
+        layout: Layout,
+        formWithCSRF: FormWithCSRF,
+        errorSummary: playComponents.error_summary,
+        heading: playComponents.heading,
+        inputYesNo: playComponents.input_yes_no,
+        submitButton: playComponents.submit_button,
+        p: playComponents.p
 )
 
-@(appConfig: FrontendAppConfig,
-form: Form[Boolean],
-mode: Mode,
-amount: BigDecimal)(implicit request: Request[_], messages: Messages)
+@(
+        appConfig: FrontendAppConfig,
+        form: Form[Boolean],
+        mode: Mode,
+        amount: BigDecimal
+)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerMinimumEarnings.title", amount)) else messages("partnerMinimumEarnings.title", amount)
@@ -42,12 +45,18 @@ amount: BigDecimal)(implicit request: Request[_], messages: Messages)
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerMinimumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @heading(messages("partnerMinimumEarnings.heading"))
 
+    @p() { @messages("partnerMinimumEarnings.para1") }
+    @p() { @messages("partnerMinimumEarnings.para2") }
+
+    @formWithCSRF(action = PartnerMinimumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
         @inputYesNo(
-            label = HtmlContent(heading(messages("partnerMinimumEarnings.heading", amount))),
-            hint = Some(messages("partnerMinimumEarnings.hint")),
-            field = form("value")
+            label = Text(messages("partnerMinimumEarnings.form", amount)),
+            field = form("value"),
+            isPageHeading = false,
+            labelClass = Some("govuk-fieldset__legend--l"),
+            isInline = false
         )
 
         @submitButton()

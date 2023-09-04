@@ -35,6 +35,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
+import scala.jdk.CollectionConverters._
 
 trait NewViewSpecBase extends SpecBase {
 
@@ -75,6 +76,8 @@ trait NewViewSpecBase extends SpecBase {
   def assertContainsText(doc:Document, text: String) = assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
 
   def assertNotContainsText(doc:Document, text: String) = assert(!doc.toString.contains(text), "\n\ntext " + text + " was rendered on the page.\n")
+
+  def assertContainsLinkWithHref(doc: Document, text: String, href: String) = doc.select("main a").asScala.toList.map(l => (l.text, l.attr("href"))).contains((text, href))
 
   def assertContainsMessages(doc: Document, expectedMessageKeys: String*) = {
     for (key <- expectedMessageKeys) assertContainsText(doc, messages(key))

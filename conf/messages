@@ -413,17 +413,19 @@ yourAge.OVERTWENTYTWO = 23 or over
 yourAge.error.notCompleted = Select your age
 yourAge.checkYourAnswersLabel = What’s your age?
 
-yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
-yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
-yourMinimumEarnings.hint = This is your total weekly pay, or profit from self-employment, before tax and National Insurance is taken off. If you’re off work for maternity, paternity, adoption or sick pay, it’s how much you earned before that.
+yourMinimumEarnings.title = Your average weekly earnings
+yourMinimumEarnings.heading = Your average weekly earnings
+yourMinimumEarnings.para1 = We need to know your total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
+yourMinimumEarnings.para2 = If you’re on maternity, paternity, adoption, or sick leave, it’s how much you earned before you went on leave.
+yourMinimumEarnings.form = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.error.notCompleted = Select yes if you will earn an average of £{0} or more a week
-yourMinimumEarnings.checkYourAnswersLabel = yourMinimumEarnings
 
-partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
-partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
-partnerMinimumEarnings.hint = This is their total weekly pay, or profit from self-employment, before tax and National Insurance is taken off. If they’re off work for maternity, paternity, adoption or sick pay, it’s how much they earned before that.
+partnerMinimumEarnings.title = Your partner’s average weekly earnings
+partnerMinimumEarnings.heading = Your partner’s average weekly earnings
+partnerMinimumEarnings.para1 = We need to know your partner’s total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
+partnerMinimumEarnings.para2 = If your partner is on maternity, paternity, adoption, or sick leave, it’s how much they earned before they went on leave.
+partnerMinimumEarnings.form = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.error.notCompleted = Select yes if your partner will earn an average of £{0} or more a week
-partnerMinimumEarnings.checkYourAnswersLabel = partnerMinimumEarnings
 
 areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
 areYouSelfEmployedOrApprentice.heading = Are you self-employed or an apprentice?
@@ -451,23 +453,26 @@ yourSelfEmployed.heading = Have you been self-employed less than 12 months?
 yourSelfEmployed.checkYourAnswersLabel = Have you been self-employed less than 12 months?
 yourSelfEmployed.error.notCompleted = Select yes if you’ve been self-employed less than 12 months
 
-yourMaximumEarnings.title = Will you earn more than £100,000 a year?
-yourMaximumEarnings.heading = Will you earn more than £100,000 a year?
-yourMaximumEarnings.hint = This is the total pay from all your jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
+yourMaximumEarnings.title = Your adjusted net income
+yourMaximumEarnings.heading = Your adjusted net income
+yourMaximumEarnings.para = Adjusted net income is the total pay from all your jobs, or profit from self‑employment, with any pension, trading losses and gift aid contributions taken off.
+yourMaximumEarnings.linkText = Find out more about how to calculate your adjusted net income
+yourMaximumEarnings.form = Will your adjusted net income be more than £100,000 a year?
 yourMaximumEarnings.error.notCompleted = Select yes if you will earn more than £100,000 a year
-yourMaximumEarnings.checkYourAnswersLabel = Will you earn more than £100,000 a year?
 
-partnerMaximumEarnings.title = Will your partner earn more than £100,000 a year?
-partnerMaximumEarnings.heading = Will your partner earn more than £100,000 a year?
-partnerMaximumEarnings.hint = This is the total pay from all their jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
+partnerMaximumEarnings.title = Your partner’s adjusted net income
+partnerMaximumEarnings.heading = Your partner’s adjusted net income
+partnerMaximumEarnings.para = Adjusted net income is the total pay from all your partner’s jobs, or profit from self‑employment, with any pension, trading losses and gift aid contributions taken off.
+partnerMaximumEarnings.linkText = Find out more about how to calculate your partner’s adjusted net income
+partnerMaximumEarnings.form = Will your partner’s adjusted net income be over £100,000 a year?
 partnerMaximumEarnings.error.notCompleted = Select yes if your partner will earn more than £100,000 a year
-partnerMaximumEarnings.checkYourAnswersLabel = Will your partner earn more than £100,000 a year?
 
-eitherOfYouMaximumEarnings.title = Will either of you earn more than £100,000 a year?
-eitherOfYouMaximumEarnings.heading = Will either of you earn more than £100,000 a year?
+eitherOfYouMaximumEarnings.title = Adjusted net income for you and your partner
+eitherOfYouMaximumEarnings.heading = Adjusted net income for you and your partner
+eitherOfYouMaximumEarnings.para = Adjusted net income is the total pay from all you or your partner’s jobs, or profit from self‑employment, with any pension, trading losses and gift aid contributions taken off.
+eitherOfYouMaximumEarnings.linkText = Find out more about how to calculate you or your partner’s adjusted net income
+eitherOfYouMaximumEarnings.form = Will either of you earn adjusted net income of over £100,000 a year?
 eitherOfYouMaximumEarnings.error.notCompleted = Select yes if either of you will earn more than £100,000 a year
-eitherOfYouMaximumEarnings.para1 = This is the total pay from all your jobs, or profit from self‑employment, with any pension and gift aid contributions taken off.
-eitherOfYouMaximumEarnings.checkYourAnswersLabel = eitherOfYouMaximumEarnings
 
 taxOrUniversalCredits.title = Do you get tax credits or Universal Credit?
 taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
