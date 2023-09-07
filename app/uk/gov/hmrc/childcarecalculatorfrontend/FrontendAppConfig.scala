@@ -45,6 +45,7 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val authUrl: String = config.baseUrl("auth")
   lazy val loginUrl: String = loadConfig("urls.login")
   lazy val loginContinueUrl: String = loadConfig("urls.loginContinue")
+  lazy val adjustedNetIncome: String = loadConfig("urls.adjustedNetIncome")
 
   lazy val languageTranslationEnabled: Boolean = config.getBoolean("microservice.services.features.welsh-translation")
 

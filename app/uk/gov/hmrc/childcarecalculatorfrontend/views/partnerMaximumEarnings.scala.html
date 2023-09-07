@@ -25,16 +25,15 @@
         heading: playComponents.heading,
         submitButton: playComponents.submit_button,
         inputYesNo: playComponents.input_yes_no,
+        p: playComponents.p,
+        link: playComponents.link
 )
 
 @(
         appConfig: FrontendAppConfig,
         form: Form[Boolean],
         mode: Mode
-)(
-        implicit request: Request[_],
-        messages: Messages
-)
+)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerMaximumEarnings.title")) else messages("partnerMaximumEarnings.title")
@@ -44,13 +43,25 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = PartnerMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @heading(messages("partnerMaximumEarnings.heading"))
 
+    @p() { @messages("partnerMaximumEarnings.para1") }
+
+    @link(
+        appConfig.adjustedNetIncome,
+        messages("partnerMaximumEarnings.linkText"),
+        isExternal = true
+    ).
+
+    @formWithCSRF(action = PartnerMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
         @inputYesNo(
-            label = HtmlContent(heading(messages("partnerMaximumEarnings.heading"))),
-            hint = Some(messages("partnerMaximumEarnings.hint")),
-            field = form("value")
+            label = Text(messages("partnerMaximumEarnings.form")),
+            field = form("value"),
+            isPageHeading = false,
+            labelClass = Some("govuk-fieldset__legend--l"),
+            isInline = false
         )
+
         @submitButton()
     }
 }

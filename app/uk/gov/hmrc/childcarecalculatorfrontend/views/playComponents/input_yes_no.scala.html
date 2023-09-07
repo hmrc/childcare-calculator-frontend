@@ -24,6 +24,7 @@
         labelClass: Option[String] = None,
         isPageHeading: Boolean = false,
         field: Field,
+        isInline: Boolean = true
 )(implicit messages: Messages)
 
 @govukRadios(Radios(
@@ -38,5 +39,5 @@
         RadioItem(value = Some((answer == "yes").toString),
             content = Text(messages(s"site.$answer"))
         )),
-    classes = "govuk-radios--inline"
+    classes = if (isInline) "govuk-radios--inline" else ""
 ).withFormField(field))
