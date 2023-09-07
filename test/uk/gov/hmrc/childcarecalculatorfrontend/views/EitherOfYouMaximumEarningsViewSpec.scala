@@ -48,7 +48,7 @@ class EitherOfYouMaximumEarningsViewSpec extends NewYesNoViewBehaviours {
     "show correct guidance" in {
       val doc = asDocument(createView())
 
-      assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.para"))
       assertContainsLinkWithHref(doc, messages(s"$messageKeyPrefix.linkText"), "https://www.gov.uk/guidance/adjusted-net-income")
     }
   }

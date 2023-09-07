@@ -46,13 +46,13 @@
 
     @heading(messages("eitherOfYouMaximumEarnings.heading"))
 
-    @p() { @messages("eitherOfYouMaximumEarnings.para1") }
+    @p() { @messages("eitherOfYouMaximumEarnings.para") }
 
-    @link(
+    @p() { @link(
         appConfig.adjustedNetIncome,
         messages("eitherOfYouMaximumEarnings.linkText"),
         isExternal = true
-    ).
+    ). }
 
     @formWithCSRF(action = EitherOfYouMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
         @inputYesNo(

@@ -26,9 +26,7 @@
 
 <a
     href="@link"
-    class="govuk-link @classes.getOrElse("")"
+    class="govuk-body govuk-link @classes.getOrElse("")"
     @id.map(x => s"id=$x")
     @if(isExternal) { target="_blank" }
->
-    @messages(messageKey)@if(isExternal){ @messages("site.opens.new.tab")}
-</a>
+>@messages(messageKey)@if(isExternal)(" " + messages("site.opens.new.tab"))</a>
