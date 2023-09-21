@@ -51,7 +51,7 @@
 
 @if(warningMessage.isDefined) {
     @govukWarningText(WarningText(
-        iconFallbackText = "Warning",
+        iconFallbackText = Some("Warning"),
         content = Text(warningMessage.get)
     ))
 }

@@ -28,7 +28,7 @@
     hmrcStandardBetaBanner: StandardBetaBanner,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
     hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
-    backLink: playComponents.back_link,
+    govukBackLink: GovukBackLink,
     appConfig: FrontendAppConfig,
 )
 
@@ -41,7 +41,7 @@
 
 @accountMenu = {
     @Some(hmrcLanguageSelectHelper())
-    @if(backLinkEnabled) { @backLink() }
+    @if(backLinkEnabled) {@govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)}
 }
 
 @head = {
