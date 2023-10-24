@@ -69,7 +69,7 @@
         beforeContentBlock = Some(accountMenu)
     ),
     serviceName = Some(messages("service.name")),
-    banners = Banners(phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl))),
+    banners = Banners(phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)), userResearchBanner = if (urBanner) {Some(UserResearchBanner(url = appConfig.urBannerUrl))} else None),
     pageTitle = Some(s"""$pageTitle - ${messages("site.service_name")} - GOV.UK"""),
     isWelshTranslationAvailable = appConfig.languageTranslationEnabled
     )
