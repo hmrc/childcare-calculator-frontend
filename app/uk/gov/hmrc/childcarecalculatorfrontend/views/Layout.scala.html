@@ -16,15 +16,13 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
 
 @this(
-    govukLayout: GovukLayout,
+    hmrcStandardPage: HmrcStandardPage,
     hmrcAccountMenu: HmrcAccountMenu,
     hmrcHead: HmrcHead,
-    hmrcStandardHeader: HmrcStandardHeader,
-    hmrcStandardFooter: HmrcStandardFooter,
-    hmrcScripts: HmrcScripts,
     hmrcStandardBetaBanner: StandardBetaBanner,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
     hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
@@ -61,18 +59,18 @@
     @contentBlock
 }
 
-
-@govukLayout(
+@hmrcStandardPage(
+    HmrcStandardPageParams(
+        serviceURLs = ServiceURLs(
+            serviceUrl = Some(controllers.routes.WhatToTellTheCalculatorController.onPageLoad.url)
+        ),
+        templateOverrides = TemplateOverrides(
+        additionalHeadBlock = Some(head),
+        beforeContentBlock = Some(accountMenu)
+    ),
+    serviceName = Some(messages("service.name")),
+    banners = Banners(phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)), userResearchBanner = if (urBanner) {Some(UserResearchBanner(url = appConfig.urBannerUrl))} else None),
     pageTitle = Some(s"""$pageTitle - ${messages("site.service_name")} - GOV.UK"""),
-    headBlock = Some(hmrcHead(
-        headBlock = Some(head)
-    )),
-    headerBlock = Some(hmrcStandardHeader(
-        serviceUrl = Some(controllers.routes.WhatToTellTheCalculatorController.onPageLoad.url),
-        phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)),
-        userResearchBanner = if (urBanner) {Some(UserResearchBanner(url = appConfig.urBannerUrl))} else None
-    )),
-    beforeContentBlock = Some(accountMenu),
-    scriptsBlock = Some(hmrcScripts()),
-    footerBlock = Some(hmrcStandardFooter())
+    isWelshTranslationAvailable = appConfig.languageTranslationEnabled
+    )
 )(mainContent)
