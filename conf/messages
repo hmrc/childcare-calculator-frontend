@@ -2,7 +2,7 @@ date.day = Day
 date.month = Month
 date.year = Year
 
-ccc.error.InternalServerError500.title=Sorry, there is a problem with the service - Childcare calculator - GOV.UK
+ccc.error.InternalServerError500.title=Sorry, there is a problem with the service
 ccc.error.InternalServerError500.heading=Sorry, there is a problem with the service
 ccc.error.InternalServerError500.message=Try again later.
 
