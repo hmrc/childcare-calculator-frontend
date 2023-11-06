@@ -1,7 +1,7 @@
 date.day=Diwrnod
 date.month=Mis
 date.year=Blwyddyn
-ccc.error.InternalServerError500.title=Mae’n ddrwg gennym, mae problem gyda’r gwasanaeth – Cyfrifiannell Gofal Plant – GOV.UK
+ccc.error.InternalServerError500.title=Mae’n ddrwg gennym, mae problem gyda’r gwasanaeth
 ccc.error.InternalServerError500.heading=Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
 ccc.error.InternalServerError500.message=Rhowch gynnig arall arni yn nes ymlaen.
 error.boolean=Rhowch ateb
