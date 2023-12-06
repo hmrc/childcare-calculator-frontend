@@ -158,18 +158,19 @@ approvedProvider.error.notCompleted = Select yes if your childcare costs are wit
 
 freeHoursInfo.title = You can get free hours
 freeHoursInfo.heading = You can get free hours
-freeHoursInfo.para1.england = You can get 15 hours free childcare a week in term time with an approved provider – this is 570 hours a year for your 3 or 4 year old. The hours are usually taken as 15 hours a week for 38 weeks of the year, but you can choose to take fewer hours over more weeks. Free childcare hours stop when your child starts in reception class.
+freeHoursInfo.para1.england = You can get 15 hours free childcare a week in term time with an approved provider. This is 570 hours a year for you and your 3 or 4 year old. Free childcare hours stop when your child starts reception class.
+freeHoursInfo.para2.england = The hours are usually taken as 15 hours a week for 38 weeks of the year, but you can choose to take fewer hours over more weeks.
 freeHoursInfo.para1.scotland = You can get up to 1140 hours of funded early learning and childcare a year for your 3 or 4 year old. This is around 22 hours a week if you only use the hours in school term time. You can talk to your local council to find out how the hours can be used.
 freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time with an approved provider - this is around 390 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free pre-school education a week in term time with an approved provider – this is 475 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
-freeHoursInfo.heading2 = Still to check
-freeHoursInfo.guidance = By giving more information you can check how much help you could get from
+freeHoursInfo.heading2 = You could still get more help
+freeHoursInfo.guidance.isEligibleForOnlyOneScheme = By giving more information you can check how much help you can get from Free Childcare For Working Parents.
+freeHoursInfo.guidance.isNotEligibleForOnlyOneScheme = By giving more information you can check how much help you could get from:
 
-freeHoursInfo.li.30hours = 30 hours free childcare
+freeHoursInfo.li.workingParents = Free Childcare For Working Parents
 freeHoursInfo.li.vouchers = childcare vouchers (existing users only)
 freeHoursInfo.li.tfc = Tax-Free Childcare
-freeHoursInfo.li.tax_credits = tax credits
-freeHoursInfo.li.2year = free hours for your 2 year old
+freeHoursInfo.li.tax_credits = tax credits (existing users only)
 freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So if you’re here to see what support you can get from them, you should select that you
 freeHoursInfo.no.childcare.link = expect to have childcare costs in the future
 freeHoursInfo.no.childcare.para.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
