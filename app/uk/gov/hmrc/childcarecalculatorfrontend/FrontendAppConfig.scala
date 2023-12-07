@@ -23,6 +23,8 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
+import java.time.LocalDate
+
 class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Configuration) {
 
   private def loadConfig(key: String) = config.getString(key)
@@ -83,4 +85,11 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val minAmountChildren: Int = config.getInt("amountChildren.min")
 
   lazy val navigationAudit: Boolean = config.getBoolean("feature.navigationAudit")
+
+  lazy val nineMonthRuleCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.nineMonthRuleCutoff"))
+  lazy val maxFreeHoursCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.maxFreeHoursCutoff"))
+
+  def allowFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(nineMonthRuleCutoff)
+  def allowMaxFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(maxFreeHoursCutoff)
+
 }

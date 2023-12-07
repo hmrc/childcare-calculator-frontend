@@ -39,9 +39,9 @@ trait CheckboxBehaviours[A] extends FormSpec {
 
     "fail to bind when the answer is invalid" in {
       val data = Map(
-        "value[0]" -> invalidValue
+        s"$fieldName[0]" -> invalidValue
       )
-      form.bind(data).errors must contain(FormError("value[0]", invalid))
+      form.bind(data).errors must contain oneOf (FormError(s"$fieldName[0]", invalid), FormError(fieldName, invalid))
     }
   }
 
@@ -49,7 +49,7 @@ trait CheckboxBehaviours[A] extends FormSpec {
 
     "fail to bind when no answers are selected" in {
       val data = Map.empty[String, String]
-      form.bind(data).errors must contain(FormError("value", required, args))
+      form.bind(data).errors must contain(FormError(fieldName, required, args))
     }
   }
 }

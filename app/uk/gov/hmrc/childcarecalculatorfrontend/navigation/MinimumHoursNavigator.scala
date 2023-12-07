@@ -19,7 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import javax.inject.Inject
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ApprovedProviderId, ChildAgedThreeOrFourId, ChildAgedTwoId, ChildcareCostsId, Identifier, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildrenAgeGroupsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ApprovedProviderId, ChildAgedThreeOrFourId, ChildAgedTwoId, ChildcareCostsId, ChildrenAgeGroupsId, Identifier, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NormalMode, YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Scheme, Schemes}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -34,6 +35,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId -> locationRoute,
+    ChildrenAgeGroupsId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
     ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
     ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
     ChildcareCostsId -> costRoute,
@@ -41,7 +43,9 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
   )
 
   private def locationRoute(answers: UserAnswers): Call = {
-    if (answers.location.contains(Location.NORTHERN_IRELAND) || answers.location.contains(Location.WALES)) {
+    if (answers.location.contains(Location.ENGLAND)) {
+      routes.ChildrenAgeGroupsController.onPageLoad(NormalMode)
+    } else if (answers.location.contains(Location.NORTHERN_IRELAND) || answers.location.contains(Location.WALES)) {
       routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
     } else {
       routes.ChildAgedTwoController.onPageLoad(NormalMode)

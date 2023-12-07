@@ -19,6 +19,9 @@ POST        /child-aged-two                                    uk.gov.hmrc.child
 GET         /child-aged-three-or-four                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /child-aged-three-or-four                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode ?= NormalMode)
 
+GET         /children-age-groups                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenAgeGroupsController.onPageLoad(mode: Mode ?= NormalMode)
+POST        /children-age-groups                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenAgeGroupsController.onSubmit(mode: Mode ?= NormalMode)
+
 GET         /childcare-costs                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /childcare-costs                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onSubmit(mode: Mode ?= NormalMode)
 

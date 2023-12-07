@@ -36,24 +36,24 @@ class FreeChildcareWorkingParentsSpec extends SchemeSpec with MockitoSugar {
     "return `NotEligible`" when {
       "user does not have a 2 year old or a 3 or 4 year old" in {
         when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.childAgedTwo) thenReturn Some(false)
-        when(answers.childAgedThreeOrFour) thenReturn Some(false)
+        when(answers.isChildAgedTwo) thenReturn Some(false)
+        when(answers.isChildAgedThreeOrFour) thenReturn Some(false)
         when(answers.location) thenReturn Some(ENGLAND)
         freeChildcareWorkingParents(tfc).eligibility(answers) mustEqual NotEligible
       }
 
       "user does not live in England" in {
         when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.childAgedTwo) thenReturn Some(true)
-        when(answers.childAgedThreeOrFour) thenReturn Some(true)
+        when(answers.isChildAgedTwo) thenReturn Some(true)
+        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
         when(answers.location) thenReturn Some(SCOTLAND)
         freeChildcareWorkingParents(tfc).eligibility(answers) mustEqual NotEligible
       }
 
       "tax free childcare is not eligible" in {
         when(tfc.eligibility(any())) thenReturn NotEligible
-        when(answers.childAgedTwo) thenReturn Some(true)
-        when(answers.childAgedThreeOrFour) thenReturn Some(true)
+        when(answers.isChildAgedTwo) thenReturn Some(true)
+        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
         when(answers.location) thenReturn Some(ENGLAND)
         freeChildcareWorkingParents(tfc).eligibility(answers) mustEqual NotEligible
       }
@@ -62,22 +62,22 @@ class FreeChildcareWorkingParentsSpec extends SchemeSpec with MockitoSugar {
     "return `Eligible`" when {
       "user has a 2 year old in England" in {
         when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.childAgedTwo) thenReturn Some(true)
+        when(answers.isChildAgedTwo) thenReturn Some(true)
         when(answers.location) thenReturn Some(ENGLAND)
         freeChildcareWorkingParents(tfc).eligibility(answers) mustEqual Eligible
       }
 
       "user has a 3 or 4 year old in England" in {
         when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.childAgedThreeOrFour) thenReturn Some(true)
+        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
         when(answers.location) thenReturn Some(ENGLAND)
         freeChildcareWorkingParents(tfc).eligibility(answers) mustEqual Eligible
       }
 
       "user has a 2 year old or a 3 or 4 year old" in {
         when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.childAgedTwo) thenReturn Some(true)
-        when(answers.childAgedThreeOrFour) thenReturn Some(true)
+        when(answers.isChildAgedTwo) thenReturn Some(true)
+        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
         when(answers.location) thenReturn Some(ENGLAND)
         freeChildcareWorkingParents(tfc).eligibility(answers) mustEqual Eligible
       }
