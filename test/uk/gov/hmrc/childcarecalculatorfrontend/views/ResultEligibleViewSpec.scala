@@ -88,16 +88,31 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         assertContainsText(view, messages("result.free.hours.para1"))
       }
 
-      "location is England and no of hours is 30" in {
-        val model = ResultsViewModel(freeHours = Some(BigDecimal(30)), location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      "location is England and no of hours is 30 with a 2 and 3-4 year old" in {
+        val model = ResultsViewModel(freeHours = Some(BigDecimal(30)), location = Location.ENGLAND, childAgedTwo = true, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
-        assertContainsMessages(view, "30")
-        assertContainsText(view, messages("result.free.hours.title"))
-        assertContainsText(view, messages("result.you.could.get.up.to"))
-        assertContainsText(view, messages("result.free.hours.hours"))
-        assertContainsText(view, messages("result.free.hours.period.england", new DecimalFormat("##,###").format(1140)))
-        assertContainsText(view, messages("result.free.hours.para1"))
+        assertContainsText(view, messages("result.free.childcare.working.parents.title"))
+        assertContainsText(view, messages("result.free.childcare.working.parents.two.year.old"))
+        assertContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
+      }
+
+      "location is England and no of hours is 30 with just a 2 year old" in {
+        val model = ResultsViewModel(freeHours = Some(BigDecimal(30)), location = Location.ENGLAND, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
+
+        assertContainsText(view, messages("result.free.childcare.working.parents.title"))
+        assertContainsText(view, messages("result.free.childcare.working.parents.two.year.old"))
+        assertNotContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
+      }
+
+      "location is England and no of hours is 30 with just a 3-4 year old" in {
+        val model = ResultsViewModel(freeHours = Some(BigDecimal(30)), location = Location.ENGLAND, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
+
+        assertContainsText(view, messages("result.free.childcare.working.parents.title"))
+        assertContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
+        assertNotContainsText(view, messages("result.free.childcare.working.parents.two.year.old"))
       }
 
       "location is Wales" in {

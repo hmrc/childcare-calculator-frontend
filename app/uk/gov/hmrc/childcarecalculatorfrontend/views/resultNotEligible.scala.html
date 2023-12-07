@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{ResultsViewModel, SchemeResultModel}
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
@@ -24,8 +24,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 @this(
-schemeResult: playComponents.scheme_result,
-    heading: playComponents.heading
+    schemeResult: playComponents.scheme_result,
+    heading: playComponents.heading,
+    govukInsetText : GovukInsetText
 )
 
 @(model: ResultsViewModel, hideTC: Boolean)(implicit request: Request[_], messages: Messages, lang: Lang)
@@ -59,13 +60,28 @@ schemeResult: playComponents.scheme_result,
         </ul>
     }
 
+    @freeChildcareWorkingParentsContent = {
+        @govukInsetText(InsetText(
+            content = Text(model.freeChildcareWorkingParentsEligibilityMsg.getOrElse(""))
+        ))
+    }
+
+    @if((model.childAgedTwo || model.childAgedThreeOrFour) && (!model.freeHours.contains(noOfFreeHours30)) && (model.freeChildcareWorkingParentsEligibilityMsg.isDefined)) {
+        @schemeResult(SchemeResultModel(
+            title = messages("result.free.childcare.working.parents.title"),
+            para2 = Some(freeChildcareWorkingParentsContent),
+            notEligibleID = (Some("notEligibleFreeChildcareWorkingParents"), None),
+            sectionBreak = false
+        ))
+    }
+
     @if(model.freeHours.isEmpty) {
-        @schemeResult(
+        @schemeResult(SchemeResultModel(
             title = messages("result.free.hours.title"),
             para1 = Some(messages("result.free.hours.not.eligible")),
             notEligibleID = (Some("notEligibleFreeHours"), None),
             sectionBreak = false
-        )
+        ))
     }
 
 
@@ -75,69 +91,58 @@ schemeResult: playComponents.scheme_result,
         @if(!hideTC) @{
             model.taxCreditsOrUC match {
                 case Some(ChildcareConstants.taxCredits) =>
-                    schemeResult(
+                    schemeResult(SchemeResultModel(
                         title = messages("result.tc.not.eligible.title"),
                         para1 = Some(model.tcSchemeInEligibilityMsg),
                         notEligibleID = (Some("notEligibleTC1"), None),
                         displayTCGuidanceLink = true,
                         sectionBreak = false
-                    )
+                    ))
                 case Some(ChildcareConstants.universalCredits) =>
-                    schemeResult(
+                    schemeResult(SchemeResultModel(
                         title = messages("result.tc.title"),
                         para1 = Some(messages("result.uc.not.eligible.para")),
                         notEligibleID = (Some("notEligibleTC1"), None),
                         sectionBreak = false
-                    )
+                    ))
                 case _ =>
                     if(model.tc.isEmpty) {
-                        schemeResult(
+                        schemeResult(SchemeResultModel(
                             title = messages("result.tc.title"),
                             displayTCGuidanceLink = true,
                             sectionBreak = false
-                        )
+                        ))
                     }
             }
         }
 
         @if(model.tfc.isEmpty) {
-            @schemeResult(
+            @schemeResult(SchemeResultModel(
                 title = messages("result.tfc.title"),
                 para1 = Some(messages("result.tfc.not.eligible")),
                 para3 = Some(messages("result.tfc.not.eligible2")),
                 notEligibleID = (Some("notEligibleTFC"), None),
                 sectionBreak = false
-            )
+            ))
         }
 
         @if(model.esc.isEmpty) {
-            @schemeResult(
+            @schemeResult(SchemeResultModel(
                 title = messages("result.esc.title"),
                 para1 = Some(messages("result.esc.not.eligible.para1")),
                 notEligibleID = (Some("notEligibleESC1"), Some("notEligibleESC2")),
                 sectionBreak = false
-            )
+            ))
         }
 
     }else{
 
-        @schemeResult(
+        @schemeResult(SchemeResultModel(
             title = messages("freeHoursResult.info.tfcOrChildcareSupport.heading"),
             para2 = Some(otherChildcareSchemesContent),
             sectionBreak = false
-        )
+        ))
 }
-
-    @if(model.showTwoYearOldInfo(hideTC)) {
-        <div class="twoYearsOld">
-            <h3 class="govuk-heading-m">@messages(s"results.two.years.old.guidance.${model.location}.title")</h3>
-            <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
-                @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
-            </a>
-                @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
-            </p>
-        </div>
-    }
 
     @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider) {
 

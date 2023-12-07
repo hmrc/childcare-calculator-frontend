@@ -60,7 +60,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(taxCredits.eligibility(any())) thenReturn Eligible
 
           navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.ResultController.onPageLoad
+            routes.ResultController.onPageLoad()
         }
 
         "redirects to Your Other Income Amount CY page when single user selects no, is not in receipt of UC, eligible for TC but not eligible for TFC " in {
@@ -100,7 +100,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(taxCredits.eligibility(any())) thenReturn Eligible
 
           navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-            routes.ResultController.onPageLoad
+            routes.ResultController.onPageLoad()
         }
 
 
@@ -111,7 +111,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "is eligible for tax credits" in {
@@ -129,7 +129,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
         }
 
@@ -141,7 +141,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "is eligible for tax credits" in {
@@ -161,7 +161,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(YourOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
         }
 
@@ -192,7 +192,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(false)
 
             navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "they are eligible for tax credits" in {
@@ -210,7 +210,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(PartnerAnyOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
         }
 
@@ -240,7 +240,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotEligible
 
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.ResultController.onPageLoad
+                routes.ResultController.onPageLoad()
             }
 
             "they are eligible for tax credits" in {
@@ -258,7 +258,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.ResultController.onPageLoad
+                routes.ResultController.onPageLoad()
             }
 
             "redirects to results page when user with partner  selects no, is in receipt of UC, eligible for TFC and TC " in {
@@ -271,7 +271,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(taxCredits.eligibility(any())) thenReturn Eligible
 
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
-                routes.ResultController.onPageLoad
+                routes.ResultController.onPageLoad()
             }
 
             "redirects to Both Income Info PY page when user with partner selects no, is not receipt of UC," +
@@ -357,7 +357,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "is eligible for tax credits" in {
@@ -375,7 +375,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
@@ -389,7 +389,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "redirects to YourIncomeInfoPY page when user is not in receipt of UC, eligible for TC but not eligible for TFC " in {
@@ -415,7 +415,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "is eligible for tax credits" in {
@@ -435,7 +435,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
@@ -449,7 +449,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(YourOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "redirects to BothIncomeInfoPY page when user is not in receipt of UC, eligible for TC but not eligible for TFC " in {
@@ -654,7 +654,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "cannot determine if they can have tax credits" in {
@@ -664,7 +664,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
@@ -678,7 +678,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
         }
@@ -703,7 +703,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "partners eligibility for tax credits is not determined" in {
@@ -713,7 +713,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
@@ -727,7 +727,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(taxCredits.eligibility(any())) thenReturn Eligible
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad
+              routes.ResultController.onPageLoad()
           }
 
           "redirects to BothIncomeInfoPY page when user is not in receipt of UC, eligible for TFC and TC " in {

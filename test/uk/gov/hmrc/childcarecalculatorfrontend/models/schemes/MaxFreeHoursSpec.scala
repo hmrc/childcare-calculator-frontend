@@ -26,106 +26,83 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
 
-  def maxFreeHours(freeHours: FreeHours = new FreeHours, tfc: TaxFreeChildcare = new TaxFreeChildcare(new ModelFactory)) =
-    new MaxFreeHours(freeHours, tfc)
+  def maxFreeHours(freeChildcareWorkingParents: FreeChildcareWorkingParents = new FreeChildcareWorkingParents, tfc: TaxFreeChildcare = new TaxFreeChildcare(new ModelFactory)) =
+    new MaxFreeHours(freeChildcareWorkingParents, tfc)
 
   ".eligibility" must {
+
+    val answers: UserAnswers = mock[UserAnswers]
+    val freeChildcareWorkingParents: FreeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+    val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
 
     "return `NotDetermined`" when {
 
       "free hours eligibility is undetermined" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn NotDetermined
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotDetermined
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(ENGLAND)
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotDetermined
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotDetermined
       }
 
       "tfc eligibility is undetermined" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn NotDetermined
         when(answers.location) thenReturn Some(ENGLAND)
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotDetermined
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotDetermined
       }
 
       "there is no answer for location" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn None
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotDetermined
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotDetermined
       }
     }
 
     "return `NotEligible`" when {
 
       "user is not eligible for free hours" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn NotEligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(ENGLAND)
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotEligible
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotEligible
       }
 
       "user is not eligible for tfc" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn NotEligible
         when(answers.location) thenReturn Some(ENGLAND)
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotEligible
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotEligible
       }
 
       "user is from Scotland" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(SCOTLAND)
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotEligible
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotEligible
       }
 
       "user is from Wales" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(WALES)
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotEligible
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotEligible
       }
 
       "user is from Northern Ireland" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(NORTHERN_IRELAND)
-        maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual NotEligible
+        maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual NotEligible
       }
     }
 
     "return `Eligible` when user is eligible for Free Hours, TFC and lives in England" in {
 
-      val answers: UserAnswers = mock[UserAnswers]
-      val freeHours: FreeHours = mock[FreeHours]
-      val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-      when(freeHours.eligibility(any())) thenReturn Eligible
+      when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
       when(tfc.eligibility(any())) thenReturn Eligible
       when(answers.location) thenReturn Some(ENGLAND)
-      maxFreeHours(freeHours, tfc).eligibility(answers) mustEqual Eligible
+      maxFreeHours(freeChildcareWorkingParents, tfc).eligibility(answers) mustEqual Eligible
     }
   }
 }

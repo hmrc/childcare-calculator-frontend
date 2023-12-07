@@ -27,9 +27,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, ChildcareConstants, FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers, Utils}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -47,7 +46,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -62,7 +61,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -79,7 +78,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -94,7 +93,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.childcareCosts) thenReturn Some(ChildcareConstants.no)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -111,7 +110,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -126,7 +125,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.approvedProvider) thenReturn Some(ChildcareConstants.NO)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -143,7 +142,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.areYouInPaidWork) thenReturn Some(true)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -158,7 +157,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.areYouInPaidWork) thenReturn Some(false)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -173,7 +172,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.you)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -188,7 +187,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.neither)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -208,8 +207,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(answers.taxOrUniversalCredits) thenReturn Some(taxCredits)
 
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
 
           val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -223,8 +222,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                   tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
           val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
           values.tc mustBe Some(500)
@@ -239,8 +238,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
 
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -257,8 +256,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.esc mustBe Some(600)
@@ -274,8 +273,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                                 tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
           val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
           values.tc mustBe None
@@ -291,8 +290,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.taxOrUniversalCredits) thenReturn Some("uc")
 
-          val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                                 tcSchemeIneligibilityMsgBuilder)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
           val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
           values.tc mustBe None
@@ -307,8 +306,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.tfc mustBe None
@@ -324,8 +323,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                               tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.esc mustBe None
@@ -343,11 +342,11 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.ENGLAND)
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
-                                               tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                               tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.freeHours mustBe Some(15)
@@ -364,11 +363,11 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.SCOTLAND)
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.freeHours mustBe Some(22)
@@ -385,11 +384,11 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.WALES)
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                               tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.freeHours mustBe Some(10)
@@ -406,11 +405,11 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.NORTHERN_IRELAND)
-        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                              tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.freeHours mustBe Some(12.5)
@@ -428,8 +427,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(maxFreeHours.eligibility(any())) thenReturn Eligible
 
-        val resultService = new ResultsService(eligibilityService, freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                                  tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.freeHours mustBe Some(30)
@@ -445,10 +444,10 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(freeHours.eligibility(any())) thenReturn NotEligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                              tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.freeHours mustBe None
@@ -466,8 +465,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.taxOrUniversalCredits) thenReturn Some("uc")
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                              tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.showTFCWarning mustBe false
@@ -485,8 +484,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.taxOrUniversalCredits) thenReturn Some("tc")
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                              tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.showTFCWarning mustBe true
@@ -503,8 +502,8 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.taxOrUniversalCredits) thenReturn Some("uc")
 
-        val resultService = new ResultsService(eligibilityService,freeHours, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder)
+        val resultService = new ResultsService(frontendAppConfig, eligibilityService,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
+                                              tcSchemeIneligibilityMsgBuilder, util)
         val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
         values.showTFCWarning mustBe true
@@ -519,8 +518,9 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
   val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
   val schemeResults = SchemeResults(List(tfcScheme))
   val eligibilityService: EligibilityService = mock[EligibilityService]
-  val freeHours: FreeHours = mock[FreeHours]
+  val freeChildcareWorkingParents: FreeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
   val maxFreeHours: MaxFreeHours = mock[MaxFreeHours]
+  val util: Utils = mock[Utils]
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val req: Request[_] = mock[Request[_]]
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
