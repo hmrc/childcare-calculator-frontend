@@ -42,6 +42,19 @@
         <p class="govuk-body">@messages("result.estimates.income.para1")</p>
     }
 
+    @getMoreHelpContent = {
+        <h2 class="govuk-heading-l">@messages("results.get.more.help.title")</h2>
+        <div class="twoYearsOld">
+            <h3 class="govuk-heading-m">@messages(s"results.two.years.old.guidance.${model.location}.title")</h3>
+            <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
+                @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
+                </a>
+                @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
+            </p>
+        </div>
+        @section_break()
+    }
+
 
 
     @layout(
@@ -173,11 +186,14 @@
                     @section_break()
                 }
             }
+
+            @if(model.showTwoYearOldInfo(hideTC) && !model.isEligibleToAllSchemes(hideTC)) {@getMoreHelpContent}
         } else {
             <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
             <h2 class="govuk-heading-l">@messages("result.not.eligible.subheading")</h2>
             @resultNotEligible(model, hideTC)
             @section_break()
+            @if(model.showTwoYearOldInfo(hideTC) && !model.isEligibleToAllSchemes(hideTC)) {@getMoreHelpContent}
         }
         <div>
             <p class="govuk-body"> <a class="govuk-link" rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">

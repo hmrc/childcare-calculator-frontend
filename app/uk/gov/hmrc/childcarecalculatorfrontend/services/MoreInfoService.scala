@@ -31,7 +31,7 @@ class MoreInfoService @Inject() (val messages: MessagesApi) {
 
   def getSchemeContent(userLocation: Location, model: ResultsViewModel, hideTC: Boolean)(implicit lang: Lang): List[Map[String, String]] = {
     val freeHours = (userLocation,model.freeHours) match {
-      case (Location.ENGLAND,Some(ChildcareConstants.maxFreeHours)) => linkData(userLocation.toString, "hours", model.freeHours)
+      case (Location.ENGLAND, Some(ChildcareConstants.maxFreeHours)) => linkData(userLocation.toString, "hours", model.freeHours)
       case _ => None
     }
 

@@ -1268,6 +1268,7 @@ result.read.more.button = Read more
 
 result.you.could.get = You could get
 result.you.could.get.up.to = You could get up to
+result.you.can.get = You can get
 
 result.free.hours.title = Free childcare hours for your 3 to 4 year old
 result.free.hours.hours = hours
@@ -1292,6 +1293,17 @@ result.free.hours.detailPara3.you.can = You can
 result.free.hours.detailPara3.link.text = contact your childcare provider or your local council to find out more about free childcare hours
 result.free.hours.detailPara3.link = https://www.gov.uk/find-free-early-education
 result.free.hours.detailPara4 = Free childcare hours stop when your child starts in reception class.
+
+result.free.childcare.working.parents.title = Free Childcare For Working Parents
+result.free.childcare.working.parents.two.year.old = 15 hours free childcare for each of your 2 year olds
+result.free.childcare.working.parents.threeOrFour.year.old = 30 free hours for each of your 3 and 4 year olds
+result.free.childcare.working.parents.not.eligible.partner.paidEmployment = Both you and your partner need to be in paid work to get Free Childcare For Working Parents.
+result.free.childcare.working.parents.not.eligible.partner.minimumEarning.sameAge = Both you and your partner need to be in paid work and earn at least £{0} a week to get Free Childcare For Working Parents.
+result.free.childcare.working.parents.not.eligible.partner.minimumEarning.differentAge = You need to be in paid work and earn at least £{0} a week and your partner needs to be in paid work and earn at least £{1} a week to get Free Childcare For Working Parents.
+result.free.childcare.working.parents.not.eligible.partner.maximumEarning = Both you and your partner need to earn less than £100,000 a year as adjusted net income to get Free Childcare For Working Parents.
+result.free.childcare.working.parents.not.eligible.paidEmployment = You need to be in paid work to get Free Childcare For Working Parents.
+result.free.childcare.working.parents.not.eligible.minimumEarning = You need to be in paid work and earn at least £{0} a week to get Free Childcare For Working Parents.
+result.free.childcare.working.parents.not.eligible.maximumEarning = You need to earn less than £100,000 a year as adjusted net income to get Free Childcare For Working Parents.
 
 result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs.
@@ -1351,8 +1363,8 @@ result.esc.not.eligible.para1 = You cannot get help from childcare vouchers as y
 result.not.eligible.title = You are not eligible for:
 result.not.eligible.title.ga = You are not eligible for
 
-result.eligible.subheading = You could get this
-result.not.eligible.subheading = You cannot get this
+result.eligible.subheading = You can get
+result.not.eligible.subheading = You cannot get
 result.further.information.subheading = Further information
 
 whoWasInPaidWorkPY.title = Who was in paid work?
@@ -1391,7 +1403,7 @@ aboutYourResults.esc.para2 = They are for children under 16, or 18 if disabled.
 
 aboutYourResults.more.info.title = How to apply
 aboutYourResults.more.info.para1 = Read more about the schemes you could get help from and find out how to apply for:
-aboutYourResults.more.info.england.hours.title = 30 hours free childcare
+aboutYourResults.more.info.england.hours.title = Apply for Free Childcare For Working Parents
 aboutYourResults.more.info.england.hours.link = https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-2-to-4-year-olds
 aboutYourResults.more.info.england.tc.title = tax credits
 aboutYourResults.more.info.england.tc.link = https://www.gov.uk/topic/benefits-credits/tax-credits
@@ -1423,8 +1435,9 @@ aboutYourResults.more.info.northern-ireland.tfc.title = Tax-Free Childcare
 aboutYourResults.more.info.northern-ireland.tfc.link = https://www.gov.uk/help-with-childcare-costs/tax-free-childcare/
 aboutYourResults.more.info.northern-ireland.esc.title = childcare vouchers
 aboutYourResults.more.info.northern-ireland.esc.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
-aboutYourResults.more.info.summary = You can apply for 30 hours free childcare and Tax-Free Childcare at the same time. Tax-Free Childcare is only available for the childcare you pay for.
+aboutYourResults.more.info.summary = You can apply for Free Childcare For Working Parents and Tax-Free Childcare at the same time. Tax-Free Childcare is only available for the childcare you pay for.
 
+results.get.more.help.title = You could still get more help
 results.two.years.old.guidance.england.two.freehours = You can get 15 hours free childcare a week in term time when your child is 3 years old – this is 570 hours a year.
 results.two.years.old.guidance.england.title = Free childcare hours for your 2 year old
 results.two.years.old.guidance.england.text.before.link = Depending on your family circumstances,

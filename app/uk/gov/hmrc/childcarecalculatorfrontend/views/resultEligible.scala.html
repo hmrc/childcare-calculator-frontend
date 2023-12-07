@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{ResultsViewModel, EligibilityModel}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{ResultsViewModel, EligibilityModel, SchemeResultModel}
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
@@ -34,36 +34,40 @@
 @vouchersWork = {
     <p class="govuk-body">@messages("result.esc.detailPara2.start") <a class="govuk-link" id="vouchersClosed" href="@messages("result.esc.detailPara2.link")">@messages("result.esc.detailPara2.link.text")</a>@messages("result.esc.detailPara2.end")</p>
 }
-    @if(model.freeHours.isDefined) {
-
-        @defining(if(model.location == Location.ENGLAND && model.freeHours.contains(noOfFreeHours15)) {
-            totalNoOfHoursAYear
-        } else {
-            utils.valueFormatter(2 * totalNoOfHoursAYear)
-        }) { noOfHoursInAYear =>
-            @schemeResult(
-                title = messages("result.free.hours.title"),
-                id = Some("freeHours"),
-                couldGet = Some(messages("result.you.could.get.up.to")),
-                eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) s"${hours.toString} ${messages("result.free.hours.hours")}" else messages("result.free.hours.twelve.and.half")),"freeHoursEligibility")),
-                periodText = if(model.location == Location.ENGLAND) {
-                    Some(messages(s"result.free.hours.period.${model.location}", noOfHoursInAYear))
-                } else {
-                    Some(messages(s"result.free.hours.period.${model.location}"))
-                },
-                para1 = Some(messages("result.free.hours.para1")),
-                detailSummary = Some(messages("result.free.hours.detail.summary")),
-                detailPara1 = Some(messages("result.free.hours.detailPara1")),
-                detailPara2 = Some(messages("result.free.hours.detailPara2.p1")),
-                detailPara2List = Seq(messages("result.free.hours.detailPara2.li.1"), messages("result.free.hours.detailPara2.li.2"), messages("result.free.hours.detailPara2.li.3"), messages("result.free.hours.detailPara2.li.4"), messages("result.free.hours.detailPara2.li.5")),
-                detailPara3 = Some(messages("result.free.hours.detailPara2.p2")),
-                detailPara3WithLink = Some(freeHoursContactCouncil),
-                detailPara4 = Some(messages("result.free.hours.detailPara4")))
+    @if(model.freeChildcareWorkingParents) {
+        @schemeResult(SchemeResultModel(
+            title = messages("result.free.childcare.working.parents.title"),
+            id = Some("freeChildcareWorkingParents"),
+            couldGet = Some(messages("result.you.can.get")),
+            twoYearOld = if(model.childAgedTwo) Some(messages("result.free.childcare.working.parents.two.year.old")) else None,
+            threeAndFour = if(model.childAgedThreeOrFour) Some(messages("result.free.childcare.working.parents.threeOrFour.year.old")) else None
+        ))
+    } else {
+        @if(model.freeHours.isDefined){
+            @schemeResult(SchemeResultModel(
+            title = messages("result.free.hours.title"),
+            id = Some("freeHours"),
+            couldGet = Some(messages("result.you.could.get.up.to")),
+            eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) s"${hours.toString} ${messages("result.free.hours.hours")}" else messages("result.free.hours.twelve.and.half")),"freeHoursEligibility")),
+            periodText = if(model.location == Location.ENGLAND) {
+            Some(messages(s"result.free.hours.period.${model.location}", totalNoOfHoursAYear))
+            } else {
+            Some(messages(s"result.free.hours.period.${model.location}"))
+            },
+            para1 = Some(messages("result.free.hours.para1")),
+            detailSummary = Some(messages("result.free.hours.detail.summary")),
+            detailPara1 = Some(messages("result.free.hours.detailPara1")),
+            detailPara2 = Some(messages("result.free.hours.detailPara2.p1")),
+            detailPara2List = Seq(messages("result.free.hours.detailPara2.li.1"), messages("result.free.hours.detailPara2.li.2"), messages("result.free.hours.detailPara2.li.3"), messages("result.free.hours.detailPara2.li.4"), messages("result.free.hours.detailPara2.li.5")),
+            detailPara3 = Some(messages("result.free.hours.detailPara2.p2")),
+            detailPara3WithLink = Some(freeHoursContactCouncil),
+            detailPara4 = Some(messages("result.free.hours.detailPara4"))
+            ))
         }
     }
 
     @if(model.tc.isDefined && !hideTC) {
-        @schemeResult(
+        @schemeResult(SchemeResultModel(
             title = messages("result.tc.title"),
             id = Some("tc"),
             couldGet = Some(messages("result.you.could.get")),
@@ -74,12 +78,13 @@
             detailPara1 = Some(messages("result.tc.detailPara1")),
             detailPara2 = Some(messages("result.tc.detailPara2")),
             detailPara2List = Seq(messages("result.tc.detailPara2.li.1"), messages("result.tc.detailPara2.li.2")),
-            detailPara3WithLink = Some(findoutAboutUC))
+            detailPara3WithLink = Some(findoutAboutUC)
+        ))
     }
 
 
     @if(model.tfc.isDefined) {
-        @schemeResult(
+        @schemeResult(SchemeResultModel(
             title = messages("result.tfc.title"),
             id = Some("tfc"),
             couldGet = Some(messages("result.you.could.get")),
@@ -91,11 +96,11 @@
             detailPara2 = Some(messages("result.tfc.detailPara2")),
             detailPara3 = Some(messages("result.tfc.detailPara3")),
             warningMessage = if(model.showTFCWarning) {Some(model.tfcWarningMessage)} else {None}
-        )
+        ))
     }
 
     @if(model.esc.isDefined) {
-        @schemeResult(
+        @schemeResult(SchemeResultModel(
             title = messages("result.esc.title"),
             id = Some("esc"),
             couldGet = Some(messages("result.you.could.get")),
@@ -108,6 +113,5 @@
             detailPara2 = Some(messages("result.esc.detailPara2")),
             detailPara2List = Seq(messages("result.esc.detailPara2.li.1"), messages("result.esc.detailPara2.li.2"), messages("result.esc.detailPara2.li.3")),
             detailPara3 = Some(messages("result.esc.detailPara3"))
-
-        )
+        ))
     }

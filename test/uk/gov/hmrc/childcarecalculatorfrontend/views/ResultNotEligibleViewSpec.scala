@@ -40,6 +40,13 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
         view.getElementById("notEligibleFreeHours").text() mustBe messages("result.free.hours.not.eligible")
       }
 
+      "We don't have Free Childcare For Working Parents" in {
+        val model = ResultsViewModel(freeHours = None, freeChildcareWorkingParents = false, freeChildcareWorkingParentsEligibilityMsg = Some("not working"), taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages, lang))
+
+        view.getElementById("notEligibleFreeChildcareWorkingParents").text() mustBe messages("not working")
+      }
+
       "User is not eligible for TC scheme" in {
         val tcSchemeIneligibleMsg = "You may need to check separately if you are eligible to"
         val model = ResultsViewModel(tc = None, taxCreditsOrUC = None, tcSchemeInEligibilityMsg = tcSchemeIneligibleMsg, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)

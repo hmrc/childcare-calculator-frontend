@@ -15,7 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.ucSchemeGuidanceLinkUrl
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.EligibilityModel
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{EligibilityModel, SchemeResultModel}
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @this(
@@ -24,83 +24,90 @@
     govukWarningText : GovukWarningText,
 )
 
-@(
-        title: String,
-        id: Option[String] = None,
-        couldGet: Option[String] = None,
-        eligibility: Option[EligibilityModel] = None,
-        periodText: Option[String] = None,
-        para1: Option[String] = None,
-        para2: Option[Html] = None,
-        para3: Option[String] = None,
-        detailSummary: Option[String] = None,
-        detailPara1: Option[String] = None,
-        detailPara2: Option[String] = None,
-        detailPara2List: Seq[String] = Nil,
-        detailPara2WithLink: Option[Html] = None,
-        detailPara3: Option[String] = None,
-        detailPara3WithLink: Option[Html] = None,
-        detailPara4: Option[String] = None,
-        notEligibleID: Tuple2[Option[String], Option[String]] = (None, None),
-        warningMessage: Option[String] = None,
-        displayTCGuidanceLink: Boolean = false,
-        sectionBreak: Boolean = true
-)(implicit messages: Messages, lang: Lang)
+@(schemeResult: SchemeResultModel)(implicit messages: Messages, lang: Lang)
 
-<h3 class="govuk-heading-m" id="@id">@title</h3>
+<h3 class="govuk-heading-m" @if(schemeResult.id.isDefined) { id="@schemeResult.id"} >@schemeResult.title</h3>
 
-@if(warningMessage.isDefined) {
+@if(schemeResult.warningMessage.isDefined) {
     @govukWarningText(WarningText(
         iconFallbackText = Some("Warning"),
-        content = Text(warningMessage.get)
+        content = Text(schemeResult.warningMessage.get)
     ))
 }
 
-@if(couldGet.isDefined){
-    <p class="govuk-inset-text">@couldGet <strong class="govuk-bold" id="@eligibility.fold("")(_.id)">@eligibility.fold("")(_.value)</strong>
-        @periodText</p>
+@if(schemeResult.couldGet.isDefined){
+    @if(!schemeResult.eligibility.isDefined) {
+        <div class="govuk-inset-text">
+            @if(schemeResult.twoYearOld.isDefined  && schemeResult.threeAndFour.isDefined) {
+                <p class="govuk-body">@schemeResult.couldGet:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>@schemeResult.twoYearOld.get</li>
+                    <li>@schemeResult.threeAndFour.get</li>
+                </ul>
+            } else {
+                <p class="govuk-body">
+                    @schemeResult.couldGet
+                    @if(schemeResult.twoYearOld.isDefined) {
+                        @schemeResult.twoYearOld.get
+                    }
+                    @if(schemeResult.threeAndFour.isDefined) {
+                        @schemeResult.threeAndFour.get
+                    }
+                </p>
+            }
+        </div>
+    } else {
+    <p class="govuk-inset-text">@schemeResult.couldGet <strong class="govuk-bold" id="@schemeResult.eligibility.fold("")(_.id)">@schemeResult.eligibility.fold("")(_.value)</strong>
+        @schemeResult.periodText</p>
+    }
 }
 
-@if(para1.isDefined) {
-    <p class="govuk-body" @if(notEligibleID._1.isDefined) {id="@notEligibleID._1"}>@para1</p>
+@if(schemeResult.para1.isDefined) {
+    <p class="govuk-body" @if(schemeResult.notEligibleID._1.isDefined) {id="@schemeResult.notEligibleID._1"}>@schemeResult.para1</p>
 }
 
-@if(displayTCGuidanceLink){
+@if(schemeResult.displayTCGuidanceLink){
     <p class="govuk-body" id="tcGuidance">
         @messages("result.tc.not.eligible.tc.para1")
         <a class="govuk-link" rel="external" target="_blank" id="tcGuidanceLink"
-           data-journey-click="link - click:@messages("result.not.eligible.title.ga") @title:@messages("result.tc.scheme.guidance.link")"
+           data-journey-click="link - click:@messages("result.not.eligible.title.ga") @schemeResult.title:@messages("result.tc.scheme.guidance.link")"
         href="@ucSchemeGuidanceLinkUrl">
         @messages("result.tc.scheme.guidance.link")<span class="govuk-visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span></a>.
     </p>
 }
 
-@if(para2.isDefined) {
-<p class="govuk-body" @if(notEligibleID._2.isDefined) { id="@notEligibleID._2" }>@para2</p>
+@if(schemeResult.para2.isDefined) {
+    <p class="govuk-body" @if(schemeResult.notEligibleID._2.isDefined) { id="@schemeResult.notEligibleID._2" }>@schemeResult.para2</p>
 }
 
-@if(detailPara3WithLink.isDefined) {@detailPara3WithLink}
-
-@if(para3.isDefined) {
-    <p class="govuk-body">@para3</p>
+@if(schemeResult.insetText.isDefined) {
+    <div class="govuk-inset-text" @if(schemeResult.insetTextId.isDefined){id="@schemeResult.insetTextId.get"}>
+        @schemeResult.insetText
+    </div>
 }
 
-@if(id.isDefined) {
+@if(schemeResult.detailPara3WithLink.isDefined) {@schemeResult.detailPara3WithLink}
+
+@if(schemeResult.para3.isDefined) {
+    <p class="govuk-body">@schemeResult.para3</p>
+}
+
+@if(schemeResult.detailSummary.isDefined) {
     @detailSummaryComponent(
-        summary = detailSummary.get,
-        id = id.map(_ + "-details"),
+        summary = schemeResult.detailSummary.get,
+        id = schemeResult.id.map(_ + "-details"),
     ){
-        <p class="govuk-body">@detailPara1</p>
-        @if(detailPara2.isDefined) {<p class="govuk-body">@detailPara2</p>}
-        @if(detailPara2WithLink.isDefined) {@detailPara2WithLink}
-        @if(detailPara2List.nonEmpty) {
-            @list(bulletList = detailPara2List)
+        <p class="govuk-body">@schemeResult.detailPara1</p>
+        @if(schemeResult.detailPara2.isDefined) {<p class="govuk-body">@schemeResult.detailPara2</p>}
+        @if(schemeResult.detailPara2WithLink.isDefined) {@schemeResult.detailPara2WithLink}
+        @if(schemeResult.detailPara2List.nonEmpty) {
+            @list(bulletList = schemeResult.detailPara2List)
         }
-        @if(detailPara3.isDefined) {<p class="govuk-body">@detailPara3</p>}
-        @if(detailPara4.isDefined) {<p class="govuk-body">@detailPara4</p>}
+        @if(schemeResult.detailPara3.isDefined) {<p class="govuk-body">@schemeResult.detailPara3</p>}
+        @if(schemeResult.detailPara4.isDefined) {<p class="govuk-body">@schemeResult.detailPara4</p>}
     }
 }
 
-@if(sectionBreak){
+@if(schemeResult.sectionBreak){
     @section_break()
 }
