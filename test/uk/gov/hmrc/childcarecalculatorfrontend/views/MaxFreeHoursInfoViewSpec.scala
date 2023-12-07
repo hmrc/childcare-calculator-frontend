@@ -29,9 +29,11 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
   val view = application.injector.instanceOf[maxFreeHoursInfo]
   val messageKeyPrefix = "maxFreeHoursInfo"
 
-  def answers(value: Option[Boolean] = None): UserAnswers =
+  def answers(max30HoursEnglandContentAns: Option[Boolean] = None, childAgedTwoAns: Option[Boolean] = None, childAgedThreeOrFourAns: Option[Boolean] = None): UserAnswers =
     new UserAnswers(CacheMap("", Map())) {
-      override def max30HoursEnglandContent: Option[Boolean] = value
+      override def max30HoursEnglandContent: Option[Boolean] = max30HoursEnglandContentAns
+      override def childAgedTwo: Option[Boolean] = childAgedTwoAns
+      override def childAgedThreeOrFour: Option[Boolean] = childAgedThreeOrFourAns
     }
 
   def createView = () => view(frontendAppConfig, Eligible, Eligible, Eligible, answers()) (fakeRequest, messages)
@@ -39,7 +41,7 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
   "MaxFreeHoursInfo view" must {
     val view1 = view(frontendAppConfig, Eligible, NotEligible, NotEligible, answers()) (fakeRequest, messages)
 
-    behave like normalPage(createView, messageKeyPrefix, "could.get.max.hours", "info", "info.link", "info.link.url", "still.to.check")
+    behave like normalPage(createView, messageKeyPrefix, "info", "info", "info.link", "info.link.url", "get.more.help")
 
     "display correct message when only eligible for tax free childcare" in {
       val view1 = view(frontendAppConfig, Eligible, NotEligible, NotEligible, answers()) (fakeRequest, messages)
@@ -57,7 +59,7 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
     "display the correct message when only eligible for tax credits" in {
       val view1 = view(frontendAppConfig, NotEligible, NotEligible, Eligible, answers()) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tax_credits"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.still.to.check"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.get.more.help"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.give.more.info"))
       assertNotContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
       assertNotContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))
@@ -68,7 +70,7 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tax_credits"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.still.to.check"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.get.more.help"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.give.more.info"))
     }
 
@@ -78,26 +80,41 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
       val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers()) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.still.to.check"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.get.more.help"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.give.more.info"))
-
     }
 
     "display the alternate message when max30HoursEnglandContent is true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(true))) (fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(true), None, None))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.hasVouchers.info"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.childcare"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.otherChildren"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.p1.voucher"))
     }
 
     "display the alternate message when max30HoursEnglandContent is false" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(false))) (fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(false), None, None)) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.noVouchers.info"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.childcare"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.otherChildren"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.p1"))
+    }
 
+    "display the alternate message when childAgedTwo is true" in {
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(true), Some(false)))(fakeRequest, messages)
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.15.hours"))
+    }
+
+    "display the alternate message when childAgedThreeOrFour is true" in {
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(false), Some(true)))(fakeRequest, messages)
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.30.hours"))
+    }
+
+    "display the alternate message when childAgedTwo and childAgedThreeOrFour both are true" in {
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(true), Some(true)))(fakeRequest, messages)
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.with.colon"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.15.hours"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.30.hours"))
     }
   }
 }

@@ -48,14 +48,28 @@
 
     @heading(messages("maxFreeHoursInfo.heading"))
 
-    <p class="govuk-body">@messages("maxFreeHoursInfo.could.get.max.hours")</p>
+            @if(userAnswers.childAgedTwo.contains(true) && userAnswers.childAgedThreeOrFour.contains(true)) {
+                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get.with.colon")</p>
+                @playComponents.list(
+                    bulletList = Seq(
+                        messages("maxFreeHoursInfo.you.can.get.15.hours"),
+                        messages("maxFreeHoursInfo.you.can.get.30.hours")
+                    )
+                )
+            } else if(userAnswers.childAgedTwo.contains(true)) {
+                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @messages("maxFreeHoursInfo.you.can.get.15.hours")</p>
+            } else if(userAnswers.childAgedThreeOrFour.contains(true)) {
+                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @messages("maxFreeHoursInfo.you.can.get.30.hours")</p>
+            }
+
+    <p class="govuk-body">@messages("maxFreeHoursInfo.p1")</p>
+    <p class="govuk-body">@messages("maxFreeHoursInfo.p2")</p>
     <p class="govuk-body">@messages("maxFreeHoursInfo.info")
         <a class="govuk-link" href="@messages("maxFreeHoursInfo.info.link.url")" data-journey-click="link - click:@messages("maxFreeHoursInfo.heading"):@messages("maxFreeHoursInfo.info.link")">
-            @messages("maxFreeHoursInfo.info.link") @messages("maxFreeHoursInfo.info.link.external")</a>.
+            @messages("maxFreeHoursInfo.info.link") @messages("maxFreeHoursInfo.info.link.opens.new.tab")</a>.
     </p>
 
-
-    <h2 class="govuk-heading-m">@messages("maxFreeHoursInfo.still.to.check")</h2>
+    <h2 class="govuk-heading-m">@messages("maxFreeHoursInfo.get.more.help")</h2>
 
     @if(userAnswers.max30HoursEnglandContent.isDefined){
         @if(userAnswers.max30HoursEnglandContent.contains(true)){
@@ -72,26 +86,6 @@
                 messages("maxFreeHoursInfo.england.li.otherChildren")
             )
         )
-
-        @if(userAnswers.max30HoursEnglandContent.contains(true)){
-        <p class="govuk-body">
-            @messages("maxFreeHoursInfo.england.p1.voucher")
-            <a class="govuk-link" href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
-            @messages("maxFreeHoursInfo.england.p1.only")
-            @messages("maxFreeHoursInfo.england.p2")
-            <a class="govuk-link" href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
-        </p>
-        }
-
-        @if(userAnswers.max30HoursEnglandContent.contains(false)){
-        <p class="govuk-body">
-            @messages("maxFreeHoursInfo.england.p1")
-            <a class="govuk-link" href="https://www.gov.uk/working-tax-credit">@messages("maxFreeHoursInfo.england.p1.link")</a>
-            @messages("maxFreeHoursInfo.england.p1.only")
-            @messages("maxFreeHoursInfo.england.p2")
-            <a class="govuk-link" href="https://www.gov.uk/universal-credit">@messages("maxFreeHoursInfo.england.p2.link")</a>.
-        </p>
-        }
     }
 
     @if(userAnswers.max30HoursEnglandContent.isEmpty){
