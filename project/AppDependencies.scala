@@ -10,7 +10,7 @@ object AppDependencies {
     ws,
     "uk.gov.hmrc"        %% "bootstrap-frontend-play-28"         % bootstrapFrontendVersion,
     "uk.gov.hmrc.mongo"  %% "hmrc-mongo-play-28"                 % "1.3.0",
-    "uk.gov.hmrc"        %% "play-frontend-hmrc"                 % "7.20.0-play-28",
+    "uk.gov.hmrc"        %% "play-frontend-hmrc"                 % "7.28.0-play-28",
     "uk.gov.hmrc"        %% "tax-year"                           % "3.3.0",
     "com.typesafe.play"  %% "play-json-joda"                     % "2.9.4"
   )
