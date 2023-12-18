@@ -32,11 +32,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
-  "go to Child Aged Two from Location when the location is England and Scotland" in {
+  "go to Children Age Groups from Location when the location is England" in {
     val answers = spy(userAnswers())
-    when(answers.location) thenReturn Some(ENGLAND) thenReturn Some(SCOTLAND)
+    when(answers.location) thenReturn Some(ENGLAND)
 
-    navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
+    navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildrenAgeGroupsController.onPageLoad(NormalMode)
+  }
+
+  "go to Child Aged Two from Location when the location is Scotland" in {
+    val answers = spy(userAnswers())
+    when(answers.location) thenReturn Some(SCOTLAND)
+
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
   }
 
@@ -78,7 +84,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val schemes = mock[Schemes]
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NO.toString)
       when(freeHours.eligibility(any())) thenReturn NotEligible
-      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad
+      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
     }
 
     "go to `free hours result page` if you are eligible for free hours and selects NO" in {
@@ -87,7 +93,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val schemes = mock[Schemes]
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NO.toString)
       when(freeHours.eligibility(any())) thenReturn Eligible
-      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad
+      navigator(freeHours, schemes).nextPage(ChildcareCostsId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
     }
 
     "go to `free hours info page` if you are eligible for free hours, in England and select NO" in {
@@ -109,7 +115,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val schemes = mock[Schemes]
       when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
       when(freeHours.eligibility(any())) thenReturn NotEligible
-      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
     }
 
     "go to `free hours info page` if you are eligible for free hours but not all schemes have been determined" in {
@@ -144,7 +150,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.childAgedThreeOrFour) thenReturn Some(false)
       when(freeHours.eligibility(any())) thenReturn NotEligible
 
-      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
     }
 
     "go to `free hours result` if user lives in NI, not eligible for min free hours, have childcare cost but no approved provider" in {
@@ -157,7 +163,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.childAgedThreeOrFour) thenReturn Some(false)
       when(freeHours.eligibility(any())) thenReturn NotEligible
 
-      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
     }
   }
 

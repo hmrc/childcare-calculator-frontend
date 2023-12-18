@@ -291,6 +291,21 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
+  def childrenAgeGroups: Option[Set[ChildAgeGroup]] = cacheMap.getEntry[Set[ChildAgeGroup]](ChildrenAgeGroupsId.toString) match {
+    case None =>
+      (childAgedTwo, childAgedThreeOrFour) match {
+        case (Some(true), Some(true)) => Some(Set(TwoYears, ThreeYears, FourYears))
+        case (_, Some(true)) => Some(Set(ThreeYears, FourYears))
+        case (Some(true), _) => Some(Set(TwoYears))
+        case (_, Some(false)) => Some(Set(NoneOfThese))
+        case _ => None
+      }
+    case option => option
+  }
+
+  def isChildAgedTwo: Option[Boolean] = childrenAgeGroups.map(_.contains(TwoYears))
+  def isChildAgedThreeOrFour: Option[Boolean] = childrenAgeGroups.map(_.exists(Set[ChildAgeGroup](ThreeYears, FourYears).contains))
+
   def location: Option[Location.Value] = cacheMap.getEntry[Location.Value](LocationId.toString)
 
   def isYouPartnerOrBoth(who: Option[String]): String = {

@@ -16,18 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Eligibility, Eligible, FourYears, NotDetermined, NotEligible, ThreeYears}
+import javax.inject.Inject
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.ENGLAND
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class FreeHours extends Scheme {
+class FreeChildcareWorkingParents @Inject() (tfc: TaxFreeChildcare) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    for {
-      childAgedThreeOrFour <- answers.isChildAgedThreeOrFour
-    } yield if (childAgedThreeOrFour) {
-      Eligible
-    } else {
-      NotEligible
-    }
-  }.getOrElse(NotDetermined)
+    val hasChildAgedTwoOrThreeOrFour = answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
+    val tfcEligibility = tfc.eligibility(answers)
+    answers.location.map {
+      case ENGLAND if hasChildAgedTwoOrThreeOrFour && tfcEligibility == Eligible =>
+        Eligible
+      case _ =>
+        NotEligible
+    }.getOrElse(NotDetermined)
+  }
 }

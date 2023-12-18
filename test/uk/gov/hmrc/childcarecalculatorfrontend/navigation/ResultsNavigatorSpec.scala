@@ -54,7 +54,7 @@ class ResultsNavigatorSpec extends PlaySpec with MockitoSugar {
     }
   }
 
-  lazy val resultPage: Call = routes.ResultController.onPageLoad
+  lazy val resultPage: Call = routes.ResultController.onPageLoad()
 
   def navigator(s: Schemes): SubNavigator = new SubNavigator with ResultsNavigator {
 

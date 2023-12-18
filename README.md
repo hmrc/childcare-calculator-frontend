@@ -11,6 +11,9 @@ The Childcare Calculator Frontend service, collects data input by the users from
 This data is collated and passed to the Childcare Calculator backend processes. The results are returned to the Childcare
 Calculator Frontend service to display to the user.
 
+Running the service
+To run the microservices locally start the dependent microservices using service manager sm2 --start CCC_ALL
+
 * **Endpoint URL :** /childcare-calc
 
 * **Port Number :** 9381
