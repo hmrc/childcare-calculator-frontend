@@ -134,6 +134,18 @@ childAgedThreeOrFour.guidance.northern-ireland = All 3 and 4 year olds in Northe
 childAgedThreeOrFour.checkYourAnswersLabel = Do you have any children aged 3 or 4?
 childAgedThreeOrFour.error.notCompleted = Select yes if you have any children aged 3 or 4
 
+childrenAgeGroups.title             = Do you have any children in these age groups?
+childrenAgeGroups.heading           = Do you have any children in these age groups?
+childrenAgeGroups.hint              = Select all that apply
+childrenAgeGroups.nineTo23Months    = 9 to 23 months old
+childrenAgeGroups.twoYears          = 2 years old
+childrenAgeGroups.threeYears        = 3 years old
+childrenAgeGroups.fourYears         = 4 years old
+childrenAgeGroups.or                = or
+childrenAgeGroups.noneOfThese       = No, I do not have any children in these age groups
+childrenAgeGroups.error.select      = Select if you have any children in these age groups
+childrenAgeGroups.error.exclusive   = Select the age groups of your children, or select ’No, I do not have any children in these age groups’
+
 childcareCosts.title = Do you have childcare costs?
 childcareCosts.heading = Do you have childcare costs?
 childcareCosts.yes = Yes

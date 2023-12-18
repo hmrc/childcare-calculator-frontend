@@ -31,14 +31,16 @@ trait NewCheckboxViewBehaviours[A] extends NewViewSpecBase {
   def errorMessage: String
   def messageKeyPrefix: String
   lazy val error = FormError(fieldKey, errorMessage)
+  lazy val divider = "divider"
 
   def fieldId(index: Int): String = {
     index + 1 match {
-      case 1 => "value"
+      case 1 => fieldKey
       case i => form(fieldKey)(s"[$i]").id.replace("_", "-")
     }
   }
 
+  //scalastyle:off
   def checkboxPage(legend: Option[String] = None): Unit = {
 
     "rendered" must {
@@ -50,29 +52,34 @@ trait NewCheckboxViewBehaviours[A] extends NewViewSpecBase {
         legends.first.text mustBe legend.getOrElse(messages(s"$messageKeyPrefix.heading"))
       }
 
-      "contain an input for the value" in {
+      "contain an input or divider for the value" in {
         val doc = asDocument(createView())
         for { (value, i) <- values.zipWithIndex } yield {
-          assertRenderedById(doc, fieldId(i))
+          if (value._2 != divider) assertRenderedById(doc, fieldId(i))
+          else assertRenderedByCssSelector(doc, ".govuk-checkboxes__divider")
         }
       }
 
-      "contain a label for each input" in {
+      "contain a label for each input or divider" in {
         val doc = asDocument(createView())
         for { ((label, value), i) <- values.zipWithIndex } yield {
-          val id = fieldId(i)
-          doc.select(s"label[for=$id]").text mustEqual messages(label).capitalize
+          if (value != divider) {
+            val id = fieldId(i)
+            doc.select(s"label[for=$id]").text mustEqual messages(label).capitalize
+          } else {
+            doc.select(".govuk-checkboxes__divider").text mustEqual messages(label)
+          }
         }
       }
 
       "have no values checked when rendered with no form" in {
         val doc = asDocument(createView())
-        for { (value, i) <- values.zipWithIndex } yield {
+        for { (value, i) <- values.zipWithIndex.filterNot(_._1._2 == divider) } yield {
           assert(!doc.getElementById(fieldId(i)).hasAttr("checked"))
         }
       }
 
-      values.zipWithIndex.foreach {
+      values.zipWithIndex.filterNot(_._1._2 == divider).foreach {
         case (v, i) =>
           s"has correct value checked when value `$v` is given" in {
             val data: Map[String, String] = Map(
@@ -83,7 +90,7 @@ trait NewCheckboxViewBehaviours[A] extends NewViewSpecBase {
 
             assert(doc.getElementById(fieldId(i)).hasAttr("checked"), s"${fieldId(i)} is not checked")
 
-            values.zipWithIndex.foreach {
+            values.zipWithIndex.filterNot(_._1._2 == divider).foreach {
               case (value, j) =>
                 if (value != v) {
                   assert(!doc.getElementById(fieldId(j)).hasAttr("checked"), s"${fieldId(j)} is checked")

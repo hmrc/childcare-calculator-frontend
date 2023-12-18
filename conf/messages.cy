@@ -121,6 +121,19 @@ childAgedThreeOrFour.guidance.wales=Mae gan bob plentyn 3 neu 4 oed yng Nghymru�
 childAgedThreeOrFour.guidance.northern-ireland=Mae gan bob plentyn 3 a 4 oed yng Ngogledd Iwerddon yr hawl i 12 awr a hanner o addysg cyn oed ysgol yn rhad ac am ddim bob wythnos yn ystod y tymor – mae hyn yn 475 awr y flwyddyn.
 childAgedThreeOrFour.checkYourAnswersLabel=A oes gennych unrhyw blant 3 neu 4 oed?
 childAgedThreeOrFour.error.notCompleted=Dewiswch ‘Iawn’ os oes gennych unrhyw blant 3 neu 4 oed
+
+childrenAgeGroups.title             = A oes gennych unrhyw blant yn y grwpiau oedran hyn?
+childrenAgeGroups.heading           = A oes gennych unrhyw blant yn y grwpiau oedran hyn?
+childrenAgeGroups.hint              = Dewiswch bob un sy’n gymwys
+childrenAgeGroups.nineTo23Months    = 9 i 23 mis oed
+childrenAgeGroups.twoYears          = 2 oed
+childrenAgeGroups.threeYears        = 3 oed
+childrenAgeGroups.fourYears         = 4 oed
+childrenAgeGroups.or                = neu
+childrenAgeGroups.noneOfThese       = Na, nid oes gennyf unrhyw blant yn y grwpiau oedran hyn
+childrenAgeGroups.error.select      = Dewiswch a oes gennych unrhyw blant yn y grwpiau oedran hyn
+childrenAgeGroups.error.exclusive   = Dewiswch y grwpiau oedran sy’n berthnasol i’ch plant, neu dewiswch ‘Na, nid oes gennyf unrhyw blant yn y grwpiau oedran hyn’
+
 childcareCosts.title=A oes gennych gostau gofal plant?
 childcareCosts.heading=A oes gennych gostau gofal plant?
 childcareCosts.yes=Iawn

@@ -32,11 +32,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
-  "go to Child Aged Two from Location when the location is England and Scotland" in {
+  "go to Children Age Groups from Location when the location is England" in {
     val answers = spy(userAnswers())
-    when(answers.location) thenReturn Some(ENGLAND) thenReturn Some(SCOTLAND)
+    when(answers.location) thenReturn Some(ENGLAND)
 
-    navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
+    navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildrenAgeGroupsController.onPageLoad(NormalMode)
+  }
+
+  "go to Child Aged Two from Location when the location is Scotland" in {
+    val answers = spy(userAnswers())
+    when(answers.location) thenReturn Some(SCOTLAND)
+
     navigator.nextPage(LocationId, NormalMode).value(answers) mustBe routes.ChildAgedTwoController.onPageLoad(NormalMode)
   }
 

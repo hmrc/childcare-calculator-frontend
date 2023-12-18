@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
+package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Eligibility, Eligible, FourYears, NotDetermined, NotEligible, ThreeYears}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-
-class FreeHours extends Scheme {
-
-  override def eligibility(answers: UserAnswers): Eligibility = {
-    for {
-      childAgedThreeOrFour <- answers.isChildAgedThreeOrFour
-    } yield if (childAgedThreeOrFour) {
-      Eligible
-    } else {
-      NotEligible
-    }
-  }.getOrElse(NotDetermined)
+case object ChildrenAgeGroupsId extends Identifier {
+  override def toString: String = "childrenAgeGroups"
 }

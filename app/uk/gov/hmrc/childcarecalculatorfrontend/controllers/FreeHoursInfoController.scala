@@ -35,8 +35,8 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val isChildAgedTwo = request.userAnswers.childAgedTwo.getOrElse(false)
-      val isChildAgedThreeOrFour = request.userAnswers.childAgedThreeOrFour.getOrElse(false)
+      val isChildAgedTwo = request.userAnswers.isChildAgedTwo.getOrElse(false)
+      val isChildAgedThreeOrFour = request.userAnswers.isChildAgedThreeOrFour.getOrElse(false)
       val locationOption = request.userAnswers.location
 
       val hasChildcareCosts = request.userAnswers.childcareCosts.getOrElse(false) match {

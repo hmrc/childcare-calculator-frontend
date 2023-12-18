@@ -21,7 +21,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 object ChildcareConstants {
 
   val maxFreeHours = BigDecimal(30)
-  val England : String = Location.ENGLAND.toString
 
   val YouSelected: String = YouPartnerBothNeitherEnum.YOU.toString
   val PartnerSelected: String = YouPartnerBothNeitherEnum.PARTNER.toString
@@ -91,7 +90,6 @@ object ChildcareConstants {
   val unknownErrorKey = "error.unknown"
 
   val locationErrorKey = "location.error.notCompleted"
-  val northernIreland = "northernIreland"
 
   val areYouInPaidWorkErrorKey = "areYouInPaidWork.error.notCompleted"
   val doYouLiveWithPartnerErrorKey = "doYouLiveWithPartner.error.notCompleted"
