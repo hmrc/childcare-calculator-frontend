@@ -31,12 +31,13 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
 
   ".eligibility" must {
 
+    val answers: UserAnswers = mock[UserAnswers]
+    val freeHours: FreeHours = mock[FreeHours]
+    val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
+
     "return `NotDetermined`" when {
 
       "free hours eligibility is undetermined" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn NotDetermined
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(ENGLAND)
@@ -44,9 +45,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
       }
 
       "tfc eligibility is undetermined" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn NotDetermined
         when(answers.location) thenReturn Some(ENGLAND)
@@ -54,9 +52,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
       }
 
       "there is no answer for location" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn None
@@ -67,9 +62,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
     "return `NotEligible`" when {
 
       "user is not eligible for free hours" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn NotEligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(ENGLAND)
@@ -77,9 +69,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
       }
 
       "user is not eligible for tfc" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn NotEligible
         when(answers.location) thenReturn Some(ENGLAND)
@@ -87,9 +76,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
       }
 
       "user is from Scotland" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(SCOTLAND)
@@ -97,9 +83,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
       }
 
       "user is from Wales" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(WALES)
@@ -107,9 +90,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
       }
 
       "user is from Northern Ireland" in {
-        val answers: UserAnswers = mock[UserAnswers]
-        val freeHours: FreeHours = mock[FreeHours]
-        val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(tfc.eligibility(any())) thenReturn Eligible
         when(answers.location) thenReturn Some(NORTHERN_IRELAND)
@@ -119,9 +99,6 @@ class MaxFreeHoursSpec extends SchemeSpec with MockitoSugar {
 
     "return `Eligible` when user is eligible for Free Hours, TFC and lives in England" in {
 
-      val answers: UserAnswers = mock[UserAnswers]
-      val freeHours: FreeHours = mock[FreeHours]
-      val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
       when(freeHours.eligibility(any())) thenReturn Eligible
       when(tfc.eligibility(any())) thenReturn Eligible
       when(answers.location) thenReturn Some(ENGLAND)

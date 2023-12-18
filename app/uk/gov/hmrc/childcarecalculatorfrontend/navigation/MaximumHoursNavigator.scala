@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, User
 class MaximumHoursNavigator @Inject() (
                                         utils: Utils,
                                         override val schemes: Schemes,
-                                        maxHours: MaxFreeHours,
+                                        freeChildcareWorkingParents: FreeChildcareWorkingParents,
                                         taxCredits: TaxCredits,
                                         tfc: TaxFreeChildcare,
                                         esc: EmploymentSupportedChildcare
@@ -306,7 +306,7 @@ class MaximumHoursNavigator @Inject() (
         routes.ResultController.onPageLoad()
       } else if(answers.hasApprovedCosts.contains(true)) {
 
-        if (maxHours.eligibility(answers) == Eligible) {
+        if (freeChildcareWorkingParents.eligibility(answers) == Eligible) {
           routes.MaxFreeHoursInfoController.onPageLoad()
         } else {
           routes.NoOfChildrenController.onPageLoad(NormalMode)

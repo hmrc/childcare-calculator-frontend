@@ -67,6 +67,7 @@ object ChildcareConstants {
   val twentyFoursHours = 24
 
   val totalNoOfHoursAYear = 570
+  val noOfFreeHours30 = 30
   val noOfFreeHours15 = 15
 
   val nineteen = 19

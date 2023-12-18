@@ -25,6 +25,7 @@ case class ResultsViewModel(firstParagraph : String = "",
                             tfc:Option[BigDecimal] = None,
                             esc:Option[BigDecimal] = None,
                             freeHours:Option[BigDecimal] = None,
+                            freeChildcareWorkingParents: Boolean = false,
                             location:Location.Value,
                             childAgedTwo: Boolean = false,
                             childAgedThreeOrFour: Boolean = false,
@@ -37,7 +38,8 @@ case class ResultsViewModel(firstParagraph : String = "",
                             isAnyoneInPaidEmployment: Boolean,
                             livesWithPartner: Boolean,
                             yourEarnings: Option[EarningsEnum] = None,
-                            partnerEarnings: Option[EarningsEnum] = None) {
+                            partnerEarnings: Option[EarningsEnum] = None,
+                            freeChildcareWorkingParentsEligibilityMsg: Option[String] = None) {
 
   def noOfEligibleSchemes(hideTC: Boolean): Int = {
     val listOfSchemes = if (hideTC) List(tfc, esc, freeHours) else List(tc, tfc, esc, freeHours)
