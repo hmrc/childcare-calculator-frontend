@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
@@ -27,8 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{NOTSURE
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
+class FreeHoursInfoController @Inject()(mcc: MessagesControllerComponents,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
                                         freeHoursInfo: freeHoursInfo) extends FrontendController(mcc) with I18nSupport {
@@ -54,22 +52,14 @@ class FreeHoursInfoController @Inject()(appConfig: FrontendAppConfig,
           Redirect(routes.LocationController.onPageLoad(NormalMode))
         case Some(location) =>
 
-          Ok(freeHoursInfo(appConfig,
+          Ok(freeHoursInfo(
             isChildAgedTwo,
             isChildAgedThreeOrFour,
             hasChildcareCosts,
             hasApprovedCosts,
-            location,
-            isEligibleForOnlyOneScheme(isChildAgedTwo, isChildAgedThreeOrFour, hasChildcareCosts, hasApprovedCosts, location)))
+            location
+          ))
       }
   }
 
-  private def isEligibleForOnlyOneScheme(isChildAgedTwo: Boolean,
-                                         isChildAgedThreeOrFour: Boolean,
-                                         hasChildcareCosts: Boolean,
-                                         hasApprovedCosts: Boolean,
-                                         location: Location.Value) = {
-    (!isChildAgedTwo && isChildAgedThreeOrFour && location == Location.ENGLAND && !hasChildcareCosts) ||
-      (!isChildAgedTwo && isChildAgedThreeOrFour && location == Location.ENGLAND && hasChildcareCosts && !hasApprovedCosts)
-  }
 }

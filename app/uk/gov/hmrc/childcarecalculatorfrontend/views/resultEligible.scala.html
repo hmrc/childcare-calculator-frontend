@@ -24,7 +24,7 @@
 @(model: ResultsViewModel, utils: Utils, hideTC: Boolean)(implicit request: Request[_], messages: Messages, lang: Lang)
 
 @freeHoursContactCouncil = {
-    <p class="govuk-body">@messages("result.free.hours.detailPara3.you.can") <a class="govuk-link" id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title"):@messages("result.free.hours.detailPara3.link.text")" href="@messages("result.free.hours.detailPara3.link")">@messages("result.free.hours.detailPara3.link.text") @messages("site.opens.new.tab")</a>.</p>
+    <p class="govuk-body">@messages("result.free.hours.detailPara3.you.can") <a class="govuk-link" id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title.3to4"):@messages("result.free.hours.detailPara3.link.text")" href="@messages("result.free.hours.detailPara3.link")">@messages("result.free.hours.detailPara3.link.text") @messages("site.opens.new.tab")</a>.</p>
 }
 
 @findoutAboutUC = {
@@ -45,7 +45,7 @@
     } else {
         @if(model.freeHours.isDefined){
             @schemeResult(SchemeResultModel(
-            title = messages("result.free.hours.title"),
+            title = messages("result.free.hours.title.3to4"),
             id = Some("freeHours"),
             couldGet = Some(messages("result.you.could.get.up.to")),
             eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) s"${hours.toString} ${messages("result.free.hours.hours")}" else messages("result.free.hours.twelve.and.half")),"freeHoursEligibility")),

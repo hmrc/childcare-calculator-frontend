@@ -14,11 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
-
 
 @this(
     layout: Layout,
@@ -29,13 +27,11 @@
 )
 
 @(
-    appConfig: FrontendAppConfig,
     isChildAgedTwo: Boolean,
     isChildAgedThreeOrFour :Boolean,
     hasChildcareCosts : Boolean,
     approvedProviderCosts: Boolean,
-    location: Location.Value,
-    isEligibleForOnlyOneScheme: Boolean = false
+    location: Location.Value
 )(implicit request: Request[_], messages: Messages)
 
 @layout(
@@ -54,26 +50,24 @@
     <h2 class="govuk-heading-m">@messages("freeHoursInfo.heading2")</h2>
 
     <p class="govuk-body">
-        @if(isEligibleForOnlyOneScheme) {
+        @if(!(hasChildcareCosts && approvedProviderCosts)) {
             @messages("freeHoursInfo.guidance.isEligibleForOnlyOneScheme")
         } else {
             @messages("freeHoursInfo.guidance.isNotEligibleForOnlyOneScheme")
         }
     </p>
 
-    <ul class="govuk-list govuk-list--bullet">
-        @if((!isEligibleForOnlyOneScheme && isChildAgedThreeOrFour && location == Location.ENGLAND) || ((isChildAgedTwo && location != Location.NORTHERN_IRELAND) || (isChildAgedTwo && location != Location.WALES)) ){
-            <li>@messages("freeHoursInfo.li.workingParents")</li>
-        }
+    @if(hasChildcareCosts && approvedProviderCosts) {
+        <ul class="govuk-list govuk-list--bullet">
+            @if((isChildAgedThreeOrFour || isChildAgedTwo) && location == Location.ENGLAND) {
+                <li>@messages("freeHoursInfo.li.workingParents")</li>
+            }
 
-        <!--and approved costs-->
-        @if(hasChildcareCosts && approvedProviderCosts) {
             <li>@messages("freeHoursInfo.li.tfc")</li>
             <li>@messages("freeHoursInfo.li.tax_credits")</li>
             <li>@messages("freeHoursInfo.li.vouchers")</li>
-        }
-
-    </ul>
+        </ul>
+    }
 
     @if(!hasChildcareCosts) {
         <p class="govuk-body">@messages("freeHoursInfo.no.childcare.para") <a href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursInfo.no.childcare.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>

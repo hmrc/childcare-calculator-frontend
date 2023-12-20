@@ -81,7 +81,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "15")
-        assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.free.hours.title.3to4"))
         assertContainsText(view, messages("result.you.could.get.up.to"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.england", 570))
@@ -93,7 +93,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "10")
-        assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.free.hours.title.3to4"))
         assertContainsText(view, messages("result.you.could.get"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.wales"))
@@ -106,7 +106,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "16")
-        assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.free.hours.title.3to4"))
         assertContainsText(view, messages("result.you.could.get"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.scotland"))
@@ -118,7 +118,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsMessages(view, "12 and a half hours")
-        assertContainsText(view, messages("result.free.hours.title"))
+        assertContainsText(view, messages("result.free.hours.title.3to4"))
         assertContainsText(view, messages("result.you.could.get.up.to"))
         assertContainsText(view, messages("result.free.hours.hours"))
         assertContainsText(view, messages("result.free.hours.period.northern-ireland"))
@@ -137,7 +137,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
       }
 
       "location is England and working parents with just 3 or 4 year old" in {
-        val model = ResultsViewModel(freeHours = Some(15), freeChildcareWorkingParents = true, location = Location.ENGLAND, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = Some(30), freeChildcareWorkingParents = true, location = Location.ENGLAND, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(view, messages("result.free.childcare.working.parents.title"))
@@ -146,7 +146,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
       }
 
       "location is England and working parents with 2 year old and 3 or 4 year old" in {
-        val model = ResultsViewModel(freeHours = Some(15), freeChildcareWorkingParents = true, location = Location.ENGLAND, childAgedTwo = true, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = Some(30), freeChildcareWorkingParents = true, location = Location.ENGLAND, childAgedTwo = true, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(view, messages("result.free.childcare.working.parents.title"))

@@ -17,25 +17,24 @@
 package services
 
 import com.google.inject.Inject
-import javax.inject.Singleton
 import play.api.i18n.{Lang, MessagesApi}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 
-import scala.math.BigDecimal
+import javax.inject.Singleton
 
 @Singleton
-class MoreInfoService @Inject() (val messages: MessagesApi) {
+class MoreInfoService @Inject()(val messages: MessagesApi) {
 
   def getSchemeContent(userLocation: Location, model: ResultsViewModel, hideTC: Boolean)(implicit lang: Lang): List[Map[String, String]] = {
-    val freeHours = (userLocation,model.freeHours) match {
-      case (Location.ENGLAND, Some(ChildcareConstants.maxFreeHours)) => linkData(userLocation.toString, "hours", model.freeHours)
-      case _ => None
+    val freeHours = if (model.freeChildcareWorkingParents) {
+      linkData(userLocation.toString, "hours", model.freeHours)
+    } else {
+      None
     }
 
-    val taxCredits = if(hideTC) None else linkData(userLocation.toString, "tc", model.tc)
+    val taxCredits = if (hideTC) None else linkData(userLocation.toString, "tc", model.tc)
     val taxFreeChildCare = linkData(userLocation.toString, "tfc", model.tfc)
 
     List(freeHours, taxCredits, taxFreeChildCare).flatten
@@ -50,13 +49,14 @@ class MoreInfoService @Inject() (val messages: MessagesApi) {
     }
   }
 
-  private def linkData(key: String, scheme: String, value: Option[BigDecimal])(implicit lang: Lang) = value match {
-    case Some(x) if x > 0 => {
-      Some(Map(
-        "title" -> messages(s"aboutYourResults.more.info.$key.$scheme.title"),
-        "link" -> messages(s"aboutYourResults.more.info.$key.$scheme.link")
-      ))
+  private def linkData(key: String, scheme: String, value: Option[BigDecimal])(implicit lang: Lang) =
+    value match {
+      case Some(x) if x > 0 => {
+        Some(Map(
+          "title" -> messages(s"aboutYourResults.more.info.$key.$scheme.title"),
+          "link" -> messages(s"aboutYourResults.more.info.$key.$scheme.link")
+        ))
+      }
+      case _ => None
     }
-    case _ => None
-  }
 }
