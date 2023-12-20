@@ -70,26 +70,28 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
 
     def freeChildcareWorkingParentsEligibilityMsg(): Option[String] = {
-
-      if (answers.doYouLiveWithPartner.getOrElse(false)) {
-        if (answers.whoIsInPaidEmployment != Some("both")) Some(messages("result.free.childcare.working.parents.not.eligible.partner.paidEmployment"))
-        else if (!(answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false))) {
-          val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
-          val earningsForPartnerAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourPartnersAge)
-          if (earningsForAge == earningsForPartnerAge) Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.sameAge", earningsForAge))
-          else Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
+      if (answers.location.contains(ENGLAND) && (answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false))) {
+        if (answers.doYouLiveWithPartner.getOrElse(false)) {
+          if (!answers.whoIsInPaidEmployment.contains("both")) Some(messages("result.free.childcare.working.parents.not.eligible.partner.paidEmployment"))
+          else if (!(answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false))) {
+            val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
+            val earningsForPartnerAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourPartnersAge)
+            if (earningsForAge == earningsForPartnerAge) Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.sameAge", earningsForAge))
+            else Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
+          }
+          else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.partner.maximumEarning"))
+          else None
+        } else {
+          if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.paidEmployment"))
+          else if (!answers.yourMinimumEarnings.getOrElse(false)) {
+            val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
+            Some(messages("result.free.childcare.working.parents.not.eligible.minimumEarning", earningsForAge))
+          }
+          else if (answers.yourMaximumEarnings.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.maximumEarning"))
+          else None
         }
-        else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.partner.maximumEarning"))
-        else None
-      } else {
-        if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.paidEmployment"))
-        else if (!answers.yourMinimumEarnings.getOrElse(false)) {
-          val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
-          Some(messages("result.free.childcare.working.parents.not.eligible.minimumEarning", earningsForAge))
-        }
-        else if (answers.yourMaximumEarnings.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.maximumEarning"))
-        else None
       }
+      else None
     }
 
     val resultViewModel = ResultsViewModel(
@@ -159,11 +161,13 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
 
   private def getViewModelWithFreeHours(answers: UserAnswers, resultViewModel: ResultsViewModel) = {
     val freeHoursEligibility = freeHours.eligibility(answers)
+    val freeChildcareWorkingParentsEligibility = freeChildcareWorkingParents.eligibility(answers)
     val maxFreeHoursEligibility = maxFreeHours.eligibility(answers)
     val location: Option[Location.Value] = answers.location
 
     freeHoursEligibility match {
       case Eligible if maxFreeHoursEligibility == Eligible => resultViewModel.copy(freeHours = Some(eligibleMaxFreeHours))
+      case _ if freeChildcareWorkingParentsEligibility == Eligible => resultViewModel.copy(freeHours = Some(freeHoursForEngland))
       case Eligible => getFreeHoursForLocation(location, resultViewModel)
       case _ => resultViewModel
     }

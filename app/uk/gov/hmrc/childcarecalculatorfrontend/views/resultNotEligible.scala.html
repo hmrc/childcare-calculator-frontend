@@ -55,24 +55,29 @@
     @linkList(bullets: Seq[Tuple2[String, String]]) = {
         <ul class="govuk-list govuk-list--bullet">
             @for((content, link) <- bullets){
-                <li><a href="@link" rel="noreferrer noopener" target="_blank">@content @messages("feedback.hint.link.opens.new.tab")</a></li>
+                <li><a href="@link" rel="noreferrer noopener" target="_blank" class="govuk-link">@content @messages("feedback.hint.link.opens.new.tab")</a></li>
             }
         </ul>
     }
 
-    @if((!model.freeChildcareWorkingParents) && (model.freeChildcareWorkingParentsEligibilityMsg.isDefined)) {
+    @if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined) {
         @schemeResult(SchemeResultModel(
             title = messages("result.free.childcare.working.parents.title"),
             insetText = Some(model.freeChildcareWorkingParentsEligibilityMsg.getOrElse("")),
             insetTextId = Some("notEligibleFreeChildcareWorkingParents"),
             sectionBreak = false
         ))
-    }
-
-    @if(model.freeHours.isEmpty) {
+    } else if(model.freeHours.isEmpty && model.location == Location.ENGLAND) {
         @schemeResult(SchemeResultModel(
-            title = messages("result.free.hours.title"),
-            para1 = Some(messages("result.free.hours.not.eligible")),
+            title = messages("result.free.hours.title.2to4"),
+            para1 = Some(messages("result.free.hours.not.eligible.2to4")),
+            notEligibleID = (Some("notEligibleFreeHours"), None),
+            sectionBreak = false
+        ))
+    } else if(model.freeHours.isEmpty) {
+        @schemeResult(SchemeResultModel(
+            title = messages("result.free.hours.title.3to4"),
+            para1 = Some(messages("result.free.hours.not.eligible.3to4")),
             notEligibleID = (Some("notEligibleFreeHours"), None),
             sectionBreak = false
         ))
