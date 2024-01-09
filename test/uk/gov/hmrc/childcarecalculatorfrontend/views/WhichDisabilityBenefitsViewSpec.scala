@@ -48,8 +48,8 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
     view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang)
 
   lazy val cases: Seq[(Int, String)] = {
-    val names: Stream[String] = Stream.continually(Random.alphanumeric.take(5).mkString)
-    lazy val indices: Stream[Int] = Stream.from(Random.nextInt(15))
+    val names: LazyList[String] = LazyList.continually(Random.alphanumeric.take(5).mkString)
+    lazy val indices: LazyList[Int] = LazyList.from(Random.nextInt(15))
     indices.zip(names).take(3)
   }.distinct
 

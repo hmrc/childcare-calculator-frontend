@@ -81,7 +81,7 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
         val partnerBenefits = userAnswers.whichBenefitsPartnerGet.getOrElse(Seq())
 
         val hasAnyOneGotCarerAllowance: Boolean = List(parentBenefits, partnerBenefits).foldLeft(false){
-          (acc, benefits) => acc || benefits.exists(x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
+          (acc, benefits) => acc || benefits.exists(x => x == WhichBenefitsEnum.CARERSALLOWANCE.toString)
         }
 
         val bothAnyBenefitsValue = boundForm.value.getOrElse(true)

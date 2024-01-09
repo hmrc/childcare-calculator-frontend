@@ -107,7 +107,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       livesWithPartner = livingWithPartner,
       yourEarnings = yourEarnings,
       partnerEarnings = partnerEarnings,
-      freeChildcareWorkingParentsEligibilityMsg = freeChildcareWorkingParentsEligibilityMsg
+      freeChildcareWorkingParentsEligibilityMsg = freeChildcareWorkingParentsEligibilityMsg()
     )
 
     val schemeResults: Future[SchemeResults] = eligibilityService.eligibility(answers)

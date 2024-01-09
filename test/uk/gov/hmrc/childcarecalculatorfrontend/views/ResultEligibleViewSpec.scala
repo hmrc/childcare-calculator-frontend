@@ -16,12 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import java.text.DecimalFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{resultEligible, resultNotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultEligible
 
 class ResultEligibleViewSpec extends NewViewBehaviours {
 

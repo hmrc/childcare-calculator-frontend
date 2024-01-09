@@ -18,8 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.FormError
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, WhichBenefitsEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
 
 class ChildrenAgeGroupsFormSpec extends CheckboxBehaviours[ChildAgeGroup] {
 

@@ -17,28 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 
 
+import java.time.Instant
+
 import javax.inject.{Inject, Singleton}
-import org.joda.time.{DateTime, DateTimeZone}
 import org.mongodb.scala.model.Filters._
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model.Updates._
 import org.mongodb.scala.model.{IndexModel, IndexOptions, UpdateOptions}
 import play.api.Configuration
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsValue, Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
-import uk.gov.hmrc.mongo.play.json.formats.MongoJodaFormats.Implicits._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.SECONDS
 
 case class DatedCacheMap(id: String,
                          data: Map[String, JsValue],
-                         lastUpdated: DateTime = DateTime.now(DateTimeZone.UTC))
+                         lastUpdated: Instant = Instant.now())
 
 object DatedCacheMap {
-  implicit val formats = Json.format[DatedCacheMap]
+  implicit val formats: OFormat[DatedCacheMap] = Json.format[DatedCacheMap]
 
   def apply(cacheMap: CacheMap): DatedCacheMap = DatedCacheMap(cacheMap.id, cacheMap.data)
 }
@@ -51,7 +51,7 @@ class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(impl
     indexes = Seq(
       IndexModel(ascending("lastUpdated"), IndexOptions()
         .name("userAnswersExpiry")
-        .expireAfter(config.get[Int]("mongodb.timeToLiveInSeconds"), SECONDS))
+        .expireAfter(config.get[Long]("mongodb.timeToLiveInSeconds"), SECONDS))
     )
     , extraCodecs = Seq(Codecs.playFormatCodec(CacheMap.formats))
   ) {

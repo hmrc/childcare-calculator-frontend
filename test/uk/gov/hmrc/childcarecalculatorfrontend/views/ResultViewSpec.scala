@@ -16,15 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import org.jsoup.nodes.Element
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{result, resultNotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
 class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
 
@@ -72,18 +70,6 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
 
           assertNotContainsText(view, "This is the first paragraph")
         }
-      }
-
-      "We have free hours value" in {
-        val model = ResultsViewModel(freeHours = Some(15), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(resultView(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages, lang))
-
-      }
-
-      "user is eligible for more than one of the schemes" in {
-        val model = ResultsViewModel(freeHours = Some(15), tc = Some(200), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(resultView(frontendAppConfig, model, List.empty, None, new Utils, hideTC = false)(fakeRequest, messages, lang))
-
       }
     }
 

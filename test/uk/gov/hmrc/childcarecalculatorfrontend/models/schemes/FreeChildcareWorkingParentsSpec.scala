@@ -21,7 +21,7 @@ import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.ModelFactory
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class FreeChildcareWorkingParentsSpec extends SchemeSpec with MockitoSugar {

@@ -43,7 +43,7 @@ trait Formatters {
     override def bind(key: String, data: Map[String, String]) =
       baseFormatter
         .bind(key, data)
-        .right.flatMap {
+        .flatMap {
         case s if !s.matches(decimalRegex) =>
           Left(Seq(FormError(key, invalidKey, args)))
         case s =>
@@ -64,7 +64,7 @@ trait Formatters {
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
           .bind(key, data)
-          .right.flatMap {
+          .flatMap {
           s =>
             nonFatalCatch
               .either(s.toInt)

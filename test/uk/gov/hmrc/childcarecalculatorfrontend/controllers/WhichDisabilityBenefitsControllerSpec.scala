@@ -41,9 +41,9 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
   "WhichDisabilityBenefits Controller" must {
 
-    val cases: Stream[(Int, String)] = {
-      val indices = Stream.from(Random.nextInt(15))
-      val names = Stream.continually(Random.alphanumeric.take(5).mkString)
+    val cases: LazyList[(Int, String)] = {
+      val indices = LazyList.from(Random.nextInt(15))
+      val names = LazyList.continually(Random.alphanumeric.take(5).mkString)
       indices.zip(names).take(3)
     }.distinct
 

@@ -33,8 +33,8 @@ class MapFormatsSpec extends PlaySpec with EitherValues with MapFormats {
 
       val result = Json.fromJson[Map[Int, String]](json).asEither
 
-      result.right.value must contain(0 -> "foo")
-      result.right.value must contain(1 -> "bar")
+      result.value must contain(0 -> "foo")
+      result.value must contain(1 -> "bar")
     }
 
     "fail to read json into a `Map[Int, String]` when keys are not valid `Int`s" in {

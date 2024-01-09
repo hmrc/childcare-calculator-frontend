@@ -23,7 +23,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
   def normalPage(view: () => HtmlFormat.Appendable,
                  messageKeyPrefix: String,
-                 expectedGuidanceKeys: String*) {
+                 expectedGuidanceKeys: String*): Unit = {
 
     "behave like a normal page" when {
       "rendered" must {
@@ -64,7 +64,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
   def normalPageWithCurrencySymbol(view: () => HtmlFormat.Appendable,
                                    messageKeyPrefix: String,
-                                   expectedGuidanceKeys: String*) {
+                                   expectedGuidanceKeys: String*): Unit = {
 
     normalPage(view, messageKeyPrefix, expectedGuidanceKeys: _*)
 
@@ -87,7 +87,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
                                    heading: Option[String],
                                    expectedGuidanceKeys: Seq[String],
                                    args: Any*
-                                 ) {
+                                 ): Unit = {
 
     "behave like a normal page" when {
       "rendered" must {
@@ -133,7 +133,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
                                    expectedGuidanceKeys: Seq[String],
                                    args: Seq[String] = Nil,
                                    titleArgs: Seq[String] = Nil
-                                 ) {
+                                 ): Unit = {
 
     "behave like a normal page" when {
       "rendered" must {
@@ -172,7 +172,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
     }
   }
 
-  def pageWithBackLink(view: () => HtmlFormat.Appendable) {
+  def pageWithBackLink(view: () => HtmlFormat.Appendable): Unit = {
 
     "behave like a page with a back link" must {
       "have a back link" in {
