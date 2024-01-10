@@ -40,7 +40,7 @@ class WithErrorsSpec extends PlaySpec with EitherValues {
 
     "successfully bind the original mapping" in {
       val result = mapping.bind(Map("foo" -> "bar"))
-      result.right.value mustEqual "bar"
+      result.value mustEqual "bar"
     }
 
     "replace an error message from an inner binding" in {

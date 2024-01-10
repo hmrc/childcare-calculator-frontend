@@ -20,7 +20,7 @@ import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{NOTSURE, YES}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo

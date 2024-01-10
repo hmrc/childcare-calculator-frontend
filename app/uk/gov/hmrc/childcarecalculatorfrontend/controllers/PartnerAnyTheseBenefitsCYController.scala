@@ -77,7 +77,7 @@ class PartnerAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig
   private def validateCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
     userAnswers.whichBenefitsPartnerGet match {
       case Some(benefits) if !boundForm.hasErrors => {
-        val hasCarerAllowance = benefits.exists( x => x.equals(WhichBenefitsEnum.CARERSALLOWANCE.toString))
+        val hasCarerAllowance = benefits.exists( x => x == WhichBenefitsEnum.CARERSALLOWANCE.toString)
         val partnerAnyBenefitsValue = boundForm.value.getOrElse(true)
 
         if(hasCarerAllowance && !partnerAnyBenefitsValue) {

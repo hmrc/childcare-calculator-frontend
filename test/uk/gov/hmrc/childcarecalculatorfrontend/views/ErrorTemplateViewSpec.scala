@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template
 
 class errorTemplateViewSpec extends NewViewSpecBase {

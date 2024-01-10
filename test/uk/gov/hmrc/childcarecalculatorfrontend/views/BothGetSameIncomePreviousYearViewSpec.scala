@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{bothGetSameIncomePreviousYear, youGetSameIncomePreviousYear}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothGetSameIncomePreviousYear
 
 import scala.collection.immutable.ListMap
 

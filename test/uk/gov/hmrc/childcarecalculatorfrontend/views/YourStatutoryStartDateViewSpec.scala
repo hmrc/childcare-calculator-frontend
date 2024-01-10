@@ -20,7 +20,7 @@ import java.time.LocalDate
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryStartDateForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewDateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 

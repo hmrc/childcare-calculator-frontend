@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class EmploymentIncomePY (parentEmploymentIncomePY: BigDecimal, partnerEmploymentIncomePY: BigDecimal)
 
 object EmploymentIncomePY {
-  implicit val format = Json.format[EmploymentIncomePY]
+  implicit val format: OFormat[EmploymentIncomePY] = Json.format[EmploymentIncomePY]
 }

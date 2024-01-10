@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ChildcarePayFrequencyForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
