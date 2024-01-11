@@ -42,7 +42,6 @@ lazy val microservice = Project(appName, file("."))
       "-Wconf:cat=unused-imports&src=html/.*:s",
     ),
     libraryDependencies ++= AppDependencies(),
-    dependencyOverrides += "commons-codec" % "commons-codec" % "1.12", //Handle invalid Base64 will be fixed in 1.15
     retrieveManaged := true,
     update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     resolvers ++= Seq(
