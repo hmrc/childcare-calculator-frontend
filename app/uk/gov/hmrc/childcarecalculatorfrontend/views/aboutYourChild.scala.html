@@ -76,7 +76,7 @@
 @layout(
     pageTitle = title
 ) {
-    @errorSummary(form.errors, key => if (key=="dob") s"$key.day" else s"$key")
+    @errorSummary(form.errors.distinctBy(error => error.message), key => if (key=="aboutYourChild.dob") s"$key.day" else s"$key")
     @heading(headingText)
 
     @if(index == 0) {
@@ -97,7 +97,7 @@
             content = dateText,
             hintContent = Some(messages("aboutYourChild.hint")),
             smallText = true,
-            field = form("dob")
+            field = form("aboutYourChild.dob")
         )
 
         @submitButton()

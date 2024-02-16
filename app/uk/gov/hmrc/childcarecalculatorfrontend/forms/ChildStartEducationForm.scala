@@ -17,31 +17,27 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import java.time.LocalDate
-import play.api.data.Forms._
-import play.api.data.{Form, FormError}
+import play.api.data.Form
+import play.api.data.Forms.{of, single}
+import play.api.i18n.Messages
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.DateFormatter
 
 object ChildStartEducationForm extends FormErrorHelper {
 
-  val requiredKey = "childStartEducation.error.blank"
-  val invalidKey = "childStartEducation.error.invalid"
-  val before16Key = "childStartEducation.error.before16"
+  private val dateKey = "childStartEducation"
+  private val sixteen = 16
+  private val maxDate = LocalDate.now.plusDays(1)
+  private def minDate(date: LocalDate): LocalDate = date.plusYears(sixteen)
 
-  def apply(dateOfBirth: LocalDate): Form[LocalDate] = Form(
+  def apply(dob: LocalDate, name: String)(implicit messages: Messages): Form[LocalDate] = Form(
     single(
-      "date" -> localDateMapping(
-        "day" -> int(requiredKey, invalidKey),
-        "month" -> int(requiredKey, invalidKey),
-        "year" -> int(requiredKey, invalidKey)
-      )
-        .verifying(invalidKey, _.isBefore(LocalDate.now.plusDays(1)))
-        .verifying(before16Key, _.isAfter(dateOfBirth.plusYears(16)))
-        .replaceError(FormError("", "error.invalidDate"), FormError("", invalidKey))
-        .replaceError(FormError("day", requiredKey), FormError("", requiredKey))
-        .replaceError(FormError("month", requiredKey), FormError("", requiredKey))
-        .replaceError(FormError("year", requiredKey), FormError("", requiredKey))
-        .replaceError(FormError("day", invalidKey), FormError("", invalidKey))
-        .replaceError(FormError("month", invalidKey), FormError("", invalidKey))
-        .replaceError(FormError("year", invalidKey), FormError("", invalidKey))
+      dateKey -> of(DateFormatter(
+        dateKey,
+        optMinDate = Some(minDate(dob)),
+        optMaxDate = Some(maxDate),
+        args = Seq(name)
+      ))
     )
   )
+
 }

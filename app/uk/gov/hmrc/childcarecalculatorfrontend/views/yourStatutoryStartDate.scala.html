@@ -47,13 +47,13 @@
 
     @formWithCSRF(action = YourStatutoryStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
-        @errorSummary(form.errors, key => s"$key.day")
+        @errorSummary(form.errors.distinctBy(error => error.message), key => if (key=="yourStatutoryStartDate") s"$key.day" else s"$key")
 
         @inputDate(
             content = messages("yourStatutoryStartDate.heading", statutoryType),
             hintContent = Some(messages("yourStatutoryStartDate.hint")),
             smallText = false,
-            field = form("date")
+            field = form("yourStatutoryStartDate")
         )
 
         @submitButton()

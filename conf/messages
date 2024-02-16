@@ -407,7 +407,6 @@ whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance = Attendance A
 whichBenefitsList.typeof.higher.rate.benefit.personal.payment = Personal Independence Payment (enhanced daily living component)
 whichBenefitsList.typeof.higher.rate.benefit.independent.payment = Armed Forces Independence Payment
 
-
 yourPartnersAge.title = What’s your partner’s age?
 yourPartnersAge.heading = What’s your partner’s age?
 yourPartnersAge.UNDER18 = Under 18
@@ -494,7 +493,6 @@ taxOrUniversalCredits.uc = Universal Credit
 taxOrUniversalCredits.none = None of these
 taxOrUniversalCredits.error.notCompleted = Select if you get Tax Credits or Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
-
 
 noOfChildren.title = How many children do you have?
 noOfChildren.heading = How many children do you have?
@@ -1062,21 +1060,54 @@ aboutYourChild.dob = What’s your child’s date of birth?
 aboutYourChild.dob.nth = What’s your {0} child’s date of birth?
 aboutYourChild.hint = For example, 31 3 2015
 aboutYourChild.checkYourAnswersLabel = About your child
-aboutYourChild.error.name = Enter your child’s first name
-aboutYourChild.error.name.nth = Enter your {0} child’s first name
-aboutYourChild.error.duplicateName = You have entered this name for another child. Use a different name or nickname for this child.
-aboutYourChild.error.maxLength = Your child’s first name must be 35 characters or less
-aboutYourChild.error.maxLength.nth = Your {0} child’s first name must be 35 characters or less
-aboutYourChild.error.dob.blank = Enter your child’s date of birth
-aboutYourChild.error.dob.blank.nth = Enter your {0} child’s date of birth
-aboutYourChild.error.dob.invalid = Enter a valid date
-aboutYourChild.error.future = Date of birth must be no more than 12 months in the future
-aboutYourChild.error.past = Date of birth must not be more than 20 years in the past
+aboutYourChild.name.error.required = Enter your child’s first name
+aboutYourChild.name.error.duplicate = You have entered this name for another child. Use a different name or nickname for this child.
+aboutYourChild.name.error.maxLength = Your child’s first name must be 35 characters or less
+aboutYourChild.nth.name.error.required = Enter your {0} child’s first name
+aboutYourChild.nth.name.error.maxLength = Your {0} child’s first name must be 35 characters or less
+aboutYourChild.dob.error.required = Enter the date of birth of your child
+aboutYourChild.dob.error.required.day = The date of birth of your child must include a day
+aboutYourChild.dob.error.required.month = The date of birth of your child must include a month
+aboutYourChild.dob.error.required.year = The date of birth of your child must include a year
+aboutYourChild.dob.error.required.dayMonth = The date of birth of your child must include a day and month
+aboutYourChild.dob.error.required.dayYear = The date of birth of your child must include a day and year
+aboutYourChild.dob.error.required.monthYear = The date of birth of your child must include a month and year
+aboutYourChild.dob.error.invalid = Enter a valid date in numbers
+aboutYourChild.dob.error.invalid.day = The day of your child’s date of birth must be a number
+aboutYourChild.dob.error.invalid.month = The month of your child’s date of birth must be a number
+aboutYourChild.dob.error.invalid.year = The year of your child’s date of birth must be a number
+aboutYourChild.dob.error.invalid.dayMonth = The day and month of your child’s date of birth must be a number
+aboutYourChild.dob.error.invalid.dayYear = The day and year of your child’s date of birth must be a number
+aboutYourChild.dob.error.invalid.monthYear = The month and year of your child’s date of birth must be a number
+aboutYourChild.dob.error.notReal = The date of birth of your child must be a real date
+aboutYourChild.dob.error.notReal.day = The day of your child’s date of birth must be a valid number
+aboutYourChild.dob.error.notReal.month = The month of your child’s date of birth must be a valid number
+aboutYourChild.dob.error.notReal.year = Year must include 4 numbers
+aboutYourChild.dob.error.range.min = The date of your child’s date of birth cannot be more than 20 years ago
+aboutYourChild.dob.error.range.max = Your child’s date of birth cannot be in the future
+aboutYourChild.dob.nth.error.required = Enter the date of birth of your {0} child
+aboutYourChild.dob.nth.error.required.day = The date of birth of your {0} child must include a day
+aboutYourChild.dob.nth.error.required.month = The date of birth of your {0} child must include a month
+aboutYourChild.dob.nth.error.required.year = The date of birth of your {0} child must include a year
+aboutYourChild.dob.nth.error.required.dayMonth = The date of birth of your {0} child must include a day and month
+aboutYourChild.dob.nth.error.required.dayYear = The date of birth of your {0} child must include a day and year
+aboutYourChild.dob.nth.error.required.monthYear = The date of birth of your {0} child must include a month and year
+aboutYourChild.dob.nth.error.invalid = Enter a valid date in numbers
+aboutYourChild.dob.nth.error.invalid.day = The day of your {0} child’s date of birth must be a number
+aboutYourChild.dob.nth.error.invalid.month = The month of your {0} child’s date of birth must be a number
+aboutYourChild.dob.nth.error.invalid.year = The year of your {0} child’s date of birth must be a number
+aboutYourChild.dob.nth.error.invalid.dayMonth = The day and month of your {0} child’s date of birth must be a number
+aboutYourChild.dob.nth.error.invalid.dayYear = The day and year of your {0} child’s date of birth must be a number
+aboutYourChild.dob.nth.error.invalid.monthYear = The month and year of your {0} child’s date of birth must be a number
+aboutYourChild.dob.nth.error.notReal = The date of birth of your {0} child must be a real date
+aboutYourChild.dob.nth.error.notReal.day = The day of your {0} child’s date of birth must be a valid number
+aboutYourChild.dob.nth.error.notReal.month = The month of your {0} child’s date of birth must be a valid number
+aboutYourChild.dob.nth.error.notReal.year = Year must include 4 numbers
+aboutYourChild.dob.nth.error.range.min = The date of your {0} child’s date of birth cannot be more than 20 years ago
+aboutYourChild.dob.nth.error.range.max = Your {0} child’s date of birth cannot be in the future
 
-childApprovedEducation.title = Is your child in approved education or training?
 childApprovedEducation.heading = Is your child {0} in approved education or training?
 childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
-childApprovedEducation.error.notCompleted = Select yes if {0} is in approved education or training
 
 childRegisteredBlind.title = Is your child registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
@@ -1087,10 +1118,26 @@ childStartEducation.title = When did your child start their education or trainin
 childStartEducation.heading = When did {0} start their education or training?
 childStartEducation.hint = For example, 31 3 2015
 childStartEducation.checkYourAnswersLabel = When did your child start their education or training?
-childStartEducation.error.blank = Enter the date they started their education or training
-childStartEducation.error.invalid = Enter a valid date
-childStartEducation.error.past = Date they started must be in the past
-childStartEducation.error.before16 = Date they started cannot be before their 16th birthday
+childStartEducation.error.required = Enter the date {0} started their education or training
+childStartEducation.error.required.day = The date {0} started their education or training must include a day
+childStartEducation.error.required.month = The date {0} started their education or training must include a month
+childStartEducation.error.required.year = The date {0} started their education or training must include a year
+childStartEducation.error.required.dayMonth = The date {0} started their education or training must include a day and month
+childStartEducation.error.required.dayYear = The date {0} started their education or training must include a day and year
+childStartEducation.error.required.monthYear = The date {0} started their education or training must include a month and a year
+childStartEducation.error.invalid = Enter a valid date in numbers
+childStartEducation.error.invalid.day = The day {0} started their education or training must be a number
+childStartEducation.error.invalid.month = The month {0} started their education or training must be a number
+childStartEducation.error.invalid.year = The year {0} started their education or training must be a number
+childStartEducation.error.invalid.dayMonth = The day and month {0} started their education or training must be a number
+childStartEducation.error.invalid.dayYear = The day and year {0} started their education or training must be a number
+childStartEducation.error.invalid.monthYear = The month and year {0} started their education or training must be a number
+childStartEducation.error.notReal = The date {0} started their education or training must be a real date
+childStartEducation.error.notReal.day = The day {0} started their education or training must be a valid number
+childStartEducation.error.notReal.month = The month {0} started their education or training must be a valid number
+childStartEducation.error.notReal.year = Year must include 4 numbers
+childStartEducation.error.range.min = The date {0} started their education or training cannot be before their 16th birthday
+childStartEducation.error.range.max = The date {0} started their education or training cannot be in the future
 
 whichChildrenDisability.title = Who gets disability benefits?
 whichChildrenDisability.heading = Who gets disability benefits?
@@ -1204,21 +1251,53 @@ statutoryWeeks.shared-parental.guidance = This is usually taken as {0} weeks bet
 
 yourStatutoryStartDate.title = When did your {0} pay start?
 yourStatutoryStartDate.heading = When did your {0} pay start?
-yourStatutoryStartDate.error.required = Enter the date your {0} pay started
-yourStatutoryStartDate.error.invalid = You must enter correct date
-yourStatutoryStartDate.error.past = Date your {0} pay started must be in the past
 yourStatutoryStartDate.hint = For example, 31 1 2017
 yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
-yourStatutoryStartDate.error.past-over-2-years = Date your {0} pay started cannot be more than 2 years before 6 April {1}
+yourStatutoryStartDate.error.required = Enter the date your {0} pay started
+yourStatutoryStartDate.error.required.day = The date your {0} pay started must include a day
+yourStatutoryStartDate.error.required.month = The date your {0} pay started must include a month
+yourStatutoryStartDate.error.required.year = The date your {0} pay started must include a year
+yourStatutoryStartDate.error.required.dayMonth = The date your {0} pay started must include a day and month
+yourStatutoryStartDate.error.required.dayYear = The date your {0} pay started must include a day and year
+yourStatutoryStartDate.error.required.monthYear = The date your {0} pay started must include a month and year
+yourStatutoryStartDate.error.invalid = Enter a valid date in numbers
+yourStatutoryStartDate.error.invalid.day = The day your {0} pay started must be a number
+yourStatutoryStartDate.error.invalid.month = The month your {0} pay started must be a number
+yourStatutoryStartDate.error.invalid.year = The year your {0} pay started must be a number
+yourStatutoryStartDate.error.invalid.dayMonth = The day and month your {0} pay started must be a number
+yourStatutoryStartDate.error.invalid.dayYear = The day and year your {0} pay started must be a number
+yourStatutoryStartDate.error.invalid.monthYear = The month and year your {0} pay started must be a number
+yourStatutoryStartDate.error.notReal = The date your {0} pay started must be a real date
+yourStatutoryStartDate.error.notReal.day = The day your {0} pay started must be a valid number
+yourStatutoryStartDate.error.notReal.month = The month your {0} pay started must be a valid number
+yourStatutoryStartDate.error.notReal.year = Year must include 4 numbers
+yourStatutoryStartDate.error.range.min = The date your {0} pay started cannot be before 6 April {1}
+yourStatutoryStartDate.error.range.max = The date your {0} pay started cannot be in the future
 
 partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
 partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
-partnerStatutoryStartDate.error.required = Enter the date your partner’s {0} pay started
-partnerStatutoryStartDate.error.invalid = You must enter correct date
-partnerStatutoryStartDate.error.past = Date your partner’s {0} pay started must be in the past
 partnerStatutoryStartDate.hint = For example, 31 1 2017
 partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
-partnerStatutoryStartDate.error.past-over-2-years = Date your partner’s {0} pay started cannot be more than 2 years before 6 April {1}
+partnerStatutoryStartDate.error.required = Enter the date your partner’s {0} pay started
+partnerStatutoryStartDate.error.required.day = The date your partner’s {0} pay started must include a day
+partnerStatutoryStartDate.error.required.month = The date your partner’s {0} pay started must include a month
+partnerStatutoryStartDate.error.required.year = The date your partner’s {0} pay started must include a year
+partnerStatutoryStartDate.error.required.dayMonth = The date your partner’s {0} pay started must include a day and month
+partnerStatutoryStartDate.error.required.dayYear = The date your partner’s {0} pay started must include a day and year
+partnerStatutoryStartDate.error.required.monthYear = The date your partner’s {0} pay started must include a month and year
+partnerStatutoryStartDate.error.invalid = Enter a valid date in numbers
+partnerStatutoryStartDate.error.invalid.day = The day your partner’s {0} pay started must be a number
+partnerStatutoryStartDate.error.invalid.month = The month your partner’s {0} pay started must be a number
+partnerStatutoryStartDate.error.invalid.year = The year your partner’s {0} pay started must be a number
+partnerStatutoryStartDate.error.invalid.dayMonth = The day and month your partner’s {0} pay started must be a number
+partnerStatutoryStartDate.error.invalid.dayYear = The day and year your partner’s {0} pay started must be a number
+partnerStatutoryStartDate.error.invalid.monthYear = The month and year your partner’s {0} pay started must be a number
+partnerStatutoryStartDate.error.notReal = The date your partner’s {0} pay started must be a real date
+partnerStatutoryStartDate.error.notReal.day = The day your partner’s {0} pay started must be a valid number
+partnerStatutoryStartDate.error.notReal.month = The month your partner’s {0} pay started must be a valid number
+partnerStatutoryStartDate.error.notReal.year = Year must include 4 numbers
+partnerStatutoryStartDate.error.range.min = The date your partner’s {0} pay started cannot be before 6 April {1}
+partnerStatutoryStartDate.error.range.max = The date your partner’s {0} pay started cannot be in the future
 
 yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
@@ -1229,7 +1308,6 @@ partnerStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week bef
 partnerStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
 partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
 partnerStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
-
 
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
@@ -1394,7 +1472,6 @@ aboutYourResults.free.childcare.hours.title = Free childcare hours
 aboutYourResults.free.childcare.hours.para1 = On this scheme, you can get free hours for your 3 or 4 year old that can be used in or outside of school term time. You can take up the offer for the school term following your child’s third birthday. For example, if they turn 3 on 18 October, you will be able to get free childcare from January.
 aboutYourResults.free.childcare.hours.para2 = You can use your free hours between 2 different approved providers. For example, a registered childminder, playscheme, nursery, out of school club or a home careworker working for a registered agency. They may apply charges for additional services.
 aboutYourResults.free.childcare.hours.para3 = Free childcare hours stop when your child starts in reception class.
-
 aboutYourResults.tc.title = Tax credits
 aboutYourResults.tc.para1 = With this scheme, how much help you can get depends on your income, the number of children you have, whether any of your children are disabled. It is made up of different payments or ‘elements’ to pay 70% of your childcare. For example, for 1 child, the maximum childcare cost covered is £175 a week – this is £122.50 in tax credits. For 2 or more children, the maximum childcare cost covered is £300, which is £210 in tax credits.
 aboutYourResults.tc.para2 = It will gradually be replaced by Universal Credit - a new benefit being introduced across the country. Whether you get Universal Credit or tax credits will depend on where you live.
@@ -1404,15 +1481,12 @@ aboutYourResults.tc.para3.eligibility.checker.link = https://universalcreditinfo
 aboutYourResults.tc.para3.part2 = by the change.
 aboutYourResults.tc.para4 = It is for children under 16 or 18 if disabled or 19 if in higher education.
 aboutYourResults.return.link = Return to results
-
 aboutYourResults.tfc.title = Tax-Free Childcare
 aboutYourResults.tfc.para1 = With this scheme, you will create an online childcare account to pay your provider. For example, every £8 paid into the account gets a £2 top-up to give you £10 towards your childcare costs for each child. You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 if they are disabled.
 aboutYourResults.tfc.para2 = It is for children under 12, or 18 if disabled.
-
 aboutYourResults.esc.title = Childcare vouchers
 aboutYourResults.esc.para1 = With this scheme, the amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice. For example, basic-rate taxpayers can take up to £55 a week, higher-rate taxpayers can take up to £28 a week and top-rate taxpayers can take up to £25 a week – this is the amount you won’t pay tax or National Insurance on.
 aboutYourResults.esc.para2 = They are for children under 16, or 18 if disabled.
-
 aboutYourResults.more.info.title = How to apply
 aboutYourResults.more.info.para1 = Read more about the schemes you could get help from and find out how to apply for:
 aboutYourResults.more.info.england.hours.title = Apply for Free Childcare For Working Parents
@@ -1456,21 +1530,18 @@ results.two.years.old.guidance.england.text.before.link = Depending on your fami
 results.two.years.old.guidance.england.link.text = you may be able to get 15 hours free childcare a week for your 2 year old
 results.two.years.old.guidance.england.text.after.link = – this is 570 hours a year.
 results.two.years.old.guidance.england.para1.help.link =  https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds
-
 results.two.years.old.guidance.scotland.two.freehours = You can get 22 hours funded early learning and childcare a week - this is 1140 hours a year, depending on how you use them.
 results.two.years.old.guidance.scotland.title = Free childcare hours for your 2 year old
 results.two.years.old.guidance.scotland.text.before.link = Depending on your family circumstances,
 results.two.years.old.guidance.scotland.link.text = you may be able to get 22 hours funded early education and childcare a week for your 2 year old
 results.two.years.old.guidance.scotland.text.after.link = – this is 1140 hours a year.
 results.two.years.old.guidance.scotland.para1.help.link =  https://www.mygov.scot/childcare-costs-help/funded-early-learning-and-childcare/
-
 results.two.years.old.guidance.wales.two.freehours = You can get a minimum of 10 hours of funded early education a week in term time when your child is 3 years old – this is around 390 hours a year.
 results.two.years.old.guidance.wales.title = Free childcare hours for your 2 year old
 results.two.years.old.guidance.wales.text.before.link = Depending on your family circumstances,
 results.two.years.old.guidance.wales.link.text = you may be able to get up to 10 hours of funded early education a week for your 2 year old
 results.two.years.old.guidance.wales.text.after.link = – this is around 390 hours a year.
 results.two.years.old.guidance.wales.para1.help.link =   http://gov.wales/topics/people-and-communities/people/children-and-young-people/childcare/?lang=en
-
 results.two.years.old.guidance.northernireland.title = Free childcare hours for your 2 year old
 results.two.years.old.guidance.northernireland.two.freehours = You can get 12 and a half hours free preschool education a week in term time when your child is 3 years old - this is 475 hours a year.
 
@@ -1489,12 +1560,10 @@ results.feedback.survey.link.text = What did you think of this service?
 results.feedback.survey.text.after.link = (takes 30 seconds)
 feedback.hint.link.opens.new.tab = (opens in new tab)
 
-
 timeout.heading = You are about to be timed out
 timeout.message = For your security, we will clear what you have entered in
 timeout.continue = Continue what you were doing
 timeout.exit = Clear what you entered now
-
 
 youGetSameIncomePreviousYear.title = Did you get the same income for the previous year?
 youGetSameIncomePreviousYear.heading = Did you get the same income for the previous year?
@@ -1502,7 +1571,6 @@ youGetSameIncomePreviousYear.checkYourAnswersLabel = youGetSameIncomePreviousYea
 youGetSameIncomePreviousYear.error.notCompleted = Select yes if you got the same income for the previous year
 youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
-
 
 bothGetSameIncomePreviousYear.title = Did you and your partner get the same income for the previous year?
 bothGetSameIncomePreviousYear.heading = Did you and your partner get the same income for the previous year?

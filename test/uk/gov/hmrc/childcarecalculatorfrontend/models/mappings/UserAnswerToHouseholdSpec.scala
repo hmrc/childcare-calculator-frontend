@@ -41,9 +41,9 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
   val mockTaxYearInfo: TaxYearInfo = mock[TaxYearInfo]
 
-  val currentTaxYear =  TaxYear.current.startYear
+  val currentTaxYear: Int =  TaxYear.current.startYear
 
-  val previousTaxYear = currentTaxYear - 1
+  val previousTaxYear: Int = currentTaxYear - 1
 
   def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils, taxCredits)
 
@@ -75,7 +75,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           dob = todaysDate.minusYears(7),
           disability = Some(Disability(disabled = true, severelyDisabled = true, blind = true)),
           childcareCost = Some(ChildCareCost(Some(200.0), Some(PeriodEnum.MONTHLY))),
-          education = Some(Education(inEducation = true, startDate = Some(todaysDate.minusMonths(6)))))
+          education = Some(Education(inEducation = true, startDate = Some((todaysDate.minusMonths(6))))))
         val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
 
         val household = Household(location = Location.ENGLAND, children = List(child1), parent = claimant)

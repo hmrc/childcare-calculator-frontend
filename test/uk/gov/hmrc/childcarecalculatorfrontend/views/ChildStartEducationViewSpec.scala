@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import java.time.LocalDate
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
@@ -27,14 +28,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childStartEducation
 class ChildStartEducationViewSpec extends NewDateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "childStartEducation"
-  val view = application.injector.instanceOf[childStartEducation]
-  val validBirthday = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
+  val view: childStartEducation = application.injector.instanceOf[childStartEducation]
+  val validBirthday: LocalDate = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
 
-  def createView = () => view(frontendAppConfig, ChildStartEducationForm(validBirthday), NormalMode, 0, "Foo")(fakeRequest, messages)
+  def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig, ChildStartEducationForm(validBirthday, "Foo"), NormalMode, 0, "Foo")(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
+  def createViewUsingForm: Form[LocalDate] => HtmlFormat.Appendable = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages)
 
-  val form = ChildStartEducationForm(validBirthday)
+  val form: Form[LocalDate] = ChildStartEducationForm(validBirthday, "Foo")
 
   "ChildStartEducation view" must {
 
@@ -50,6 +51,6 @@ class ChildStartEducationViewSpec extends NewDateViewBehaviours[LocalDate] {
 
     behave like pageWithBackLink(createView)
 
-    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "date")
+    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "childStartEducation")
   }
 }

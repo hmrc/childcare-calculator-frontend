@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.libs.json.{JsNumber, Json}
+import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
@@ -32,17 +33,17 @@ import java.time.LocalDate
 
 class AboutYourChildControllerSpec extends ControllerSpecBase {
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  val aboutYourChild = application.injector.instanceOf[aboutYourChild]
+  val aboutYourChild: aboutYourChild = application.injector.instanceOf[aboutYourChild]
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): AboutYourChildController =
     new AboutYourChildController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, aboutYourChild)
 
-  def viewAsString(form: Form[AboutYourChild] = AboutYourChildForm()) = aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages).toString
+  def viewAsString(form: Form[AboutYourChild] = AboutYourChildForm()): String = aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages).toString
 
-  val requiredData = Map(
+  val requiredData: Map[String, JsNumber] = Map(
     NoOfChildrenId.toString -> JsNumber(1)
   )
 
@@ -71,9 +72,9 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val date = LocalDate.now
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "name"      -> "Foo",
-        "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthValue.toString,
-        "dob.year"  -> date.getYear.toString
+        "aboutYourChild.dob.day"   -> date.getDayOfMonth.toString,
+        "aboutYourChild.dob.month" -> date.getMonthValue.toString,
+        "aboutYourChild.dob.year"  -> date.getYear.toString
       ).withMethod("POST")
 
       val result = controller(getRelevantData).onSubmit(NormalMode, 0)(postRequest)
@@ -104,9 +105,9 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val date = LocalDate.now
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "name"      -> "Foo",
-        "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthValue.toString,
-        "dob.year"  -> date.getYear.toString
+        "aboutYourChild.dob.day"   -> date.getDayOfMonth.toString,
+        "aboutYourChild.dob.month" -> date.getMonthValue.toString,
+        "aboutYourChild.dob.year"  -> date.getYear.toString
       ).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
 
@@ -126,9 +127,9 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val date = LocalDate.now
       val postRequest = fakeRequest.withFormUrlEncodedBody(
         "name"      -> "Foo",
-        "dob.day"   -> date.getDayOfMonth.toString,
-        "dob.month" -> date.getMonthValue.toString,
-        "dob.year"  -> date.getYear.toString
+        "aboutYourChild.dob.day"   -> date.getDayOfMonth.toString,
+        "aboutYourChild.dob.month" -> date.getMonthValue.toString,
+        "aboutYourChild.dob.year"  -> date.getYear.toString
       ).withMethod("POST")
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map.empty)))
       val result = controller(getData).onSubmit(NormalMode, 0)(postRequest)

@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 import java.time.LocalDate
-
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
@@ -48,14 +47,14 @@ class PartnerStatutoryStartDateController @Inject()(
 
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName, message, answers,request.uri)))
 
   private def validateStatutoryPayType[A](block: String => Future[Result])
                                          (implicit request: DataRequest[A]): Future[Result] = {
 
     request.userAnswers.partnerStatutoryPayType.map {
       payType => block(Messages(s"statutoryPayTypeLower.$payType"))
-    }.getOrElse(sessionExpired("validateStatutoryPayType",Some(request.userAnswers)))
+    }.getOrElse(sessionExpired("validateStatutoryPayType", Some(request.userAnswers)))
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
