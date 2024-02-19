@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{FourYears, Location, ThreeYears, TwoYears}
 
 class ResultsViewModelSpec extends SpecBase {
 
@@ -54,29 +54,29 @@ class ResultsViewModelSpec extends SpecBase {
 
     "display information about your two year old" when {
       "user does not live in Northern Ireland, has a two year old and either has a three year old or is eligible to any scheme" in {
-        val model = ResultsViewModel(tc = Some(200), location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = true)
+        val model = ResultsViewModel(tc = Some(200), location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childrenAgeGroups = Set(TwoYears, FourYears))
         model.showTwoYearOldInfo(false) mustBe true
       }
 
       "user does not live in Northern Ireland, has a two year old and does not have a three year old and not eligible to any scheme " in {
-        val model = ResultsViewModel(location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = false)
+        val model = ResultsViewModel(location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childrenAgeGroups = Set(TwoYears))
         model.showTwoYearOldInfo(false) mustBe true
       }
 
       "user does not live in Northern Ireland, has a two year old and does not have a three year old and not eligible to any scheme with hideTC" in {
-        val model = ResultsViewModel(location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = false)
+        val model = ResultsViewModel(location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childrenAgeGroups = Set(TwoYears))
         model.showTwoYearOldInfo(true) mustBe true
       }
     }
 
     "not display information about your two year old" when {
       "user does live in Northern Ireland, has a two year old and either has a three year old or is eligible to any scheme" in {
-        val model = ResultsViewModel(tc = Some(200), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = true)
+        val model = ResultsViewModel(tc = Some(200), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childrenAgeGroups = Set(TwoYears, ThreeYears))
         model.showTwoYearOldInfo(false) mustBe false
       }
 
       "user does live in Northern Ireland, has a two year old and either has a three year old or is eligible to any scheme with hideTC" in {
-        val model = ResultsViewModel(tc = Some(200), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childAgedTwo = true, childAgedThreeOrFour = true)
+        val model = ResultsViewModel(tc = Some(200), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childrenAgeGroups = Set(TwoYears, ThreeYears))
         model.showTwoYearOldInfo(true) mustBe false
       }
     }

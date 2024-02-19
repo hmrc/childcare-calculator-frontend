@@ -22,15 +22,7 @@ object AppDependencies {
   object Test {
     def apply(): Seq[ModuleID] = new TestDependencies {
       override lazy val test = Seq(
-        "org.mockito"                   %   "mockito-core"              % "5.5.0",
         "uk.gov.hmrc"                   %%  "bootstrap-test-play-30"    % bootstrapFrontendVersion,
-        "com.fasterxml.jackson.module"  %%  "jackson-module-scala"      % "2.15.2",
-        "com.github.tomakehurst"        %   "wiremock"                  % "2.35.1",
-        "com.github.tomakehurst"        %   "wiremock-jre8"             % "2.35.1",
-        "org.scalatestplus"             %%  "scalatestplus-scalacheck"  % "3.1.0.0-RC2",
-        "org.pegdown"                   %   "pegdown"                   % "1.6.0",
-        "org.jsoup"                     %   "jsoup"                     % "1.16.1",
-        "org.mockito"                   %   "mockito-all"               % "1.10.19"
       ).map(_ % scope)
     }.test
   }

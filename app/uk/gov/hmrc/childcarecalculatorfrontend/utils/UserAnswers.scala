@@ -305,6 +305,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def isChildAgedTwo: Option[Boolean] = childrenAgeGroups.map(_.contains(TwoYears))
   def isChildAgedThreeOrFour: Option[Boolean] = childrenAgeGroups.map(_.exists(Set[ChildAgeGroup](ThreeYears, FourYears).contains))
+  def isChildAgedNineTo23Months: Option[Boolean] = childrenAgeGroups.map(_.contains(NineTo23Months))
 
   def location: Option[Location.Value] = cacheMap.getEntry[Location.Value](LocationId.toString)
 

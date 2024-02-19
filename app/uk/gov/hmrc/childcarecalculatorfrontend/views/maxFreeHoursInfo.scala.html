@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, _}
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup._
 
 @this(
         layout: Layout,
@@ -38,24 +39,29 @@
     messages("maxFreeHoursInfo.title")
 }
 
+@youCanGetSeq = @{
+    if(userAnswers.childrenAgeGroups.nonEmpty){
+        Seq(
+            if(appConfig.allowFreeHoursFromNineMonths && userAnswers.childrenAgeGroups.get.contains(NineTo23Months)) Some(messages("maxFreeHoursInfo.you.can.get.nineTo23Months")) else None,
+            if(userAnswers.childrenAgeGroups.get.contains(TwoYears)) Some(messages("maxFreeHoursInfo.you.can.get.twoYears")) else None,
+            if(userAnswers.childrenAgeGroups.get.contains(ThreeYears) || userAnswers.childrenAgeGroups.get.contains(FourYears)) Some(messages("maxFreeHoursInfo.you.can.get.threeAndFourYears")) else None
+        ).flatten
+    } else Seq()
+}
+
 @layout(
     pageTitle = title,
 ) {
 
     @heading(messages("maxFreeHoursInfo.heading"))
 
-            @if(userAnswers.isChildAgedTwo.contains(true) && userAnswers.isChildAgedThreeOrFour.contains(true)) {
+            @if(youCanGetSeq.size == 1) {
+                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @youCanGetSeq</p>
+            } else if(youCanGetSeq.size > 1) {
                 <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get.with.colon")</p>
                 @playComponents.list(
-                    bulletList = Seq(
-                        messages("maxFreeHoursInfo.you.can.get.15.hours"),
-                        messages("maxFreeHoursInfo.you.can.get.30.hours")
-                    )
+                    bulletList = youCanGetSeq
                 )
-            } else if(userAnswers.isChildAgedTwo.contains(true)) {
-                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @messages("maxFreeHoursInfo.you.can.get.15.hours")</p>
-            } else if(userAnswers.isChildAgedThreeOrFour.contains(true)) {
-                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @messages("maxFreeHoursInfo.you.can.get.30.hours")</p>
             }
 
     <p class="govuk-body">@messages("maxFreeHoursInfo.p1")</p>

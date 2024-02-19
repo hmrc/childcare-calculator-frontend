@@ -20,14 +20,20 @@ import javax.inject.Inject
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.ENGLAND
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
-class FreeChildcareWorkingParents @Inject() (tfc: TaxFreeChildcare) extends Scheme {
+class FreeChildcareWorkingParents @Inject() (tfc: TaxFreeChildcare, appConfig: FrontendAppConfig) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    val hasChildAgedTwoOrThreeOrFour = answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
+    val hasChildrenInAgeGroups = {
+      if(appConfig.allowFreeHoursFromNineMonths) {
+        answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
+      }
+      else answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
+    }
     val tfcEligibility = tfc.eligibility(answers)
     answers.location.map {
-      case ENGLAND if hasChildAgedTwoOrThreeOrFour && tfcEligibility == Eligible =>
+      case ENGLAND if hasChildrenInAgeGroups && tfcEligibility == Eligible =>
         Eligible
       case _ =>
         NotEligible
