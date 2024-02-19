@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, FourYears, Location, NoneOfThese, ThreeYears, TwoYears}
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum.EarningsEnum
 
@@ -27,8 +27,7 @@ case class ResultsViewModel(firstParagraph : String = "",
                             freeHours:Option[BigDecimal] = None,
                             freeChildcareWorkingParents: Boolean = false,
                             location:Location.Value,
-                            childAgedTwo: Boolean = false,
-                            childAgedThreeOrFour: Boolean = false,
+                            childrenAgeGroups: Set[ChildAgeGroup] = Set(NoneOfThese),
                             taxCreditsOrUC: Option[String] = None,
                             showTFCWarning: Boolean = false,
                             tfcWarningMessage: String = "",
@@ -60,13 +59,13 @@ case class ResultsViewModel(firstParagraph : String = "",
   def isEligibleToMaximumFreeHours =  freeHours.contains(30)
   def isEligibleToAllSchemes(hideTC: Boolean) = noOfEligibleSchemes(hideTC) == (if (hideTC) 3 else 4)
   def showTwoYearOldInfo(hideTC: Boolean) = {
-    if (childAgedTwo) {
+    if (childrenAgeGroups.contains(TwoYears)) {
       location match {
         case Location.NORTHERN_IRELAND => false
         case Location.WALES => false
         case _ => {
           if (noOfEligibleSchemes(hideTC) == 0) {
-            if (childAgedThreeOrFour) false else true
+            if (childrenAgeGroups.contains(ThreeYears) || childrenAgeGroups.contains(FourYears)) false else true
           }
           else {
             true

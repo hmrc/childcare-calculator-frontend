@@ -22,6 +22,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{NineTo23Months, TwoYears, ThreeYears, FourYears}
 
 @this(
     schemeResult: playComponents.scheme_result,
@@ -160,9 +161,10 @@
         </p>
     }
 
-    @if(model.location != Location.ENGLAND && (model.childAgedTwo || model.childAgedThreeOrFour)
+    @if(model.location != Location.ENGLAND
+        && (model.childrenAgeGroups.contains(NineTo23Months) || model.childrenAgeGroups.contains(TwoYears) || model.childrenAgeGroups.contains(ThreeYears) || model.childrenAgeGroups.contains(FourYears))
         && !(model.location == Location.WALES
-            && (model.yourEarnings.exists(earnings => Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings))))) {
+        && (model.yourEarnings.exists(earnings => Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings))))) {
 
         @playComponents.section_break()
 

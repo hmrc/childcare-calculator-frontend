@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Eligible, NineTo23Months, NotEligible, ThreeYears, TwoYears}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
@@ -27,11 +27,10 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
   val view = application.injector.instanceOf[maxFreeHoursInfo]
   val messageKeyPrefix = "maxFreeHoursInfo"
 
-  def answers(max30HoursEnglandContentAns: Option[Boolean] = None, childAgedTwoAns: Option[Boolean] = None, childAgedThreeOrFourAns: Option[Boolean] = None): UserAnswers =
+  def answers(max30HoursEnglandContentAns: Option[Boolean] = None, childAgeGroupAns: Option[Set[ChildAgeGroup]] = None): UserAnswers =
     new UserAnswers(CacheMap("", Map())) {
       override def max30HoursEnglandContent: Option[Boolean] = max30HoursEnglandContentAns
-      override def childAgedTwo: Option[Boolean] = childAgedTwoAns
-      override def childAgedThreeOrFour: Option[Boolean] = childAgedThreeOrFourAns
+      override def childrenAgeGroups: Option[Set[ChildAgeGroup]] = childAgeGroupAns
     }
 
   def createView = () => view(frontendAppConfig, Eligible, Eligible, Eligible, answers()) (fakeRequest, messages)
@@ -83,36 +82,52 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
     }
 
     "display the alternate message when max30HoursEnglandContent is true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(true), None, None))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(true), None))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.hasVouchers.info"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.childcare"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.otherChildren"))
     }
 
     "display the alternate message when max30HoursEnglandContent is false" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(false), None, None)) (fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(false), None)) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.noVouchers.info"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.childcare"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.otherChildren"))
     }
 
     "display the alternate message when childAgedTwo is true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(true), Some(false)))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(TwoYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.15.hours"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears"))
     }
 
     "display the alternate message when childAgedThreeOrFour is true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(false), Some(true)))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(ThreeYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.30.hours"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.threeAndFourYears"))
     }
 
     "display the alternate message when childAgedTwo and childAgedThreeOrFour both are true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(true), Some(true)))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(TwoYears, ThreeYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.with.colon"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.15.hours"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.30.hours"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.threeAndFourYears"))
+    }
+
+    if(frontendAppConfig.allowFreeHoursFromNineMonths) {
+      "display the alternate message when nineTo23Months is selected" in {
+        val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(NineTo23Months))))(fakeRequest, messages)
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months"))
+      }
+
+      "display the alternate message when nineTo23Months, childAgedTwo and childAgedThreeOrFour are all true" in {
+        val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(NineTo23Months, TwoYears, ThreeYears))))(fakeRequest, messages)
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.with.colon"))
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months"))
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears"))
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.threeAndFourYears"))
+      }
     }
   }
 }

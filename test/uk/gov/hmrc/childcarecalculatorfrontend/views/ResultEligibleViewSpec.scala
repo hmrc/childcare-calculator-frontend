@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{FourYears, Location, ThreeYears, TwoYears}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
@@ -127,7 +127,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
 
     "display the correct content for Free Hours For Working Parents" when {
       "location is England and working parents with just 2 year old" in {
-        val model = ResultsViewModel(freeHours = Some(15), freeChildcareWorkingParents = true, location = Location.ENGLAND, childAgedTwo = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = Some(15), freeChildcareWorkingParents = true, location = Location.ENGLAND, childrenAgeGroups = Set(TwoYears), hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(view, messages("result.free.childcare.working.parents.title"))
@@ -136,7 +136,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
       }
 
       "location is England and working parents with just 3 or 4 year old" in {
-        val model = ResultsViewModel(freeHours = Some(30), freeChildcareWorkingParents = true, location = Location.ENGLAND, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = Some(30), freeChildcareWorkingParents = true, location = Location.ENGLAND, childrenAgeGroups = Set(ThreeYears), hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(view, messages("result.free.childcare.working.parents.title"))
@@ -145,7 +145,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
       }
 
       "location is England and working parents with 2 year old and 3 or 4 year old" in {
-        val model = ResultsViewModel(freeHours = Some(30), freeChildcareWorkingParents = true, location = Location.ENGLAND, childAgedTwo = true, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = Some(30), freeChildcareWorkingParents = true, location = Location.ENGLAND, childrenAgeGroups = Set(TwoYears, ThreeYears, FourYears), hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(view, messages("result.free.childcare.working.parents.title"))
@@ -154,7 +154,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
       }
 
       "location is England and not working parents with 2 year old and 3 or 4 year old" in {
-        val model = ResultsViewModel(freeHours = Some(15), location = Location.ENGLAND, childAgedTwo = true, childAgedThreeOrFour = true, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = Some(15), location = Location.ENGLAND, childrenAgeGroups = Set(TwoYears, FourYears), hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertNotContainsText(view, messages("result.free.childcare.working.parents.title"))

@@ -38,21 +38,15 @@
 @if(schemeResult.couldGet.isDefined){
     @if(!schemeResult.eligibility.isDefined) {
         <div class="govuk-inset-text">
-            @if(schemeResult.twoYearOld.isDefined  && schemeResult.threeAndFour.isDefined) {
+            @if(schemeResult.childrenAgeGroupText.flatten.size > 1) {
                 <p class="govuk-body">@schemeResult.couldGet:</p>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>@schemeResult.twoYearOld.get</li>
-                    <li>@schemeResult.threeAndFour.get</li>
-                </ul>
+                @playComponents.list(
+                    bulletList = schemeResult.childrenAgeGroupText.flatten
+                )
             } else {
                 <p class="govuk-body">
                     @schemeResult.couldGet
-                    @if(schemeResult.twoYearOld.isDefined) {
-                        @schemeResult.twoYearOld.get
-                    }
-                    @if(schemeResult.threeAndFour.isDefined) {
-                        @schemeResult.threeAndFour.get
-                    }
+                    @schemeResult.childrenAgeGroupText.flatten
                 </p>
             }
         </div>

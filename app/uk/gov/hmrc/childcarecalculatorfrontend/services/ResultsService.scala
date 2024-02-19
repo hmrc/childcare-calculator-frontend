@@ -70,7 +70,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
 
     def freeChildcareWorkingParentsEligibilityMsg(): Option[String] = {
-      if (answers.location.contains(ENGLAND) && (answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false))) {
+      if (answers.location.contains(ENGLAND) && (answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false))) {
         if (answers.doYouLiveWithPartner.getOrElse(false)) {
           if (!answers.whoIsInPaidEmployment.contains("both")) Some(messages("result.free.childcare.working.parents.not.eligible.partner.paidEmployment"))
           else if (!(answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false))) {
@@ -98,8 +98,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       firstParagraph = firstParagraphBuilder.buildFirstParagraph(answers),
       freeChildcareWorkingParents = getFreeChildcareWorkingParentsEligibility(answers),
       location = location,
-      childAgedTwo = answers.isChildAgedTwo.getOrElse(false),
-      childAgedThreeOrFour = answers.isChildAgedThreeOrFour.getOrElse(false),
+      childrenAgeGroups = answers.childrenAgeGroups.getOrElse(Set(NoneOfThese)),
       tcSchemeInEligibilityMsg = tcSchemeInEligibilityMsgBuilder.getMessage(answers),
       hasChildcareCosts = childcareCost,
       hasCostsWithApprovedProvider = approvedProvider,
