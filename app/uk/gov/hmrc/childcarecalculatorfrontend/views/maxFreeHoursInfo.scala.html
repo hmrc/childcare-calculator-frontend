@@ -55,7 +55,7 @@
 
     @heading(messages("maxFreeHoursInfo.heading"))
 
-            @if(youCanGetSeq.size == 1) {
+    @if(youCanGetSeq.size == 1) {
                 <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @youCanGetSeq</p>
             } else if(youCanGetSeq.size > 1) {
                 <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get.with.colon")</p>
