@@ -43,7 +43,9 @@
     if(userAnswers.childrenAgeGroups.nonEmpty){
         Seq(
             if(appConfig.allowFreeHoursFromNineMonths && userAnswers.childrenAgeGroups.get.contains(NineTo23Months)) Some(messages("maxFreeHoursInfo.you.can.get.nineTo23Months")) else None,
+            if(appConfig.allowMaxFreeHoursFromNineMonths && userAnswers.childrenAgeGroups.get.contains(NineTo23Months)) Some(messages("maxFreeHoursInfo.you.can.get.nineTo23Months.30Hours")) else None,
             if(userAnswers.childrenAgeGroups.get.contains(TwoYears)) Some(messages("maxFreeHoursInfo.you.can.get.twoYears")) else None,
+            if(appConfig.allowMaxFreeHoursFromNineMonths && userAnswers.childrenAgeGroups.get.contains(TwoYears)) Some(messages("maxFreeHoursInfo.you.can.get.twoYears.30Hours")) else None,
             if(userAnswers.childrenAgeGroups.get.contains(ThreeYears) || userAnswers.childrenAgeGroups.get.contains(FourYears)) Some(messages("maxFreeHoursInfo.you.can.get.threeAndFourYears")) else None
         ).flatten
     } else Seq()
