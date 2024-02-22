@@ -92,4 +92,6 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   def allowFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(nineMonthRuleCutoff)
   def allowMaxFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(maxFreeHoursCutoff)
 
+  def maxFreeHoursAmount: String = if(allowMaxFreeHoursFromNineMonths) "30" else "15"
+
 }
