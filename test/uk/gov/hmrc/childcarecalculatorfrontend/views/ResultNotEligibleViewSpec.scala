@@ -60,7 +60,7 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
         val model = ResultsViewModel(tc = None, taxCreditsOrUC = None, tcSchemeInEligibilityMsg = tcSchemeIneligibleMsg, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultNotEligible(model, hideTC = false)(fakeRequest, messages, lang))
 
-        assertContainsMessages(view, "Tax credits")
+        assertContainsMessages(view, "Childcare support from tax credits")
         view.getElementById("tcGuidance").text() mustBe tcSchemeIneligibleMsg +" " +messages("result.tc.scheme.guidance.link") +
           messages("feedback.hint.link.opens.new.tab") + "."
       }
