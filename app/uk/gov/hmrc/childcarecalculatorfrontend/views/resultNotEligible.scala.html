@@ -87,10 +87,16 @@
 
 
     @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
-
         @if(!hideTC) @{
-            model.taxCreditsOrUC match {
-                case Some(ChildcareConstants.taxCredits) =>
+            if(model.taxCreditsOrUC.contains(universalCredits)) {
+                schemeResult(SchemeResultModel(
+                    title = messages("result.tc.title"),
+                    para1 = Some(messages("result.uc.not.eligible.para")),
+                    notEligibleID = (Some("notEligibleTC1"), None),
+                    sectionBreak = false
+                ))
+            } else {
+                if(model.tc.isEmpty) {
                     schemeResult(SchemeResultModel(
                         title = messages("result.tc.not.eligible.title"),
                         para1 = Some(model.tcSchemeInEligibilityMsg),
@@ -98,21 +104,7 @@
                         displayTCGuidanceLink = true,
                         sectionBreak = false
                     ))
-                case Some(ChildcareConstants.universalCredits) =>
-                    schemeResult(SchemeResultModel(
-                        title = messages("result.tc.title"),
-                        para1 = Some(messages("result.uc.not.eligible.para")),
-                        notEligibleID = (Some("notEligibleTC1"), None),
-                        sectionBreak = false
-                    ))
-                case _ =>
-                    if(model.tc.isEmpty) {
-                        schemeResult(SchemeResultModel(
-                            title = messages("result.tc.title"),
-                            displayTCGuidanceLink = true,
-                            sectionBreak = false
-                        ))
-                    }
+                }
             }
         }
 
