@@ -45,8 +45,8 @@
             id = Some("freeChildcareWorkingParents"),
             couldGet = Some(messages("result.you.can.get")),
             childrenAgeGroupText = Seq(
-                if(appConfig.allowFreeHoursFromNineMonths && model.childrenAgeGroups.contains(NineTo23Months)) Some(messages("result.free.childcare.working.parents.nineTo23.Month.old")) else None,
-                if(model.childrenAgeGroups.contains(TwoYears)) Some(messages("result.free.childcare.working.parents.two.year.old")) else None,
+                if(appConfig.allowFreeHoursFromNineMonths && model.childrenAgeGroups.contains(NineTo23Months)) Some(messages("result.free.childcare.working.parents.nineTo23.Month.old", appConfig.maxFreeHoursAmount)) else None,
+                if(model.childrenAgeGroups.contains(TwoYears)) Some(messages("result.free.childcare.working.parents.two.year.old", appConfig.maxFreeHoursAmount)) else None,
                 if(model.childrenAgeGroups.contains(ThreeYears) || model.childrenAgeGroups.contains(FourYears)) Some(messages("result.free.childcare.working.parents.threeOrFour.year.old")) else None
             )
         ))

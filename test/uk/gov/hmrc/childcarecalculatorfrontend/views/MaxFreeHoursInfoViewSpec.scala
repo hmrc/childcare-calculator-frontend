@@ -98,7 +98,7 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
     "display the alternate message when childAgedTwo is true" in {
       val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(TwoYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears", frontendAppConfig.maxFreeHoursAmount))
     }
 
     "display the alternate message when childAgedThreeOrFour is true" in {
@@ -110,7 +110,7 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
     "display the alternate message when childAgedTwo and childAgedThreeOrFour both are true" in {
       val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(TwoYears, ThreeYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.with.colon"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears"))
+      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears", frontendAppConfig.maxFreeHoursAmount))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.threeAndFourYears"))
     }
 
@@ -118,14 +118,14 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
       "display the alternate message when nineTo23Months is selected" in {
         val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(NineTo23Months))))(fakeRequest, messages)
         assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
-        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months"))
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months", frontendAppConfig.maxFreeHoursAmount))
       }
 
       "display the alternate message when nineTo23Months, childAgedTwo and childAgedThreeOrFour are all true" in {
         val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(NineTo23Months, TwoYears, ThreeYears))))(fakeRequest, messages)
         assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.with.colon"))
-        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months"))
-        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears"))
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months", frontendAppConfig.maxFreeHoursAmount))
+        assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears", frontendAppConfig.maxFreeHoursAmount))
         assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.threeAndFourYears"))
       }
     }
