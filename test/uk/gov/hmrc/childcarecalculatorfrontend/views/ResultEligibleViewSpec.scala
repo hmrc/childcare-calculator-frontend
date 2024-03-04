@@ -127,11 +127,11 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
 
     "display the correct content for Free Hours For Working Parents" when {
       "location is England and working parents with just 2 year old" in {
-        val model = ResultsViewModel(freeHours = Some(15), freeChildcareWorkingParents = true, location = Location.ENGLAND, childrenAgeGroups = Set(TwoYears), hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = Some(30), freeChildcareWorkingParents = true, location = Location.ENGLAND, childrenAgeGroups = Set(TwoYears), hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(view, messages("result.free.childcare.working.parents.title"))
-        assertContainsText(view, messages("result.free.childcare.working.parents.two.year.old"))
+        assertContainsText(view, messages("result.free.childcare.working.parents.two.year.old", frontendAppConfig.maxFreeHoursAmount))
         assertNotContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
       }
 
@@ -149,7 +149,7 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         val view = asDocument(appResultEligible(model, utils, hideTC = false)(fakeRequest, messages, lang))
 
         assertContainsText(view, messages("result.free.childcare.working.parents.title"))
-        assertContainsText(view, messages("result.free.childcare.working.parents.two.year.old"))
+        assertContainsText(view, messages("result.free.childcare.working.parents.two.year.old", frontendAppConfig.maxFreeHoursAmount))
         assertContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
       }
 
