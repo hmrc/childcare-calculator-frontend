@@ -16,26 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import java.time.LocalDate
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryStartDateForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewDateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 
-class YourStatutoryStartDateViewSpec extends NewDateViewBehaviours[LocalDate] {
+import java.time.LocalDate
 
-  val view = application.injector.instanceOf[yourStatutoryStartDate]
+class YourDateViewSpec extends NewDateViewBehaviours[LocalDate] {
+
+  val view: yourStatutoryStartDate = application.injector.instanceOf[yourStatutoryStartDate]
   val messageKeyPrefix = "yourStatutoryStartDate"
-
   val statutoryType = "maternity"
+  val form: Form[LocalDate] = YourStatutoryStartDateForm(statutoryType)
 
-  def createView = () => view(frontendAppConfig, YourStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig, YourStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm: Form[LocalDate] => HtmlFormat.Appendable = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  val form = YourStatutoryStartDateForm(statutoryType)
 
   "YourStatutoryStartDate view" must {
 
@@ -43,10 +44,10 @@ class YourStatutoryStartDateViewSpec extends NewDateViewBehaviours[LocalDate] {
       view = createView,
       messageKeyPrefix = messageKeyPrefix,
       messageKeyPostfix = "",
-      title = messages(s"$messageKeyPrefix.title", "maternity"),
-      heading = Some(messages(s"$messageKeyPrefix.heading", "maternity")),
+      title = messages(s"$messageKeyPrefix.title", statutoryType),
+      heading = Some(messages(s"$messageKeyPrefix.heading", statutoryType)),
       expectedGuidanceKeys = Seq(),
-      args = "maternity"
+      args = statutoryType
     )
 
     behave like pageWithBackLink(createView)

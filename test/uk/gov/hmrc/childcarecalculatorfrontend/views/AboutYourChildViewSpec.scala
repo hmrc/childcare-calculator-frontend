@@ -17,9 +17,9 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import play.twirl.api.Html
+import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{AboutYourChildForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewDateViewBehaviours, NewQuestionViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
@@ -32,12 +32,12 @@ class AboutYourChildViewSpec extends NewQuestionViewBehaviours[AboutYourChild] w
 
   def createView: () => Html = () => createView(0, 1)
 
-  def createViewUsingForm = (form: Form[AboutYourChild]) => view(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
+  def createViewUsingForm: Form[AboutYourChild] => HtmlFormat.Appendable = (form: Form[AboutYourChild]) => view(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
 
   def createView(index: Int, total: Int): Html =
     view(frontendAppConfig, AboutYourChildForm(), NormalMode, index, total)(fakeRequest, messages)
 
-  override val form = AboutYourChildForm()
+  override val form: Form[AboutYourChild] = AboutYourChildForm()
 
   "AboutYourChild view" must {
 
@@ -47,7 +47,7 @@ class AboutYourChildViewSpec extends NewQuestionViewBehaviours[AboutYourChild] w
 
     behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "name")
 
-    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "dob")
+    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "aboutYourChild.dob")
 
     "use the correct messages when there are multiple children" in {
       val doc = asDocument(createView(0, 2))

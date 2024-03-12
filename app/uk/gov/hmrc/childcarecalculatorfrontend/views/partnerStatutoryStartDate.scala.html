@@ -28,7 +28,15 @@
     inputDate: playComponents.input_date,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[LocalDate], mode: Mode, statutoryType: String)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[LocalDate],
+    mode: Mode,
+    statutoryType: String
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerStatutoryStartDate.title", statutoryType)) else messages("partnerStatutoryStartDate.title", statutoryType)
@@ -37,13 +45,13 @@
 @layout(pageTitle = title) {
     @formWithCSRF(action = PartnerStatutoryStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
-        @errorSummary(form.errors, key => s"$key.day")
+        @errorSummary(form.errors.distinctBy(error => error.message), key => if (key=="partnerStatutoryStartDate") s"$key.day" else s"$key")
 
         @inputDate(
             content = messages("partnerStatutoryStartDate.heading", statutoryType),
             hintContent = Some(messages("partnerStatutoryStartDate.hint")),
             smallText = false,
-            field = form("date")
+            field = form("partnerStatutoryStartDate")
         )
         @submitButton()
     }

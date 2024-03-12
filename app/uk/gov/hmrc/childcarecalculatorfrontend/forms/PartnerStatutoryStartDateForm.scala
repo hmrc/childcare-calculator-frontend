@@ -17,36 +17,27 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import java.time.LocalDate
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
+import play.api.data.{Form, Forms}
+import play.api.data.Forms.single
+import play.api.i18n.Messages
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.DateFormatter
 import uk.gov.hmrc.time.TaxYear
 
 object PartnerStatutoryStartDateForm extends FormErrorHelper {
 
-  val requiredKey = "partnerStatutoryStartDate.error.required"
-  val invalidKey = "partnerStatutoryStartDate.error.invalid"
+  private val dateKey = "partnerStatutoryStartDate"
+  private val minDate = TaxYear.current.starts.minusYears(2).minusDays(1)
+  private val maxDate = LocalDate.now.plusDays(1)
 
-  def apply(statutoryType: String): Form[LocalDate] = Form(
+  def apply(statutoryType: String)(implicit messages: Messages): Form[LocalDate] = Form(
     single(
-      "date" -> localDateMapping(
-        "day" -> int(requiredKey, invalidKey, statutoryType),
-        "month" -> int(requiredKey, invalidKey, statutoryType),
-        "year" -> int(requiredKey, invalidKey, statutoryType)
-      )
-        .verifying(before(LocalDate.now.plusDays(1), "partnerStatutoryStartDate.error.past", statutoryType))
-        .verifying(after(
-          TaxYear.current.starts.minusYears(2).minusDays(1),
-          "partnerStatutoryStartDate.error.past-over-2-years",
-          statutoryType,
-          TaxYear.current.currentYear.toString)
-        )
-        .replaceError(FormError("", "error.invalidDate", statutoryType), FormError("", invalidKey, Seq(statutoryType)))
-        .replaceError(FormError("day", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
-        .replaceError(FormError("month", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
-        .replaceError(FormError("year", requiredKey, statutoryType), FormError("", requiredKey, Seq(statutoryType)))
-        .replaceError(FormError("day", invalidKey, statutoryType), FormError("", invalidKey, Seq(statutoryType)))
-        .replaceError(FormError("month", invalidKey, statutoryType), FormError("", invalidKey, Seq(statutoryType)))
-        .replaceError(FormError("year", invalidKey, statutoryType), FormError("", invalidKey, Seq(statutoryType)))
+      dateKey -> Forms.of(DateFormatter(
+        dateKey,
+        optMinDate = Some(minDate),
+        optMaxDate = Some(maxDate),
+        args = Seq(statutoryType, TaxYear.current.starts.minusYears(2).getYear.toString)
+      ))
     )
   )
+
 }

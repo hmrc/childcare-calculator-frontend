@@ -49,13 +49,13 @@
 ){
     @formWithCSRF(action = ChildStartEducationController.onSubmit(mode, childIndex), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
-        @errorSummary(form.errors, key => s"$key.day")
+        @errorSummary(form.errors.distinctBy(error => error.message), key => if (key=="childStartEducation") s"$key.day" else s"$key")
 
         @inputDate(
             content = messages("childStartEducation.heading", name),
             hintContent = Some(messages("childStartEducation.hint")),
             smallText = false,
-            field = form("date")
+            field = form("childStartEducation")
         )
         @submitButton()
     }

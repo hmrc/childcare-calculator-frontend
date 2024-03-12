@@ -17,8 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-import java.time.LocalDate
-
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
@@ -33,6 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
 
 class YourStatutoryStartDateController @Inject()(

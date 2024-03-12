@@ -21,23 +21,25 @@ import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.time.TaxYear
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import play.api.data.Form
+import play.api.i18n.Messages
 
-class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
+class YourDateFormSpec extends FormSpec with MockitoSugar {
 
   val statutoryType = "maternity"
-
-  val currentTaxYear =  TaxYear.current.startYear
-
-  val previousTaxYear = currentTaxYear - 1
-
+  val currentTaxYear: Int =  TaxYear.current.startYear
+  val previousTaxYear: Int = currentTaxYear - 1
+  val ctyMinusTwo: String = (currentTaxYear - 2).toString
 
   val validData: Map[String, String] = Map(
-    "date.day"   -> "1",
-    "date.month" -> "2",
-    "date.year"  -> previousTaxYear.toString
+    "yourStatutoryStartDate.day"   -> "1",
+    "yourStatutoryStartDate.month" -> "2",
+    "yourStatutoryStartDate.year"  -> previousTaxYear.toString
   )
 
-  val form = YourStatutoryStartDateForm(statutoryType)
+  implicit val messages: Messages = mock[Messages]
+
+  val form: Form[LocalDate] = YourStatutoryStartDateForm(statutoryType)
 
   "YourStatutoryStartDate Form" must {
 
@@ -47,55 +49,55 @@ class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
 
     "fail to bind when the date is omitted" in {
       val data = Map.empty[String, String]
-      val expectedError = error("date", "yourStatutoryStartDate.error.required", statutoryType)
+      val expectedError = error("yourStatutoryStartDate", "yourStatutoryStartDate.error.required", statutoryType, ctyMinusTwo)
       checkForError(form, data, expectedError)
     }
 
     "fail to bind when the date is blank" in {
       val data = Map(
-        "date.day"   -> "",
-        "date.month" -> "",
-        "date.year"  -> ""
+        "yourStatutoryStartDate.day"   -> "",
+        "yourStatutoryStartDate.month" -> "",
+        "yourStatutoryStartDate.year"  -> ""
       )
-      val expectedError = error("date", "yourStatutoryStartDate.error.required", statutoryType)
+      val expectedError = error("yourStatutoryStartDate", "yourStatutoryStartDate.error.required", statutoryType, ctyMinusTwo)
       checkForError(form, data, expectedError)
     }
 
-    "fail to bind when the date is invalid" in {
+    "fail to bind when the date is not real" in {
       val data = Map(
-        "date.day"   -> "31",
-        "date.month" -> "2",
-        "date.year"  -> "2017"
+        "yourStatutoryStartDate.day"   -> "31",
+        "yourStatutoryStartDate.month" -> "2",
+        "yourStatutoryStartDate.year"  -> "2017"
       )
-      val expectedError = error("date", "yourStatutoryStartDate.error.invalid", statutoryType)
+      val expectedError = error("yourStatutoryStartDate", "yourStatutoryStartDate.error.notReal", statutoryType, ctyMinusTwo)
       checkForError(form, data, expectedError)
     }
 
     "fail to bind when the date is in the future" in {
       val futureDate = LocalDate.now.plusDays(1)
       val data = Map(
-        "date.day"   -> futureDate.getDayOfMonth.toString,
-        "date.month" -> futureDate.getMonthValue.toString,
-        "date.year"  -> futureDate.getYear.toString
+        "yourStatutoryStartDate.day"   -> futureDate.getDayOfMonth.toString,
+        "yourStatutoryStartDate.month" -> futureDate.getMonthValue.toString,
+        "yourStatutoryStartDate.year"  -> futureDate.getYear.toString
       )
-      val expectedError = error("date", "yourStatutoryStartDate.error.past", statutoryType)
+      val expectedError = error("yourStatutoryStartDate", "yourStatutoryStartDate.error.range.max", statutoryType, ctyMinusTwo)
       checkForError(form, data, expectedError)
     }
 
 
-    "fail to bind when the date is more than 2 years and 1 day before 6th April of the current tax year " in {
+    "fail to bind when the date is more than 2 years and 1 day before 6th April of the current tax year" in {
       val mockTaxYearInfo = mock[TaxYear]
       val taxYearStart = LocalDate.of(currentTaxYear: Int, 4: Int, 5: Int)
 
       when(mockTaxYearInfo.starts) thenReturn taxYearStart
 
       val data = Map(
-        "date.day" -> "5",
-        "date.month" -> "4",
-        "date.year" -> (previousTaxYear-1).toString
+        "yourStatutoryStartDate.day" -> "5",
+        "yourStatutoryStartDate.month" -> "4",
+        "yourStatutoryStartDate.year" -> (previousTaxYear-1).toString
       )
 
-      val expectedError = error("date", "yourStatutoryStartDate.error.past-over-2-years", statutoryType, currentTaxYear.toString)
+      val expectedError = error("yourStatutoryStartDate", "yourStatutoryStartDate.error.range.min", statutoryType, ctyMinusTwo)
       checkForError(form, data, expectedError)
     }
 
@@ -106,9 +108,9 @@ class YourStatutoryStartDateFormSpec extends FormSpec with MockitoSugar {
       when(mockTaxYearInfo.starts) thenReturn taxYearStart
 
       val data: Map[String, String] = Map(
-        "date.day" -> "6",
-        "date.month" -> "4",
-        "date.year" -> (previousTaxYear-1).toString
+        "yourStatutoryStartDate.day" -> "6",
+        "yourStatutoryStartDate.month" -> "4",
+        "yourStatutoryStartDate.year" -> (previousTaxYear-1).toString
       )
 
       form.bind(data).get shouldEqual LocalDate.of(previousTaxYear-1: Int, 4: Int, 6: Int)

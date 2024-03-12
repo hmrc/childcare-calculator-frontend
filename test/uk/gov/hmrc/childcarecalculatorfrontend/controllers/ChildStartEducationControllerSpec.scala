@@ -17,7 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
@@ -32,16 +33,16 @@ import java.time.LocalDate
 
 class ChildStartEducationControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[childStartEducation]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: childStartEducation = application.injector.instanceOf[childStartEducation]
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): ChildStartEducationController =
     new ChildStartEducationController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  val date = LocalDate.of(2017, 2, 1)
-  val validBirthday = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
-  val requiredData = Map(
+  val date: LocalDate = LocalDate.of(2017, 2, 1)
+  val validBirthday: LocalDate = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
+  val requiredData: Map[String, JsObject] = Map(
     AboutYourChildId.toString -> Json.obj(
       "0" -> Json.toJson(AboutYourChild("Foo", validBirthday)),
       "1" -> Json.toJson(AboutYourChild("Bar", validBirthday))
@@ -53,7 +54,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
   )
   val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
-  def viewAsString(form: Form[LocalDate] = ChildStartEducationForm(validBirthday)) =
+  def viewAsString(form: Form[LocalDate] = ChildStartEducationForm(validBirthday, "Foo")): String =
     view(frontendAppConfig, form, NormalMode, 0, "Foo")(fakeRequest, messages).toString
 
   "ChildStartEducation Controller" must {
@@ -73,16 +74,16 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(ChildStartEducationForm(validBirthday).fill(date))
+      contentAsString(result) mustBe viewAsString(ChildStartEducationForm(validBirthday, "Foo").fill(date))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val startEducationDate = LocalDate.now
 
       val postRequest = fakeRequest.withFormUrlEncodedBody(
-        "date.day"   -> startEducationDate.getDayOfMonth.toString,
-        "date.month" -> startEducationDate.getMonthValue.toString,
-        "date.year"  -> startEducationDate.getYear.toString
+        "childStartEducation.day"   -> startEducationDate.getDayOfMonth.toString,
+        "childStartEducation.month" -> startEducationDate.getMonthValue.toString,
+        "childStartEducation.year"  -> startEducationDate.getYear.toString
       ).withMethod("POST")
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
 
@@ -92,7 +93,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody().withMethod("POST")
-      val boundForm = ChildStartEducationForm(validBirthday).bind(Map.empty[String, String])
+      val boundForm = ChildStartEducationForm(validBirthday, "Foo").bind(Map.empty[String, String])
 
       val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
 

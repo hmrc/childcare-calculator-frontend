@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.libs.json.{JsString, Json}
+import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
@@ -31,12 +32,10 @@ import uk.gov.hmrc.time.TaxYear
 
 import java.time.LocalDate
 
-
-
 class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
-  val view = application.injector.instanceOf[yourStatutoryStartDate]
+  val view: yourStatutoryStartDate = application.injector.instanceOf[yourStatutoryStartDate]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   private val statutoryTypeNameValuePair = Map(YourStatutoryPayTypeId.toString -> JsString(statutoryType.toString))
 
@@ -44,15 +43,15 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
     Some(CacheMap("id", statutoryTypeNameValuePair))
   )
 
-  val previousTaxYear = new TaxYear(LocalDate.now().getYear).previous.currentYear
+  val previousTaxYear: Int = new TaxYear(LocalDate.now().getYear).previous.currentYear
 
-  val currentTaxYear =  new TaxYear(LocalDate.now().getYear).currentYear
+  val currentTaxYear: Int =  new TaxYear(LocalDate.now().getYear).currentYear
 
-  def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
+  def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction): YourStatutoryStartDateController =
     new YourStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm(statutoryType)) =
+  def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm(statutoryType)): String =
     view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages).toString
 
   "YourStatutoryStartDate Controller" must {
@@ -94,9 +93,9 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(
-        "date.day"   -> "1",
-        "date.month" -> "2",
-        "date.year"  -> previousTaxYear.toString
+        "yourStatutoryStartDate.day"   -> "1",
+        "yourStatutoryStartDate.month" -> "2",
+        "yourStatutoryStartDate.year"  -> previousTaxYear.toString
       ).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)

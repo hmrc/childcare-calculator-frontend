@@ -18,25 +18,26 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import java.time.LocalDate
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerStatutoryStartDateForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewDateViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerStatutoryStartDate
 
-class PartnerStatutoryStartDateViewSpec extends NewDateViewBehaviours[LocalDate] {
+class PartnerDateViewSpec extends NewDateViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "partnerStatutoryStartDate"
 
-  val view = application.injector.instanceOf[partnerStatutoryStartDate]
+  val view: partnerStatutoryStartDate = application.injector.instanceOf[partnerStatutoryStartDate]
 
   val statutoryType = "maternity"
 
-  def createView = () => view(frontendAppConfig, PartnerStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
+  def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig, PartnerStatutoryStartDateForm(statutoryType), NormalMode, statutoryType)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
+  def createViewUsingForm: Form[LocalDate] => HtmlFormat.Appendable = (form: Form[LocalDate]) => view(frontendAppConfig, form, NormalMode, statutoryType)(fakeRequest, messages)
 
-  val form = PartnerStatutoryStartDateForm(statutoryType)
+  val form: Form[LocalDate] = PartnerStatutoryStartDateForm(statutoryType)
 
   "PartnerStatutoryStartDate view" must {
 

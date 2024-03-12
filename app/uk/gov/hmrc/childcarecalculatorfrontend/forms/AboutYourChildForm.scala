@@ -17,80 +17,65 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import java.time.LocalDate
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
+import play.api.data.Form
+import play.api.data.Forms.{mapping, of}
 import play.api.i18n.Messages
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.DateFormatter
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
 object AboutYourChildForm extends Mappings {
 
-  val requiredKey = "aboutYourChild.error.dob.blank"
-  val invalidKey = "aboutYourChild.error.dob.invalid"
+  private val dateKey = "aboutYourChild.dob"
+  private val maxYearsInPast = 20
+  private val maxLength = 35
+  private val minDate = LocalDate.now.minusYears(maxYearsInPast).minusDays(1)
+  private val maxDate = LocalDate.now.plusDays(1)
 
-  def apply(index: Int = 0, total: Int = 1, children: Option[Map[Int, AboutYourChild]] = None)(implicit messages: Messages): Form[AboutYourChild] =
+  def apply(index: Int = 0, total: Int = 1, children: Option[Map[Int, AboutYourChild]] = None)(implicit messages: Messages): Form[AboutYourChild] = {
     if(total > 1) {
       multipleChildrenForm(index, children)
     } else {
       Form(
         mapping(
           "name" ->
-            string("aboutYourChild.error.name")
-              .verifying(maxLength(35, "aboutYourChild.error.maxLength"))
-              .verifying("aboutYourChild.error.duplicateName", isDuplicateValue(_, index, children)),
-
-          "dob" ->
-            localDateMapping(
-              "day" -> int(requiredKey, invalidKey),
-              "month" -> int(requiredKey, invalidKey),
-              "year" -> int(requiredKey, invalidKey)
-            )
-              .verifying("aboutYourChild.error.past", _.isAfter(LocalDate.now.minusYears(20)))
-              .verifying("aboutYourChild.error.future", _.isBefore(LocalDate.now.plusYears(1)))
-              .replaceError(FormError("", "error.invalidDate"), FormError("", invalidKey))
-              .replaceError(FormError("day", requiredKey), FormError("", requiredKey))
-              .replaceError(FormError("month", requiredKey), FormError("", requiredKey))
-              .replaceError(FormError("year", requiredKey), FormError("", requiredKey))
-              .replaceError(FormError("day", invalidKey), FormError("", invalidKey))
-              .replaceError(FormError("month", invalidKey), FormError("", invalidKey))
-              .replaceError(FormError("year", invalidKey), FormError("", invalidKey))
-        )(AboutYourChild.apply)(AboutYourChild.unapply)
+            string("aboutYourChild.name.error.required")
+              .verifying(maxLength(maxLength, "aboutYourChild.name.error.maxLength"))
+              .verifying("aboutYourChild.name.error.duplicate", isDuplicateValue(_, index, children)),
+          dateKey -> of(DateFormatter(
+            dateKey,
+            optMinDate = Some(minDate),
+            optMaxDate = Some(maxDate)
+          )
+          ))((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
       )
     }
+  }
 
-  private def multipleChildrenForm(index: Int = 0, children: Option[Map[Int, AboutYourChild]] = None)
-                                      (implicit messages: Messages): Form[AboutYourChild] = {
+  private def multipleChildrenForm(index: Int = 0, children: Option[Map[Int, AboutYourChild]] = None)(implicit messages: Messages): Form[AboutYourChild] = {
     val indexMessage = messages(s"nth.$index")
-    val requiredNthKey = "aboutYourChild.error.dob.blank.nth"
+
     Form(
       mapping(
         "name" ->
-          string("aboutYourChild.error.name.nth", indexMessage)
-            .verifying(maxLength(35, "aboutYourChild.error.maxLength.nth", indexMessage))
-            .verifying("aboutYourChild.error.duplicateName", isDuplicateValue(_, index, children)),
-        "dob" ->
-          localDateMapping(
-            "day" -> int(requiredKey, invalidKey),
-            "month" -> int(requiredKey, invalidKey),
-            "year" -> int(requiredKey, invalidKey)
-          )
-            .verifying("aboutYourChild.error.past", _.isAfter(LocalDate.now.minusYears(20)))
-            .verifying("aboutYourChild.error.future", _.isBefore(LocalDate.now.plusYears(1)))
-            .replaceError(FormError("", "error.invalidDate"), FormError("", invalidKey))
-            .replaceError(FormError("day", requiredKey), FormError("", requiredNthKey, Seq(indexMessage)))
-            .replaceError(FormError("month", requiredKey), FormError("", requiredNthKey, Seq(indexMessage)))
-            .replaceError(FormError("year", requiredKey), FormError("", requiredNthKey, Seq(indexMessage)))
-            .replaceError(FormError("day", invalidKey, indexMessage), FormError("", invalidKey))
-            .replaceError(FormError("month", invalidKey, indexMessage), FormError("", invalidKey))
-            .replaceError(FormError("year", invalidKey, indexMessage), FormError("", invalidKey))
-      )(AboutYourChild.apply)(AboutYourChild.unapply)
-    )
+          string("aboutYourChild.nth.name.error.required", indexMessage)
+            .verifying(maxLength(maxLength, "aboutYourChild.nth.name.error.maxLength", indexMessage))
+            .verifying("aboutYourChild.name.error.duplicate", isDuplicateValue(_, index, children)),
+        dateKey -> of(DateFormatter(
+          dateKey,
+          optMinDate = Some(LocalDate.now.minusYears(maxYearsInPast).minusDays(1)),
+          optMaxDate = Some(LocalDate.now.plusDays(1)),
+          args = Seq(indexMessage)
+        )
+        ))((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
+      )
   }
 
   private def isDuplicateValue(x: String, index: Int, children: Option[Map[Int, AboutYourChild]]): Boolean = children match {
     case None => true
-    case Some(child) => {
+    case Some(child) =>
       val filtered = child.view.filterKeys(_ != index)
-      !(filtered.values.exists(_.name == x))
-    }
+      !filtered.values.exists(_.name == x)
   }
+
+
 }

@@ -18,10 +18,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 import java.time.LocalDate
-
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, RequestHeader, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
@@ -65,8 +64,8 @@ class ChildStartEducationController @Inject() (
       validateIndex(childIndex) {
         (name, dob) =>
           val preparedForm = request.userAnswers.childStartEducation(childIndex) match {
-            case None => ChildStartEducationForm(dob)
-            case Some(value) => ChildStartEducationForm(dob).fill(value)
+            case None => ChildStartEducationForm(dob, name)
+            case Some(value) => ChildStartEducationForm(dob, name).fill(value)
           }
           Future.successful(Ok(childStartEducation(appConfig, preparedForm, mode, childIndex, name)))
       }
@@ -76,7 +75,7 @@ class ChildStartEducationController @Inject() (
     implicit request =>
       validateIndex(childIndex) {
         (name, dob) =>
-          ChildStartEducationForm(dob).bindFromRequest().fold(
+          ChildStartEducationForm(dob, name).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(childStartEducation(appConfig, formWithErrors, mode, childIndex, name))),
             value =>
