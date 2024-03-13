@@ -412,8 +412,7 @@ yourPartnersAge.title = What’s your partner’s age?
 yourPartnersAge.heading = What’s your partner’s age?
 yourPartnersAge.UNDER18 = Under 18
 yourPartnersAge.EIGHTEENTOTWENTY = 18 to 20
-yourPartnersAge.TWENTYONETOTWENTYTWO= 21 to 22
-yourPartnersAge.OVERTWENTYTWO = 23 or over
+yourPartnersAge.TWENTYONEOROVER = 21 or over
 yourPartnersAge.error.notCompleted = Select your partner’s age
 yourPartnersAge.checkYourAnswersLabel = What’s your partner’s age?
 
@@ -421,8 +420,7 @@ yourAge.title = What’s your age?
 yourAge.heading = What’s your age?
 yourAge.UNDER18 = Under 18
 yourAge.EIGHTEENTOTWENTY = 18 to 20
-yourAge.TWENTYONETOTWENTYTWO= 21 to 22
-yourAge.OVERTWENTYTWO = 23 or over
+yourAge.TWENTYONEOROVER = 21 or over
 yourAge.error.notCompleted = Select your age
 yourAge.checkYourAnswersLabel = What’s your age?
 

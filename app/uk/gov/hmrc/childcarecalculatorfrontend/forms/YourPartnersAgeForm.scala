@@ -41,8 +41,7 @@ object YourPartnersAgeForm extends FormErrorHelper {
   def options = Seq(
     yourPartnersAgeInputOption("value", AgeEnum.UNDER18.toString),
     yourPartnersAgeInputOption("value-2", AgeEnum.EIGHTEENTOTWENTY.toString),
-    yourPartnersAgeInputOption("value-3", AgeEnum.TWENTYONETOTWENTYTWO.toString),
-    yourPartnersAgeInputOption("value-4", AgeEnum.OVERTWENTYTWO.toString)
+    yourPartnersAgeInputOption("value-3", AgeEnum.TWENTYONEOROVER.toString)
   )
 
   private def yourPartnersAgeInputOption(id: String, option: String): InputOption = {
