@@ -156,8 +156,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
       x.toUpperCase match {
         case "UNDER18" => Some(AgeEnum.UNDER18)
         case "EIGHTEENTOTWENTY" => Some(AgeEnum.EIGHTEENTOTWENTY)
-        case "TWENTYONETOTWENTYTWO" => Some(AgeEnum.TWENTYONETOTWENTYTWO)
-        case "OVERTWENTYTWO" => Some(AgeEnum.OVERTWENTYTWO)
+        case "TWENTYONEOROVER" => Some(AgeEnum.TWENTYONEOROVER)
       }
     case _ => None
   }

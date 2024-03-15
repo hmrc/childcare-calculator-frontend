@@ -396,8 +396,7 @@ yourPartnersAge.title=Beth yw oedran eich partner?
 yourPartnersAge.heading=Beth yw oedran eich partner?
 yourPartnersAge.UNDER18=O dan 18
 yourPartnersAge.EIGHTEENTOTWENTY=18 i 20
-yourPartnersAge.TWENTYONETOTWENTYTWO=21 i 22
-yourPartnersAge.OVERTWENTYTWO=23 neu’n hŷn
+yourPartnersAge.TWENTYONEOROVER=21 neu’n hŷn
 yourPartnersAge.error.notCompleted=Dewiswch oedran eich partner
 yourPartnersAge.checkYourAnswersLabel=Beth yw oedran eich partner?
 
@@ -405,8 +404,7 @@ yourAge.title=Beth yw’ch oedran chi?
 yourAge.heading=Beth yw’ch oedran chi?
 yourAge.UNDER18=O dan 18
 yourAge.EIGHTEENTOTWENTY=18 i 20
-yourAge.TWENTYONETOTWENTYTWO=21 i 22
-yourAge.OVERTWENTYTWO=23 neu’n hŷn
+yourAge.TWENTYONEOROVER=21 neu’n hŷn
 yourAge.error.notCompleted=Dewiswch eich oedran
 yourAge.checkYourAnswersLabel=Beth yw’ch oedran chi?
 
