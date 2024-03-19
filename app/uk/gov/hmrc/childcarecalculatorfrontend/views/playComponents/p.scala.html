@@ -16,7 +16,7 @@
 
 @this()
 
-@(classes: String = "govuk-body", id: Option[String] = None)(content: Html)(implicit messages: Messages)
+@(classes: String = "govuk-body", id: Option[String] = None)(content: Html)
 
 @if(id.isDefined) {
     <p class="@classes" id ="@id">@content</p>

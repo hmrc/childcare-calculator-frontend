@@ -24,7 +24,7 @@
     govukWarningText : GovukWarningText,
 )
 
-@(schemeResult: SchemeResultModel)(implicit messages: Messages, lang: Lang)
+@(schemeResult: SchemeResultModel)(implicit messages: Messages)
 
 <h3 class="govuk-heading-m" @if(schemeResult.id.isDefined) { id="@schemeResult.id"} >@schemeResult.title</h3>
 
@@ -100,6 +100,14 @@
         @if(schemeResult.detailPara3.isDefined) {<p class="govuk-body">@schemeResult.detailPara3</p>}
         @if(schemeResult.detailPara4.isDefined) {<p class="govuk-body">@schemeResult.detailPara4</p>}
     }
+}
+
+@if(schemeResult.displayApplyForFCHLink) {
+    <a class="govuk-link" target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.title")" href=@messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.link")>@messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.title") <span>@messages("site.opens.new.tab")</span></a>
+}
+
+@if(schemeResult.displayApplyForTFCLink) {
+    <a class="govuk-link" target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.title")" href=@messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.link")>@messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.title") <span>@messages("site.opens.new.tab")</span></a>
 }
 
 @if(schemeResult.sectionBreak){

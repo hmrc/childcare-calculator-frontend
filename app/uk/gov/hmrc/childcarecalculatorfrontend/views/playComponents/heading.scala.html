@@ -20,7 +20,7 @@
     heading: String,
     headingSize: String = "heading-xl",
     id: Option[String] = None
-)(implicit messages: Messages)
+)
 
 
 <h1 class="govuk-@headingSize govuk-!-margin-top-0 govuk-!-margin-bottom-5" @if(id.isDefined) {id="@id"}>@heading</h1>

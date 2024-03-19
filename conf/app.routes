@@ -112,7 +112,6 @@ POST        /no-of-children                                    uk.gov.hmrc.child
 GET         /max-free-hours-info                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad()
 
 GET         /result                                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.ResultController.onPageLoad()
-GET         /results                                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ResultController.onPageLoadHideTC()
 
 GET         /your-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode ?= NormalMode)

@@ -23,7 +23,7 @@ import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import play.api.mvc.Request
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Scheme, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -34,6 +34,21 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
 class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
+
+  val firstParagraphBuilder: FirstParagraphBuilder = mock[FirstParagraphBuilder]
+  val tcSchemeIneligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder = mock[TCSchemeInEligibilityMsgBuilder]
+  val answers: UserAnswers = spy(userAnswers())
+  val tfcScheme: Scheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
+  val schemeResults: SchemeResults = SchemeResults(List(tfcScheme))
+  val eligibilityService: EligibilityService = mock[EligibilityService]
+  val freeHours: FreeHours = mock[FreeHours]
+  val freeChildcareWorkingParents: FreeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+  val maxFreeHours: MaxFreeHours = mock[MaxFreeHours]
+  val util: Utils = mock[Utils]
+  implicit val hc: HeaderCarrier = HeaderCarrier()
+  implicit val req: Request[_] = mock[Request[_]]
+
+  def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
   "Result Service" must {
     "Return View Model with eligible schemes" when {
@@ -205,7 +220,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.taxOrUniversalCredits) thenReturn Some(taxCredits)
-
+          when(answers.eligibleForTaxCredits) thenReturn true
 
           val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
                                                   tcSchemeIneligibilityMsgBuilder, util)
@@ -221,6 +236,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.eligibleForTaxCredits) thenReturn true
 
           val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
                                                   tcSchemeIneligibilityMsgBuilder, util)
@@ -511,18 +527,4 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
       }
     }
   }
-
-  val firstParagraphBuilder = mock[FirstParagraphBuilder]
-  val tcSchemeIneligibilityMsgBuilder = mock[TCSchemeInEligibilityMsgBuilder]
-  val answers = spy(userAnswers())
-  val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-  val schemeResults = SchemeResults(List(tfcScheme))
-  val eligibilityService: EligibilityService = mock[EligibilityService]
-  val freeHours: FreeHours = mock[FreeHours]
-  val freeChildcareWorkingParents: FreeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-  val maxFreeHours: MaxFreeHours = mock[MaxFreeHours]
-  val util: Utils = mock[Utils]
-  implicit val hc: HeaderCarrier = HeaderCarrier()
-  implicit val req: Request[_] = mock[Request[_]]
-  def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 }

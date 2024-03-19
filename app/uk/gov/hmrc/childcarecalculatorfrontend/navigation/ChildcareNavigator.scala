@@ -257,7 +257,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
     } else {
       (answers.taxOrUniversalCredits, answers.isOnSevereDisabilityPremium) match {
         case (Some("tc"), _) => routeBasedIfPartnerOrNot(hasPartner)
-        case (_, false) => routes.ResultController.onPageLoadHideTC()
+        case (_, false) => routes.ResultController.onPageLoad()
         case _ => routeBasedIfPartnerOrNot(hasPartner)
       }
     }

@@ -45,7 +45,7 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
                   index: Int,
                   name: String
                 ): Html =
-    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang)
+    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages)
 
   lazy val cases: Seq[(Int, String)] = {
     val names: LazyList[String] = LazyList.continually(Random.alphanumeric.take(5).mkString)
