@@ -20,13 +20,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, FourYears,
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum.EarningsEnum
 
-case class ResultsViewModel(firstParagraph : String = "",
+case class ResultsViewModel(firstParagraph : List[String] = List.empty,
                             tc: Option[BigDecimal] = None,
                             tfc:Option[BigDecimal] = None,
                             esc:Option[BigDecimal] = None,
                             freeHours:Option[BigDecimal] = None,
                             freeChildcareWorkingParents: Boolean = false,
-                            location:Location.Value,
+                            location: Location.Value,
                             childrenAgeGroups: Set[ChildAgeGroup] = Set(NoneOfThese),
                             taxCreditsOrUC: Option[String] = None,
                             showTFCWarning: Boolean = false,
@@ -38,13 +38,11 @@ case class ResultsViewModel(firstParagraph : String = "",
                             livesWithPartner: Boolean,
                             yourEarnings: Option[EarningsEnum] = None,
                             partnerEarnings: Option[EarningsEnum] = None,
-                            freeChildcareWorkingParentsEligibilityMsg: Option[String] = None) {
+                            freeChildcareWorkingParentsEligibilityMsg: Option[String] = None,
+                            taxFreeChildcareEligibilityMsg: Option[String] = None) {
 
-  def noOfEligibleSchemes(hideTC: Boolean): Int = {
-    val listOfSchemes = if (hideTC) List(tfc, esc, freeHours) else List(tc, tfc, esc, freeHours)
+  def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
 
-    listOfSchemes.flatten.size
-  }
   def isEligibleForAllButVouchers: Boolean = tc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && esc.isEmpty
   def isEligibleForAllButTc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.nonEmpty && tc.isEmpty
   def isEligibleForAllButFreeHours: Boolean = esc.nonEmpty && tc.nonEmpty  && tfc.nonEmpty && freeHours.isEmpty
@@ -53,24 +51,23 @@ case class ResultsViewModel(firstParagraph : String = "",
   def isEligibleOnlyForFreeHoursAndTc: Boolean = freeHours.nonEmpty && tc.nonEmpty && esc.isEmpty && tfc.isEmpty
   def isEligibleOnlyForFreeHoursAndEsc: Boolean = freeHours.nonEmpty && esc.nonEmpty && tc.isEmpty && tfc.isEmpty
   def isEligibleOnlyForTCAndTfc: Boolean = tfc.nonEmpty && tc.nonEmpty && freeHours.isEmpty && esc.isEmpty
-  def isEligibleOnlyForTCAndEsc: Boolean = esc.nonEmpty && tc.nonEmpty && tfc.isEmpty && freeHours.isEmpty
   def isEligibleOnlyForTfcAndEsc: Boolean = esc.nonEmpty && tfc.nonEmpty && freeHours.isEmpty && tc.isEmpty
-  def isEligibleOnlyToMinimumFreeHours = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours.contains(15) || freeHours.contains(10) || freeHours == Some(16) || freeHours == Some(12.5))
-  def isEligibleToMaximumFreeHours =  freeHours.contains(30)
-  def isEligibleToAllSchemes(hideTC: Boolean) = noOfEligibleSchemes(hideTC) == (if (hideTC) 3 else 4)
-  def showTwoYearOldInfo(hideTC: Boolean) = {
+  def isEligibleOnlyToMinimumFreeHours: Boolean = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours.contains(BigDecimal(15)) || freeHours.contains(BigDecimal(10)) || freeHours.contains(BigDecimal(16)) || freeHours.contains(BigDecimal(12.5)))
+  def isEligibleToMaximumFreeHours: Boolean =  freeHours.contains(BigDecimal(30))
+  def isEligibleForFcwpAndTfc: Boolean = freeChildcareWorkingParentsEligibilityMsg.isEmpty || taxFreeChildcareEligibilityMsg.isEmpty
+  def isEligibleToAllSchemes: Boolean = noOfEligibleSchemes == 4
+  def showTwoYearOldInfo: Boolean = {
     if (childrenAgeGroups.contains(TwoYears)) {
       location match {
         case Location.NORTHERN_IRELAND => false
         case Location.WALES => false
-        case _ => {
-          if (noOfEligibleSchemes(hideTC) == 0) {
+        case _ =>
+          if (noOfEligibleSchemes == 0) {
             if (childrenAgeGroups.contains(ThreeYears) || childrenAgeGroups.contains(FourYears)) false else true
           }
           else {
             true
           }
-        }
       }
     }
     else {

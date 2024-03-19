@@ -69,26 +69,27 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val yourEarnings = getEarnings(answers.yourMinimumEarnings, answers.yourMaximumEarnings)
     val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
 
-    def freeChildcareWorkingParentsEligibilityMsg(): Option[String] = {
+    def eligibilityMessage(scheme: String): Option[String] = {
       if(!getFreeChildcareWorkingParentsEligibility(answers)) {
-        if (answers.location.contains(ENGLAND) && (answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false))) {
+        if (answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)) {
           if (answers.doYouLiveWithPartner.getOrElse(false)) {
-            if (!answers.whoIsInPaidEmployment.contains("both")) Some(messages("result.free.childcare.working.parents.not.eligible.partner.paidEmployment"))
+            if (!answers.whoIsInPaidEmployment.contains("both")) Some(messages(s"result.$scheme.not.eligible.partner.paidEmployment"))
             else if (!(answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false))) {
               val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
               val earningsForPartnerAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourPartnersAge)
-              if (earningsForAge == earningsForPartnerAge) Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.sameAge", earningsForAge))
-              else Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
+              if (earningsForAge == earningsForPartnerAge) Some(messages(s"result.$scheme.not.eligible.partner.minimumEarning.sameAge", earningsForAge))
+              else Some(messages(s"result.$scheme.not.eligible.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
             }
-            else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.partner.maximumEarning"))
+            else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages(s"result.$scheme.not.eligible.partner.maximumEarning"))
             else None
           } else {
-            if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.paidEmployment"))
+            if(answers.childcareCosts.contains("no")) Some(messages(s"result.$scheme.not.eligible.noCosts"))
+            else if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages(s"result.$scheme.not.eligible.paidEmployment"))
             else if (!answers.yourMinimumEarnings.getOrElse(false)) {
               val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
-              Some(messages("result.free.childcare.working.parents.not.eligible.minimumEarning", earningsForAge))
+              Some(messages(s"result.$scheme.not.eligible.minimumEarning", earningsForAge))
             }
-            else if (answers.yourMaximumEarnings.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.maximumEarning"))
+            else if (answers.yourMaximumEarnings.getOrElse(false)) Some(messages(s"result.$scheme.not.eligible.maximumEarning"))
             else None
           }
         } else None
@@ -107,13 +108,14 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       livesWithPartner = livingWithPartner,
       yourEarnings = yourEarnings,
       partnerEarnings = partnerEarnings,
-      freeChildcareWorkingParentsEligibilityMsg = freeChildcareWorkingParentsEligibilityMsg()
+      freeChildcareWorkingParentsEligibilityMsg = eligibilityMessage("free.childcare.working.parents"),
+      taxFreeChildcareEligibilityMsg = eligibilityMessage("tfc")
     )
 
     val schemeResults: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
     schemeResults.map(results => {
-      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
+      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits, answers.eligibleForTaxCredits)))
       if (result.tfc.isDefined && result.taxCreditsOrUC.contains("tc")) {
         result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.tc.warning"))
       } else {
@@ -133,12 +135,15 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     }
   }
 
-  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[String]) = {
+  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[String], eligibleForTaxCredits: Boolean) = {
     if (scheme.amount > 0) {
       scheme.name match {
-        case TCELIGIBILITY => {
-          if (taxCreditsOrUC == Some(universalCredits)) resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC) else resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC)
-        }
+        case TCELIGIBILITY =>
+            if (taxCreditsOrUC.contains(universalCredits)) {
+              resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
+            } else {
+              if(eligibleForTaxCredits) resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC) else resultViewModel
+            }
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
         case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
       }

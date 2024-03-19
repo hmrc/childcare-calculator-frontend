@@ -20,12 +20,12 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.Lang
-import play.api.libs.json.{JsBoolean, JsString}
+import play.api.libs.json.{JsBoolean, JsString, JsValue, Json}
 import play.api.test.Helpers._
-import services.MoreInfoService
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, YourChildcareVouchersId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, TaxOrUniversalCreditsId, WhichBenefitsYouGetId, YourChildcareVouchersId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
@@ -37,7 +37,6 @@ import scala.concurrent.Future
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   val view = application.injector.instanceOf[result]
-  val mockMoreInfoService: MoreInfoService  = mock[MoreInfoService]
   val resultService: ResultsService         = mock[ResultsService]
 
   implicit val l: Lang = mock[Lang]
@@ -50,12 +49,16 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
   val cacheMapNotEligibleForTaxCredits = new CacheMap( "id", Map(
     LocationId.toString -> JsString(location.toString),
-    YourChildcareVouchersId.toString -> JsBoolean(true)
+    YourChildcareVouchersId.toString -> JsBoolean(true),
+    WhichBenefitsYouGetId.toString -> Json.toJson(Set("severeDisabilityPremium")),
+    TaxOrUniversalCreditsId.toString -> JsString("tc")
   ))
 
   val cacheMapEligibleForTaxCredits = new CacheMap( "id", Map(
     LocationId.toString -> JsString(location.toString),
-    YourChildcareVouchersId.toString -> JsBoolean(false)
+    YourChildcareVouchersId.toString -> JsBoolean(false),
+    WhichBenefitsYouGetId.toString -> Json.toJson(Set("severeDisabilityPremium")),
+    TaxOrUniversalCreditsId.toString -> JsString("tc")
   ))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
@@ -66,7 +69,6 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
       dataRetrievalAction,
       new DataRequiredAction,
       resultService,
-      mockMoreInfoService,
       new Utils,
       view)
 
@@ -74,9 +76,6 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
     "return OK and with ResultViewModel for a GET" in {
       when(resultService.getResultsViewModel(any(),any())(any(),any(),any())) thenReturn Future.successful(
         ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
-
-      when(mockMoreInfoService.getSchemeContent(any(), any(), any())(any())) thenReturn List.empty
-      when(mockMoreInfoService.getSummary(any(), any())(any())) thenReturn None
 
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
       val resultPage = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
@@ -104,9 +103,6 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
     "suppress tax credit information" when {
       "when user is NOT eligible for tax credits" in {
-        when(mockMoreInfoService.getSchemeContent(any(), any(), any())(any())) thenReturn List.empty
-        when(mockMoreInfoService.getSummary(any(), any())(any())) thenReturn None
-
         val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapNotEligibleForTaxCredits))
         val resultPage = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
         status(resultPage) mustBe OK
@@ -116,9 +112,6 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar{
 
     "NOT suppress tax credit information" when {
       "when user IS eligible for tax credits" in {
-        when(mockMoreInfoService.getSchemeContent(any(), any(), any())(any())) thenReturn List.empty
-        when(mockMoreInfoService.getSummary(any(), any())(any())) thenReturn None
-
         val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapEligibleForTaxCredits))
         val resultPage = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
         status(resultPage) mustBe OK

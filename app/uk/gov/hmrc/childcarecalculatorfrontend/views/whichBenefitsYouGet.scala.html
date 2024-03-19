@@ -29,7 +29,7 @@
     submitButton: playComponents.submit_button,
     detailSummary: playComponents.detail_summary
 )
-@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages, lang: Lang)
+@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("whichBenefitsYouGet.title")) else messages("whichBenefitsYouGet.title")
