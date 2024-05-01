@@ -57,10 +57,10 @@ object Benefits {
   def populateFromRawData(data: Option[Set[String]]): Option[Benefits] = {
     data.map(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
       currentBenefit match {
-        case IncomeBenefits => benefits.copy(incomeBenefits = true)
-        case DisabilityBenefits => benefits.copy(disabilityBenefits = true)
-        case HighRatedDisabilityBenefits => benefits.copy(highRateDisabilityBenefits = true)
-        case CarersAllowanceBenefits => benefits.copy(carersAllowance = true)
+        case `incomeBenefits` => benefits.copy(incomeBenefits = true)
+        case `disabilityBenefits` => benefits.copy(disabilityBenefits = true)
+        case `highRatedDisabilityBenefits` => benefits.copy(highRateDisabilityBenefits = true)
+        case `carersAllowanceBenefits` => benefits.copy(carersAllowance = true)
         case _ => benefits
       }
     }))

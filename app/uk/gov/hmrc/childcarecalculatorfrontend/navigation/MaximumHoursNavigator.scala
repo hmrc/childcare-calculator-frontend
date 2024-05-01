@@ -17,23 +17,23 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import javax.inject.Inject
-
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
 
-class MaximumHoursNavigator @Inject() (
-                                        utils: Utils,
-                                        override val schemes: Schemes,
-                                        freeChildcareWorkingParents: FreeChildcareWorkingParents,
-                                        taxCredits: TaxCredits,
-                                        tfc: TaxFreeChildcare,
-                                        esc: EmploymentSupportedChildcare
-                                      ) extends ResultsNavigator {
+// scalastyle:off number.of.methods
+class MaximumHoursNavigator @Inject()(utils: Utils,
+                                      override val schemes: Schemes,
+                                      freeChildcareWorkingParents: FreeChildcareWorkingParents,
+                                      taxCredits: TaxCredits,
+                                      tfc: TaxFreeChildcare,
+                                      esc: EmploymentSupportedChildcare)
+  extends ResultsNavigator {
 
   override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
 
@@ -64,7 +64,19 @@ class MaximumHoursNavigator @Inject() (
     TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes,
     DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
     WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
-    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute
+    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute,
+    DoYouGetBenefitsId -> doYouGetBenefitsRoute,
+    DoYouOrPartnerGetBenefitsId -> doYouOrPartnerGetBenefitsRoute,
+    DoYouGetCarersAllowanceId -> doYouGetCarersAllowanceRoute,
+    DoYouGetIncomeBasedBenefitsId -> doYouGetIncomeBasedBenefitsRoute,
+    DoYouGetSevereDisabilityPremiumId -> doYouGetSevereDisabilityPremiumRoute,
+    DoYouGetDisabilityBenefitsId -> doYouGetDisabilityBenefitsRoute,
+    DoYouGetHigherRateDisabilityBenefitsId -> doYouGetHigherRateDisabilityBenefitsRoute,
+    DoesPartnerGetCarersAllowanceId -> doesPartnerGetCarersAllowanceRoute,
+    DoesPartnerGetIncomeBasedBenefitsId -> doesPartnerGetIncomeBasedBenefitsRoute,
+    DoesPartnerGetSevereDisabilityPremiumId -> doesPartnerGetSevereDisabilityPremiumRoute,
+    DoesPartnerGetDisabilityBenefitsId -> doesPartnerGetDisabilityBenefitsRoute,
+    DoesPartnerGetHigherRateDisabilityBenefitsId -> doesPartnerGetHigherRateDisabilityBenefitsRoute
   )
 
   val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
@@ -175,6 +187,98 @@ class MaximumHoursNavigator @Inject() (
       } else routes.YourAgeController.onPageLoad(NormalMode)
   }
 
+  private def doYouGetBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doYouGetBenefits) {
+      case true => ??? //Carers allowance
+      case false => routes.YourAgeController.onPageLoad(NormalMode)
+    }
+  }
+
+  private def doYouOrPartnerGetBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doYouOrPartnerGetBenefits) {
+      case `you` | `both` => ??? //Carers allowance
+      case `partner` => ??? //Partner carers allowance
+      case `neither` => endOfBenefitsQuestions(answers)
+    }
+  }
+
+  private def doYouGetCarersAllowanceRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doYouGetCarersAllowance) {
+      case _ => ??? //Income based benefits
+    }
+  }
+
+  private def doYouGetIncomeBasedBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doYouGetIncomeBasedBenefits) {
+      case true => ??? //Severe disability premium
+      case false => ??? //Disability benefits
+    }
+  }
+
+  private def doYouGetSevereDisabilityPremiumRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doYouGetSevereDisabilityPremium) {
+      case _ => ??? //Disability benefits
+    }
+  }
+
+  private def doYouGetDisabilityBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doYouGetDisabilityBenefits) {
+      case true => ??? //Higher rate disability benefits
+      case false => endOfYourBenefitsQuestions(answers)
+    }
+  }
+
+  private def doYouGetHigherRateDisabilityBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doYouGetHigherRateDisabilityBenefits) {
+      case _ => endOfYourBenefitsQuestions(answers)
+    }
+  }
+
+  private def endOfYourBenefitsQuestions(answers: UserAnswers): Call = {
+    answers.doYouOrPartnerGetBenefits match {
+      case Some(`both`) => ??? //Partner carers allowance
+      case _ => endOfBenefitsQuestions(answers)
+    }
+  }
+
+  private def doesPartnerGetCarersAllowanceRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doesPartnerGetCarersAllowance) {
+      _ => ??? //Partner income based benefits
+    }
+  }
+
+  private def doesPartnerGetIncomeBasedBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doesPartnerGetIncomeBasedBenefits) {
+      case true => ??? //Partner severe disability premium
+      case false => ??? //Partner disability benefits
+    }
+  }
+
+  private def doesPartnerGetSevereDisabilityPremiumRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doesPartnerGetSevereDisabilityPremium) {
+      ??? //Partner disability benefits
+    }
+  }
+
+  private def doesPartnerGetDisabilityBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doesPartnerGetDisabilityBenefits) {
+      case true => ??? //Partner higher rate disability benefits
+      case false => endOfBenefitsQuestions(answers)
+    }
+  }
+
+  private def doesPartnerGetHigherRateDisabilityBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.doesPartnerGetHigherRateDisabilityBenefits) {
+      _ => endOfBenefitsQuestions(answers)
+    }
+  }
+
+  private def endOfBenefitsQuestions(answers: UserAnswers): Call = {
+    answers.whoIsInPaidEmployment match {
+      case Some(`partner`) => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      case _ => routes.YourAgeController.onPageLoad(NormalMode)
+    }
+  }
 
   private def yourAgeRoute(answers: UserAnswers) = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
