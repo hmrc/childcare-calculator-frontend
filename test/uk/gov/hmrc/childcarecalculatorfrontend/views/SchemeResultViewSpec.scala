@@ -37,7 +37,7 @@ class SchemeResultViewSpec extends NewViewBehaviours {
           para1 = Some("some text"),
           para2 = Some(Html("some more text")),
           para3 = Some("some even more text"))
-        )(messages, lang))
+        )(messages))
 
         assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
     }
@@ -52,7 +52,7 @@ class SchemeResultViewSpec extends NewViewBehaviours {
         para2 = Some(Html("some more text")),
         para3 = Some("some even more text"),
         displayTCGuidanceLink = true
-      ))(messages, lang))
+      ))(messages))
 
       assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
       view.getElementById("tcGuidanceLink").attr("href") mustBe ucSchemeGuidanceLinkUrl

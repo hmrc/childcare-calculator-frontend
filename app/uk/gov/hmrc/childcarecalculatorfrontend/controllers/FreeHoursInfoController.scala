@@ -37,7 +37,7 @@ class FreeHoursInfoController @Inject()(mcc: MessagesControllerComponents,
       val isChildAgedThreeOrFour = request.userAnswers.isChildAgedThreeOrFour.getOrElse(false)
       val locationOption = request.userAnswers.location
 
-      val hasChildcareCosts = request.userAnswers.childcareCosts.getOrElse(false) match {
+      val hasChildcareCosts = request.userAnswers.childcareCosts.getOrElse("no") match {
         case ChildcareConstants.yes | ChildcareConstants.notYet => true
         case _ => false
       }

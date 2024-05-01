@@ -30,7 +30,7 @@
     submitButton: playComponents.submit_button
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Set[DisabilityBenefits.Value]], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages, lang: Lang)
+@(appConfig: FrontendAppConfig, form: Form[Set[DisabilityBenefits.Value]], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if (form.errors.nonEmpty) messages("site.title.error", messages("whichDisabilityBenefits.title", messages(s"nth.$index"))) else messages("whichDisabilityBenefits.title", messages(s"nth.$index"))

@@ -198,9 +198,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
 
 
   private def  destinedUrlForMultipleChildAged16(answers: UserAnswers): Option[Call] = {
-    if (answers.childrenBelow16AndExactly16Disabled.size > 1 && answers.multipleChildrenBelow16Yrs) {
-      Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
-    } else if (answers.childrenBelow16.size > 1) {
+    if (answers.childrenBelow16AndExactly16Disabled.size > 1) {
       Some(routes.WhoHasChildcareCostsController.onPageLoad(NormalMode))
     } else {
       Some(routeToIncomeInfoPage(answers))
@@ -257,7 +255,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
     } else {
       (answers.taxOrUniversalCredits, answers.isOnSevereDisabilityPremium) match {
         case (Some("tc"), _) => routeBasedIfPartnerOrNot(hasPartner)
-        case (_, false) => routes.ResultController.onPageLoadHideTC()
+        case (_, false) => routes.ResultController.onPageLoad()
         case _ => routeBasedIfPartnerOrNot(hasPartner)
       }
     }

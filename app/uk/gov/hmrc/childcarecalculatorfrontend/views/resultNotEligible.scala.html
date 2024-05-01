@@ -30,28 +30,7 @@
     govukInsetText : GovukInsetText
 )
 
-@(model: ResultsViewModel, hideTC: Boolean)(implicit request: Request[_], messages: Messages, lang: Lang)
-
-    @otherChildcareSchemesContent = {
-        @if(!model.hasChildcareCosts) {
-            @messages("freeHoursResult.info.OtherSchemes.childcare.cost.text")
-        } else {
-            @if(!model.hasCostsWithApprovedProvider) {
-                @messages("freeHoursResult.info.OtherSchemes.approved.text")
-            } else {
-                @if(!model.isAnyoneInPaidEmployment) {
-                    @messages("freeHoursResult.info.tfcOrChildcareSupport.para.start")
-                    <a class="govuk-link" id="tfcOrChildcareSupport"
-                       href=@if(model.livesWithPartner){
-                           @routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
-                       } else {
-                           @routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
-                       }>@messages("freeHoursResult.info.tfcOrChildcareSupport.para.link")</a>
-                    @messages("freeHoursResult.info.tfcOrChildcareSupport.para.end")
-                }
-            }
-        }
-    }
+@(model: ResultsViewModel)(implicit messages: Messages)
 
     @linkList(bullets: Seq[Tuple2[String, String]]) = {
         <ul class="govuk-list govuk-list--bullet">
@@ -61,7 +40,7 @@
         </ul>
     }
 
-    @if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined) {
+    @if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined && model.location == Location.ENGLAND) {
         @schemeResult(SchemeResultModel(
             title = messages("result.free.childcare.working.parents.title"),
             insetText = Some(model.freeChildcareWorkingParentsEligibilityMsg.getOrElse("")),
@@ -84,57 +63,14 @@
         ))
     }
 
-
-
-    @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
-        @if(!hideTC) @{
-            if(model.taxCreditsOrUC.contains(universalCredits)) {
-                schemeResult(SchemeResultModel(
-                    title = messages("result.tc.title"),
-                    para1 = Some(messages("result.uc.not.eligible.para")),
-                    notEligibleID = (Some("notEligibleTC1"), None),
-                    sectionBreak = false
-                ))
-            } else {
-                if(model.tc.isEmpty) {
-                    schemeResult(SchemeResultModel(
-                        title = messages("result.tc.not.eligible.title"),
-                        para1 = Some(model.tcSchemeInEligibilityMsg),
-                        notEligibleID = (Some("notEligibleTC1"), None),
-                        displayTCGuidanceLink = true,
-                        sectionBreak = false
-                    ))
-                }
-            }
-        }
-
-        @if(model.tfc.isEmpty) {
-            @schemeResult(SchemeResultModel(
-                title = messages("result.tfc.title"),
-                para1 = Some(messages("result.tfc.not.eligible")),
-                para3 = Some(messages("result.tfc.not.eligible2")),
-                notEligibleID = (Some("notEligibleTFC"), None),
-                sectionBreak = false
-            ))
-        }
-
-        @if(model.esc.isEmpty) {
-            @schemeResult(SchemeResultModel(
-                title = messages("result.esc.title"),
-                para1 = Some(messages("result.esc.not.eligible.para1")),
-                notEligibleID = (Some("notEligibleESC1"), Some("notEligibleESC2")),
-                sectionBreak = false
-            ))
-        }
-
-    }else{
-
+    @if(model.taxFreeChildcareEligibilityMsg.isDefined){
         @schemeResult(SchemeResultModel(
-            title = messages("freeHoursResult.info.tfcOrChildcareSupport.heading"),
-            para2 = Some(otherChildcareSchemesContent),
+            title = messages("result.tfc.title"),
+            insetText = Some(model.taxFreeChildcareEligibilityMsg.getOrElse("")),
+            insetTextId = Some("notEligibleTFC"),
             sectionBreak = false
         ))
-}
+    }
 
     @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider) {
 

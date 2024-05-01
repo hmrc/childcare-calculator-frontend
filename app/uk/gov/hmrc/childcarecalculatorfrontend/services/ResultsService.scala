@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -37,6 +37,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
                                eligibilityService: EligibilityService,
                                freeHours: FreeHours,
                                freeChildcareWorkingParents: FreeChildcareWorkingParents,
+                               taxFreeChildcare: TaxFreeChildcare,
                                maxFreeHours: MaxFreeHours,
                                firstParagraphBuilder: FirstParagraphBuilder,
                                tcSchemeInEligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder,
@@ -69,9 +70,37 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val yourEarnings = getEarnings(answers.yourMinimumEarnings, answers.yourMaximumEarnings)
     val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
 
-    def freeChildcareWorkingParentsEligibilityMsg(): Option[String] = {
+    def tfcEligibilityMessage: Option[String] = {
       if(!getFreeChildcareWorkingParentsEligibility(answers)) {
-        if (answers.location.contains(ENGLAND) && (answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false))) {
+        if(answers.doYouLiveWithPartner.getOrElse(false)) {
+          if (!answers.whoIsInPaidEmployment.contains("both")) Some(messages("result.tfc.not.eligible.partner.paidEmployment"))
+          else if (!(answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false))) {
+            val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
+            val earningsForPartnerAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourPartnersAge)
+            if (earningsForAge == earningsForPartnerAge) Some(messages("result.tfc.not.eligible.partner.minimumEarning.sameAge", earningsForAge))
+            else Some(messages("result.tfc.not.eligible.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
+          }
+          else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages("result.tfc.not.eligible.partner.maximumEarning"))
+          else if(!answers.hasChildEligibleForTfc) Some(messages("result.tfc.not.eligible.age"))
+          else None
+        } else {
+          if (answers.childcareCosts.contains("no")) Some(messages("result.tfc.not.eligible.noCosts"))
+          else if(answers.approvedProvider.contains("NO")) Some(messages("result.tfc.not.eligible.approvedProvider"))
+          else if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages("result.tfc.not.eligible.paidEmployment"))
+          else if (!answers.yourMinimumEarnings.getOrElse(false)) {
+            val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
+            Some(messages("result.tfc.not.eligible.minimumEarning", earningsForAge))
+          }
+          else if (answers.yourMaximumEarnings.getOrElse(false)) Some(messages("result.tfc.not.eligible.maximumEarning"))
+          else if(!answers.hasChildEligibleForTfc) Some(messages("result.tfc.not.eligible.age"))
+          else None
+        }
+      } else None
+    }
+
+    def freeChildcareWorkingParentsEligibilityMessage: Option[String] = {
+      if(!getFreeChildcareWorkingParentsEligibility(answers)) {
+        if (answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)) {
           if (answers.doYouLiveWithPartner.getOrElse(false)) {
             if (!answers.whoIsInPaidEmployment.contains("both")) Some(messages("result.free.childcare.working.parents.not.eligible.partner.paidEmployment"))
             else if (!(answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false))) {
@@ -80,10 +109,12 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
               if (earningsForAge == earningsForPartnerAge) Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.sameAge", earningsForAge))
               else Some(messages("result.free.childcare.working.parents.not.eligible.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
             }
-            else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.partner.maximumEarning"))
+            else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages(s"result.free.childcare.working.parents.not.eligible.partner.maximumEarning"))
             else None
           } else {
-            if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.paidEmployment"))
+            if(answers.childcareCosts.contains("no")) Some(messages("result.free.childcare.working.parents.not.eligible.noCosts"))
+            else if(answers.approvedProvider.contains("NO")) Some(messages("result.free.childcare.working.parents.not.eligible.approvedProvider"))
+            else if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages("result.free.childcare.working.parents.not.eligible.paidEmployment"))
             else if (!answers.yourMinimumEarnings.getOrElse(false)) {
               val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
               Some(messages("result.free.childcare.working.parents.not.eligible.minimumEarning", earningsForAge))
@@ -107,13 +138,14 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       livesWithPartner = livingWithPartner,
       yourEarnings = yourEarnings,
       partnerEarnings = partnerEarnings,
-      freeChildcareWorkingParentsEligibilityMsg = freeChildcareWorkingParentsEligibilityMsg()
+      freeChildcareWorkingParentsEligibilityMsg = freeChildcareWorkingParentsEligibilityMessage,
+      taxFreeChildcareEligibilityMsg = tfcEligibilityMessage
     )
 
     val schemeResults: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
     schemeResults.map(results => {
-      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)))
+      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits, answers.eligibleForTaxCredits)))
       if (result.tfc.isDefined && result.taxCreditsOrUC.contains("tc")) {
         result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.tc.warning"))
       } else {
@@ -128,17 +160,19 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
   private def getFreeChildcareWorkingParentsEligibility(userAnswers: UserAnswers): Boolean = {
     freeChildcareWorkingParents.eligibility(userAnswers) match {
       case Eligible => true
-      case NotEligible => false
       case _ => false
     }
   }
 
-  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[String]) = {
+  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[String], eligibleForTaxCredits: Boolean) = {
     if (scheme.amount > 0) {
       scheme.name match {
-        case TCELIGIBILITY => {
-          if (taxCreditsOrUC == Some(universalCredits)) resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC) else resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC)
-        }
+        case TCELIGIBILITY =>
+            if (taxCreditsOrUC.contains(universalCredits)) {
+              resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
+            } else {
+              if(eligibleForTaxCredits) resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC) else resultViewModel
+            }
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
         case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
       }

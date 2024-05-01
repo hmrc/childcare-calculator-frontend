@@ -172,7 +172,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
                     index: Int,
                     name: String
                   ): String =
-    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages, lang).toString
+    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages).toString
 
   def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] = {
     if (cases.size == 1) {

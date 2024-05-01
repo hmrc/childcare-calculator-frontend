@@ -41,24 +41,24 @@ nth.16 = seventeenth
 nth.17 = eighteenth
 nth.18 = nineteenth
 
-results.firstParagraph.youToldTheCalculator = You answered that you {0} {1}
+results.firstParagraph.youToldTheCalculatorThat = You answered that:
+results.firstParagraph.youToldTheCalculator = you {0} {1}
 results.firstParagraph.children = children
 results.firstParagraph.aChild = one child
 results.firstParagraph.dontHave = don’t have
 results.firstParagraph.have = have
-results.firstParagraph.yearlyChildcareCosts = with yearly childcare costs of around £
+results.firstParagraph.yearlyChildcareCosts = you have yearly childcare costs of around £
 results.firstParagraph.withYourPartner = with your partner
 results.firstParagraph.onYourOwn = on your own
-results.firstParagraph.youLiveAnd = You live {0}
-results.firstParagraph.inPaidWork = currently in paid work.
-results.firstParagraph.youWorkXHoursAweek = You work {0} hours a week.
-results.firstParagraph.yourPartnerWorksXHoursAweek = Your partner works {0} hours a week.
-results.firstParagraph.youAndYourPartnerWorkXhoursAweek = You work {0} hours and your partner works {1} hours a week.
-results.firstParagraph.onlyYouAre = and only you are {0} {1}
-results.firstParagraph.noneOfYouAre = and none of you are
-results.firstParagraph.youAre = and you are {0} {1}
-results.firstParagraph.onlyYourPartnerIs = and only your partner is {0} {1}
-results.firstParagraph.bothYouAndYourPartnerAre = and you are both {0} {1}
+results.firstParagraph.youLiveAnd = you live {0}
+
+results.firstParagraph.youInPaidWork = you are in paid work
+results.firstParagraph.onlyYouInPaidWork = you are in paid work and your partner is not in paid work
+results.firstParagraph.youAndPartnerInPaidWork = you and your partner are both currently in paid work
+results.firstParagraph.onlyPartnerInPaidWork = you are not in paid work and your partner is in paid work
+results.firstParagraph.neitherInPaidWork = none of you are currently in paid work
+results.firstParagraph.youWorkXHoursAweek = you work {0} hours a week
+results.firstParagraph.yourPartnerWorksXHoursAweek = your partner works {0} hours a week
 
 session_expired.title = For your security, we cleared your details
 session_expired.heading = For your security, we cleared your details
@@ -1328,6 +1328,7 @@ result.heading.not.eligible = Help you could get with your childcare costs
 result.guidance = You answered that you have children, with childcare costs of £. You live on your own and only you are currently in paid work. You work hours and your partner works hours a week.
 result.more.info.title = How the schemes work together
 result.more.info.para = Of the childcare schemes available to you:
+
 result.schemes.free.hours.eligibility.guidance.bullet = free childcare hours can be used with any of the other schemes
 result.schemes.free.hours.eligibility.guidance.para = Free childcare hours can be used with any of the other schemes.
 result.schemes.free.hours.eligibility.guidance.with.tc.para = Free childcare hours can be used with any of the other schemes, but you’d get less in tax credits payments if you do.
@@ -1341,6 +1342,7 @@ result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet = Tax-Free Childcare 
 result.schemes.tfc.ineligibility.taxCredits.guidance.para = Tax-Free Childcare cannot be used with tax credits.
 result.schemes.tfc.ineligibility.taxCredits.guidance.bullet = Tax-Free Childcare cannot be used with tax credits
 result.schemes.tfc.ineligibility.vouchers.guidance.bullet = Tax-Free Childcare cannot be used if you or your partner get childcare vouchers
+result.schemes.tfc.ineligibility.vouchers.guidance.bullet.livesAlone = Tax-Free Childcare cannot be used with childcare vouchers
 result.schemes.tfc.ineligibility.vouchers.guidance.para = Tax-Free Childcare cannot be used with childcare vouchers.
 result.schemes.tfc.tc.warning = If you receive Tax Credits and apply for Tax Free Childcare your entitlement will be stopped.
 result.schemes.tfc.uc.warning = Your Universal Credit will stop if you apply for Tax-Free Childcare.
@@ -1366,7 +1368,6 @@ result.free.hours.period.england =  free childcare a week - this is {0} hours a 
 result.free.hours.period.wales =  free childcare a week - this is around 390 hours a year.
 result.free.hours.period.scotland =  funded early learning and childcare a week - this is 1140 hours a year.
 result.free.hours.period.northern-ireland = free childcare a week - this is 475 hours a year.
-result.free.hours.para1 = You can get free hours for your 3 or 4 year old that can be used in or outside of school term time. Your provider may apply charges for additional services.
 result.free.hours.not.eligible.3to4 = You are currently not eligible for any free hours because you do not have any children aged 3 or 4.
 result.free.hours.not.eligible.2to4 = You are currently not eligible for any free hours because you do not have any children aged 2 or 4.
 result.free.hours.detail.summary = How free childcare hours works
@@ -1394,20 +1395,23 @@ result.free.childcare.working.parents.not.eligible.partner.maximumEarning = Both
 result.free.childcare.working.parents.not.eligible.paidEmployment = You need to be in paid work to get Free Childcare For Working Parents.
 result.free.childcare.working.parents.not.eligible.minimumEarning = You need to be in paid work and earn at least £{0} a week to get Free Childcare For Working Parents.
 result.free.childcare.working.parents.not.eligible.maximumEarning = You need to earn less than £100,000 a year as adjusted net income to get Free Childcare For Working Parents.
+result.free.childcare.working.parents.not.eligible.noCosts = You do not have or expect to have any childcare costs, so you cannot get Free Childcare For Working Parents.
+
+result.tfc.title = Tax-Free Childcare
+result.tfc.para1 = If you successfully apply for Tax-Free Childcare, you cannot get childcare vouchers or tax credits as well.
+result.tfc.period = a year towards your childcare costs.
+result.tfc.not.eligible.partner.paidEmployment = Both you and your partner need to be in paid work to get Tax-Free Childcare.
+result.tfc.not.eligible.partner.minimumEarning.sameAge = Both you and your partner need to be in paid work and earn at least £{0} a week to get Tax-Free Childcare.
+result.tfc.not.eligible.partner.minimumEarning.differentAge = You need to be in paid work and earn at least £{0} a week and your partner needs to be in paid work and earn at least £{1} a week to get Tax-Free Childcare.
+result.tfc.not.eligible.partner.maximumEarning = Both you and your partner need to earn less than £100,000 a year as adjusted net income to get Tax-Free Childcare.
+result.tfc.not.eligible.paidEmployment = You need to be in paid work to get Tax-Free Childcare.
+result.tfc.not.eligible.minimumEarning = You need to be in paid work and earn at least £{0} a week to get Tax-Free Childcare.
+result.tfc.not.eligible.maximumEarning = You need to earn less than £100,000 a year as adjusted net income to get Tax-Free Childcare.
+result.tfc.not.eligible.noCosts = You do not have or expect to have any childcare costs, so you cannot get Tax-Free Childcare.
+result.tfc.not.eligible.age = Children are not eligible from 1 September after their 11th birthday, or after their 16th birthday if disabled.
 
 result.tc.title = Tax credits
 result.tc.period = over the year ahead towards your household costs.
-result.tc.para1 = You can get up to 70% of your childcare costs paid. The amount you get is initially based on your current circumstances and uses your household income from the previous year.
-result.tc.detail.summary = How tax credits works
-result.tc.detailPara1 = How much childcare support you can get depends on your income, hours worked, what you pay for childcare, the number of children you have and whether you, your partner, or any of your children are disabled. You can get up to 70% of your childcare costs paid.
-result.tc.detailPara2 = For example:
-result.tc.detailPara2.li.1 = for 1 child, the maximum childcare cost covered is £175 a week and 70% of this would be £122.50 in tax credits
-result.tc.detailPara2.li.2 = for more than 1 child, the maximum childcare cost covered is £300, which would be £210 in tax credits
-result.tc.detailPara2.tax.credit.replace.uc = If you are not eligible to continue claiming tax credits or make a new claim, you may need to check separately if you are eligible to
-result.tc.detailPara2.tax.credit.replace.uc.link.text = get help with childcare costs using Universal Credit
-result.tc.detailPara2.tax.credit.replace.uc.link = https://www.gov.uk/help-with-childcare-costs/universal-credit
-result.tc.detailPara3 = It is for children under 16, under 18 if disabled, or under 19 if in approved education or training.
-
 result.tc.not.eligible.para1 = You cannot get help from tax credits. To get help you need to work 16 hours or more a week if you are single. If you have a partner you need to work at least 24 hours between you (with 1 of you working at least 16 hours a week), but only one of you needs to work 16 hours if the other gets Carer’s Allowance. Your children must be under 16 and you cannot be getting Universal Credit. The amount of tax credits reduces depending on how much you earn and how many children you have.
 result.uc.not.eligible.para = You cannot get help from Tax Credits as you have told us that you were already getting Universal Credit.
 result.tc.not.eligible.single.user.hours.less.than.16 = You cannot get childcare support from tax credits because you need to work 16 hours or more a week.
@@ -1415,38 +1419,12 @@ result.tc.not.eligible.partner.journey.hours.less.than.minimum = You cannot get 
 result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits = You cannot get childcare support from tax credits. Although your partner gets a benefit that would make them eligible, you need to work 16 hours or more a week.
 result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits =  You cannot get childcare support from tax credits. Although you get a benefit that would make you eligible, your partner needs to work 16 hours or more a week.
 result.tc.not.eligible.user.no.child.below.16 = You cannot get childcare support from tax credits because you do not have a child under 16 (or under 17 if disabled).
-result.tc.scheme.guidance.link = get help with childcare costs using Universal Credit
-
 result.tc.not.eligible.title = Childcare support from tax credits
 result.tc.not.eligible.tc.para1 = You may need to check separately if you are eligible to
-
-result.tfc.title = Tax-Free Childcare
-result.tfc.period = a year towards your childcare costs.
-result.tfc.para1 = You can get up to £2,000 a year towards your childcare costs for each child aged 11 or under, or up to £4,000 a year for each child aged 16 or under if they are disabled. You get a £2 government top-up for every £8 you pay in childcare.
-result.tfc.detail.summary = How Tax-Free Childcare works
-result.tfc.detailPara1 = You will create an online childcare account to pay into, get top-ups paid into it and use it to pay your approved provider directly. For example, for every £8 paid into the account, the government will pay a £2 top-up that would give you £10 towards your childcare costs for each child.
-result.tfc.detailPara2 = You can use it to pay for up to £10,000 of childcare for each child a year – so you’d get up to £2,000 in top-ups a year, or £4,000 a year if they are disabled.
-result.tfc.detailPara3 = The child or children must usually live with you. They stop being eligible on 1 September after their 11th birthday.
-
-result.tfc.not.eligible = You cannot get help from Tax-Free Childcare. To get help, you need to earn at least 16 times the National Minimum Wage a week and not earn more than £100,000 a year. This applies to both if you live with a partner.
-result.tfc.not.eligible2 = Children are not eligible from 1 September after their 11th birthday, or after their 16th birthday if disabled.
+result.tc.scheme.guidance.link = get help with childcare costs using Universal Credit
 
 result.esc.title = Childcare vouchers
 result.esc.period = a year in tax and National Insurance savings through salary sacrifice.
-result.esc.para1 = Each parent can take some of their pay as childcare vouchers and not pay tax or National Insurance on that amount. You could take up to £55, £28 or £25 a week in vouchers, depending on how much you earn.
-result.esc.detail.summary = How childcare vouchers work
-result.esc.detailPara1 = The amount of pay you can take in vouchers depends on how much you earn. It reduces your pay, which is why it’s called salary sacrifice.
-result.esc.detailPara2 = For example:
-result.esc.detailPara2.li.1 = basic-rate taxpayers can take up to £55 a week
-result.esc.detailPara2.li.2 = higher-rate taxpayers can take up to £28 a week
-result.esc.detailPara2.li.3 = top-rate taxpayers can take up to £25 a week
-result.esc.detailPara3 = This is the amount you won’t pay tax or National Insurance on.
-result.esc.detailPara4 = Employers can only offer them to new claimants until the end of March 2018, as they are being replaced by Tax-Free Childcare.
-
-result.esc.detailPara2.start = Childcare voucher schemes are
-result.esc.detailPara2.link.text = closed to new applicants
-result.esc.detailPara2.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers
-result.esc.detailPara2.end = . You can keep getting vouchers if you are already in a scheme.
 
 result.esc.not.eligible.para1 = You cannot get help from childcare vouchers as you answered that you do not get them currently, and the scheme is now closed to new joiners.
 
@@ -1455,7 +1433,6 @@ result.not.eligible.title.ga = You are not eligible for
 
 result.eligible.subheading = You can get
 result.not.eligible.subheading = You cannot get
-result.further.information.subheading = Further information
 
 whoWasInPaidWorkPY.title = Who was in paid work?
 whoWasInPaidWorkPY.heading = Who was in paid work?
@@ -1493,7 +1470,7 @@ aboutYourResults.more.info.england.hours.title = Apply for Free Childcare For Wo
 aboutYourResults.more.info.england.hours.link = https://www.gov.uk/30-hours-free-childcare
 aboutYourResults.more.info.england.tc.title = tax credits
 aboutYourResults.more.info.england.tc.link = https://www.gov.uk/topic/benefits-credits/tax-credits
-aboutYourResults.more.info.england.tfc.title = Tax-Free Childcare
+aboutYourResults.more.info.england.tfc.title = Apply for Tax-Free Childcare
 aboutYourResults.more.info.england.tfc.link = https://www.gov.uk/help-with-childcare-costs/tax-free-childcare/
 aboutYourResults.more.info.england.esc.title = childcare vouchers
 aboutYourResults.more.info.england.esc.link = https://www.gov.uk/help-with-childcare-costs/childcare-vouchers

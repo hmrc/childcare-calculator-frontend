@@ -66,6 +66,6 @@ class ApprovedProviderController @Inject()(
   }
 
   private def checkIfUnsureAboutChildcareCosts(answers: UserAnswers): Boolean = {
-    answers.childcareCosts.getOrElse(false) == YesNoNotYetEnum.NOTYET.toString
+    answers.childcareCosts.getOrElse("no") == YesNoNotYetEnum.NOTYET.toString
   }
 }
