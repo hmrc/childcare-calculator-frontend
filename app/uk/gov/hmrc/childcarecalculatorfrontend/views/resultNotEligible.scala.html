@@ -40,18 +40,11 @@
         </ul>
     }
 
-    @if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined && model.location == Location.ENGLAND) {
+    @if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined) {
         @schemeResult(SchemeResultModel(
             title = messages("result.free.childcare.working.parents.title"),
             insetText = Some(model.freeChildcareWorkingParentsEligibilityMsg.getOrElse("")),
             insetTextId = Some("notEligibleFreeChildcareWorkingParents"),
-            sectionBreak = false
-        ))
-    } else if(model.freeHours.isEmpty && model.location == Location.ENGLAND) {
-        @schemeResult(SchemeResultModel(
-            title = messages("result.free.hours.title.2to4"),
-            para1 = Some(messages("result.free.hours.not.eligible.2to4")),
-            notEligibleID = (Some("notEligibleFreeHours"), None),
             sectionBreak = false
         ))
     } else if(model.freeHours.isEmpty) {
@@ -90,7 +83,7 @@
     }
 
     @if(model.location != Location.ENGLAND
-        && (model.childrenAgeGroups.contains(NineTo23Months) || model.childrenAgeGroups.contains(TwoYears) || model.childrenAgeGroups.contains(ThreeYears) || model.childrenAgeGroups.contains(FourYears))
+        && !model.childrenAgeGroups.contains(NoneOfThese)
         && !(model.location == Location.WALES
         && (model.yourEarnings.exists(earnings => Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings))))) {
 
