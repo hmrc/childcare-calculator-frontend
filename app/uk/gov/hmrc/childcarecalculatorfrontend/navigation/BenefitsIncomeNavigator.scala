@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 /**
   * Contains the navigation for current and previous year benefits pages
   */
-class BenefitsNavigator @Inject()(utils: Utils) extends SubNavigator {
+class BenefitsIncomeNavigator @Inject()(utils: Utils) extends SubNavigator {
 
   override protected def routeMap = Map(
     YouAnyTheseBenefitsIdCY -> yourBenefitsRouteCY,
