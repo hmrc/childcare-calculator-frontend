@@ -70,31 +70,41 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
 
     def tfcEligibilityMessage: Option[String] = {
-      if(!getFreeChildcareWorkingParentsEligibility(answers)) {
-        if(answers.doYouLiveWithPartner.getOrElse(false)) {
-          if (!answers.whoIsInPaidEmployment.contains("both")) Some(messages("result.tfc.not.eligible.partner.paidEmployment"))
-          else if (!(answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false))) {
-            val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
-            val earningsForPartnerAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourPartnersAge)
-            if (earningsForAge == earningsForPartnerAge) Some(messages("result.tfc.not.eligible.partner.minimumEarning.sameAge", earningsForAge))
-            else Some(messages("result.tfc.not.eligible.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
-          }
-          else if (answers.eitherOfYouMaximumEarnings.getOrElse(false)) Some(messages("result.tfc.not.eligible.partner.maximumEarning"))
-          else if(!answers.hasChildEligibleForTfc) Some(messages("result.tfc.not.eligible.age"))
-          else None
-        } else {
-          if (answers.childcareCosts.contains("no")) Some(messages("result.tfc.not.eligible.noCosts"))
-          else if(answers.approvedProvider.contains("NO")) Some(messages("result.tfc.not.eligible.approvedProvider"))
-          else if (!answers.areYouInPaidWork.getOrElse(false)) Some(messages("result.tfc.not.eligible.paidEmployment"))
-          else if (!answers.yourMinimumEarnings.getOrElse(false)) {
-            val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
-            Some(messages("result.tfc.not.eligible.minimumEarning", earningsForAge))
-          }
-          else if (answers.yourMaximumEarnings.getOrElse(false)) Some(messages("result.tfc.not.eligible.maximumEarning"))
-          else if(!answers.hasChildEligibleForTfc) Some(messages("result.tfc.not.eligible.age"))
-          else None
-        }
-      } else None
+      lazy val hasEligibileChildren = answers.hasChildEligibleForTfc
+      lazy val youInPaidWork = answers.areYouInPaidWork.getOrElse(false)
+      lazy val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourAge)
+      lazy val youEligibleMinEarnings = answers.yourMinimumEarnings.getOrElse(false)
+      lazy val youEligibleMaxEarnings = !answers.yourMaximumEarnings.getOrElse(false)
+      lazy val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
+      lazy val bothInPaidWork = answers.whoIsInPaidEmployment.contains(both)
+      lazy val earningsForPartnerAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, answers.yourPartnersAge)
+      lazy val bothEligibleMinEarnings = answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false)
+      lazy val bothEligibleMaxEarnings = !answers.eitherOfYouMaximumEarnings.getOrElse(false)
+
+      lazy val msgKey = "result.tfc.ineligible"
+
+      answers match {
+        case _ if answers.childcareCosts.contains(no) =>
+          Some(messages(s"$msgKey.noCosts"))
+        case _ if answers.approvedProvider.contains(NO) =>
+          Some(messages(s"$msgKey.approvedProvider"))
+        case _ if hasPartner && !bothInPaidWork =>
+          Some(messages(s"$msgKey.partner.paidEmployment"))
+        case _ if hasPartner && !bothEligibleMinEarnings =>
+          if (earningsForAge == earningsForPartnerAge) Some(messages(s"$msgKey.partner.minimumEarning.sameAge", earningsForAge))
+          else Some(messages(s"$msgKey.partner.minimumEarning.differentAge", earningsForAge, earningsForPartnerAge))
+        case _ if hasPartner && !bothEligibleMaxEarnings =>
+          Some(messages(s"$msgKey.partner.maximumEarning"))
+        case _ if !hasPartner && !youInPaidWork =>
+          Some(messages(s"$msgKey.paidEmployment"))
+        case _ if !hasPartner && !youEligibleMinEarnings =>
+          Some(messages(s"$msgKey.minimumEarning", earningsForAge))
+        case _ if !hasPartner && !youEligibleMaxEarnings =>
+          Some(messages(s"$msgKey.maximumEarning"))
+        case _ if !hasEligibileChildren =>
+          Some(messages(s"$msgKey.noEligibleChild"))
+        case _ => None
+      }
     }
 
     def freeChildcareWorkingParentsEligibilityMessage: Option[String] = {
@@ -110,7 +120,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       lazy val bothEligibleMinEarnings = answers.partnerMinimumEarnings.getOrElse(false) && answers.yourMinimumEarnings.getOrElse(false)
       lazy val bothEligibleMaxEarnings = !answers.eitherOfYouMaximumEarnings.getOrElse(false)
 
-      lazy val msgKey = "result.free.childcare.working.parents.not.eligible"
+      lazy val msgKey = "result.free.childcare.working.parents.ineligible"
       answers match {
         case _ if !inEngland => None
         case _ if !hasEligibileChildren =>
