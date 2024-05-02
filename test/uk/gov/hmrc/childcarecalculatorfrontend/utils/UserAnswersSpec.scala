@@ -718,63 +718,6 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  "isOnHighRateDisabilityBenefits" must {
-    "return true" when {
-      "'you' are on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual true
-      }
-
-      "'partner' is on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual true
-      }
-
-      "'both' are on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString))),
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual true
-      }
-    }
-
-    "return false" when {
-      "'you' are NOT on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual false
-      }
-
-      "'partner' is NOT on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual false
-      }
-
-      "'both' are NOT on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString))),
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual false
-      }
-    }
-  }
-
-
   "isOnSevereDisabilityPremium" must {
     "return true" when {
       "'you' are on severe disability premium" in {
@@ -847,58 +790,6 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
       "Someone has neither universal credits or tax credits" in {
         val answers = helper(cacheMap())
         answers.isAlreadyReceivingTaxCredits mustEqual false
-      }
-    }
-  }
-
-
-  "isGettingChildVouchers" must {
-    "return true" when {
-      "'you' get child care vouchers" in {
-        val answers = helper(cacheMap(YourChildcareVouchersId.toString -> JsBoolean(true)))
-        answers.isGettingChildVouchers mustEqual true
-      }
-      "'partner' gets child care vouchers" in {
-        val answers = helper(cacheMap(PartnerChildcareVouchersId.toString -> JsBoolean(true)))
-        answers.isGettingChildVouchers mustEqual true
-      }
-      "asked 'who gets child care vouchers'" when {
-        "answering 'you" in {
-          val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.YOU.toString)))
-          answers.isGettingChildVouchers mustEqual true
-        }
-        "answering 'partner" in {
-          val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)))
-          answers.isGettingChildVouchers mustEqual true
-        }
-        "answering 'both" in {
-          val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.BOTH.toString)))
-          answers.isGettingChildVouchers mustEqual true
-        }
-      }
-    }
-
-    "return false" when {
-      "'you' dont get child care vouchers" in {
-        val answers = helper(cacheMap(YourChildcareVouchersId.toString -> JsBoolean(false)))
-        answers.isGettingChildVouchers mustEqual false
-      }
-      "'you' never answered the question about getting child care vouchers" in {
-        val answers = helper(cacheMap())
-        answers.isGettingChildVouchers mustEqual false
-      }
-
-      "'partner' does not get child care vouchers" in {
-        val answers = helper(cacheMap(PartnerChildcareVouchersId.toString -> JsBoolean(false)))
-        answers.isGettingChildVouchers mustEqual false
-      }
-      "'partner' never answered the question about getting child care vouchers" in {
-        val answers = helper(cacheMap())
-        answers.isGettingChildVouchers mustEqual false
-      }
-      "neither you/partner/both" in {
-        val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString)))
-        answers.isGettingChildVouchers mustEqual false
       }
     }
   }

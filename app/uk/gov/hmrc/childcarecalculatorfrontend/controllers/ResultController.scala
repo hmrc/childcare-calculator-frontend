@@ -57,9 +57,7 @@ class ResultController @Inject()(val appConfig: FrontendAppConfig,
   private def renderResultsPage(location: Location.Value)(implicit request: DataRequest[_], hc: HeaderCarrier): Future[Result] = {
     resultsService.getResultsViewModel(request.userAnswers, location).map(model => {
       dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
-      val eligibleForTC = request.userAnswers.eligibleForTaxCredits
-
-      Ok(result(appConfig, model, utils, !eligibleForTC))
+      Ok(result(appConfig, model, utils))
     })
   }
 

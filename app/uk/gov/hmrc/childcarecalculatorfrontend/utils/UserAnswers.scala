@@ -513,9 +513,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
     }
   }
 
-  def isOnHighRateDisabilityBenefits: Boolean =
-    whichBenefitsYouGet.getOrElse(Set()) ++ whichBenefitsPartnerGet.getOrElse(Set()) contains WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
-
   def isOnSevereDisabilityPremium: Boolean =
     whichBenefitsYouGet.getOrElse(Set()) ++ whichBenefitsPartnerGet.getOrElse(Set()) contains WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
 
@@ -525,15 +522,5 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
       case None => false
       case _ => false
     }
-
-  def isGettingChildVouchers: Boolean =
-    (yourChildcareVouchers, partnerChildcareVouchers, whoGetsVouchers) match {
-      case (Some(true), _, _) => true
-      case (_, Some(true), _) => true
-      case (_, _, Some(who)) if Try(YouPartnerBothEnum.withName(who)).isSuccess => true
-      case (_, _, _) => false
-    }
-
-  def eligibleForTaxCredits: Boolean = isOnSevereDisabilityPremium && isAlreadyReceivingTaxCredits && !isGettingChildVouchers
 
 }

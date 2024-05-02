@@ -22,6 +22,8 @@
     heading: heading,
     detailSummaryComponent: detail_summary,
     govukWarningText : GovukWarningText,
+        link: link,
+        p: p
 )
 
 @(schemeResult: SchemeResultModel)(implicit messages: Messages)
@@ -36,7 +38,7 @@
 }
 
 @if(schemeResult.couldGet.isDefined){
-    @if(!schemeResult.eligibility.isDefined) {
+    @if(schemeResult.eligibility.isEmpty) {
         <div class="govuk-inset-text">
             @if(schemeResult.childrenAgeGroupText.flatten.size > 1) {
                 <p class="govuk-body">@schemeResult.couldGet:</p>
@@ -103,13 +105,21 @@
 }
 
 @if(schemeResult.displayApplyForFCHLink) {
-    <a class="govuk-link" target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.title")" href=@messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.link")>@messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.title") <span>@messages("site.opens.new.tab")</span></a>
+    @p() {
+        @link(
+            messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.link"),
+            s"aboutYourResults.more.info.${schemeResult.location}.hours.title",
+            isExternal = true
+        )
+    }
 }
 
 @if(schemeResult.displayApplyForTFCLink) {
-    <a class="govuk-link" target="_blank" data-journey-click="link - click:@messages("aboutYourResults.more.info.title"):@messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.title")" href=@messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.link")>@messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.title") <span>@messages("site.opens.new.tab")</span></a>
-}
-
-@if(schemeResult.sectionBreak){
-    @section_break()
+    @p() {
+        @link(
+            messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.link"),
+            s"aboutYourResults.more.info.${schemeResult.location}.tfc.title",
+            isExternal = true
+        )
+    }
 }

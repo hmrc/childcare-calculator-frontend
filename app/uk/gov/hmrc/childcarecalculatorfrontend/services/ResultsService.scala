@@ -165,7 +165,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val schemeResults: Future[SchemeResults] = eligibilityService.eligibility(answers)
 
     schemeResults.map(results => {
-      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits, answers.eligibleForTaxCredits)))
+      val result = results.schemes.foldLeft(resultViewModel)((result, scheme) => getViewModelWithFreeHours(answers, setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits, answers.isAlreadyReceivingTaxCredits)))
       if (result.tfc.isDefined && result.taxCreditsOrUC.contains("tc")) {
         result.copy(showTFCWarning = true, tfcWarningMessage = messages("result.schemes.tfc.tc.warning"))
       } else {
@@ -188,11 +188,11 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     if (scheme.amount > 0) {
       scheme.name match {
         case TCELIGIBILITY =>
-            if (taxCreditsOrUC.contains(universalCredits)) {
-              resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
-            } else {
-              if(eligibleForTaxCredits) resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC) else resultViewModel
-            }
+          if (taxCreditsOrUC.contains(universalCredits)) {
+            resultViewModel.copy(taxCreditsOrUC = taxCreditsOrUC)
+          } else {
+            if (eligibleForTaxCredits) resultViewModel.copy(tc = Some(scheme.amount), taxCreditsOrUC = taxCreditsOrUC) else resultViewModel
+          }
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
         case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
       }
