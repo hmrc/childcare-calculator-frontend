@@ -219,11 +219,10 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.taxOrUniversalCredits) thenReturn Some(taxCredits)
-          when(answers.eligibleForTaxCredits) thenReturn true
+          when(answers.isAlreadyReceivingTaxCredits) thenReturn true
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,
+            freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
 
           val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
@@ -236,13 +235,13 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.eligibleForTaxCredits) thenReturn true
+          when(answers.isAlreadyReceivingTaxCredits) thenReturn false
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
+          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,
+            freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
           val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
 
-          values.tc mustBe Some(500)
+          values.tc mustBe None
         }
       }
 

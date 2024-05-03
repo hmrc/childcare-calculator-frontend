@@ -77,10 +77,12 @@
     </p>
 }
 
-@if(model.location != Location.ENGLAND
-        && !model.childrenAgeGroups.contains(NoneOfThese)
-        && !(model.location == Location.WALES
-        && (model.yourEarnings.exists(earnings => Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings))))) {
+@if(
+    model.location != Location.ENGLAND && !model.childrenAgeGroups.contains(NoneOfThese)
+        && !(model.location == Location.WALES && model.yourEarnings.exists(earnings =>
+            Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings)
+        ))
+) {
 
     <h2 class="govuk-heading-l">@messages("freeHoursResult.info.extraHelp.heading")</h2>
     <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para1")</p>

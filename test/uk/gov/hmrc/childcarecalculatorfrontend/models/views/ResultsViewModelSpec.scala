@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{FourYears, Location, ThreeYears, TwoYears}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{freeHoursForEngland, freeHoursForNI, freeHoursForScotland, freeHoursForWales}
 
 class ResultsViewModelSpec extends SpecBase {
 
@@ -77,22 +78,22 @@ class ResultsViewModelSpec extends SpecBase {
   "isEligibleOnlyToMinimumFreeHours" must {
     "return true" when {
       "user is eligible only to 15 Free Hours and no other schems" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(15), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(freeHoursForEngland), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
       }
 
       "user is eligible only to 10 Free Hours and no other schemes" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(10), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(freeHoursForWales), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
       }
 
-      "user is eligible only to 16 Free Hours and no other schemes" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(16), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      "user is eligible only to 22 Free Hours and no other schemes" in {
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(freeHoursForScotland), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
       }
 
       "user is eligible only to 12.5 Free Hours and no other schemes" in {
-        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(12.5), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val resultsView = ResultsViewModel(tc = None, tfc = None, freeHours = Some(freeHoursForNI), esc = None, location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         resultsView.isEligibleOnlyToMinimumFreeHours mustBe true
       }
     }

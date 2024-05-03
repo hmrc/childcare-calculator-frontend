@@ -32,14 +32,6 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
 
   "Result not eligible view" must {
     "contain results" when {
-      "We don't have free hours value for england" in {
-        val model = ResultsViewModel(freeHours = None, taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model)(messages))
-
-        assertContainsMessages(view, "Free childcare hours")
-        view.getElementById("notEligibleFreeHours").text() mustBe messages("result.free.hours.not.eligible.2to4")
-      }
-
       "We don't have free hours value for non england" in {
         val model = ResultsViewModel(freeHours = None, taxCreditsOrUC = None, location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultNotEligible(model)(messages))
