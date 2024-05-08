@@ -1595,3 +1595,15 @@ urBanner.title = Help improve GOV.UK
 urBanner.message = Get involved in making government services better
 urBanner.message.link = https://signup.take-part-in-research.service.gov.uk/?utm_campaign=ChildcareCalcBanner&utm_source=Other&utm_medium=other&t=HMRC&id=143
 urBanner.message.noThanks.link = No thanks
+
+doYouGetBenefits.title = Do you get benefits?
+doYouGetBenefits.heading = Do you get benefits?
+doYouGetBenefits.error.notCompleted = Select yes if you get benefits
+
+doYouOrPartnerGetBenefits.title = Do you or your partner get benefits?
+doYouOrPartnerGetBenefits.heading = Do you or your partner get benefits?
+doYouOrPartnerGetBenefits.you = You
+doYouOrPartnerGetBenefits.partner = Partner
+doYouOrPartnerGetBenefits.both = Both
+doYouOrPartnerGetBenefits.neither = Neither
+doYouOrPartnerGetBenefits.error.notCompleted = Select if you or your partner get benefits
