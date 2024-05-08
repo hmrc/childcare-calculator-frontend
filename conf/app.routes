@@ -380,3 +380,9 @@ POST       /you-get-same-income-previous-year                       uk.gov.hmrc.
 
 GET        /both-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
 POST       /both-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
+
+GET         /you-get-benefits                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetBenefitsController.onPageLoad()
+POST        /you-get-benefits                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetBenefitsController.onSubmit()
+
+GET         /you-or-partner-get-benefits                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onPageLoad()
+POST        /you-or-partner-get-benefits                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onSubmit()

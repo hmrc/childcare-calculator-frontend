@@ -1554,3 +1554,15 @@ global.error.pageNotFound404.message=Gwiriwch eich bod wedi nodi’r cyfeiriad g
 global.error.InternalServerError500.title=Mae’n ddrwg gennym, rydym yn profi anawsterau technegol – 500
 global.error.InternalServerError500.heading=Mae’n ddrwg gennym, rydym yn profi anawsterau technegol
 global.error.InternalServerError500.message=Rhowch gynnig arall arni mewn ychydig o funudau.
+
+doYouGetBenefits.title = A ydych chi’n cael budd-daliadau?
+doYouGetBenefits.heading = A ydych chi’n cael budd-daliadau?
+doYouGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych yn cael budd-daliadau
+
+doYouOrPartnerGetBenefits.title = A ydych chi neu’ch partner yn cael budd-daliadau?
+doYouOrPartnerGetBenefits.heading = A ydych chi neu’ch partner yn cael budd-daliadau?
+doYouOrPartnerGetBenefits.you = Chi
+doYouOrPartnerGetBenefits.partner = Partner
+doYouOrPartnerGetBenefits.both = Y ddau ohonoch
+doYouOrPartnerGetBenefits.neither = Dim un o’r ddau ohonoch
+doYouOrPartnerGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi neu’ch partner yn cael budd-daliadau
