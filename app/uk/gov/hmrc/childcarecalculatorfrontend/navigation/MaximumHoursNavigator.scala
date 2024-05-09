@@ -19,8 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import javax.inject.Inject
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.routes.DoYouGetCarersAllowanceController
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.routes.DoesPartnerGetCarersAllowanceController
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.{routes => benefitsRoutes}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
@@ -191,15 +190,15 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def doYouGetBenefitsRoute(answers: UserAnswers): Call = {
     utils.getCall(answers.doYouGetBenefits) {
-      case true => DoYouGetCarersAllowanceController.onPageLoad()
+      case true => benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad()
       case false => routes.YourAgeController.onPageLoad(NormalMode)
     }
   }
 
   private def doYouOrPartnerGetBenefitsRoute(answers: UserAnswers): Call = {
     utils.getCall(answers.doYouOrPartnerGetBenefits) {
-      case `you` | `both` => DoYouGetCarersAllowanceController.onPageLoad()
-      case `partner` => DoesPartnerGetCarersAllowanceController.onPageLoad()
+      case `you` | `both` => benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad()
+      case `partner` => benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad()
       case `neither` => endOfBenefitsQuestions(answers)
     }
   }
@@ -238,7 +237,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def endOfYourBenefitsQuestions(answers: UserAnswers): Call = {
     answers.doYouOrPartnerGetBenefits match {
-      case Some(`both`) => DoesPartnerGetCarersAllowanceController.onPageLoad()
+      case Some(`both`) => benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad()
       case _ => endOfBenefitsQuestions(answers)
     }
   }

@@ -20,7 +20,7 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.routes.{DoYouGetCarersAllowanceController, DoesPartnerGetCarersAllowanceController}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.{routes => benefitsRoutes}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits._
@@ -1230,7 +1230,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.doYouGetBenefits) thenReturn Some(true)
 
       val result = navigator.nextPage(DoYouGetBenefitsId, NormalMode).value(answers)
-      result mustEqual DoYouGetCarersAllowanceController.onPageLoad
+      result mustEqual benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad
     }
     "redirect to Your Age if the answer is No" in {
       val answers = spy(userAnswers())
@@ -1247,14 +1247,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you) thenReturn Some(both)
 
       val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
-      result mustEqual DoYouGetCarersAllowanceController.onPageLoad
+      result mustEqual benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad
     }
     "redirect to Partner Carers Allowance if the answer is Partner" in {
       val answers = spy(userAnswers())
       when(answers.doYouOrPartnerGetBenefits) thenReturn Some(partner)
 
       val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
-      result mustEqual DoesPartnerGetCarersAllowanceController.onPageLoad
+      result mustEqual benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad
     }
     "redirect to Your Age if the answer is Neither and Parent or Both are working" in {
       val answers = spy(userAnswers())
