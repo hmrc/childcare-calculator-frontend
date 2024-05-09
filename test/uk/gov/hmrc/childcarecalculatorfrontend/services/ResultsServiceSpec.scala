@@ -16,30 +16,26 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, spy, when}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
-import play.api.libs.json._
+import play.api.libs.json.JsValue
 import play.api.mvc.Request
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Scheme, _}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, ChildcareConstants, FirstParagraphBuilder, TCSchemeInEligibilityMsgBuilder, UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils._
 import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
-class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
+class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with BeforeAndAfterEach {
 
   val firstParagraphBuilder: FirstParagraphBuilder = mock[FirstParagraphBuilder]
-  val tcSchemeIneligibilityMsgBuilder: TCSchemeInEligibilityMsgBuilder = mock[TCSchemeInEligibilityMsgBuilder]
-  val answers: UserAnswers = spy(userAnswers())
-  val tfcScheme: Scheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-  val schemeResults: SchemeResults = SchemeResults(List(tfcScheme))
   val eligibilityService: EligibilityService = mock[EligibilityService]
   val freeHours: FreeHours = mock[FreeHours]
   val freeChildcareWorkingParents: FreeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
@@ -48,37 +44,51 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val req: Request[_] = mock[Request[_]]
 
+  override def beforeEach(): Unit = {
+    reset(firstParagraphBuilder, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours, util)
+    super.beforeEach()
+  }
+
+  object TestService extends ResultsService(
+    frontendAppConfig,
+    eligibilityService,
+    freeHours,
+    freeChildcareWorkingParents,
+    maxFreeHours,
+    firstParagraphBuilder,
+    util
+  )
+
+  val tcScheme: Scheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+  val tfcScheme: Scheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
+  val escScheme: Scheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 500, Some(EscClaimantEligibility(true, true)), None)
+  val fullSchemeResults: SchemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
   "Result Service" must {
     "Return View Model with eligible schemes" when {
       "containing if you live with partner" when {
         "you live with partner" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.livesWithPartner mustBe true
         }
 
         "you don't live with partner" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.livesWithPartner mustBe false
         }
@@ -86,31 +96,25 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
       "cotaining childcare costs" when {
         "you have childcare costs" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.hasChildcareCosts mustBe true
         }
 
         "you don't have childcare costs" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.childcareCosts) thenReturn Some(ChildcareConstants.no)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.hasChildcareCosts mustBe false
         }
@@ -118,31 +122,25 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
       "containing if your costs are with an approved provider" when {
         "your costs are with an approved provider" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.hasCostsWithApprovedProvider mustBe true
         }
 
         "your costs are not with an approved provider" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.approvedProvider) thenReturn Some(ChildcareConstants.NO)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.hasCostsWithApprovedProvider mustBe false
         }
@@ -150,197 +148,147 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
       "contaning if you are in paid employment" when {
         "you are in paid work" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.areYouInPaidWork) thenReturn Some(true)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.isAnyoneInPaidEmployment mustBe true
         }
 
         "you are not paid work" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.areYouInPaidWork) thenReturn Some(false)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.isAnyoneInPaidEmployment mustBe false
         }
 
         "you live with your partner and one of you works" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.you)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.isAnyoneInPaidEmployment mustBe true
         }
 
         "none of you work" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.neither)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values: ResultsViewModel = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values: ResultsViewModel = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.isAnyoneInPaidEmployment mustBe false
         }
       }
 
       "It is eligible for TC" when {
-        "We are eligible for TC and dont' have UC" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-          val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-          val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
-          val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
-          val answers = spy(userAnswers())
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.isAlreadyReceivingTaxCredits) thenReturn true
-
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,
-            freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-
-          val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
-
-          values.tc mustBe Some(500)
-        }
-
-        "It is eligible for TC scheme and don't have UC or TC" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+        "We are eligible for TC and already get TC" in {
           val schemeResults = SchemeResults(List(tcScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.isAlreadyReceivingTaxCredits) thenReturn false
+          when(answers.taxOrUniversalCredits) thenReturn Some("tc")
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,
-            freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder, tcSchemeIneligibilityMsgBuilder, util)
-          val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
-          values.tc mustBe None
+          values.tc mustBe Some(500)
         }
       }
 
       "It is eligible for TFC scheme" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-        val schemeResults = SchemeResults(List(tcScheme, tfcScheme))
+        val schemeResults = SchemeResults(List(tfcScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.tfc mustBe Some(500)
       }
 
       "It is eligible for ESC scheme" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
-
-        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+        val schemeResults = SchemeResults(List(escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
-        values.esc mustBe Some(600)
+        values.esc mustBe Some(500)
       }
     }
 
     "Return View Model with not eligible schemes" when {
       "It is not eligible for TC scheme" when {
         "Calculator returns NOT eligible for TC" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 0, None, Some(TaxCreditsEligibility(true, true)))
-          val schemeResults = SchemeResults(List(tcScheme))
+          val schemeResults = SchemeResults(List(tfcScheme, escScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-          val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.tc mustBe None
         }
 
         "Calculator says we are eligible but we have Universal Credits" in {
-          val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-          val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-          val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
           val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
           when(answers.taxOrUniversalCredits) thenReturn Some("uc")
 
-          val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-          val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.tc mustBe None
+        }
+
+        "Calculator says we are eligible but we have no TC or Universal Credits" in {
+          val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.taxOrUniversalCredits) thenReturn Some("none")
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
           values.tc mustBe None
         }
       }
 
       "It is not eligible for TFC scheme" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val schemeResults = SchemeResults(List(tcScheme, tfcScheme))
+        val schemeResults = SchemeResults(List(tcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.tfc mustBe None
       }
 
       "It is not eligible for ESC scheme" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
-
-        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+        val schemeResults = SchemeResults(List(tcScheme, tfcScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.esc mustBe None
       }
@@ -348,10 +296,6 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
 
     "Return View Model with FreeHours" when {
       "User is eligible for 15 free hours, lives in England and not eligible for max free hours" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
-
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
@@ -360,19 +304,13 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                               tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe Some(15)
       }
 
 
       "User is eligible for 22 free hours, lives in Scotland and not eligible for max free hours" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
-
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
@@ -381,19 +319,13 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe Some(22)
       }
 
 
       "User is eligible for 10 free hours, lives in Wales and not eligible for max free hours" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
-
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
@@ -402,19 +334,13 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe Some(10)
       }
 
 
       "User is eligible for 12.5 free hours, lives in NI and not eligible for max free hours" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
-
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
@@ -423,106 +349,337 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase {
         when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe Some(12.5)
       }
 
-
       "User is eligible for max free hours" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
-
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(freeHours.eligibility(any())) thenReturn Eligible
         when(maxFreeHours.eligibility(any())) thenReturn Eligible
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                                  tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe Some(30)
+      }
+
+      "User is eligible for working parent free hours" in {
+        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(freeHours.eligibility(any())) thenReturn Eligible
+        when(maxFreeHours.eligibility(any())) thenReturn NotEligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.freeHours mustBe Some(frontendAppConfig.maxFreeHoursAmount)
       }
     }
 
     "Return View Model with no Freehours" when {
       "User is not eligible for free hours" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 0, Some(EscClaimantEligibility(true, true)), None)
         val answers = spy(userAnswers())
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(freeHours.eligibility(any())) thenReturn NotEligible
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe None
       }
     }
 
     "Return View Model with no TFC warning message" when {
-      "They are eligible for TFC and not TC" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 800, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 0, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
-        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+      "They are eligible for TFC and not TC OR ESC" in {
+        val schemeResults = SchemeResults(List(tfcScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some("uc")
+        when(answers.taxOrUniversalCredits) thenReturn Some("none")
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
-        values.showTFCWarning mustBe false
+        values.tfcWarningMessage mustBe None
       }
     }
 
     "Return View Model with TFC warning message" when {
-      "They are eligible for TFC and have TC" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 0, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
+      "They are eligible for TFC and have TC and ESC" in {
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.taxOrUniversalCredits) thenReturn Some("tc")
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
-        values.showTFCWarning mustBe true
-        values.tfcWarningMessage mustBe messages("result.schemes.tfc.tc.warning")
+        values.tfcWarningMessage mustBe Some(messages("result.tfc.warning.tc.esc"))
+      }
+
+      "They are eligible for TFC and have TC" in {
+        val schemeResults = SchemeResults(List(tcScheme, tfcScheme))
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.tfcWarningMessage mustBe Some(messages("result.tfc.warning.tc"))
+      }
+
+      "They are eligible for TFC and have ESC" in {
+        val schemeResults = SchemeResults(List(tfcScheme, escScheme))
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.taxOrUniversalCredits) thenReturn Some("none")
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.tfcWarningMessage mustBe Some(messages("result.tfc.warning.esc"))
       }
 
       "They are eligible for TFC and have UC" in {
-        val tcScheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 0, None, Some(TaxCreditsEligibility(true, true)))
-        val tfcScheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-        val escScheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 600, Some(EscClaimantEligibility(true, true)), None)
-        val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+        val schemeResults = SchemeResults(List(tfcScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.taxOrUniversalCredits) thenReturn Some("uc")
 
-        val resultService = new ResultsService(frontendAppConfig, eligibilityService, freeHours,freeChildcareWorkingParents, maxFreeHours,firstParagraphBuilder,
-                                              tcSchemeIneligibilityMsgBuilder, util)
-        val values = Await.result(resultService.getResultsViewModel(answers,Location.ENGLAND), Duration.Inf)
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
-        values.showTFCWarning mustBe true
-        values.tfcWarningMessage mustBe messages("result.schemes.tfc.uc.warning")
+        values.tfcWarningMessage mustBe Some(messages("result.tfc.warning.uc"))
+      }
+    }
+
+    "Return View Model with Free Hours and TFC ineligible messages" when {
+      val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+      lazy val msgKeyFreeHours = "result.free.childcare.working.parents.ineligible"
+      lazy val msgKeyTFC = "result.tfc.ineligible"
+
+      "There is no eligible child for free hours but otherwise eligible" in {
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.childrenAgeGroups) thenReturn Some(Set(NoneOfThese))
+        when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+        when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.hasChildEligibleForTfc) thenReturn true
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.freeChildcareWorkingParentsEligibilityMsg mustBe
+          Some(messages(s"$msgKeyFreeHours.noChildrenInAgeRange"))
+        values.taxFreeChildcareEligibilityMsg mustBe
+          None
+      }
+      "There is no childcare costs" in {
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+        when(answers.childcareCosts) thenReturn Some(ChildcareConstants.no)
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.freeChildcareWorkingParentsEligibilityMsg mustBe
+          Some(messages(s"$msgKeyFreeHours.noCosts"))
+        values.taxFreeChildcareEligibilityMsg mustBe
+          Some(messages(s"$msgKeyTFC.noCosts"))
+      }
+      "There is no approved provider" in {
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+        when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+        when(answers.approvedProvider) thenReturn Some(ChildcareConstants.NO)
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.freeChildcareWorkingParentsEligibilityMsg mustBe
+          Some(messages(s"$msgKeyFreeHours.approvedProvider"))
+        values.taxFreeChildcareEligibilityMsg mustBe
+          Some(messages(s"$msgKeyTFC.approvedProvider"))
+      }
+      "There is no partner" when {
+        "Parent is not in paid work" in {
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.location) thenReturn Some(Location.ENGLAND)
+          when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.areYouInPaidWork) thenReturn Some(false)
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.freeChildcareWorkingParentsEligibilityMsg mustBe
+            Some(messages(s"$msgKeyFreeHours.paidEmployment"))
+          values.taxFreeChildcareEligibilityMsg mustBe
+            Some(messages(s"$msgKeyTFC.paidEmployment"))
+        }
+        "Parent is not earning enough" in {
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.location) thenReturn Some(Location.ENGLAND)
+          when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+          when(util.getEarningsForAgeRange(any(), any(), any())) thenReturn 150
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.freeChildcareWorkingParentsEligibilityMsg mustBe
+            Some(messages(s"$msgKeyFreeHours.minimumEarning", 150))
+          values.taxFreeChildcareEligibilityMsg mustBe
+            Some(messages(s"$msgKeyTFC.minimumEarning", 150))
+        }
+        "Parent is earning too much" in {
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.location) thenReturn Some(Location.ENGLAND)
+          when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.areYouInPaidWork) thenReturn Some(true)
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+          when(answers.yourMaximumEarnings) thenReturn Some(true)
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.freeChildcareWorkingParentsEligibilityMsg mustBe
+            Some(messages(s"$msgKeyFreeHours.maximumEarning"))
+          values.taxFreeChildcareEligibilityMsg mustBe
+            Some(messages(s"$msgKeyTFC.maximumEarning"))
+        }
+      }
+      "There is a partner" when {
+        "At least one is not in paid work" in {
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.location) thenReturn Some(Location.ENGLAND)
+          when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.partner)
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.freeChildcareWorkingParentsEligibilityMsg mustBe
+            Some(messages(s"$msgKeyFreeHours.partner.paidEmployment"))
+          values.taxFreeChildcareEligibilityMsg mustBe
+            Some(messages(s"$msgKeyTFC.partner.paidEmployment"))
+        }
+        "At least one is not earning enough, same age" in {
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.location) thenReturn Some(Location.ENGLAND)
+          when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.both)
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+          when(util.getEarningsForAgeRange(any(), any(), any())) thenReturn 150
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.freeChildcareWorkingParentsEligibilityMsg mustBe
+            Some(messages(s"$msgKeyFreeHours.partner.minimumEarning.sameAge", 150))
+          values.taxFreeChildcareEligibilityMsg mustBe
+            Some(messages(s"$msgKeyTFC.partner.minimumEarning.sameAge", 150))
+        }
+        "At least one is not earning enough, different age" in {
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.location) thenReturn Some(Location.ENGLAND)
+          when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.both)
+          when(answers.yourMinimumEarnings) thenReturn Some(false)
+          when(answers.partnerMinimumEarnings) thenReturn Some(true)
+          when(util.getEarningsForAgeRange(any(), any(), any())) thenReturn 150 thenReturn 125 thenReturn 150 thenReturn 125
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.freeChildcareWorkingParentsEligibilityMsg mustBe
+            Some(messages(s"$msgKeyFreeHours.partner.minimumEarning.differentAge", 150, 125))
+          values.taxFreeChildcareEligibilityMsg mustBe
+            Some(messages(s"$msgKeyTFC.partner.minimumEarning.differentAge", 150, 125))
+        }
+        "At least one is earning too much" in {
+          val answers = spy(userAnswers())
+
+          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+          when(answers.location) thenReturn Some(Location.ENGLAND)
+          when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+          when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+          when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(ChildcareConstants.both)
+          when(answers.yourMinimumEarnings) thenReturn Some(true)
+          when(answers.partnerMinimumEarnings) thenReturn Some(true)
+          when(answers.eitherOfYouMaximumEarnings) thenReturn Some(true)
+
+          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+          values.freeChildcareWorkingParentsEligibilityMsg mustBe
+            Some(messages(s"$msgKeyFreeHours.partner.maximumEarning"))
+          values.taxFreeChildcareEligibilityMsg mustBe
+            Some(messages(s"$msgKeyTFC.partner.maximumEarning"))
+        }
+      }
+      "There is no eligible child for TFC" in {
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+        when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+        when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.hasChildEligibleForTfc) thenReturn false
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.freeChildcareWorkingParentsEligibilityMsg mustBe
+          None
+        values.taxFreeChildcareEligibilityMsg mustBe
+          Some(messages(s"$msgKeyTFC.noEligibleChild"))
       }
     }
   }

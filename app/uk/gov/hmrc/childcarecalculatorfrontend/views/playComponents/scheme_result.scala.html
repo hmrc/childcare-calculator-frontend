@@ -39,7 +39,7 @@
 
 @if(schemeResult.couldGet.isDefined){
     @if(schemeResult.eligibility.isEmpty) {
-        <div class="govuk-inset-text">
+        <div class="govuk-inset-text govuk-body">
             @if(schemeResult.childrenAgeGroupText.flatten.size > 1) {
                 <p class="govuk-body">@schemeResult.couldGet:</p>
                 @playComponents.list(
@@ -53,7 +53,7 @@
             }
         </div>
     } else {
-    <p class="govuk-inset-text">@schemeResult.couldGet <strong class="govuk-bold" id="@schemeResult.eligibility.fold("")(_.id)">@schemeResult.eligibility.fold("")(_.value)</strong>
+    <p class="govuk-inset-text govuk-body">@schemeResult.couldGet <strong class="govuk-bold" id="@schemeResult.eligibility.fold("")(_.id)">@schemeResult.eligibility.fold("")(_.value)</strong>
         @schemeResult.periodText</p>
     }
 }
@@ -77,7 +77,7 @@
 }
 
 @if(schemeResult.insetText.isDefined) {
-    <div class="govuk-inset-text" @if(schemeResult.insetTextId.isDefined){id="@schemeResult.insetTextId.get"}>
+    <div class="govuk-inset-text govuk-body" @if(schemeResult.insetTextId.isDefined){id="@schemeResult.insetTextId.get"}>
         @schemeResult.insetText
     </div>
 }

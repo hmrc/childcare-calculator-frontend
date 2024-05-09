@@ -16,10 +16,11 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 @import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @this(
         layout: Layout,
@@ -40,16 +41,12 @@
     }
 }
 
-@getMoreHelpContent = {
-    <h2 class="govuk-heading-l">@messages("results.get.more.help.title")</h2>
-    <div class="twoYearsOld">
-        <h3 class="govuk-heading-m">@messages(s"results.two.years.old.guidance.${model.location}.title")</h3>
-        <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
-            @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
-        </a>
-            @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
-        </p>
-    </div>
+@linkList(bullets: Seq[Tuple2[String, String]]) = {
+    <ul class="govuk-list govuk-list--bullet govuk-body">
+    @for((content, link) <- bullets) {
+        <li><a href="@link" rel="noreferrer noopener" target="_blank" class="govuk-link">@content @messages("feedback.hint.link.opens.new.tab")</a></li>
+    }
+    </ul>
 }
 
 @layout(
@@ -90,14 +87,17 @@
     }
 
     @if(!model.isEligibleForFcwpAndTfc) {
-        <h2 class="resultNotEligibleHeading govuk-visually-hidden">@messages("result.not.eligible.title")</h2>
         <h2 class="govuk-heading-l">@messages("result.not.eligible.subheading")</h2>
         @resultNotEligible(model)
     }
 
-    @if(model.showTwoYearOldInfo && !model.isEligibleToAllSchemes) {@getMoreHelpContent}
+    @if(!model.isEligibleToAllSchemes && (model.showTwoYearOldInfo || model.showNonEnglandFreeHoursLinks)) {
+        <h2 class="govuk-heading-l">@messages("results.get.more.help.title")</h2>
+        @if(model.showNonEnglandFreeHoursLinks) { @nonEnglandFreeHoursLinks }
+        @if(model.showTwoYearOldInfo) { @getMoreHelpContent }
+    }
 
-    <div>
+    <div class="govuk-!-margin-top-9">
         @p() {
             <a class="govuk-link" rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
                 @messages("results.feedback.survey.link.text") <span class="govuk-visually-hidden"> @messages("feedback.hint.link.opens.new.tab")</span></a>
@@ -130,4 +130,39 @@
             None
         }
     ).flatten
+}
+
+@getMoreHelpContent = {
+    <h3 class="govuk-heading-m">@messages(s"results.two.years.old.guidance.${model.location}.title")</h3>
+    <p class="govuk-body">@messages(s"results.two.years.old.guidance.${model.location}.text.before.link") <a class="govuk-link" id="twoYearsOldHelp" target="_blank" rel="external" data-journey-click="link - click:@messages(s"results.two.years.old.guidance.${model.location}.title"):@messages(s"results.two.years.old.guidance.${model.location}.link.text")" href="@messages(s"results.two.years.old.guidance.${model.location}.para1.help.link")">
+        @messages(s"results.two.years.old.guidance.${model.location}.link.text") @messages("site.opens.new.tab")
+    </a>
+        @messages(s"results.two.years.old.guidance.${model.location}.text.after.link")
+    </p>
+}
+
+@nonEnglandFreeHoursLinks = {
+    <h3 class="govuk-heading-m">@messages("freeHoursResult.info.extraHelp.subheading")</h3>
+    <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para2")</p>
+    @{
+        model.location match {
+            case Location.SCOTLAND =>
+                linkList(Seq(
+                    (messages("freeHoursResult.info.extraHelp.scotland.li.1"), scotlandExtraHelpLink1),
+                    (messages("freeHoursResult.info.extraHelp.scotland.li.2"), scotlandExtraHelpLink2)
+                ))
+            case Location.WALES if !model.isAnyoneInPaidEmployment =>
+                linkList(Seq(
+                    (messages(s"freeHoursResult.info.extraHelp.wales.li.1.notWorking"), walesExtraHelpLink1a)
+                ))
+            case Location.WALES =>
+                linkList(Seq(
+                    (messages(s"freeHoursResult.info.extraHelp.wales.li.1.working"), walesExtraHelpLink1b)
+                ))
+            case Location.NORTHERN_IRELAND =>
+                linkList(Seq(
+                    (messages("freeHoursResult.info.extraHelp.northern-ireland.li.1"), northernIrelandExtraHelpLink)
+                ))
+        }
+    }
 }

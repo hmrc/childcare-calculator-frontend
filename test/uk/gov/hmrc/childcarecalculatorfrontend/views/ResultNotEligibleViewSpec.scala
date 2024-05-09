@@ -32,8 +32,8 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
 
   "Result not eligible view" must {
     "contain results" when {
-      "We don't have free hours value for non england" in {
-        val model = ResultsViewModel(freeHours = None, taxCreditsOrUC = None, location = Location.SCOTLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+      "We don't have free hours value" in {
+        val model = ResultsViewModel(freeHours = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultNotEligible(model)(messages))
 
         assertContainsMessages(view, "Free childcare hours")
@@ -41,21 +41,14 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
       }
 
       "We don't have Free Childcare For Working Parents" in {
-        val model = ResultsViewModel(freeHours = None, freeChildcareWorkingParentsEligibilityMsg = Some("not working"), taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(freeHours = None, freeChildcareWorkingParentsEligibilityMsg = Some("not working"), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val view = asDocument(appResultNotEligible(model)(messages))
 
         view.getElementById("notEligibleFreeChildcareWorkingParents").text() mustBe messages("not working")
       }
 
-      "User answered UC to do you get tax credits or universal credits and hideTC is true " in {
-        val model = ResultsViewModel(taxCreditsOrUC = Some("uc"), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val view = asDocument(appResultNotEligible(model)(messages))
-
-        assertNotContainsText(view, "Tax credits")
-      }
-
       "User is not eligible for TFC scheme" in {
-        val model = ResultsViewModel(tfc = None, taxCreditsOrUC = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, taxFreeChildcareEligibilityMsg = Some("not working"))
+        val model = ResultsViewModel(tfc = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, taxFreeChildcareEligibilityMsg = Some("not working"))
         val view = asDocument(appResultNotEligible(model)(messages))
 
         assertContainsMessages(view, "Tax-Free Childcare")

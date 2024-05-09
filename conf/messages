@@ -1335,8 +1335,6 @@ result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet = tax credit
 result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet = Tax-Free Childcare cannot be used with childcare vouchers or tax credits
 result.schemes.tfc.ineligibility.taxCredits.guidance.bullet = Tax-Free Childcare cannot be used with tax credits
 result.schemes.tfc.ineligibility.vouchers.guidance.bullet = Tax-Free Childcare cannot be used with childcare vouchers
-result.schemes.tfc.tc.warning = If you receive Tax Credits and apply for Tax Free Childcare your entitlement will be stopped.
-result.schemes.tfc.uc.warning = Your Universal Credit will stop if you apply for Tax-Free Childcare.
 
 result.changes.to.circumstances.heading = Changes in your income
 result.changes.to.circumstances.para = The estimates for what you could get cover the next 12 months. If your income changes in the next 12 months, you should come back and get another estimate because the amount you could get will also change.
@@ -1351,7 +1349,6 @@ result.you.could.get.up.to = You could get up to
 result.you.can.get = You can get
 
 result.free.hours.title.3to4 = Free childcare hours for your 3 to 4 year old
-result.free.hours.title.2to4 = Free childcare hours for your 2 to 4 year old
 result.free.hours.hours = hours
 result.free.hours.twelve.and.half = 12 and a half hours
 result.free.hours.period =  free childcare a week hours a year
@@ -1390,7 +1387,10 @@ result.free.childcare.working.parents.ineligible.noCosts = You do not have or ex
 result.free.childcare.working.parents.ineligible.approvedProvider = You do not have childcare costs with an approved provider, so you cannot get Free Childcare For Working Parents.
 
 result.tfc.title = Tax-Free Childcare
-result.tfc.para1 = If you successfully apply for Tax-Free Childcare, you cannot get childcare vouchers or tax credits as well.
+result.tfc.warning.tc.esc = If you successfully apply for Tax-Free Childcare, you cannot get childcare vouchers or tax credits as well.
+result.tfc.warning.tc = If you successfully apply for Tax-Free Childcare, you cannot get tax credits as well.
+result.tfc.warning.esc = If you successfully apply for Tax-Free Childcare, you cannot get childcare vouchers as well.
+result.tfc.warning.uc = Your Universal Credit will stop if you apply for Tax-Free Childcare.
 result.tfc.period = a year towards your childcare costs.
 result.tfc.ineligible.partner.paidEmployment = Both you and your partner need to be in paid work to get Tax-Free Childcare.
 result.tfc.ineligible.partner.minimumEarning.sameAge = Both you and your partner need to be in paid work and earn at least £{0} a week to get Tax-Free Childcare.

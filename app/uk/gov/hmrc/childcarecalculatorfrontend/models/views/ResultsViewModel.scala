@@ -29,10 +29,7 @@ case class ResultsViewModel(firstParagraph: List[String] = List.empty,
                             freeChildcareWorkingParents: Boolean = false,
                             location: Location.Value,
                             childrenAgeGroups: Set[ChildAgeGroup] = Set(NoneOfThese),
-                            taxCreditsOrUC: Option[String] = None,
-                            showTFCWarning: Boolean = false,
-                            tfcWarningMessage: String = "",
-                            tcSchemeInEligibilityMsg: String = "",
+                            tfcWarningMessage: Option[String] = None,
                             hasChildcareCosts: Boolean,
                             hasCostsWithApprovedProvider: Boolean,
                             isAnyoneInPaidEmployment: Boolean,
@@ -63,6 +60,11 @@ case class ResultsViewModel(firstParagraph: List[String] = List.empty,
     } else {
       false
     }
+  }
+  def showNonEnglandFreeHoursLinks: Boolean = {
+    location != Location.ENGLAND &&
+      !childrenAgeGroups.contains(NoneOfThese) &&
+      !(location == Location.WALES && yourEarnings.exists(_ != EarningsEnum.BetweenMinimumAndMaximum))
   }
 }
 

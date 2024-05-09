@@ -68,7 +68,7 @@
         couldGet = Some(messages("result.you.could.get")),
         eligibility = Some(EligibilityModel("£" + model.tfc.fold("")(value => utils.valueFormatter(value)), "taxFreeChildcareEligibility")),
         periodText = Some(messages("result.tfc.period")),
-        warningMessage = if(model.tc.isDefined || model.esc.isDefined) Some(messages("result.tfc.para1")) else None,
+        warningMessage = model.tfcWarningMessage,
         displayApplyForTFCLink = true,
         location = location
     ))
