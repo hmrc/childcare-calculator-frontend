@@ -1607,3 +1607,11 @@ doYouOrPartnerGetBenefits.partner = Partner
 doYouOrPartnerGetBenefits.both = Both
 doYouOrPartnerGetBenefits.neither = Neither
 doYouOrPartnerGetBenefits.error.notCompleted = Select if you or your partner get benefits
+
+doYouGetCarersAllowance.title = Do you get Carer's Allowance or Carer's Support Payment?
+doYouGetCarersAllowance.heading = Do you get Carer's Allowance or Carer's Support Payment?
+doYouGetCarersAllowance.error.notCompleted = Select yes if you get Carer's Allowance or Carer's Support Payment
+
+doesPartnerGetCarersAllowance.title = Does your partner get Carer's Allowance or Carer's Support Payment?
+doesPartnerGetCarersAllowance.heading = Does your partner get Carer's Allowance or Carer's Support Payment?
+doesPartnerGetCarersAllowance.error.notCompleted = Select yes if your partner gets Carer's Allowance or Carer's Support Payment

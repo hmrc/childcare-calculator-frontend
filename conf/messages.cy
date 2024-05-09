@@ -1566,3 +1566,12 @@ doYouOrPartnerGetBenefits.partner = Partner
 doYouOrPartnerGetBenefits.both = Y ddau ohonoch
 doYouOrPartnerGetBenefits.neither = Dim un o’r ddau ohonoch
 doYouOrPartnerGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi neu’ch partner yn cael budd-daliadau
+
+
+doYouGetCarersAllowance.title = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doYouGetCarersAllowance.heading = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doYouGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
+
+doesPartnerGetCarersAllowance.title = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doesPartnerGetCarersAllowance.heading = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doesPartnerGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
