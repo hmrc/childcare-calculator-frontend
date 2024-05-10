@@ -1575,3 +1575,11 @@ doYouGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’
 doesPartnerGetCarersAllowance.title = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doesPartnerGetCarersAllowance.heading = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doesPartnerGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
+
+doYouGetSevereDisabilityPremium.title = A ydych chi’n cael Premiwm Anabledd Difrifol?
+doYouGetSevereDisabilityPremium.heading = A ydych chi’n cael Premiwm Anabledd Difrifol?
+doYouGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Premiwm Anabledd Difrifol
+
+doesPartnerGetSevereDisabilityPremium.title = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
+doesPartnerGetSevereDisabilityPremium.heading = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
+doesPartnerGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Premiwm Anabledd Difrifol

@@ -1615,3 +1615,11 @@ doYouGetCarersAllowance.error.notCompleted = Select yes if you get Carer's Allow
 doesPartnerGetCarersAllowance.title = Does your partner get Carer's Allowance or Carer's Support Payment?
 doesPartnerGetCarersAllowance.heading = Does your partner get Carer's Allowance or Carer's Support Payment?
 doesPartnerGetCarersAllowance.error.notCompleted = Select yes if your partner gets Carer's Allowance or Carer's Support Payment
+
+doYouGetSevereDisabilityPremium.title = Do you get Severe Disability Premium?
+doYouGetSevereDisabilityPremium.heading = Do you get Severe Disability Premium?
+doYouGetSevereDisabilityPremium.error.notCompleted = Select yes if you get Severe Disability Premium
+
+doesPartnerGetSevereDisabilityPremium.title = Does your partner get Severe Disability Premium?
+doesPartnerGetSevereDisabilityPremium.heading = Does your partner get Severe Disability Premium?
+doesPartnerGetSevereDisabilityPremium.error.notCompleted = Select yes if your partner gets Severe Disability Premium
