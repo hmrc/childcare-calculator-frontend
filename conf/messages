@@ -1625,3 +1625,12 @@ doesPartnerGetIncomeBasedBenefits.title = Does your partner get Income Based Ben
 doesPartnerGetIncomeBasedBenefits.heading = Does your partner get Income Based Benefits?
 doesPartnerGetIncomeBasedBenefits.hint = This includes Income Support, Income Based Jobseekers Allowance (JSA) and Pension Credit.
 doesPartnerGetIncomeBasedBenefits.error.notCompleted = Select yes if your partner gets Income Based Benefits
+
+doYouGetSevereDisabilityPremium.title = Do you get Severe Disability Premium?
+doYouGetSevereDisabilityPremium.heading = Do you get Severe Disability Premium?
+doYouGetSevereDisabilityPremium.error.notCompleted = Select yes if you get Severe Disability Premium
+
+doesPartnerGetSevereDisabilityPremium.title = Does your partner get Severe Disability Premium?
+doesPartnerGetSevereDisabilityPremium.heading = Does your partner get Severe Disability Premium?
+doesPartnerGetSevereDisabilityPremium.error.notCompleted = Select yes if your partner gets Severe Disability Premium
+

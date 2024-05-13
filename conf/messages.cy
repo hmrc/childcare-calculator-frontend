@@ -1584,3 +1584,12 @@ doesPartnerGetIncomeBasedBenefits.title = A yw’ch partner yn cael Budd-daliada
 doesPartnerGetIncomeBasedBenefits.heading = A yw’ch partner yn cael Budd-daliadau ar Sail Incwm?
 doesPartnerGetIncomeBasedBenefits.hint = Mae hyn yn cynnwys Cymhorthdal Incwm, Lwfans Ceisio Gwaith ar sail Incwm (JSA) a Chredyd Pensiwn.
 doesPartnerGetIncomeBasedBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-dal ar Sail Incwm
+
+doYouGetSevereDisabilityPremium.title = A ydych chi’n cael Premiwm Anabledd Difrifol?
+doYouGetSevereDisabilityPremium.heading = A ydych chi’n cael Premiwm Anabledd Difrifol?
+doYouGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Premiwm Anabledd Difrifol
+
+doesPartnerGetSevereDisabilityPremium.title = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
+doesPartnerGetSevereDisabilityPremium.heading = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
+doesPartnerGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Premiwm Anabledd Difrifol
+

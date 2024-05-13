@@ -398,3 +398,14 @@ POST        /you-get-income-based-benefits                     uk.gov.hmrc.child
 
 GET         /does-partner-get-income-based-benefits            uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetIncomeBasedBenefitsController.onPageLoad()
 POST        /does-partner-get-income-based-benefits            uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetIncomeBasedBenefitsController.onSubmit()
+
+GET         /does-partner-get-carers-allowance                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetCarersAllowanceController.onPageLoad()
+POST        /does-partner-get-carers-allowance                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetCarersAllowanceController.onSubmit()
+
+GET         /you-get-severe-disability-premium                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetSevereDisabilityPremiumController.onPageLoad()
+POST        /you-get-severe-disability-premium                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetSevereDisabilityPremiumController.onSubmit()
+
+GET         /does-partner-get-severe-disability-premium         uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetSevereDisabilityPremiumController.onPageLoad()
+POST        /does-partner-get-severe-disability-premium         uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetSevereDisabilityPremiumController.onSubmit()
+
+
