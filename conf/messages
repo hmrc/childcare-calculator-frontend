@@ -1615,3 +1615,13 @@ doYouGetCarersAllowance.error.notCompleted = Select yes if you get Carer's Allow
 doesPartnerGetCarersAllowance.title = Does your partner get Carer's Allowance or Carer's Support Payment?
 doesPartnerGetCarersAllowance.heading = Does your partner get Carer's Allowance or Carer's Support Payment?
 doesPartnerGetCarersAllowance.error.notCompleted = Select yes if your partner gets Carer's Allowance or Carer's Support Payment
+
+doYouGetIncomeBasedBenefits.title = Do you get Income Based Benefits?
+doYouGetIncomeBasedBenefits.heading = Do you get Income Based Benefits?
+doYouGetIncomeBasedBenefits.hint = This includes Income Support, Income Based Jobseekers Allowance (JSA) and Pension Credit.
+doYouGetIncomeBasedBenefits.error.notCompleted = Select yes if you get Income Based Benefits
+
+doesPartnerGetIncomeBasedBenefits.title = Does your partner get Income Based Benefits?
+doesPartnerGetIncomeBasedBenefits.heading = Does your partner get Income Based Benefits?
+doesPartnerGetIncomeBasedBenefits.hint = This includes Income Support, Income Based Jobseekers Allowance (JSA) and Pension Credit.
+doesPartnerGetIncomeBasedBenefits.error.notCompleted = Select yes if your partner gets Income Based Benefits
