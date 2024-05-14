@@ -1567,7 +1567,6 @@ doYouOrPartnerGetBenefits.both = Y ddau ohonoch
 doYouOrPartnerGetBenefits.neither = Dim un o’r ddau ohonoch
 doYouOrPartnerGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi neu’ch partner yn cael budd-daliadau
 
-
 doYouGetCarersAllowance.title = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doYouGetCarersAllowance.heading = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doYouGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
@@ -1576,6 +1575,16 @@ doesPartnerGetCarersAllowance.title = A yw’ch partner yn cael Lwfans Gofalwr n
 doesPartnerGetCarersAllowance.heading = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doesPartnerGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
 
+doYouGetIncomeBasedBenefits.title = A ydych chi’n cael Budd-daliadau ar Sail Incwm?
+doYouGetIncomeBasedBenefits.heading = A ydych chi’n cael Budd-daliadau ar Sail Incwm?
+doYouGetIncomeBasedBenefits.hint = Mae hyn yn cynnwys Cymhorthdal Incwm, Lwfans Ceisio Gwaith ar Sail Incwm (JSA) a Chredyd Pensiwn.
+doYouGetIncomeBasedBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau ar Sail Incwm
+
+doesPartnerGetIncomeBasedBenefits.title = A yw’ch partner yn cael Budd-daliadau ar Sail Incwm?
+doesPartnerGetIncomeBasedBenefits.heading = A yw’ch partner yn cael Budd-daliadau ar Sail Incwm?
+doesPartnerGetIncomeBasedBenefits.hint = Mae hyn yn cynnwys Cymhorthdal Incwm, Lwfans Ceisio Gwaith ar sail Incwm (JSA) a Chredyd Pensiwn.
+doesPartnerGetIncomeBasedBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-dal ar Sail Incwm
+
 doYouGetSevereDisabilityPremium.title = A ydych chi’n cael Premiwm Anabledd Difrifol?
 doYouGetSevereDisabilityPremium.heading = A ydych chi’n cael Premiwm Anabledd Difrifol?
 doYouGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Premiwm Anabledd Difrifol
@@ -1583,3 +1592,4 @@ doYouGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os ydyc
 doesPartnerGetSevereDisabilityPremium.title = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
 doesPartnerGetSevereDisabilityPremium.heading = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
 doesPartnerGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Premiwm Anabledd Difrifol
+

@@ -205,7 +205,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def doYouGetCarersAllowanceRoute(answers: UserAnswers): Call = {
     utils.getCall(answers.doYouGetCarersAllowance) {
-      case _ => ??? //Income based benefits
+      case _ => benefitsRoutes.DoYouGetIncomeBasedBenefitsController.onPageLoad()
     }
   }
 
@@ -244,7 +244,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def doesPartnerGetCarersAllowanceRoute(answers: UserAnswers): Call = {
     utils.getCall(answers.doesPartnerGetCarersAllowance) {
-      _ => ??? //Partner income based benefits
+      _ => benefitsRoutes.DoesPartnerGetIncomeBasedBenefitsController.onPageLoad()
     }
   }
 
