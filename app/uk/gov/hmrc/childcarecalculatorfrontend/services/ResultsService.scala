@@ -183,10 +183,8 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     lazy val msgKey = "result.tfc.ineligible"
 
     answers match {
-      case _ if answers.childcareCosts.contains(no) =>
-        Some(messages(s"$msgKey.noCosts"))
-      case _ if answers.approvedProvider.contains(NO) =>
-        Some(messages(s"$msgKey.approvedProvider"))
+      case _ if answers.childcareCosts.contains(no) || answers.approvedProvider.contains(NO) =>
+        Some(messages(s"$msgKey.noCostsWithApprovedProvider"))
       case _ if hasPartner && !bothInPaidWork =>
         Some(messages(s"$msgKey.partner.paidEmployment"))
       case _ if hasPartner && !bothEligibleMinEarnings =>
@@ -224,10 +222,6 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       case _ if !inEngland => None
       case _ if !hasEligibileChildren =>
         Some(messages(s"$msgKey.noChildrenInAgeRange"))
-      case _ if answers.childcareCosts.contains(no) =>
-        Some(messages(s"$msgKey.noCosts"))
-      case _ if answers.approvedProvider.contains(NO) =>
-        Some(messages(s"$msgKey.approvedProvider"))
       case _ if hasPartner && !bothInPaidWork =>
         Some(messages(s"$msgKey.partner.paidEmployment"))
       case _ if hasPartner && !bothEligibleMinEarnings =>

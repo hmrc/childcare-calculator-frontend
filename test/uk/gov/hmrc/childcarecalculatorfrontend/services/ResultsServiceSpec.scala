@@ -465,6 +465,27 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
       lazy val msgKeyFreeHours = "result.free.childcare.working.parents.ineligible"
       lazy val msgKeyTFC = "result.tfc.ineligible"
 
+      "The user is eligible but not in england" in {
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.location) thenReturn Some(Location.SCOTLAND)
+        when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
+        when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+        when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.hasChildEligibleForTfc) thenReturn true
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.freeChildcareWorkingParentsEligibilityMsg mustBe
+          None
+        values.taxFreeChildcareEligibilityMsg mustBe
+          None
+      }
       "There is no eligible child for free hours but otherwise eligible" in {
         val answers = spy(userAnswers())
 
@@ -493,13 +514,18 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
         when(answers.childcareCosts) thenReturn Some(ChildcareConstants.no)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.hasChildEligibleForTfc) thenReturn false
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeChildcareWorkingParentsEligibilityMsg mustBe
-          Some(messages(s"$msgKeyFreeHours.noCosts"))
+          None
         values.taxFreeChildcareEligibilityMsg mustBe
-          Some(messages(s"$msgKeyTFC.noCosts"))
+          Some(messages(s"$msgKeyTFC.noCostsWithApprovedProvider"))
       }
       "There is no approved provider" in {
         val answers = spy(userAnswers())
@@ -509,13 +535,18 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
         when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
         when(answers.approvedProvider) thenReturn Some(ChildcareConstants.NO)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn Some(true)
+        when(answers.yourMinimumEarnings) thenReturn Some(true)
+        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.hasChildEligibleForTfc) thenReturn false
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeChildcareWorkingParentsEligibilityMsg mustBe
-          Some(messages(s"$msgKeyFreeHours.approvedProvider"))
+          None
         values.taxFreeChildcareEligibilityMsg mustBe
-          Some(messages(s"$msgKeyTFC.approvedProvider"))
+          Some(messages(s"$msgKeyTFC.noCostsWithApprovedProvider"))
       }
       "There is no partner" when {
         "Parent is not in paid work" in {
