@@ -399,3 +399,9 @@ POST        /you-get-severe-disability-premium                  uk.gov.hmrc.chil
 GET         /does-partner-get-severe-disability-premium         uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetSevereDisabilityPremiumController.onPageLoad()
 POST        /does-partner-get-severe-disability-premium         uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetSevereDisabilityPremiumController.onSubmit()
 
+GET         /you-get-higher-rate-disability-benefits            uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetHigherRateDisabilityBenefitsController.onPageLoad()
+POST        /you-get-higher-rate-disability-benefits            uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetHigherRateDisabilityBenefitsController.onSubmit()
+
+GET         /does-partner-get-higher-rate-disability-benefits   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetHigherRateDisabilityBenefitsController.onPageLoad()
+POST        /does-partner-get-higher-rate-disability-benefits   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetHigherRateDisabilityBenefitsController.onSubmit()
+

@@ -1583,3 +1583,13 @@ doYouGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os ydyc
 doesPartnerGetSevereDisabilityPremium.title = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
 doesPartnerGetSevereDisabilityPremium.heading = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
 doesPartnerGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Premiwm Anabledd Difrifol
+
+doYouGetHigherRateDisabilityBenefits.title = A ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doYouGetHigherRateDisabilityBenefits.heading = A ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doYouGetHigherRateDisabilityBenefits.hint = Mae hyn yn cynnwys Taliadau Ychwanegol, Taliadau ar Gyfradd Uwch a Thaliad Annibyniaeth y Lluoedd Arfog (AFIP).
+doYouGetHigherRateDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch
+
+doesPartnerGetHigherRateDisabilityBenefits.title = A yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doesPartnerGetHigherRateDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doesPartnerGetHigherRateDisabilityBenefits.hint = Mae hyn yn cynnwys Taliadau Ychwanegol, Taliadau ar Gyfradd Uwch a Thaliad Annibyniaeth y Lluoedd Arfog (AFIP).
+doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch

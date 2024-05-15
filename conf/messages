@@ -1623,3 +1623,13 @@ doYouGetSevereDisabilityPremium.error.notCompleted = Select yes if you get Sever
 doesPartnerGetSevereDisabilityPremium.title = Does your partner get Severe Disability Premium?
 doesPartnerGetSevereDisabilityPremium.heading = Does your partner get Severe Disability Premium?
 doesPartnerGetSevereDisabilityPremium.error.notCompleted = Select yes if your partner gets Severe Disability Premium
+
+doYouGetHigherRateDisabilityBenefits.title = Do you get Higher Rate Disability Benefits?
+doYouGetHigherRateDisabilityBenefits.heading = Do you get Higher Rate Disability Benefits?
+doYouGetHigherRateDisabilityBenefits.hint = This includes Enhanced Payments, Higher Rate Payments and Armed Forces Independence Payment (AFIP).
+doYouGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if you get Higher Rate Disability Benefits
+
+doesPartnerGetHigherRateDisabilityBenefits.title = Does your partner get Higher Rate Disability Benefits?
+doesPartnerGetHigherRateDisabilityBenefits.heading = Does your partner get Higher Rate Disability Benefits?
+doesPartnerGetHigherRateDisabilityBenefits.hint = This includes Enhanced Payments, Higher Rate Payments and Armed Forces Independence Payment (AFIP).
+doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if your partner gets Higher Rate Disability Benefits
