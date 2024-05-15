@@ -1567,6 +1567,7 @@ doYouOrPartnerGetBenefits.both = Y ddau ohonoch
 doYouOrPartnerGetBenefits.neither = Dim un o’r ddau ohonoch
 doYouOrPartnerGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi neu’ch partner yn cael budd-daliadau
 
+
 doYouGetCarersAllowance.title = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doYouGetCarersAllowance.heading = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doYouGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
@@ -1593,3 +1594,12 @@ doesPartnerGetSevereDisabilityPremium.title = A yw’ch partner yn cael Premiwm 
 doesPartnerGetSevereDisabilityPremium.heading = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
 doesPartnerGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Premiwm Anabledd Difrifol
 
+doYouGetDisabilityBenefits.title = A ydych chi’n cael Budd-daliadau Anabledd?
+doYouGetDisabilityBenefits.heading = A ydych chi’n cael Budd-daliadau Anabledd?
+doYouGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
+doYouGetDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau Anabledd
+
+doesPartnerGetDisabilityBenefits.title = A yw’ch partner yn cael Budd-daliadau Anabledd?
+doesPartnerGetDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd?
+doesPartnerGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
+doesPartnerGetDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd

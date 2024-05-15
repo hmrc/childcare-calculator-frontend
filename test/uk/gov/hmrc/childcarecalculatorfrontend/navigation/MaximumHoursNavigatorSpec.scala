@@ -1300,8 +1300,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouGetIncomeBasedBenefits) thenReturn Some(false)
 
-      //val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
-      //TODO
+      val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoYouGetDisabilityBenefitsController.onPageLoad
     }
   }
 
@@ -1409,8 +1409,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doesPartnerGetIncomeBasedBenefits) thenReturn Some(false)
 
-      //val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
-      //TODO
+      val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoesPartnerGetDisabilityBenefitsController.onPageLoad
     }
   }
 

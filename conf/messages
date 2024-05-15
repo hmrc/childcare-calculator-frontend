@@ -1634,3 +1634,12 @@ doesPartnerGetSevereDisabilityPremium.title = Does your partner get Severe Disab
 doesPartnerGetSevereDisabilityPremium.heading = Does your partner get Severe Disability Premium?
 doesPartnerGetSevereDisabilityPremium.error.notCompleted = Select yes if your partner gets Severe Disability Premium
 
+doYouGetDisabilityBenefits.title = Do you get Disability Benefits?
+doYouGetDisabilityBenefits.heading = Do you get Disability Benefits?
+doYouGetDisabilityBenefits.hint = This includes Disability Living Allowance (DLA), Disability Payment, Attendance Allowance and Personal Independence Payment (PIP).
+doYouGetDisabilityBenefits.error.notCompleted = Select yes if you get Disability Benefits
+
+doesPartnerGetDisabilityBenefits.title = Does your partner get Disability Benefits?
+doesPartnerGetDisabilityBenefits.heading = Does your partner get Disability Benefits?
+doesPartnerGetDisabilityBenefits.hint = This includes Disability Living Allowance (DLA), Disability Payment, Attendance Allowance and Personal Independence Payment (PIP).
+doesPartnerGetDisabilityBenefits.error.notCompleted = Select yes if your partner gets Disability Benefits
