@@ -1293,8 +1293,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouGetIncomeBasedBenefits) thenReturn Some(true)
 
-      //val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
-      //TODO
+      val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoYouGetSevereDisabilityPremiumController.onPageLoad
     }
     "redirect to Disability Benefits if the answer is false" in {
       val answers = spy(userAnswers())
@@ -1306,13 +1306,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
   "doYouGetSevereDisabilityPremiumRoute" must {
-    "redirect to Income Based Benefits if the answer is true or false" in {
+    "redirect to Disability Benefits if the answer is true or false" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetSevereDisabilityPremium) thenReturn Some(true) thenReturn Some(false)
 
-      //val result1 = navigator.nextPage(DoYouGetSevereDisabilityPremiumId, NormalMode).value(answers)
-      //val result2 = navigator.nextPage(DoYouGetSevereDisabilityPremiumId, NormalMode).value(answers)
-      //TODO
+      val result1 = navigator.nextPage(DoYouGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoYouGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      result1 mustEqual benefitsRoutes.DoYouGetDisabilityBenefitsController.onPageLoad
+      result2 mustEqual benefitsRoutes.DoYouGetDisabilityBenefitsController.onPageLoad
     }
   }
 
@@ -1325,13 +1326,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       result mustBe benefitsRoutes.DoYouGetHigherRateDisabilityBenefitsController
         .onPageLoad()
     }
-    "redirect to Partner Carer Allowance if the answer is false and both get benefits" in {
+    "redirect to Higher Rate Disability Benefits if the answer is false and both get benefits" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetDisabilityBenefits) thenReturn Some(true)
       when(answers.doYouOrPartnerGetBenefits) thenReturn Some(both)
 
-      //val result = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
-      //TODO
+      val result = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe benefitsRoutes.DoYouGetHigherRateDisabilityBenefitsController
+        .onPageLoad()
     }
     "redirect to Your Partners Age if the answer is false, both dont get benefits and partner is working" in {
       val answers = spy(userAnswers())
@@ -1403,8 +1405,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doesPartnerGetIncomeBasedBenefits) thenReturn Some(true)
 
-      //val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
-      //TODO
+      val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustBe benefitsRoutes.DoesPartnerGetSevereDisabilityPremiumController.onPageLoad()
     }
     "redirect to Partner Disability Benefits if the answer is false" in {
       val answers = spy(userAnswers())
@@ -1416,13 +1418,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
   "doesPartnerGetSevereDisabilityPremiumRoute" must {
-    "redirect to Partner Income Based Benefits if the answer is true or false" in {
+    "redirect to Partner Disability Benefits if the answer is true or false" in {
       val answers = spy(userAnswers())
       when(answers.doesPartnerGetSevereDisabilityPremium) thenReturn Some(true) thenReturn Some(false)
 
-      //val result1 = navigator.nextPage(DoesPartnerGetSevereDisabilityPremiumId, NormalMode).value(answers)
-      //val result2 = navigator.nextPage(DoesPartnerGetSevereDisabilityPremiumId, NormalMode).value(answers)
-      //TODO
+      val result1 = navigator.nextPage(DoesPartnerGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoesPartnerGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      result1 mustEqual benefitsRoutes.DoesPartnerGetDisabilityBenefitsController.onPageLoad
+      result2 mustEqual benefitsRoutes.DoesPartnerGetDisabilityBenefitsController.onPageLoad
     }
   }
 
