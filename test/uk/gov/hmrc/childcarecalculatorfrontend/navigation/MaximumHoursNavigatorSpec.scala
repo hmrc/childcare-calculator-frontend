@@ -1279,11 +1279,12 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   "doYouGetCarersAllowanceRoute" must {
     "redirect to Income Based Benefits if the answer is true or false" in {
       val answers = spy(userAnswers())
-      when(answers.doYouGetIncomeBasedBenefits) thenReturn Some(true) thenReturn Some(false)
+      when(answers.doYouGetCarersAllowance) thenReturn Some(true) thenReturn Some(false)
 
-      //val result1 = navigator.nextPage(DoYouGetCarersAllowanceId, NormalMode).value(answers)
-      //val result2 = navigator.nextPage(DoYouGetCarersAllowanceId, NormalMode).value(answers)
-      //TODO
+      val result1 = navigator.nextPage(DoYouGetCarersAllowanceId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoYouGetCarersAllowanceId, NormalMode).value(answers)
+      result1 mustBe benefitsRoutes.DoYouGetIncomeBasedBenefitsController.onPageLoad()
+      result2 mustBe benefitsRoutes.DoYouGetIncomeBasedBenefitsController.onPageLoad()
     }
   }
 
@@ -1299,8 +1300,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouGetIncomeBasedBenefits) thenReturn Some(false)
 
-      //val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
-      //TODO
+      val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoYouGetDisabilityBenefitsController.onPageLoad
     }
   }
 
@@ -1388,11 +1389,12 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   "doesPartnerGetCarersAllowanceRoute" must {
     "redirect to Partner Income Based Benefits if the answer is true or false" in {
       val answers = spy(userAnswers())
-      when(answers.doesPartnerGetIncomeBasedBenefits) thenReturn Some(true) thenReturn Some(false)
+      when(answers.doesPartnerGetCarersAllowance) thenReturn Some(true) thenReturn Some(false)
 
-      //val result1 = navigator.nextPage(DoesPartnerGetCarersAllowanceId, NormalMode).value(answers)
-      //val result2 = navigator.nextPage(DoesPartnerGetCarersAllowanceId, NormalMode).value(answers)
-      //TODO
+      val result1 = navigator.nextPage(DoesPartnerGetCarersAllowanceId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoesPartnerGetCarersAllowanceId, NormalMode).value(answers)
+      result1 mustBe benefitsRoutes.DoesPartnerGetIncomeBasedBenefitsController.onPageLoad()
+      result2 mustBe benefitsRoutes.DoesPartnerGetIncomeBasedBenefitsController.onPageLoad()
     }
   }
 
@@ -1408,8 +1410,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doesPartnerGetIncomeBasedBenefits) thenReturn Some(false)
 
-      //val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
-      //TODO
+      val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoesPartnerGetDisabilityBenefitsController.onPageLoad
     }
   }
 

@@ -375,23 +375,29 @@ POST        /survey/do-not-understand                          uk.gov.hmrc.child
 
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
 
-GET        /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
-POST       /you-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
+GET        /you-get-same-income-previous-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
+POST       /you-get-same-income-previous-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
 
-GET        /both-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
-POST       /both-get-same-income-previous-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
+GET        /both-get-same-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
+POST       /both-get-same-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /you-get-benefits                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetBenefitsController.onPageLoad()
-POST        /you-get-benefits                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetBenefitsController.onSubmit()
+GET         /you-get-benefits                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetBenefitsController.onPageLoad()
+POST        /you-get-benefits                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetBenefitsController.onSubmit()
 
-GET         /you-or-partner-get-benefits                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onPageLoad()
-POST        /you-or-partner-get-benefits                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onSubmit()
+GET         /you-or-partner-get-benefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onPageLoad()
+POST        /you-or-partner-get-benefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onSubmit()
 
-GET         /you-get-carers-allowance                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetCarersAllowanceController.onPageLoad()
-POST        /you-get-carers-allowance                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetCarersAllowanceController.onSubmit()
+GET         /you-get-carers-allowance                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetCarersAllowanceController.onPageLoad()
+POST        /you-get-carers-allowance                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetCarersAllowanceController.onSubmit()
 
-GET         /does-partner-get-carers-allowance                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetCarersAllowanceController.onPageLoad()
-POST        /does-partner-get-carers-allowance                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetCarersAllowanceController.onSubmit()
+GET         /does-partner-get-carers-allowance                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetCarersAllowanceController.onPageLoad()
+POST        /does-partner-get-carers-allowance                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetCarersAllowanceController.onSubmit()
+
+GET         /you-get-income-based-benefits                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetIncomeBasedBenefitsController.onPageLoad()
+POST        /you-get-income-based-benefits                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetIncomeBasedBenefitsController.onSubmit()
+
+GET         /does-partner-get-income-based-benefits            uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetIncomeBasedBenefitsController.onPageLoad()
+POST        /does-partner-get-income-based-benefits            uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetIncomeBasedBenefitsController.onSubmit()
 
 GET         /you-get-severe-disability-premium                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetSevereDisabilityPremiumController.onPageLoad()
 POST        /you-get-severe-disability-premium                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetSevereDisabilityPremiumController.onSubmit()
@@ -404,4 +410,10 @@ POST        /you-get-higher-rate-disability-benefits            uk.gov.hmrc.chil
 
 GET         /does-partner-get-higher-rate-disability-benefits   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetHigherRateDisabilityBenefitsController.onPageLoad()
 POST        /does-partner-get-higher-rate-disability-benefits   uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetHigherRateDisabilityBenefitsController.onSubmit()
+
+GET         /you-get-disability-benefits                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetDisabilityBenefitsController.onPageLoad()
+POST        /you-get-disability-benefits                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetDisabilityBenefitsController.onSubmit()
+
+GET         /does-partner-get-disability-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetDisabilityBenefitsController.onPageLoad()
+POST        /does-partner-get-disability-benefits               uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoesPartnerGetDisabilityBenefitsController.onSubmit()
 

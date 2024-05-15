@@ -1576,6 +1576,16 @@ doesPartnerGetCarersAllowance.title = A yw’ch partner yn cael Lwfans Gofalwr n
 doesPartnerGetCarersAllowance.heading = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doesPartnerGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
 
+doYouGetIncomeBasedBenefits.title = A ydych chi’n cael Budd-daliadau ar Sail Incwm?
+doYouGetIncomeBasedBenefits.heading = A ydych chi’n cael Budd-daliadau ar Sail Incwm?
+doYouGetIncomeBasedBenefits.hint = Mae hyn yn cynnwys Cymhorthdal Incwm, Lwfans Ceisio Gwaith ar Sail Incwm (JSA) a Chredyd Pensiwn.
+doYouGetIncomeBasedBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau ar Sail Incwm
+
+doesPartnerGetIncomeBasedBenefits.title = A yw’ch partner yn cael Budd-daliadau ar Sail Incwm?
+doesPartnerGetIncomeBasedBenefits.heading = A yw’ch partner yn cael Budd-daliadau ar Sail Incwm?
+doesPartnerGetIncomeBasedBenefits.hint = Mae hyn yn cynnwys Cymhorthdal Incwm, Lwfans Ceisio Gwaith ar sail Incwm (JSA) a Chredyd Pensiwn.
+doesPartnerGetIncomeBasedBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-dal ar Sail Incwm
+
 doYouGetSevereDisabilityPremium.title = A ydych chi’n cael Premiwm Anabledd Difrifol?
 doYouGetSevereDisabilityPremium.heading = A ydych chi’n cael Premiwm Anabledd Difrifol?
 doYouGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Premiwm Anabledd Difrifol
@@ -1593,3 +1603,14 @@ doesPartnerGetHigherRateDisabilityBenefits.title = A yw’ch partner yn cael Bud
 doesPartnerGetHigherRateDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch?
 doesPartnerGetHigherRateDisabilityBenefits.hint = Mae hyn yn cynnwys Taliadau Ychwanegol, Taliadau ar Gyfradd Uwch a Thaliad Annibyniaeth y Lluoedd Arfog (AFIP).
 doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch
+
+doYouGetDisabilityBenefits.title = A ydych chi’n cael Budd-daliadau Anabledd?
+doYouGetDisabilityBenefits.heading = A ydych chi’n cael Budd-daliadau Anabledd?
+doYouGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
+doYouGetDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau Anabledd
+
+doesPartnerGetDisabilityBenefits.title = A yw’ch partner yn cael Budd-daliadau Anabledd?
+doesPartnerGetDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd?
+doesPartnerGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
+doesPartnerGetDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd
+
