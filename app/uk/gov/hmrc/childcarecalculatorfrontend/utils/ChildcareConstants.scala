@@ -263,6 +263,9 @@ object ChildcareConstants {
   val doYouGetSevereDisabilityPremiumErrorKey = "doYouGetSevereDisabilityPremium.error.notCompleted"
   val doesPartnerGetSevereDisabilityPremiumErrorKey = "doesPartnerGetSevereDisabilityPremium.error.notCompleted"
 
+  val doYouGetHigherRateDisabilityBenefitsErrorKey = "doYouGetHigherRateDisabilityBenefits.error.notCompleted"
+  val doesPartnerGetHigherRateDisabilityBenefitsErrorKey = "doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted"
+
   val doYouGetDisabilityBenefitsErrorKey = "doYouGetDisabilityBenefits.error.notCompleted"
   val doesPartnerGetDisabilityBenefitsErrorKey = "doesPartnerGetDisabilityBenefits.error.notCompleted"
 }

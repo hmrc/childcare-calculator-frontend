@@ -224,7 +224,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def doYouGetDisabilityBenefitsRoute(answers: UserAnswers): Call = {
     utils.getCall(answers.doYouGetDisabilityBenefits) {
-      case true => ??? //Higher rate disability benefits
+      case true => benefitsRoutes.DoYouGetHigherRateDisabilityBenefitsController.onPageLoad()
       case false => endOfYourBenefitsQuestions(answers)
     }
   }
@@ -263,7 +263,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def doesPartnerGetDisabilityBenefitsRoute(answers: UserAnswers): Call = {
     utils.getCall(answers.doesPartnerGetDisabilityBenefits) {
-      case true => ??? //Partner higher rate disability benefits
+      case true => benefitsRoutes.DoesPartnerGetHigherRateDisabilityBenefitsController.onPageLoad()
       case false => endOfBenefitsQuestions(answers)
     }
   }

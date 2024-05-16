@@ -1594,6 +1594,16 @@ doesPartnerGetSevereDisabilityPremium.title = A yw’ch partner yn cael Premiwm 
 doesPartnerGetSevereDisabilityPremium.heading = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
 doesPartnerGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Premiwm Anabledd Difrifol
 
+doYouGetHigherRateDisabilityBenefits.title = A ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doYouGetHigherRateDisabilityBenefits.heading = A ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doYouGetHigherRateDisabilityBenefits.hint = Mae hyn yn cynnwys Taliadau Ychwanegol, Taliadau ar Gyfradd Uwch a Thaliad Annibyniaeth y Lluoedd Arfog (AFIP).
+doYouGetHigherRateDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch
+
+doesPartnerGetHigherRateDisabilityBenefits.title = A yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doesPartnerGetHigherRateDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doesPartnerGetHigherRateDisabilityBenefits.hint = Mae hyn yn cynnwys Taliadau Ychwanegol, Taliadau ar Gyfradd Uwch a Thaliad Annibyniaeth y Lluoedd Arfog (AFIP).
+doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch
+
 doYouGetDisabilityBenefits.title = A ydych chi’n cael Budd-daliadau Anabledd?
 doYouGetDisabilityBenefits.heading = A ydych chi’n cael Budd-daliadau Anabledd?
 doYouGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
@@ -1603,3 +1613,4 @@ doesPartnerGetDisabilityBenefits.title = A yw’ch partner yn cael Budd-daliadau
 doesPartnerGetDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd?
 doesPartnerGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
 doesPartnerGetDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd
+
