@@ -1359,7 +1359,6 @@ result.tfc.ineligible.partner.maximumEarning = *WELSH PENDING*
 result.tfc.ineligible.paidEmployment = Mae angen i chi fod yn gweithio am dâl er mwyn cael Gofal Plant sy’n Rhydd o Dreth.
 result.tfc.ineligible.minimumEarning = Mae angen i chi fod yn gweithio am dâl ac yn ennill o leiaf £{0} yr wythnos er mwyn cael Gofal Plant sy’n Rhydd o Dreth.
 result.tfc.ineligible.maximumEarning = Mae angen i chi fod yn ennill llai na £100,000 y flwyddyn fel incwm net wedi’i addasu er mwyn cael Gofal Plant sy’n Rhydd o Dreth.
-result.tfc.ineligible.noCosts = Nid oes gennych unrhyw gostau gofal plant ac nid ydych yn disgwyl y bydd gennych rai, felly ni allwch gael Gofal Plant sy’n Rhydd o Dreth.
 result.tfc.ineligible.noCostsWithApprovedProvider = Mae angen i chi fod â chostau gofal plant gyda darparwr cymeradwy i gael Gofal Plant sy’n Rhydd o Dreth.
 result.tfc.ineligible.noEligibleChild = Nid yw plant yn gymwys o 1 Medi ar ôl eu pen-blwydd yn 11 oed, nac ar ôl eu pen-blwydd yn 16 oed os ydyn nhw’n anabl.
 

@@ -1400,7 +1400,6 @@ result.tfc.ineligible.partner.maximumEarning = Both you and your partner need to
 result.tfc.ineligible.paidEmployment = You need to be in paid work to get Tax-Free Childcare.
 result.tfc.ineligible.minimumEarning = You need to be in paid work and earn at least £{0} a week to get Tax-Free Childcare.
 result.tfc.ineligible.maximumEarning = You need to earn less than £100,000 a year as adjusted net income to get Tax-Free Childcare.
-result.tfc.ineligible.noCosts = You do not have or expect to have any childcare costs, so you cannot get Tax-Free Childcare.
 result.tfc.ineligible.noCostsWithApprovedProvider = You need to have childcare costs with an approved provider to get Tax-Free Childcare.
 result.tfc.ineligible.noEligibleChild = Children are not eligible from 1 September after their 11th birthday, or after their 16th birthday if disabled.
 

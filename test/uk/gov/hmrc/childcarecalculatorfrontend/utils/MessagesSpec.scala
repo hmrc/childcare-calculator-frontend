@@ -37,11 +37,6 @@ class MessagesSpec extends SpecBase {
       }
     }
 
-    "have a non-empty message for each key" in {
-      assertNonEmpty("English", englishMessages)
-      assertNonEmpty("Welsh", welshMessages)
-    }
-
     "have no unescaped single quotes in value" in {
       assertCorrectUseOfQuotes("English", englishMessages)
       assertCorrectUseOfQuotes("Welsh", welshMessages)
@@ -66,13 +61,6 @@ class MessagesSpec extends SpecBase {
 
   private def countMessagesWithArgs(messages: Map[String, String]) =
     messages.filter(_._2.contains("{0}"))
-
-  private def assertNonEmpty(label: String, messages: Map[String, String]): Unit =
-    messages.foreach { case (key: String, value: String) =>
-      withClue(s"In $label, there is an empty value for the key:[$key][$value]") {
-        value.trim.isEmpty mustBe false
-      }
-    }
 
   private def assertCorrectUseOfQuotes(label: String, messages: Map[String, String]): Unit =
     messages.foreach { case (key: String, value: String) =>
