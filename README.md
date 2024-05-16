@@ -1,4 +1,4 @@
-# childcare-calculator-frontend 
+# childcare-calculator-frontend
 
 The Childcare Calculator will help parents quickly self-assess the options for their childcare support, allowing them to
 make a decision on which scheme will best suit their needs. The Childcare Calculator will calculate the data input by
