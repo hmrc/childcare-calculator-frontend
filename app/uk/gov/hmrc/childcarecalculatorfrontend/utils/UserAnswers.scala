@@ -18,7 +18,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import java.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{carersAllowanceBenefits, disabilityBenefits, highRatedDisabilityBenefits, incomeBenefits, neither, severelyDisabledPremium}
 
 import scala.util.Try
 
@@ -245,15 +247,62 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def yourPartnersAge: Option[String] = cacheMap.getEntry[String](YourPartnersAgeId.toString)
 
-  def whichBenefitsYouGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsYouGetId.toString)
+  //MaximumHoursCascadeUpsert ensures that if the user is on the new benefits flow the old flow's answers are reset to avoid clashing
+  //TODO: look into rewriting how this is used when the old pages are removed.
+  // Should rely on the standalone answers for each benefit instead.
+  def whichBenefitsYouGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsYouGetId.toString) match {
+    case None => Some(Set(
+      doYouGetCarersAllowance.collect { case true => carersAllowanceBenefits },
+      doYouGetIncomeBasedBenefits.collect { case true => incomeBenefits },
+      doYouGetSevereDisabilityPremium.collect { case true => severelyDisabledPremium },
+      doYouGetDisabilityBenefits.collect { case true => disabilityBenefits },
+      doYouGetHigherRateDisabilityBenefits.collect { case true => highRatedDisabilityBenefits }
+    ).flatten).filter(_.nonEmpty)
+    case option => option
+  }
 
-  def whichBenefitsPartnerGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsPartnerGetId.toString)
+  //TODO: look into rewriting how this is used when the old pages are removed.
+  // Should rely on the standalone answers for each benefit instead.
+  def whichBenefitsPartnerGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsPartnerGetId.toString) match {
+    case None => Some(Set(
+      doesPartnerGetCarersAllowance.collect { case true => carersAllowanceBenefits },
+      doesPartnerGetIncomeBasedBenefits.collect { case true => incomeBenefits },
+      doesPartnerGetSevereDisabilityPremium.collect { case true => severelyDisabledPremium },
+      doesPartnerGetDisabilityBenefits.collect { case true => disabilityBenefits },
+      doesPartnerGetHigherRateDisabilityBenefits.collect { case true => highRatedDisabilityBenefits }
+    ).flatten).filter(_.nonEmpty)
+    case option => option
+  }
 
-  def whoGetsBenefits: Option[String] = cacheMap.getEntry[String](WhoGetsBenefitsId.toString)
+  def whoGetsBenefits: Option[String] = cacheMap.getEntry[String](WhoGetsBenefitsId.toString) match {
+    case None => doYouOrPartnerGetBenefits
+    case option => option
+  }
 
-  def doYouOrYourPartnerGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouOrYourPartnerGetAnyBenefitsId.toString)
+  //TODO: look into rewriting how this is used when the old pages are removed.
+  // Should be able to do whoGetsBenefits and doYouOrYourPartnerGetAnyBenefits checks by checking doYouOrPartnerGetBenefits once.
+  def doYouOrYourPartnerGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouOrYourPartnerGetAnyBenefitsId.toString) match {
+    case None => doYouOrPartnerGetBenefits.map(_ != neither)
+    case option => option
+  }
 
-  def doYouGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetAnyBenefitsId.toString)
+  def doYouGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetAnyBenefitsId.toString) match {
+    case None => doYouGetBenefits
+    case option => option
+  }
+
+  def doYouGetBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetBenefitsId.toString)
+  def doYouOrPartnerGetBenefits: Option[String] = cacheMap.getEntry[String](DoYouOrPartnerGetBenefitsId.toString)
+  def doYouGetCarersAllowance: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetCarersAllowanceId.toString)
+  def doYouGetIncomeBasedBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetIncomeBasedBenefitsId.toString)
+  def doYouGetSevereDisabilityPremium: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetSevereDisabilityPremiumId.toString)
+  def doYouGetDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetDisabilityBenefitsId.toString)
+  def doYouGetHigherRateDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetHigherRateDisabilityBenefitsId.toString)
+  def doesPartnerGetCarersAllowance: Option[Boolean] = cacheMap.getEntry[Boolean](DoesPartnerGetCarersAllowanceId.toString)
+  def doesPartnerGetIncomeBasedBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoesPartnerGetIncomeBasedBenefitsId.toString)
+  def doesPartnerGetSevereDisabilityPremium: Option[Boolean] = cacheMap.getEntry[Boolean](DoesPartnerGetSevereDisabilityPremiumId.toString)
+  def doesPartnerGetDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoesPartnerGetDisabilityBenefitsId.toString)
+  def doesPartnerGetHigherRateDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoesPartnerGetHigherRateDisabilityBenefitsId.toString)
 
   def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
 

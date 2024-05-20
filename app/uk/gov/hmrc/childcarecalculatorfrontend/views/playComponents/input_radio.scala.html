@@ -19,6 +19,7 @@
 @(
     legend: Html,
     legendClass: Option[String] = None,
+    isPageHeading: Boolean = false,
     classes: String = "",
     hint: Option[String] = None,
     inputs: Seq[RadioItem],
@@ -31,7 +32,7 @@
             legend = Some(Legend(
                 classes = legendClass.getOrElse(""),
                 content = HtmlContent(legend),
-                isPageHeading = false
+                isPageHeading = isPageHeading
             ))
         )),
         hint = hint.map(hintString => Hint(content = Text(hintString))),

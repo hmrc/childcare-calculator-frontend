@@ -28,9 +28,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
-class BenefitsNavigatorSpec extends SpecBase with MockitoSugar {
+class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
-  val navigator = new BenefitsNavigator(new Utils())
+  val navigator = new BenefitsIncomeNavigator(new Utils())
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))

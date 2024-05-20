@@ -46,10 +46,11 @@ object ChildcareConstants {
   val yes = YesNoNotYetEnum.YES.toString
   val notYet = YesNoNotYetEnum.NOTYET.toString
 
-  val IncomeBenefits: String = WhichBenefitsEnum.INCOMEBENEFITS.toString
-  val DisabilityBenefits: String = WhichBenefitsEnum.DISABILITYBENEFITS.toString
-  val HighRatedDisabilityBenefits: String = WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
-  val CarersAllowanceBenefits: String = WhichBenefitsEnum.CARERSALLOWANCE.toString
+  val incomeBenefits: String = WhichBenefitsEnum.INCOMEBENEFITS.toString
+  val disabilityBenefits: String = WhichBenefitsEnum.DISABILITYBENEFITS.toString
+  val highRatedDisabilityBenefits: String = WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
+  val severelyDisabledPremium: String = WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
+  val carersAllowanceBenefits: String = WhichBenefitsEnum.CARERSALLOWANCE.toString
 
   val firstMonthOfTaxYear = 4
   val startDayOfTaxYear = 6
@@ -249,4 +250,22 @@ object ChildcareConstants {
   val parentEmpIncomeCYFormField = "parentEmploymentIncomeCY"
   val partnerEmpIncomeCYFormField = "partnerEmploymentIncomeCY"
   val defaultFormValueField = "value"
+
+  val doYouGetBenefitsErrorKey = "doYouGetBenefits.error.notCompleted"
+  val doYouOrPartnerGetBenefitsErrorKey = "doYouOrPartnerGetBenefits.error.notCompleted"
+
+  val doYouGetCarersAllowanceErrorKey = "doYouGetCarersAllowance.error.notCompleted"
+  val doesPartnerGetCarersAllowanceErrorKey = "doesPartnerGetCarersAllowance.error.notCompleted"
+
+  val doYouGetIncomeBasedBenefitsErrorKey = "doYouGetIncomeBasedBenefits.error.notCompleted"
+  val doesPartnerGetIncomeBasedBenefitsErrorKey = "doesPartnerGetIncomeBasedBenefits.error.notCompleted"
+
+  val doYouGetSevereDisabilityPremiumErrorKey = "doYouGetSevereDisabilityPremium.error.notCompleted"
+  val doesPartnerGetSevereDisabilityPremiumErrorKey = "doesPartnerGetSevereDisabilityPremium.error.notCompleted"
+
+  val doYouGetHigherRateDisabilityBenefitsErrorKey = "doYouGetHigherRateDisabilityBenefits.error.notCompleted"
+  val doesPartnerGetHigherRateDisabilityBenefitsErrorKey = "doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted"
+
+  val doYouGetDisabilityBenefitsErrorKey = "doYouGetDisabilityBenefits.error.notCompleted"
+  val doesPartnerGetDisabilityBenefitsErrorKey = "doesPartnerGetDisabilityBenefits.error.notCompleted"
 }

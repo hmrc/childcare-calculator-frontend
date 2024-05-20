@@ -1595,3 +1595,61 @@ urBanner.title = Help improve GOV.UK
 urBanner.message = Get involved in making government services better
 urBanner.message.link = https://signup.take-part-in-research.service.gov.uk/?utm_campaign=ChildcareCalcBanner&utm_source=Other&utm_medium=other&t=HMRC&id=143
 urBanner.message.noThanks.link = No thanks
+
+doYouGetBenefits.title = Do you get benefits?
+doYouGetBenefits.heading = Do you get benefits?
+doYouGetBenefits.error.notCompleted = Select yes if you get benefits
+
+doYouOrPartnerGetBenefits.title = Do you or your partner get benefits?
+doYouOrPartnerGetBenefits.heading = Do you or your partner get benefits?
+doYouOrPartnerGetBenefits.you = You
+doYouOrPartnerGetBenefits.partner = Partner
+doYouOrPartnerGetBenefits.both = Both
+doYouOrPartnerGetBenefits.neither = Neither
+doYouOrPartnerGetBenefits.error.notCompleted = Select if you or your partner get benefits
+
+doYouGetCarersAllowance.title = Do you get Carer's Allowance or Carer's Support Payment?
+doYouGetCarersAllowance.heading = Do you get Carer's Allowance or Carer's Support Payment?
+doYouGetCarersAllowance.error.notCompleted = Select yes if you get Carer's Allowance or Carer's Support Payment
+
+doesPartnerGetCarersAllowance.title = Does your partner get Carer's Allowance or Carer's Support Payment?
+doesPartnerGetCarersAllowance.heading = Does your partner get Carer's Allowance or Carer's Support Payment?
+doesPartnerGetCarersAllowance.error.notCompleted = Select yes if your partner gets Carer's Allowance or Carer's Support Payment
+
+doYouGetIncomeBasedBenefits.title = Do you get Income Based Benefits?
+doYouGetIncomeBasedBenefits.heading = Do you get Income Based Benefits?
+doYouGetIncomeBasedBenefits.hint = This includes Income Support, Income Based Jobseekers Allowance (JSA) and Pension Credit.
+doYouGetIncomeBasedBenefits.error.notCompleted = Select yes if you get Income Based Benefits
+
+doesPartnerGetIncomeBasedBenefits.title = Does your partner get Income Based Benefits?
+doesPartnerGetIncomeBasedBenefits.heading = Does your partner get Income Based Benefits?
+doesPartnerGetIncomeBasedBenefits.hint = This includes Income Support, Income Based Jobseekers Allowance (JSA) and Pension Credit.
+doesPartnerGetIncomeBasedBenefits.error.notCompleted = Select yes if your partner gets Income Based Benefits
+
+doYouGetSevereDisabilityPremium.title = Do you get Severe Disability Premium?
+doYouGetSevereDisabilityPremium.heading = Do you get Severe Disability Premium?
+doYouGetSevereDisabilityPremium.error.notCompleted = Select yes if you get Severe Disability Premium
+
+doesPartnerGetSevereDisabilityPremium.title = Does your partner get Severe Disability Premium?
+doesPartnerGetSevereDisabilityPremium.heading = Does your partner get Severe Disability Premium?
+doesPartnerGetSevereDisabilityPremium.error.notCompleted = Select yes if your partner gets Severe Disability Premium
+
+doYouGetHigherRateDisabilityBenefits.title = Do you get Higher Rate Disability Benefits?
+doYouGetHigherRateDisabilityBenefits.heading = Do you get Higher Rate Disability Benefits?
+doYouGetHigherRateDisabilityBenefits.hint = This includes Enhanced Payments, Higher Rate Payments and Armed Forces Independence Payment (AFIP).
+doYouGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if you get Higher Rate Disability Benefits
+
+doesPartnerGetHigherRateDisabilityBenefits.title = Does your partner get Higher Rate Disability Benefits?
+doesPartnerGetHigherRateDisabilityBenefits.heading = Does your partner get Higher Rate Disability Benefits?
+doesPartnerGetHigherRateDisabilityBenefits.hint = This includes Enhanced Payments, Higher Rate Payments and Armed Forces Independence Payment (AFIP).
+doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if your partner gets Higher Rate Disability Benefits
+
+doYouGetDisabilityBenefits.title = Do you get Disability Benefits?
+doYouGetDisabilityBenefits.heading = Do you get Disability Benefits?
+doYouGetDisabilityBenefits.hint = This includes Disability Living Allowance (DLA), Disability Payment, Attendance Allowance and Personal Independence Payment (PIP).
+doYouGetDisabilityBenefits.error.notCompleted = Select yes if you get Disability Benefits
+
+doesPartnerGetDisabilityBenefits.title = Does your partner get Disability Benefits?
+doesPartnerGetDisabilityBenefits.heading = Does your partner get Disability Benefits?
+doesPartnerGetDisabilityBenefits.hint = This includes Disability Living Allowance (DLA), Disability Payment, Attendance Allowance and Personal Independence Payment (PIP).
+doesPartnerGetDisabilityBenefits.error.notCompleted = Select yes if your partner gets Disability Benefits

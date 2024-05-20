@@ -20,8 +20,10 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.{routes => benefitsRoutes}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
@@ -1222,4 +1224,257 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
   }
 
+  "doYouGetBenefitsRoute" must {
+    "redirect to Carers Allowance if the answer is Yes" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetBenefits) thenReturn Some(true)
+
+      val result = navigator.nextPage(DoYouGetBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad
+    }
+    "redirect to Your Age if the answer is No" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetBenefits) thenReturn Some(false)
+
+      val result = navigator.nextPage(DoYouGetBenefitsId, NormalMode).value(answers)
+      result mustBe routes.YourAgeController.onPageLoad()
+    }
+  }
+
+  "doYouOrPartnerGetBenefitsRoute" must {
+    "redirect to Carers Allowance if the answer is You or Both" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you) thenReturn Some(both)
+
+      val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad
+    }
+    "redirect to Partner Carers Allowance if the answer is Partner" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(partner)
+
+      val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad
+    }
+    "redirect to Your Age if the answer is Neither and Parent or Both are working" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(neither)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
+
+      val result1 = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
+      result1 mustBe routes.YourAgeController.onPageLoad()
+      result2 mustBe routes.YourAgeController.onPageLoad()
+    }
+    "redirect to Your Partners Age if the answer is Neither and only Partner is working" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(neither)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+
+      val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
+      result mustBe routes.YourPartnersAgeController.onPageLoad()
+    }
+  }
+
+  "doYouGetCarersAllowanceRoute" must {
+    "redirect to Income Based Benefits if the answer is true or false" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetCarersAllowance) thenReturn Some(true) thenReturn Some(false)
+
+      val result1 = navigator.nextPage(DoYouGetCarersAllowanceId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoYouGetCarersAllowanceId, NormalMode).value(answers)
+      result1 mustBe benefitsRoutes.DoYouGetIncomeBasedBenefitsController.onPageLoad()
+      result2 mustBe benefitsRoutes.DoYouGetIncomeBasedBenefitsController.onPageLoad()
+    }
+  }
+
+  "doYouGetIncomeBasedBenefitsRoute" must {
+    "redirect to Severe Disability Premium if the answer is true" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetIncomeBasedBenefits) thenReturn Some(true)
+
+      val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoYouGetSevereDisabilityPremiumController.onPageLoad
+    }
+    "redirect to Disability Benefits if the answer is false" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetIncomeBasedBenefits) thenReturn Some(false)
+
+      val result = navigator.nextPage(DoYouGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoYouGetDisabilityBenefitsController.onPageLoad
+    }
+  }
+
+  "doYouGetSevereDisabilityPremiumRoute" must {
+    "redirect to Disability Benefits if the answer is true or false" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetSevereDisabilityPremium) thenReturn Some(true) thenReturn Some(false)
+
+      val result1 = navigator.nextPage(DoYouGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoYouGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      result1 mustEqual benefitsRoutes.DoYouGetDisabilityBenefitsController.onPageLoad
+      result2 mustEqual benefitsRoutes.DoYouGetDisabilityBenefitsController.onPageLoad
+    }
+  }
+
+  "doYouGetDisabilityBenefitsRoute" must {
+    "redirect to Higher Rate Disability Benefits if the answer is true" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetDisabilityBenefits) thenReturn Some(true)
+
+      val result = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe benefitsRoutes.DoYouGetHigherRateDisabilityBenefitsController
+        .onPageLoad()
+    }
+    "redirect to Higher Rate Disability Benefits if the answer is false and both get benefits" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetDisabilityBenefits) thenReturn Some(true)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(both)
+
+      val result = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe benefitsRoutes.DoYouGetHigherRateDisabilityBenefitsController
+        .onPageLoad()
+    }
+    "redirect to Your Partners Age if the answer is false, both dont get benefits and partner is working" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetDisabilityBenefits) thenReturn Some(false)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+
+      val result = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe routes.YourPartnersAgeController.onPageLoad()
+    }
+    "redirect to Your Age if the answer is false, both dont get benefits and you or both are working" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetDisabilityBenefits) thenReturn Some(false)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
+
+      val result1 = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
+      result1 mustBe routes.YourAgeController.onPageLoad()
+      result2 mustBe routes.YourAgeController.onPageLoad()
+    }
+  }
+
+  "doYouGetHigherRateDisabilityBenefitsRoute" must {
+    "redirect to Partner Carer Allowance if both get benefits" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetHigherRateDisabilityBenefits) thenReturn Some(true)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(both)
+
+      val result = navigator.nextPage(DoYouGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad
+    }
+    "redirect to Your Partners Age if both dont get benefits and partner is working" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetHigherRateDisabilityBenefits) thenReturn Some(false)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+
+      val result = navigator.nextPage(DoYouGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe routes.YourPartnersAgeController.onPageLoad()
+    }
+    "redirect to Your Age if both dont get benefits and you or both are working" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouGetHigherRateDisabilityBenefits) thenReturn Some(false) thenReturn Some(true)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
+
+      val result1 = navigator.nextPage(DoYouGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoYouGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
+      result1 mustBe routes.YourAgeController.onPageLoad()
+      result2 mustBe routes.YourAgeController.onPageLoad()
+    }
+  }
+
+  "doesPartnerGetCarersAllowanceRoute" must {
+    "redirect to Partner Income Based Benefits if the answer is true or false" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetCarersAllowance) thenReturn Some(true) thenReturn Some(false)
+
+      val result1 = navigator.nextPage(DoesPartnerGetCarersAllowanceId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoesPartnerGetCarersAllowanceId, NormalMode).value(answers)
+      result1 mustBe benefitsRoutes.DoesPartnerGetIncomeBasedBenefitsController.onPageLoad()
+      result2 mustBe benefitsRoutes.DoesPartnerGetIncomeBasedBenefitsController.onPageLoad()
+    }
+  }
+
+  "doesPartnerGetIncomeBasedBenefitsRoute" must {
+    "redirect to Partner Severe Disability Premium if the answer is true" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetIncomeBasedBenefits) thenReturn Some(true)
+
+      val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustBe benefitsRoutes.DoesPartnerGetSevereDisabilityPremiumController.onPageLoad()
+    }
+    "redirect to Partner Disability Benefits if the answer is false" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetIncomeBasedBenefits) thenReturn Some(false)
+
+      val result = navigator.nextPage(DoesPartnerGetIncomeBasedBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoesPartnerGetDisabilityBenefitsController.onPageLoad
+    }
+  }
+
+  "doesPartnerGetSevereDisabilityPremiumRoute" must {
+    "redirect to Partner Disability Benefits if the answer is true or false" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetSevereDisabilityPremium) thenReturn Some(true) thenReturn Some(false)
+
+      val result1 = navigator.nextPage(DoesPartnerGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoesPartnerGetSevereDisabilityPremiumId, NormalMode).value(answers)
+      result1 mustEqual benefitsRoutes.DoesPartnerGetDisabilityBenefitsController.onPageLoad
+      result2 mustEqual benefitsRoutes.DoesPartnerGetDisabilityBenefitsController.onPageLoad
+    }
+  }
+
+  "doesPartnerGetDisabilityBenefitsRoute" must {
+    "redirect to Partner Higher Rate Disability Benefits if the answer is true" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetDisabilityBenefits) thenReturn Some(true)
+
+      val result = navigator.nextPage(DoesPartnerGetDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe benefitsRoutes.DoesPartnerGetHigherRateDisabilityBenefitsController.onPageLoad()
+    }
+    "redirect to Your Partners Age if the answer is false and partner is working" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetDisabilityBenefits) thenReturn Some(false)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+
+      val result = navigator.nextPage(DoesPartnerGetDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe routes.YourPartnersAgeController.onPageLoad()
+    }
+    "redirect to Your Age if the answer is false and you or both are working" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetDisabilityBenefits) thenReturn Some(false)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
+
+      val result1 = navigator.nextPage(DoesPartnerGetDisabilityBenefitsId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoesPartnerGetDisabilityBenefitsId, NormalMode).value(answers)
+      result1 mustBe routes.YourAgeController.onPageLoad()
+      result2 mustBe routes.YourAgeController.onPageLoad()
+    }
+  }
+
+  "doesPartnerGetHigherRateDisabilityBenefitsRoute" must {
+    "redirect to Your Partners Age if partner is working" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetHigherRateDisabilityBenefits) thenReturn Some(false)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+
+      val result = navigator.nextPage(DoesPartnerGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
+      result mustBe routes.YourPartnersAgeController.onPageLoad()
+    }
+    "redirect to Your Age if you or both are working" in {
+      val answers = spy(userAnswers())
+      when(answers.doesPartnerGetHigherRateDisabilityBenefits) thenReturn Some(false) thenReturn Some(true)
+      when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
+
+      val result1 = navigator.nextPage(DoesPartnerGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(DoesPartnerGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
+      result1 mustBe routes.YourAgeController.onPageLoad()
+      result2 mustBe routes.YourAgeController.onPageLoad()
+    }
+  }
 }

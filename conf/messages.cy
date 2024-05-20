@@ -1554,3 +1554,63 @@ global.error.pageNotFound404.message=Gwiriwch eich bod wedi nodi’r cyfeiriad g
 global.error.InternalServerError500.title=Mae’n ddrwg gennym, rydym yn profi anawsterau technegol – 500
 global.error.InternalServerError500.heading=Mae’n ddrwg gennym, rydym yn profi anawsterau technegol
 global.error.InternalServerError500.message=Rhowch gynnig arall arni mewn ychydig o funudau.
+
+doYouGetBenefits.title = A ydych chi’n cael budd-daliadau?
+doYouGetBenefits.heading = A ydych chi’n cael budd-daliadau?
+doYouGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych yn cael budd-daliadau
+
+doYouOrPartnerGetBenefits.title = A ydych chi neu’ch partner yn cael budd-daliadau?
+doYouOrPartnerGetBenefits.heading = A ydych chi neu’ch partner yn cael budd-daliadau?
+doYouOrPartnerGetBenefits.you = Chi
+doYouOrPartnerGetBenefits.partner = Partner
+doYouOrPartnerGetBenefits.both = Y ddau ohonoch
+doYouOrPartnerGetBenefits.neither = Dim un o’r ddau ohonoch
+doYouOrPartnerGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi neu’ch partner yn cael budd-daliadau
+
+
+doYouGetCarersAllowance.title = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doYouGetCarersAllowance.heading = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doYouGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
+
+doesPartnerGetCarersAllowance.title = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doesPartnerGetCarersAllowance.heading = A yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
+doesPartnerGetCarersAllowance.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr
+
+doYouGetIncomeBasedBenefits.title = A ydych chi’n cael Budd-daliadau ar Sail Incwm?
+doYouGetIncomeBasedBenefits.heading = A ydych chi’n cael Budd-daliadau ar Sail Incwm?
+doYouGetIncomeBasedBenefits.hint = Mae hyn yn cynnwys Cymhorthdal Incwm, Lwfans Ceisio Gwaith ar Sail Incwm (JSA) a Chredyd Pensiwn.
+doYouGetIncomeBasedBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau ar Sail Incwm
+
+doesPartnerGetIncomeBasedBenefits.title = A yw’ch partner yn cael Budd-daliadau ar Sail Incwm?
+doesPartnerGetIncomeBasedBenefits.heading = A yw’ch partner yn cael Budd-daliadau ar Sail Incwm?
+doesPartnerGetIncomeBasedBenefits.hint = Mae hyn yn cynnwys Cymhorthdal Incwm, Lwfans Ceisio Gwaith ar sail Incwm (JSA) a Chredyd Pensiwn.
+doesPartnerGetIncomeBasedBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-dal ar Sail Incwm
+
+doYouGetSevereDisabilityPremium.title = A ydych chi’n cael Premiwm Anabledd Difrifol?
+doYouGetSevereDisabilityPremium.heading = A ydych chi’n cael Premiwm Anabledd Difrifol?
+doYouGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Premiwm Anabledd Difrifol
+
+doesPartnerGetSevereDisabilityPremium.title = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
+doesPartnerGetSevereDisabilityPremium.heading = A yw’ch partner yn cael Premiwm Anabledd Difrifol?
+doesPartnerGetSevereDisabilityPremium.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Premiwm Anabledd Difrifol
+
+doYouGetHigherRateDisabilityBenefits.title = A ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doYouGetHigherRateDisabilityBenefits.heading = A ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doYouGetHigherRateDisabilityBenefits.hint = Mae hyn yn cynnwys Taliadau Ychwanegol, Taliadau ar Gyfradd Uwch a Thaliad Annibyniaeth y Lluoedd Arfog (AFIP).
+doYouGetHigherRateDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau Anabledd ar Gyfradd Uwch
+
+doesPartnerGetHigherRateDisabilityBenefits.title = A yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doesPartnerGetHigherRateDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch?
+doesPartnerGetHigherRateDisabilityBenefits.hint = Mae hyn yn cynnwys Taliadau Ychwanegol, Taliadau ar Gyfradd Uwch a Thaliad Annibyniaeth y Lluoedd Arfog (AFIP).
+doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd ar Gyfradd Uwch
+
+doYouGetDisabilityBenefits.title = A ydych chi’n cael Budd-daliadau Anabledd?
+doYouGetDisabilityBenefits.heading = A ydych chi’n cael Budd-daliadau Anabledd?
+doYouGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
+doYouGetDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi’n cael Budd-daliadau Anabledd
+
+doesPartnerGetDisabilityBenefits.title = A yw’ch partner yn cael Budd-daliadau Anabledd?
+doesPartnerGetDisabilityBenefits.heading = A yw’ch partner yn cael Budd-daliadau Anabledd?
+doesPartnerGetDisabilityBenefits.hint = Mae hyn yn cynnwys Lwfans Byw i’r Anabl (DLA), Taliad Anabledd, Lwfans Gweini a Thaliad Annibyniaeth Personol (PIP).
+doesPartnerGetDisabilityBenefits.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn cael Budd-daliadau Anabledd
+
