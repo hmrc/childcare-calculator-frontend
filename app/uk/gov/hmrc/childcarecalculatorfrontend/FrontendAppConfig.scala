@@ -19,8 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend
 import javax.inject.Inject
 import play.api.Configuration
 import play.api.i18n.Lang
-import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
@@ -32,21 +30,12 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   private lazy val contactHost = loadConfig("contact-frontend.host")
   private val contactFormServiceIdentifier = loadConfig("contact-frontend.serviceId")
 
-  lazy val urBannerUrl = loadConfig("user-research-banner-url")
-
+  lazy val urBannerUrl: String = loadConfig("user-research-banner-url")
   lazy val eligibilityUrl: String =  config.baseUrl("cc-eligibility") + loadConfig("microservice.services.cc-eligibility.url")
-
-  lazy val analyticsDimensionKey: String = loadConfig("google-analytics.dimensionKey")
-  lazy val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
-  lazy val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
-  lazy val betaFeedbackUrl = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
   lazy val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
   lazy val surveyUrl: String = loadConfig("feedback-survey-frontend.host")
   lazy val surveyThankYouUrl: String = loadConfig("feedback-survey-frontend.thankYou")
 
-  lazy val authUrl: String = config.baseUrl("auth")
-  lazy val loginUrl: String = loadConfig("urls.login")
-  lazy val loginContinueUrl: String = loadConfig("urls.loginContinue")
   lazy val adjustedNetIncome: String = loadConfig("urls.adjustedNetIncome")
 
   lazy val languageTranslationEnabled: Boolean = config.getBoolean("microservice.services.features.welsh-translation")
@@ -56,32 +45,22 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
     "cymraeg" -> Lang("cy")
   )
 
-  def routeToSwitchLanguage: String => Call = (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
-
   lazy val minWorkingHours: Double = config.getString("workingHours.min").toDouble
-
   lazy val maxWorkingHours: Double = config.getString("workingHours.max").toDouble
 
   lazy val maxIncome: Double = config.getString("income.max").toDouble
-
   lazy val minIncome: Double = config.getString("income.min").toDouble
 
   lazy val maxEmploymentIncome: Double = config.getString("employmentIncome.max").toDouble
-
   lazy val minEmploymentIncome: Double = config.getString("employmentIncome.min").toDouble
 
   lazy val minNoWeeksStatPay: Int = config.getInt("noWeeksStatPay.min")
-
   lazy val maxNoWeeksMaternityPay: Int = config.getInt("noWeeksStatPay.maternity")
-
   lazy val maxNoWeeksPaternityPay: Int = config.getInt("noWeeksStatPay.paternity")
-
   lazy val maxNoWeeksAdoptionPay: Int = config.getInt("noWeeksStatPay.adoption")
-
   lazy val maxNoWeeksSharedParentalPay: Int = config.getInt("noWeeksStatPay.sharedParental")
 
   lazy val maxAmountChildren: Int = config.getInt("amountChildren.max")
-
   lazy val minAmountChildren: Int = config.getInt("amountChildren.min")
 
   lazy val navigationAudit: Boolean = config.getBoolean("feature.navigationAudit")
@@ -89,8 +68,9 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val nineMonthRuleCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.nineMonthRuleCutoff"))
   lazy val maxFreeHoursCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.maxFreeHoursCutoff"))
 
-  def maxFreeHoursAmount: String = if(allowMaxFreeHoursFromNineMonths) "30" else "15"
+  //This scheme overlaps the max hours scheme, after the date for allowMaxFreeHoursFromNineMonths they will become the same
+  def maxFreeHoursAmount: Double = if(allowMaxFreeHoursFromNineMonths) maxWorkingHours else minWorkingHours
   def allowFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(nineMonthRuleCutoff)
-  def allowMaxFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(maxFreeHoursCutoff)
 
+  def allowMaxFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(maxFreeHoursCutoff)
 }

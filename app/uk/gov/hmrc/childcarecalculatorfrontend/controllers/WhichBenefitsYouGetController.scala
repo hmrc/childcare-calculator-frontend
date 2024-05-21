@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Lang}
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
@@ -44,7 +44,6 @@ class WhichBenefitsYouGetController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      implicit val lang: Lang = request.lang
       val preparedForm = request.userAnswers.whichBenefitsYouGet match {
         case None => WhichBenefitsYouGetForm()
         case Some(value) => WhichBenefitsYouGetForm().fill(value)
@@ -54,7 +53,6 @@ class WhichBenefitsYouGetController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      implicit val lang: Lang = request.lang
       WhichBenefitsYouGetForm().bindFromRequest().fold(
         (formWithErrors: Form[Set[String]]) => {
           Future.successful(BadRequest(whichBenefitsYouGet(appConfig, formWithErrors, mode)))

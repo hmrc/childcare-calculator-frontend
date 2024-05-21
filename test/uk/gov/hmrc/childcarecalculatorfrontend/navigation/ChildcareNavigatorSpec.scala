@@ -930,7 +930,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.taxOrUniversalCredits).thenReturn(Some("uc"))
 
         val result = navigator.isEligibleForTaxCredits(answers, hasPartner = false)
-        result mustEqual routes.ResultController.onPageLoadHideTC()
+        result mustEqual routes.ResultController.onPageLoad()
       }
 
       "taxOrUniversal is not 'tc', neither parent or partner is on benefits" in {
@@ -941,7 +941,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.taxOrUniversalCredits).thenReturn(Some("none"))
 
         val result = navigator.isEligibleForTaxCredits(answers, hasPartner = false)
-        result mustEqual routes.ResultController.onPageLoadHideTC()
+        result mustEqual routes.ResultController.onPageLoad()
       }
 
       "taxOrUniversal is not 'tc', hasVouchers is false, the user has a partner" in {
@@ -952,7 +952,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.taxOrUniversalCredits).thenReturn(Some("uc"))
 
         val result = navigator.isEligibleForTaxCredits(answers, hasPartner = true)
-        result mustEqual routes.ResultController.onPageLoadHideTC()
+        result mustEqual routes.ResultController.onPageLoad()
       }
     }
 

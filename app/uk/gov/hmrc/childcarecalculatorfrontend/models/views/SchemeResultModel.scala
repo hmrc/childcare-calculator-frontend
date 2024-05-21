@@ -40,4 +40,7 @@ case class SchemeResultModel( title: String,
                               insetTextId: Option[String] = None,
                               warningMessage: Option[String] = None,
                               displayTCGuidanceLink: Boolean = false,
-                              sectionBreak: Boolean = true)
+                              sectionBreak: Boolean = true,
+                              displayApplyForFCHLink: Boolean = false,
+                              displayApplyForTFCLink: Boolean = false,
+                              location: String = "")

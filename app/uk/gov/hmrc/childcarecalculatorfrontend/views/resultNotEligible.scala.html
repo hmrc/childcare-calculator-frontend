@@ -14,194 +14,58 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{ResultsViewModel, SchemeResultModel}
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{NineTo23Months, TwoYears, ThreeYears, FourYears}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{ResultsViewModel, SchemeResultModel}
 
 @this(
-    schemeResult: playComponents.scheme_result,
-    heading: playComponents.heading,
-    govukInsetText : GovukInsetText
+        schemeResult: playComponents.scheme_result,
+        heading: playComponents.heading,
+        govukInsetText: GovukInsetText
 )
 
-@(model: ResultsViewModel, hideTC: Boolean)(implicit request: Request[_], messages: Messages, lang: Lang)
+@(model: ResultsViewModel)(implicit messages: Messages)
 
-    @otherChildcareSchemesContent = {
-        @if(!model.hasChildcareCosts) {
-            @messages("freeHoursResult.info.OtherSchemes.childcare.cost.text")
-        } else {
-            @if(!model.hasCostsWithApprovedProvider) {
-                @messages("freeHoursResult.info.OtherSchemes.approved.text")
-            } else {
-                @if(!model.isAnyoneInPaidEmployment) {
-                    @messages("freeHoursResult.info.tfcOrChildcareSupport.para.start")
-                    <a class="govuk-link" id="tfcOrChildcareSupport"
-                       href=@if(model.livesWithPartner){
-                           @routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
-                       } else {
-                           @routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
-                       }>@messages("freeHoursResult.info.tfcOrChildcareSupport.para.link")</a>
-                    @messages("freeHoursResult.info.tfcOrChildcareSupport.para.end")
-                }
-            }
-        }
-    }
-
-    @linkList(bullets: Seq[Tuple2[String, String]]) = {
-        <ul class="govuk-list govuk-list--bullet">
-            @for((content, link) <- bullets){
-                <li><a href="@link" rel="noreferrer noopener" target="_blank" class="govuk-link">@content @messages("feedback.hint.link.opens.new.tab")</a></li>
-            }
-        </ul>
-    }
-
-    @if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined) {
-        @schemeResult(SchemeResultModel(
-            title = messages("result.free.childcare.working.parents.title"),
-            insetText = Some(model.freeChildcareWorkingParentsEligibilityMsg.getOrElse("")),
-            insetTextId = Some("notEligibleFreeChildcareWorkingParents"),
-            sectionBreak = false
-        ))
-    } else if(model.freeHours.isEmpty && model.location == Location.ENGLAND) {
-        @schemeResult(SchemeResultModel(
-            title = messages("result.free.hours.title.2to4"),
-            para1 = Some(messages("result.free.hours.not.eligible.2to4")),
-            notEligibleID = (Some("notEligibleFreeHours"), None),
-            sectionBreak = false
-        ))
-    } else if(model.freeHours.isEmpty) {
-        @schemeResult(SchemeResultModel(
-            title = messages("result.free.hours.title.3to4"),
-            para1 = Some(messages("result.free.hours.not.eligible.3to4")),
-            notEligibleID = (Some("notEligibleFreeHours"), None),
-            sectionBreak = false
-        ))
-    }
-
-
-
-    @if(model.hasChildcareCosts && model.hasCostsWithApprovedProvider && model.isAnyoneInPaidEmployment){
-        @if(!hideTC) @{
-            if(model.taxCreditsOrUC.contains(universalCredits)) {
-                schemeResult(SchemeResultModel(
-                    title = messages("result.tc.title"),
-                    para1 = Some(messages("result.uc.not.eligible.para")),
-                    notEligibleID = (Some("notEligibleTC1"), None),
-                    sectionBreak = false
-                ))
-            } else {
-                if(model.tc.isEmpty) {
-                    schemeResult(SchemeResultModel(
-                        title = messages("result.tc.not.eligible.title"),
-                        para1 = Some(model.tcSchemeInEligibilityMsg),
-                        notEligibleID = (Some("notEligibleTC1"), None),
-                        displayTCGuidanceLink = true,
-                        sectionBreak = false
-                    ))
-                }
-            }
-        }
-
-        @if(model.tfc.isEmpty) {
-            @schemeResult(SchemeResultModel(
-                title = messages("result.tfc.title"),
-                para1 = Some(messages("result.tfc.not.eligible")),
-                para3 = Some(messages("result.tfc.not.eligible2")),
-                notEligibleID = (Some("notEligibleTFC"), None),
-                sectionBreak = false
-            ))
-        }
-
-        @if(model.esc.isEmpty) {
-            @schemeResult(SchemeResultModel(
-                title = messages("result.esc.title"),
-                para1 = Some(messages("result.esc.not.eligible.para1")),
-                notEligibleID = (Some("notEligibleESC1"), Some("notEligibleESC2")),
-                sectionBreak = false
-            ))
-        }
-
-    }else{
-
-        @schemeResult(SchemeResultModel(
-            title = messages("freeHoursResult.info.tfcOrChildcareSupport.heading"),
-            para2 = Some(otherChildcareSchemesContent),
-            sectionBreak = false
-        ))
+@if(model.freeHours.isEmpty) {
+    @schemeResult(SchemeResultModel(
+        title = messages("result.free.hours.title.3to4"),
+        insetText = Some(messages("result.free.hours.not.eligible.3to4")),
+        insetTextId = Some("notEligibleFreeHours"),
+        sectionBreak = false
+    ))
 }
 
-    @if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider) {
+@if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined) {
+    @schemeResult(SchemeResultModel(
+        title = messages("result.free.childcare.working.parents.title"),
+        insetText = Some(model.freeChildcareWorkingParentsEligibilityMsg.getOrElse("")),
+        insetTextId = Some("notEligibleFreeChildcareWorkingParents"),
+        sectionBreak = false
+    ))
+}
 
-        <h3 class="govuk-heading-m">@messages("freeHoursResult.toBeEligible.heading")</h3>
+@if(model.taxFreeChildcareEligibilityMsg.isDefined) {
+    @schemeResult(SchemeResultModel(
+        title = messages("result.tfc.title"),
+        insetText = Some(model.taxFreeChildcareEligibilityMsg.getOrElse("")),
+        insetTextId = Some("notEligibleTFC"),
+        sectionBreak = false
+    ))
+}
 
-        <p class="govuk-body">
-            @if(!model.hasChildcareCosts) {
-                @messages("freeHoursResult.toBeEligible.childcare.cost.start")
-                <a class="govuk-link" id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
-                @messages("freeHoursResult.toBeEligible.childcare.cost.end")
-            } else {
-                @messages("freeHoursResult.toBeEligible.approved.provider.start")
-                <a class="govuk-link" id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
-                @messages("freeHoursResult.toBeEligible.approved.provider.end")
-            }
-        </p>
-    }
+@if(!model.hasChildcareCosts || !model.hasCostsWithApprovedProvider) {
 
-    @if(model.location != Location.ENGLAND
-        && (model.childrenAgeGroups.contains(NineTo23Months) || model.childrenAgeGroups.contains(TwoYears) || model.childrenAgeGroups.contains(ThreeYears) || model.childrenAgeGroups.contains(FourYears))
-        && !(model.location == Location.WALES
-        && (model.yourEarnings.exists(earnings => Set(EarningsEnum.LessThanMinimum, EarningsEnum.GreaterThanMaximum).contains(earnings))))) {
+    <h3 class="govuk-heading-m">@messages("freeHoursResult.toBeEligible.heading")</h3>
 
-        @playComponents.section_break()
-
-        <h2 class="govuk-heading-l">@messages("freeHoursResult.info.extraHelp.heading")</h2>
-
-        <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para1")</p>
-
-        <h3 class="govuk-heading-m">@messages("freeHoursResult.info.extraHelp.subheading")</h3>
-
-        <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para2")</p>
-            @{
-                val workStatus = if(!model.isAnyoneInPaidEmployment) "notWorking" else "working"
-                model.yourEarnings match {
-                    case Some(EarningsEnum.LessThanMinimum) | Some(EarningsEnum.GreaterThanMaximum) =>
-                        model.location match {
-                            case Location.SCOTLAND =>
-                                linkList(Seq(
-                                    (messages("freeHoursResult.info.extraHelp.scotland.li.1"), scotlandExtraHelpLink1),
-                                    (messages("freeHoursResult.info.extraHelp.scotland.li.2"), scotlandExtraHelpLink2)
-                                ))
-                            case Location.NORTHERN_IRELAND =>
-                                linkList(Seq(
-                                    (messages("freeHoursResult.info.extraHelp.northern-ireland.li.1"), northernIrelandExtraHelpLink)
-                                ))
-                        }
-                    case _ =>
-                        model.location match {
-                            case Location.SCOTLAND =>
-                                linkList(Seq(
-                                    (messages("freeHoursResult.info.extraHelp.scotland.li.1"), scotlandExtraHelpLink1),
-                                    (messages("freeHoursResult.info.extraHelp.scotland.li.2"), scotlandExtraHelpLink2),
-                                    (messages(s"freeHoursResult.info.extraHelp.tfc.li.$workStatus"), extraHelpTFCLink)
-                                ))
-                            case Location.WALES =>
-                                linkList(Seq(
-                                    (messages(s"freeHoursResult.info.extraHelp.wales.li.1.$workStatus"),
-                                        if(!model.isAnyoneInPaidEmployment) walesExtraHelpLink1a else walesExtraHelpLink1b),
-                                    (messages(s"freeHoursResult.info.extraHelp.tfc.li.$workStatus"), extraHelpTFCLink)
-                                ))
-                            case Location.NORTHERN_IRELAND =>
-                                linkList(Seq(
-                                    (messages("freeHoursResult.info.extraHelp.northern-ireland.li.1"), northernIrelandExtraHelpLink),
-                                    (messages(s"freeHoursResult.info.extraHelp.tfc.li.$workStatus"), extraHelpTFCLink)
-                                ))
-                        }
-                }
-            }
-    }
+    <p class="govuk-body">
+        @if(!model.hasChildcareCosts) {
+            @messages("freeHoursResult.toBeEligible.childcare.cost.start")
+            <a class="govuk-link" id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
+            @messages("freeHoursResult.toBeEligible.childcare.cost.end")
+        } else {
+            @messages("freeHoursResult.toBeEligible.approved.provider.start")
+            <a class="govuk-link" id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
+            @messages("freeHoursResult.toBeEligible.approved.provider.end")
+        }
+    </p>
+}

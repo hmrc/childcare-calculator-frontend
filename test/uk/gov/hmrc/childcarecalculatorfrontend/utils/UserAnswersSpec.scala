@@ -27,12 +27,12 @@ import java.time.LocalDate
 
 class UserAnswersSpec extends PlaySpec with OptionValues {
 
-  private val testDate: LocalDate           = LocalDate.parse("2019-01-01")
-  private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)
+  private val testDate: LocalDate = LocalDate.now
+  private val ageOf19: LocalDate = ageOf19YearsAgo(testDate)
   private val ageOf16Before31Aug: LocalDate = ageOf16WithBirthdayBefore31stAugust(testDate)
-  private val ageOf16Over: LocalDate        = ageOfOver16Relative(testDate)
-  private val ageOfUnder16: LocalDate       = ageUnder16Relative(testDate)
-  private val ageOfExactly16: LocalDate     = ageExactly16Relative(testDate)
+  private val ageOf16Over: LocalDate = ageOfOver16Relative(testDate)
+  private val ageOfUnder16: LocalDate = ageUnder16Relative(testDate)
+  private val ageOfExactly16: LocalDate = ageExactly16Relative(testDate)
 
   def cacheMap(answers: (String, JsValue)*): CacheMap =
     CacheMap("", Map(answers: _*))
@@ -45,6 +45,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   def vouchersHelper(map: CacheMap = cacheMap(), checkVouchersBoth: Option[Boolean] = None): UserAnswers =
     new UserAnswers(map) {
       override def now: LocalDate = testDate
+
       override def checkVouchersForBoth: Option[Boolean] = checkVouchersBoth
     }
 
@@ -123,7 +124,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".extract16YearsOldWithBirthdayBefore31stAugust" must {
+  "extract16YearsOldWithBirthdayBefore31stAugust" must {
     "return the number of children of 16 years and dob before 31st August" in {
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj(
@@ -149,7 +150,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".is16ThisYearAndDateOfBirthIsAfter31stAugust" must {
+  "is16ThisYearAndDateOfBirthIsAfter31stAugust" must {
     "not return any children who are over 16 but Birthday is before 31st of August" in {
       val answers: CacheMap = cacheMap(
         AboutYourChildId.toString -> Json.obj("0" -> Json.toJson(AboutYourChild(
@@ -160,7 +161,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".childrenIdsForAgeBelow16" must {
+  "childrenIdsForAgeBelow16" must {
     "return the seq of child ids who are less than 16 years old and exactly 16 whose dob is before 31st of august " in {
 
       val answers: CacheMap = cacheMap(
@@ -184,77 +185,77 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".singleChildBelow16Yrs" must {
-    "return true when the child aged exactly 16 and birthday before 31st of August are disabled" in {
-
-      val answers: CacheMap = cacheMap(
-        NoOfChildrenId.toString -> JsNumber(4),
+  "hasChildEligibleForTfc" must {
+    "return false if 1 child that is over 11 and not disabled" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild(
-            foo, ageOf16Over)),
-          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
-          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
-        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
+          "0" -> Json.toJson(AboutYourChild(foo, ageOfExactly16))
+        ),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+        RegisteredBlindId.toString -> JsBoolean(false)
+      ))
 
-      val result: Boolean = helper(answers).singleChildBelow16Yrs
+      answers.hasChildEligibleForTfc mustEqual false
+    }
+
+    "return false if multiple children over 11 and not disabled" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(3),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(foo, ageOfExactly16)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOf19)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Over))
+        ),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+        RegisteredBlindId.toString -> JsBoolean(false)
+      ))
+
+      answers.hasChildEligibleForTfc mustEqual false
+    }
+
+    "return true if there is a disabled child aged 16" in {
+      val answers = helper(cacheMap(
+        NoOfChildrenId.toString -> JsNumber(3),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(foo, ageOfExactly16)),
+          "1" -> Json.toJson(AboutYourChild(bar, ageOf19)),
+          "2" -> Json.toJson(AboutYourChild(quux, ageOf16Over))
+        ),
+        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0)),
+        WhichChildrenBlindId.toString -> Json.toJson(Seq(0))
+      ))
+
+      answers.hasChildEligibleForTfc mustEqual true
+    }
+
+    "return true when number of children is 1 and the child is disabled and 16" in {
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(1),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(foo, ageOfUnder16))
+        ),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+        RegisteredBlindId.toString -> JsBoolean(false))
+
+      val result: Boolean = helper(answers).hasChildEligibleForTfc
       result mustEqual true
     }
 
-    "return false when the child aged exactly 16 and birthday before 31st of August are not  disabled" in {
-
+    "return false when number of children is 1 and the child is 16 and not disabled" in {
       val answers: CacheMap = cacheMap(
-        NoOfChildrenId.toString -> JsNumber(4),
+        NoOfChildrenId.toString -> JsNumber(1),
         AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild(
-            foo, ageOf16Over)),
-          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
-          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
-        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-        WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)))
+          "0" -> Json.toJson(AboutYourChild(foo, ageOfExactly16))
+        ),
+        ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
+        RegisteredBlindId.toString -> JsBoolean(false))
 
-      val result: Boolean = helper(answers).singleChildBelow16Yrs
+      val result: Boolean = helper(answers).hasChildEligibleForTfc
       result mustEqual false
     }
 
-    "return false when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
-
-      val answers: CacheMap = cacheMap(
-        NoOfChildrenId.toString -> JsNumber(4),
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild(
-            foo, ageOf16Over)),
-          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
-          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
-        WhichChildrenBlindId.toString -> Json.toJson(Seq(2)))
-
-      val result: Boolean = helper(answers).singleChildBelow16Yrs
-      result mustEqual false
-    }
-
-    "return true when the child aged exactly 16 and birthday before 31st of August are not registered blind" in {
-
-      val answers: CacheMap = cacheMap(
-        NoOfChildrenId.toString -> JsNumber(4),
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild(
-            foo, ageOf16Over)),
-          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
-          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
-        WhichChildrenBlindId.toString -> Json.toJson(Seq(2, 3)))
-
-      val result: Boolean = helper(answers).singleChildBelow16Yrs
-      result mustEqual true
-    }
-  }
-
-  ".multipleChildrenBelow16Yrs" must {
-    "return true when the children aged exactly 16 and birthday before 31st of August are disabled" in {
-
+    "return false when the children aged exactly 16 and birthday before 31st of August are disabled" in {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
@@ -266,29 +267,24 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
         WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2, 3)))
 
-      val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
+      val result: Boolean = helper(answers).hasChildEligibleForTfc
       result mustEqual true
     }
 
     "return true when the children aged exactly 16 and birthday before 31st of August are blind" in {
-
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
           "0" -> Json.toJson(AboutYourChild(
             foo, ageOf16Before31Aug)),
-          "1" -> Json.toJson(AboutYourChild(bar, ageOfUnder16)),
-          "2" -> Json.toJson(AboutYourChild(quux, ageOfUnder16)),
-          "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
-
+          "1" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug))),
         WhichChildrenBlindId.toString -> Json.toJson(Seq(0, 2, 3)))
 
-      val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
+      val result: Boolean = helper(answers).hasChildEligibleForTfc
       result mustEqual true
     }
 
-    "return false when the children aged exactly 16 and birthday before 31st of August are not blind nor disabled" in {
-
+    "return true when there are children under 11" in {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
         AboutYourChildId.toString -> Json.obj(
@@ -300,12 +296,26 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         WhichChildrenDisabilityId.toString -> Json.toJson(Seq(1, 2)),
         WhichChildrenBlindId.toString -> Json.toJson(Seq(2)))
 
-      val result: Boolean = helper(answers).multipleChildrenBelow16Yrs
+      val result: Boolean = helper(answers).hasChildEligibleForTfc
+      result mustEqual true
+    }
+
+    "return false when there are 16 year olds that are not disabled" in {
+      val answers: CacheMap = cacheMap(
+        NoOfChildrenId.toString -> JsNumber(4),
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild(
+            foo, ageOf16Before31Aug)),
+          "1" -> Json.toJson(AboutYourChild("Baz", ageOf16Before31Aug)))
+      )
+
+      val result: Boolean = helper(answers).hasChildEligibleForTfc
       result mustEqual false
     }
   }
 
-  ".childrenIdsForAgeExactly16AndDisabled" must {
+
+  "childrenIdsForAgeExactly16AndDisabled" must {
     "returns list with children exactly 16 years with dob before august and blind" in {
 
       val answers: CacheMap = cacheMap(
@@ -400,7 +410,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
   }
 
-  ".childrenBelow16AndExactly16Disabled" when {
+  "childrenBelow16AndExactly16Disabled" when {
     "return the list of children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
 
       val answers: CacheMap = cacheMap(
@@ -434,7 +444,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".childrenBelow16" must {
+  "childrenBelow16" must {
     "returns list of children id's whose age is less than 16" in {
       val answers: CacheMap = cacheMap(
         NoOfChildrenId.toString -> JsNumber(4),
@@ -465,7 +475,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".childrenWithDisabilityBenefits" must {
+  "childrenWithDisabilityBenefits" must {
 
     "return `Some` if `whichChildrenDisability` is defined" in {
       val answers = helper(cacheMap(
@@ -513,7 +523,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".childrenWithCosts" must {
+  "childrenWithCosts" must {
 
     "return `Some` if there are multiple children and `whoHasChildcareCosts` is defined" in {
       val answers = helper(cacheMap(
@@ -562,7 +572,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".hasApprovedCosts" must {
+  "hasApprovedCosts" must {
 
     import uk.gov.hmrc.childcarecalculatorfrontend.models.{YesNoNotYetEnum, YesNoUnsureEnum}
 
@@ -708,65 +718,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
   }
 
-  ".isOnHighRateDisabilityBenefits" must {
-    "return true" when {
-      "'you' are on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual true
-      }
-
-      "'partner' is on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual true
-      }
-
-      "'both' are on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString      -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString))),
-          WhichBenefitsPartnerGetId.toString  -> JsArray(Seq(JsString(WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual true
-      }
-    }
-
-    "return false" when {
-      "'you' are NOT on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual false
-      }
-
-      "'partner' is NOT on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual false
-      }
-
-      "'both' are NOT on high disability benefits" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString      -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString))),
-          WhichBenefitsPartnerGetId.toString  -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnHighRateDisabilityBenefits mustEqual false
-      }
-    }
-  }
-
-
-
-  ".isOnSevereDisabilityPremium" must {
+  "isOnSevereDisabilityPremium" must {
     "return true" when {
       "'you' are on severe disability premium" in {
         val answers = helper(cacheMap(
@@ -823,7 +775,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
   }
 
-  ".isAlreadyReceivingTaxCredits" must {
+  "isAlreadyReceivingTaxCredits" must {
     "return true" when {
       "Someone has tax credits" in {
         val answers = helper(cacheMap(TaxOrUniversalCreditsId.toString -> JsString(TaxOrUniversalCreditsEnum.TC.toString)))
@@ -838,58 +790,6 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
       "Someone has neither universal credits or tax credits" in {
         val answers = helper(cacheMap())
         answers.isAlreadyReceivingTaxCredits mustEqual false
-      }
-    }
-  }
-
-
-  ".isGettingChildVouchers" must {
-    "return true" when {
-      "'you' get child care vouchers" in {
-        val answers = helper(cacheMap(YourChildcareVouchersId.toString -> JsBoolean(true)))
-        answers.isGettingChildVouchers mustEqual true
-      }
-      "'partner' gets child care vouchers" in {
-        val answers = helper(cacheMap(PartnerChildcareVouchersId.toString -> JsBoolean(true)))
-        answers.isGettingChildVouchers mustEqual true
-      }
-      "asked 'who gets child care vouchers'" when {
-        "answering 'you" in {
-          val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.YOU.toString)))
-          answers.isGettingChildVouchers mustEqual true
-        }
-        "answering 'partner" in {
-          val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)))
-          answers.isGettingChildVouchers mustEqual true
-        }
-        "answering 'both" in {
-          val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothEnum.BOTH.toString)))
-          answers.isGettingChildVouchers mustEqual true
-        }
-      }
-    }
-
-    "return false" when {
-      "'you' dont get child care vouchers" in {
-        val answers = helper(cacheMap(YourChildcareVouchersId.toString -> JsBoolean(false)))
-        answers.isGettingChildVouchers mustEqual false
-      }
-      "'you' never answered the question about getting child care vouchers" in {
-        val answers = helper(cacheMap())
-        answers.isGettingChildVouchers mustEqual false
-      }
-
-      "'partner' does not get child care vouchers" in {
-        val answers = helper(cacheMap(PartnerChildcareVouchersId.toString -> JsBoolean(false)))
-        answers.isGettingChildVouchers mustEqual false
-      }
-      "'partner' never answered the question about getting child care vouchers" in {
-        val answers = helper(cacheMap())
-        answers.isGettingChildVouchers mustEqual false
-      }
-      "neither you/partner/both" in {
-        val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString(YouPartnerBothNeitherEnum.NEITHER.toString)))
-        answers.isGettingChildVouchers mustEqual false
       }
     }
   }

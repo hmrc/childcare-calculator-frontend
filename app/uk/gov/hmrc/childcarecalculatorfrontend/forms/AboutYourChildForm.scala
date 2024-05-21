@@ -51,7 +51,7 @@ object AboutYourChildForm extends Mappings {
     }
   }
 
-  private def multipleChildrenForm(index: Int = 0, children: Option[Map[Int, AboutYourChild]] = None)(implicit messages: Messages): Form[AboutYourChild] = {
+  private def multipleChildrenForm(index: Int, children: Option[Map[Int, AboutYourChild]])(implicit messages: Messages): Form[AboutYourChild] = {
     val indexMessage = messages(s"nth.$index")
 
     Form(

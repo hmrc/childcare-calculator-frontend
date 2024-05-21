@@ -35,7 +35,7 @@ class WhichBenefitsYouGetViewSpec extends NewViewBehaviours with NewCheckboxView
   def form: Form[Set[String]] = WhichBenefitsYouGetForm()
 
   def createView(form: Form[Set[String]] = form): Html =
-    mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
+    mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhichBenefitsYouGet view" must {
 
@@ -49,7 +49,7 @@ class WhichBenefitsYouGetViewSpec extends NewViewBehaviours with NewCheckboxView
 
   "whichBenefitsYouGet view " must {
     s"display correct content when loaded" in {
-      val view = mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages, lang)
+      val view = mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.benefits"))
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.support"))
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.jobseeker.allowance"))

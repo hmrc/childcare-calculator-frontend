@@ -22,9 +22,11 @@
     heading: heading,
     detailSummaryComponent: detail_summary,
     govukWarningText : GovukWarningText,
+        link: link,
+        p: p
 )
 
-@(schemeResult: SchemeResultModel)(implicit messages: Messages, lang: Lang)
+@(schemeResult: SchemeResultModel)(implicit messages: Messages)
 
 <h3 class="govuk-heading-m" @if(schemeResult.id.isDefined) { id="@schemeResult.id"} >@schemeResult.title</h3>
 
@@ -36,8 +38,8 @@
 }
 
 @if(schemeResult.couldGet.isDefined){
-    @if(!schemeResult.eligibility.isDefined) {
-        <div class="govuk-inset-text">
+    @if(schemeResult.eligibility.isEmpty) {
+        <div class="govuk-inset-text govuk-body">
             @if(schemeResult.childrenAgeGroupText.flatten.size > 1) {
                 <p class="govuk-body">@schemeResult.couldGet:</p>
                 @playComponents.list(
@@ -51,7 +53,7 @@
             }
         </div>
     } else {
-    <p class="govuk-inset-text">@schemeResult.couldGet <strong class="govuk-bold" id="@schemeResult.eligibility.fold("")(_.id)">@schemeResult.eligibility.fold("")(_.value)</strong>
+    <p class="govuk-inset-text govuk-body">@schemeResult.couldGet <strong class="govuk-bold" id="@schemeResult.eligibility.fold("")(_.id)">@schemeResult.eligibility.fold("")(_.value)</strong>
         @schemeResult.periodText</p>
     }
 }
@@ -75,7 +77,7 @@
 }
 
 @if(schemeResult.insetText.isDefined) {
-    <div class="govuk-inset-text" @if(schemeResult.insetTextId.isDefined){id="@schemeResult.insetTextId.get"}>
+    <div class="govuk-inset-text govuk-body" @if(schemeResult.insetTextId.isDefined){id="@schemeResult.insetTextId.get"}>
         @schemeResult.insetText
     </div>
 }
@@ -102,6 +104,22 @@
     }
 }
 
-@if(schemeResult.sectionBreak){
-    @section_break()
+@if(schemeResult.displayApplyForFCHLink) {
+    @p() {
+        @link(
+            messages(s"aboutYourResults.more.info.${schemeResult.location}.hours.link"),
+            s"aboutYourResults.more.info.${schemeResult.location}.hours.title",
+            isExternal = true
+        )
+    }
+}
+
+@if(schemeResult.displayApplyForTFCLink) {
+    @p() {
+        @link(
+            messages(s"aboutYourResults.more.info.${schemeResult.location}.tfc.link"),
+            s"aboutYourResults.more.info.${schemeResult.location}.tfc.title",
+            isExternal = true
+        )
+    }
 }

@@ -32,7 +32,7 @@ object SubmissionSuccessful extends SubmissionStatus
 object SubmissionFailed extends SubmissionStatus
 
 sealed
-class SplunkSubmissionEvent @Inject() (data: Map[String, String])(implicit hc: HeaderCarrier, ec: ExecutionContext)
+class SplunkSubmissionEvent @Inject() (data: Map[String, String])(implicit hc: HeaderCarrier)
   extends DataEvent(
     auditSource = "Childcare-Calculator",
     auditType = "childcare-calculator-feedback-survey",
@@ -43,7 +43,7 @@ trait SplunkSubmissionServiceInterface {
   def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus]
 }
 
-class SplunkSubmissionService @Inject() (http: DefaultAuditConnector)(implicit ec: ExecutionContext) extends SplunkSubmissionServiceInterface {
+class SplunkSubmissionService @Inject() (http: DefaultAuditConnector)(implicit val ec: ExecutionContext) extends SplunkSubmissionServiceInterface {
 
   def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
     

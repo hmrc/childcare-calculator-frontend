@@ -17,24 +17,32 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import javax.inject.Inject
-
 import play.api.i18n.Messages
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, YouPartnerBothEnum}
 
 class FirstParagraphBuilder @Inject()(utils: Utils){
 
-  def buildFirstParagraph(answers: UserAnswers)(implicit messages: Messages) = {
-    val doYouHaveChildren = buildFirstSection(answers, _: String)
-    val yearlyChildcareCosts = buildSecondSection(answers, _: String)
-    val whoAreYouLivingWith = buildThirdSection(answers, _: String)
-    val areYouInPaidWork = buildFourthSection(answers, _: String)
-    val firstParagraph = (doYouHaveChildren andThen yearlyChildcareCosts andThen whoAreYouLivingWith andThen areYouInPaidWork) ("")
-    firstParagraph
+  def buildFirstParagraph(answers: UserAnswers)(implicit messages: Messages): List[String] = {
+    val doYouHaveChildren = buildFirstSection(answers)
+    val yearlyChildcareCosts = buildSecondSection(answers)
+    val whoAreYouLivingWith = buildThirdSection(answers)
+    val areYouInPaidWork = buildFourthSection(answers)
+    val yourWeeklyHours = buildFifthSection(answers)
+    val partnerWeeklyHours = buildSixthSection(answers)
+    val firstPararagraph = List(
+      doYouHaveChildren,
+      yearlyChildcareCosts,
+      whoAreYouLivingWith,
+      areYouInPaidWork,
+      yourWeeklyHours,
+      partnerWeeklyHours
+    ).filter(_.nonEmpty)
+    firstPararagraph
   }
 
-  private def buildFirstSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
+  private def buildFirstSection(answers: UserAnswers)(implicit messages: Messages) = {
     answers.noOfChildren match {
-      case Some(numberOfChildren) => {
+      case Some(numberOfChildren) =>
         val childOrChildren = if (numberOfChildren == 1) Messages("results.firstParagraph.aChild") else Messages("results.firstParagraph.children")
         val numberOfChildrenMessage = {
           if (numberOfChildren == 0) {
@@ -44,77 +52,83 @@ class FirstParagraphBuilder @Inject()(utils: Utils){
             if (numberOfChildren > 1) s"${Messages("results.firstParagraph.have")} $numberOfChildren" else Messages("results.firstParagraph.have")
           }
         }
-        s"$paragraph${Messages("results.firstParagraph.youToldTheCalculator", numberOfChildrenMessage,childOrChildren)}"
-      }
+        s"${Messages("results.firstParagraph.youToldTheCalculator", numberOfChildrenMessage,childOrChildren)}"
       case _ => ""
     }
   }
 
-  private def buildSecondSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
+  private def buildSecondSection(answers: UserAnswers)(implicit messages: Messages) = {
     val section2 =  answers.noOfChildren match {
-      case Some(_) => {
+      case Some(_) =>
         val childcareCosts = CalculateChildcareCosts(answers)
-        if (childcareCosts == 0) "." else s", ${Messages("results.firstParagraph.yearlyChildcareCosts")}${utils.valueFormatter(childcareCosts)}."
-      }
+        s"${Messages("results.firstParagraph.yearlyChildcareCosts")}${utils.valueFormatter(childcareCosts)}"
       case _ => ""
     }
 
-    s"$paragraph$section2"
+    section2
   }
 
-  private def buildThirdSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
+  private def buildThirdSection(answers: UserAnswers)(implicit messages: Messages) = {
     val livesOnOwnOrWithPartner: Option[String] = answers.doYouLiveWithPartner.map(livesWithPartner => if (livesWithPartner) Messages("results.firstParagraph.withYourPartner") else Messages("results.firstParagraph.onYourOwn"))
-    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => s" ${Messages("results.firstParagraph.youLiveAnd", livesOnOwnOrWithPartner)}")
-    s"$paragraph$section3"
+    val section3 = livesOnOwnOrWithPartner.fold("")(livesOnOwnOrWithPartner => Messages("results.firstParagraph.youLiveAnd", livesOnOwnOrWithPartner))
+    s"$section3"
   }
 
-  private def buildFourthSection(answers: UserAnswers, paragraph: String)(implicit messages: Messages) = {
-    val currentlyInPaidWork = Messages("results.firstParagraph.inPaidWork")
-
+  private def buildFourthSection(answers: UserAnswers)(implicit messages: Messages) = {
     val section4 = answers.doYouLiveWithPartner.fold("")(livesWithPartner => if (livesWithPartner) {
-      checkWhoIsInPaidEmployment(answers, currentlyInPaidWork)
+      checkWhoIsInPaidEmployment(answers)
     }
     else {
-      checkIfInPaidWork(answers, currentlyInPaidWork)
+      checkIfInPaidWork(answers)
     })
 
-    s"$paragraph$section4"
+    s"$section4"
   }
 
-  private def checkIfInPaidWork(answers: UserAnswers, currentlyInPaidWork: String)(implicit messages: Messages) = {
+  private def buildFifthSection(answers: UserAnswers)(implicit messages: Messages) = {
+    val areYouInPaidWork = answers.areYouInPaidWork.getOrElse(false) || answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.YOU.toString)
+    val areYouAndPartnerInPaidWork = answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)
+
+    if(areYouInPaidWork || areYouAndPartnerInPaidWork) {
+      val hoursAWeek = answers.parentWorkHours.getOrElse(BigDecimal(0))
+      Messages("results.firstParagraph.youWorkXHoursAweek", hoursAWeek)
+    } else {
+      ""
+    }
+  }
+
+  private def buildSixthSection(answers: UserAnswers)(implicit messages: Messages) = {
+    val isPartnerInPaidWork = answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.PARTNER.toString)
+    val areYouAndPartnerInPaidWork = answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)
+
+    if(isPartnerInPaidWork || areYouAndPartnerInPaidWork) {
+      val hoursAWeek = answers.partnerWorkHours.getOrElse(BigDecimal(0))
+      Messages("results.firstParagraph.yourPartnerWorksXHoursAweek", hoursAWeek)
+    } else {
+      ""
+    }
+  }
+
+  private def checkIfInPaidWork(answers: UserAnswers)(implicit messages: Messages) = {
     if (answers.areYouInPaidWork.getOrElse(false)) {
-      val hoursAWeek = answers.parentWorkHours.fold("")(hours => s"${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
-      s" ${Messages("results.firstParagraph.youAre", currentlyInPaidWork, hoursAWeek)}"
+      Messages("results.firstParagraph.youInPaidWork")
     }
     else {
-      "."
+      ""
     }
   }
 
-  private def checkWhoIsInPaidEmployment(answers: UserAnswers, currentlyInPaidWork: String)(implicit messages: Messages) = {
+  private def checkWhoIsInPaidEmployment(answers: UserAnswers)(implicit messages: Messages) = {
     val You = YouPartnerBothEnum.YOU.toString
     val Partner = YouPartnerBothEnum.PARTNER.toString
     val Both = YouPartnerBothEnum.BOTH.toString
 
-    answers.whoIsInPaidEmployment.fold(".")(whoInPaidEmployment => {
-      whoInPaidEmployment match {
-        case You => {
-          val hoursAWeek = answers.parentWorkHours.fold("")(hours => s"${Messages("results.firstParagraph.youWorkXHoursAweek", hours)}")
-          s" ${Messages("results.firstParagraph.onlyYouAre", currentlyInPaidWork, hoursAWeek)}"
-        }
-        case Partner => {
-          val hoursAweek = answers.partnerWorkHours.fold("")(hours => s" ${Messages("results.firstParagraph.yourPartnerWorksXHoursAweek", hours)}")
-          s" ${Messages("results.firstParagraph.onlyYourPartnerIs", currentlyInPaidWork, hoursAweek)}"
-        }
-        case Both => {
-          val yourHours = answers.parentWorkHours.fold(BigDecimal(0))(c => c)
-          val partnerHours = answers.partnerWorkHours.fold(BigDecimal(0))(c => c)
-          val hoursAweek = s" ${Messages("results.firstParagraph.youAndYourPartnerWorkXhoursAweek", yourHours, partnerHours)}"
-          s" ${Messages("results.firstParagraph.bothYouAndYourPartnerAre", currentlyInPaidWork, hoursAweek)}"
-        }
-        case _ => s" ${Messages("results.firstParagraph.noneOfYouAre")} ${Messages("results.firstParagraph.inPaidWork")}"
-      }
-    })
+    answers.whoIsInPaidEmployment.fold("") {
+      case You => Messages("results.firstParagraph.onlyYouInPaidWork")
+      case Partner => Messages("results.firstParagraph.onlyPartnerInPaidWork")
+      case Both => Messages("results.firstParagraph.youAndPartnerInPaidWork")
+      case _ => Messages("results.firstParagraph.neitherInPaidWork")
+    }
   }
 
   private def CalculateChildcareCosts(answers: UserAnswers) = {

@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import java.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{carersAllowanceBenefits, disabilityBenefits, highRatedDisabilityBenefits, incomeBenefits, neither, severelyDisabledPremium}
 
+import java.time.LocalDate
 import scala.util.Try
 
 // scalastyle:off number.of.methods
@@ -314,14 +314,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def whatIsYourPartnersTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourPartnersTaxCodeId.toString)
 
-  def doYouKnowYourPartnersAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourPartnersAdjustedTaxCodeId.toString)
-
-  def doYouKnowYourAdjustedTaxCode: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouKnowYourAdjustedTaxCodeId.toString)
-
-  def hasYourTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourTaxCodeBeenAdjustedId.toString)
-
-  def hasYourPartnersTaxCodeBeenAdjusted: Option[String] = cacheMap.getEntry[String](HasYourPartnersTaxCodeBeenAdjustedId.toString)
-
   def partnerWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerWorkHoursId.toString)
 
   def parentWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentWorkHoursId.toString)
@@ -353,7 +345,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
   }
 
   def isChildAgedTwo: Option[Boolean] = childrenAgeGroups.map(_.contains(TwoYears))
+
   def isChildAgedThreeOrFour: Option[Boolean] = childrenAgeGroups.map(_.exists(Set[ChildAgeGroup](ThreeYears, FourYears).contains))
+
   def isChildAgedNineTo23Months: Option[Boolean] = childrenAgeGroups.map(_.contains(NineTo23Months))
 
   def location: Option[Location.Value] = cacheMap.getEntry[Location.Value](LocationId.toString)
@@ -373,57 +367,83 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
     }
   }
 
-  def childrenOver16: Option[Map[Int, AboutYourChild]] = {
-    val children16OrOlder = get16YearOldsAndOlder
-    val childrenBetween16And17 = extract16YearOldsWithBirthdayBefore31stAugust(children16OrOlder)
-    children16OrOlder.map{
-      children => children.filterNot {
-        case (x, _) => childrenBetween16And17.getOrElse(Map()).keys.exists(_ == x)
-      }
+  // scalastyle:off cyclomatic.complexity
+  def hasChildEligibleForTfc: Boolean = {
+    // Day of birth is before 1st September and age is 16 or under
+    def after16yoCutoff(dob: LocalDate) = dob.isAfter(LocalDate.of(now.getYear - 17, 8, 31))
+
+    // Day of birth is before 1st September and age is 11 or under
+    def after11yoCutoff(dob: LocalDate) = dob.isAfter(LocalDate.of(now.getYear - 12, 8, 31))
+
+    aboutYourChild.exists { children =>
+      children.map {
+        case (_, AboutYourChild(_, dob)) if after11yoCutoff(dob) =>
+          true
+        case (childId, AboutYourChild(_, dob)) if children.size > 1 && after16yoCutoff(dob) &&
+          (whichChildrenDisability.exists(_.contains(childId)) || whichChildrenBlind.exists(_.contains(childId))) =>
+          true
+        case (_, AboutYourChild(_, dob)) if children.size == 1 && after16yoCutoff(dob) &&
+          (childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)) =>
+          true
+        case _ =>
+          false
+      }.toSeq.contains(true)
     }
   }
 
-  def extract16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]) = {
+  def childrenOver16: Option[Map[Int, AboutYourChild]] = {
+    val children16OrOlder = get16YearOldsAndOlder
+    val childrenBetween16And17 = extract16YearOldsWithBirthdayBefore31stAugust(children16OrOlder)
+    children16OrOlder.map {
+      children =>
+        children.filterNot {
+          case (x, _) => childrenBetween16And17.getOrElse(Map()).keys.exists(_ == x)
+        }
+    }
+  }
+
+  def extract16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]): Option[Map[Int, AboutYourChild]] = {
     children.map {
       children16OrOlder =>
         children16OrOlder.filter {
-          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${now.getYear-1}-08-31")) &&
+          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${now.getYear - 1}-08-31")) &&
             model.dob.plusYears(16).isBefore(LocalDate.parse(s"${now.getYear}-09-01"))
         }
     }
   }
 
-  private def get16YearOldsAndOlder = {
+  private def get16YearOldsAndOlder: Option[Map[Int, AboutYourChild]] = {
     aboutYourChild.map {
       children =>
         children.filter {
-          case (_, model) =>model.dob.isBefore(now.minusYears(16))
+          case (_, model) => model.dob.isBefore(now.minusYears(16))
         }
     }
   }
 
   def numberOfChildrenOver16: Int = childrenOver16.fold(0)(_.size)
 
-   def childrenIdsForAgeExactly16: List[Int] =
-     extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
+  def childrenIdsForAgeExactly16: List[Int] =
+    extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
 
-   def childrenBelow16AndExactly16Disabled:List[Int] = {
-    (childrenIdsForAgeExactly16AndDisabled ++childrenBelow16).sorted
+  def childrenBelow16AndExactly16Disabled: List[Int] = {
+    (childrenIdsForAgeExactly16AndDisabled ++ childrenBelow16).sorted
   }
 
-  def childrenBelow16:List[Int] =
+  def childrenBelow16: List[Int] =
     aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(now.minusYears(16))).keys.toList
 
   def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
 
     childrenIdsForAgeExactly16.filter {
 
-        identity => if(noOfChildren.getOrElse(0)==1) {
-          childrenDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
+      identity =>
+        if (noOfChildren.getOrElse(0) == 1) {
+          childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)
         } else {
-          whichChildrenDisability.getOrElse(Set()).contains(identity)|| whichChildrenBlind.getOrElse(Set()).contains(identity)
+          whichChildrenDisability.getOrElse(Set()).contains(identity) || whichChildrenBlind.getOrElse(Set()).contains(identity)
         }
-      }
+    }
   }
 
   def childrenWithDisabilityBenefits: Option[Set[Int]] = {
@@ -443,26 +463,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
           }
       }
     }
-  }
-
-  def singleChildBelow16Yrs:Boolean = {
-    if(noOfChildren .contains(1)){ childDisabilityBenefits.contains(true)|| registeredBlind.contains(true)
-    }else{
-      multipleChildrenBelow16Yrs
-    }
-  }
-
- def multipleChildrenBelow16Yrs: Boolean = {
-
-     val Disabled16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
-       (acc, child) => acc || whichChildrenDisability.getOrElse(Set()).contains(child)
-     }
-
-     val registeredBlind16yrChild = childrenIdsForAgeExactly16.foldLeft(false){
-       (acc, child) => acc || whichChildrenBlind.getOrElse(Set()).contains(child)
-     }
-
-     Disabled16yrChild|| registeredBlind16yrChild
   }
 
   def childrenWithCosts: Option[Set[Int]] = {
@@ -499,41 +499,28 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def hasVouchers: Boolean = Seq(yourChildcareVouchers, partnerChildcareVouchers, checkVouchersForBoth).flatten.contains(true)
 
-  def checkVouchersForBoth: Option[Boolean] =  whoGetsVouchers match {
+  def checkVouchersForBoth: Option[Boolean] = whoGetsVouchers match {
     case None => None
     case Some("neither") => Some(false)
     case _ => Some(true)
   }
 
   def max30HoursEnglandContent: Option[Boolean] = {
-    (location,hasVouchers) match {
+    (location, hasVouchers) match {
       case (Some(Location.ENGLAND), true) => Some(true)
       case (Some(Location.ENGLAND), false) => Some(false)
       case (_, _) => None
     }
   }
 
-  def isOnHighRateDisabilityBenefits: Boolean =
-    whichBenefitsYouGet.getOrElse(Set()) ++ whichBenefitsPartnerGet.getOrElse(Set()) contains WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
-
   def isOnSevereDisabilityPremium: Boolean =
     whichBenefitsYouGet.getOrElse(Set()) ++ whichBenefitsPartnerGet.getOrElse(Set()) contains WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
 
   def isAlreadyReceivingTaxCredits: Boolean =
     taxOrUniversalCredits match {
-      case Some(credit) if credit == TaxOrUniversalCreditsEnum.TC.toString  => true
-      case None                                                             => false
-      case _                                                                => false
+      case Some(credit) if credit == TaxOrUniversalCreditsEnum.TC.toString => true
+      case None => false
+      case _ => false
     }
-
-  def isGettingChildVouchers: Boolean =
-    (yourChildcareVouchers, partnerChildcareVouchers, whoGetsVouchers) match {
-      case ( Some(true), _, _ )                                                   => true
-      case ( _, Some(true), _ )                                                   => true
-      case ( _, _, Some(who)) if Try(YouPartnerBothEnum.withName(who)).isSuccess  => true
-      case ( _, _, _ )                                                            => false
-    }
-
-  def notEligibleForTaxCredits: Boolean = !isOnSevereDisabilityPremium && !isAlreadyReceivingTaxCredits && isGettingChildVouchers
 
 }

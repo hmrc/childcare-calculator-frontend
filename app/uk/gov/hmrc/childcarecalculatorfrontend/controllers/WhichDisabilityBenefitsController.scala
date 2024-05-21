@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import javax.inject.Inject
-import play.api.i18n.{I18nSupport, Lang}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
@@ -45,7 +45,6 @@ class WhichDisabilityBenefitsController @Inject() (
 
   def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      implicit val lang: Lang = request.lang
       withValidIndex(childIndex) {
         name =>
           val answer = request.userAnswers.whichDisabilityBenefits(childIndex)
@@ -59,7 +58,6 @@ class WhichDisabilityBenefitsController @Inject() (
 
   def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      implicit val lang: Lang = request.lang
       withValidIndex(childIndex) {
         name =>
           WhichDisabilityBenefitsForm(name).bindFromRequest().fold(
