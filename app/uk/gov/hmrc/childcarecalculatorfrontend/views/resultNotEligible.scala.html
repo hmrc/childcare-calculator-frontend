@@ -26,15 +26,6 @@
 
 @(model: ResultsViewModel)(implicit messages: Messages)
 
-@if(model.freeHours.isEmpty) {
-    @schemeResult(SchemeResultModel(
-        title = messages("result.free.hours.title.3to4"),
-        insetText = Some(messages("result.free.hours.not.eligible.3to4")),
-        insetTextId = Some("notEligibleFreeHours"),
-        sectionBreak = false
-    ))
-}
-
 @if(model.freeChildcareWorkingParentsEligibilityMsg.isDefined) {
     @schemeResult(SchemeResultModel(
         title = messages("result.free.childcare.working.parents.title"),

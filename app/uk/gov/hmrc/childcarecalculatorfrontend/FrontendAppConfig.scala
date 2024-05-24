@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend
 import javax.inject.Inject
 import play.api.Configuration
 import play.api.i18n.Lang
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{eligibleMaxFreeHours, freeHoursForEngland}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
@@ -69,7 +70,7 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val maxFreeHoursCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.maxFreeHoursCutoff"))
 
   //This scheme overlaps the max hours scheme, after the date for allowMaxFreeHoursFromNineMonths they will become the same
-  def maxFreeHoursAmount: Double = if(allowMaxFreeHoursFromNineMonths) maxWorkingHours else minWorkingHours
+  def maxFreeHoursAmount: Double = if(allowMaxFreeHoursFromNineMonths) eligibleMaxFreeHours else freeHoursForEngland
   def allowFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(nineMonthRuleCutoff)
 
   def allowMaxFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(maxFreeHoursCutoff)
