@@ -28,8 +28,10 @@
 @(model: ResultsViewModel, utils: Utils, location: String)(implicit messages: Messages)
 
 @freeHoursContactCouncil = {
-    <p class="govuk-body">@messages("result.free.hours.detailPara3.you.can") <a class="govuk-link" id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title.3to4"):@messages("result.free.hours.detailPara3.link.text")" href="@messages("result.free.hours.detailPara3.link")">@messages("result.free.hours.detailPara3.link.text") @messages("site.opens.new.tab")</a>
-        .</p>
+    <p class="govuk-body">@messages("result.free.hours.detailPara3.you.can")
+        <a class="govuk-link" id="contactLocalCouncil" target="_blank" rel="external" data-journey-click="link - click:@messages("result.free.hours.title.3to4"):@messages("result.free.hours.detailPara3.link.text")" href="@messages("result.free.hours.detailPara3.link")">
+            @messages("result.free.hours.detailPara3.link.text") @messages("site.opens.new.tab")</a>.
+    </p>
 }
 
 @if(model.freeChildcareWorkingParents) {

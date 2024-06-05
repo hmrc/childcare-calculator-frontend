@@ -86,7 +86,7 @@
         }
     }
 
-    @if(!model.isEligibleForFcwpAndTfc) {
+    @if(model.hasIneligibleMessages) {
         <h2 class="govuk-heading-l">@messages("result.not.eligible.subheading")</h2>
         @resultNotEligible(model)
     }
@@ -100,7 +100,7 @@
     <div class="govuk-!-margin-top-9">
         @p() {
             <a class="govuk-link" rel="external" target="_blank" id="feedbackSurveyLink" href="@routes.FeedbackSurveyController.loadFeedbackSurvey">
-                @messages("results.feedback.survey.link.text") <span class="govuk-visually-hidden"> @messages("feedback.hint.link.opens.new.tab")</span></a>
+                @messages("results.feedback.survey.link.text")<span class="govuk-visually-hidden"> @messages("feedback.hint.link.opens.new.tab")</span></a>
             @messages("results.feedback.survey.text.after.link")
         }
     </div>
