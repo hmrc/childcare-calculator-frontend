@@ -18,48 +18,28 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.benefits
 
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouOrPartnerGetBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits.doYouOrPartnerGetBenefits
 
-class DoYouOrPartnerGetBenefitsViewSpec extends NewViewBehaviours {
+class DoYouOrPartnerGetBenefitsViewSpec extends NewYesNoViewBehaviours {
 
-  val form: Form[String] = DoYouOrPartnerGetBenefitsForm()
+  override val form: Form[Boolean] = BooleanForm()
 
   val messageKeyPrefix = "doYouOrPartnerGetBenefits"
   val view: doYouOrPartnerGetBenefits = application.injector.instanceOf[doYouOrPartnerGetBenefits]
 
-  def createView: () => HtmlFormat.Appendable = () => view(form)(fakeRequest, messages)
+  def createView: () => HtmlFormat.Appendable = () => view(BooleanForm())(fakeRequest, messages)
 
-  def createViewUsingForm: Form[String] => HtmlFormat.Appendable = (form: Form[String]) => view(form)(fakeRequest, messages)
+  def createViewUsingForm: Form[Boolean] => HtmlFormat.Appendable = (form: Form[Boolean]) => view(form)(fakeRequest, messages)
 
   "DoYouOrPartnerGetBenefits view" must {
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
+
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.DoYouOrPartnerGetBenefitsController.onSubmit().url)
   }
 
-  "DoYouOrPartnerGetBenefits view" when {
-    "rendered" must {
-      "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(form))
-        for (option <- DoYouOrPartnerGetBenefitsForm.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, isChecked = false)
-        }
-      }
-    }
-
-    for (option <- DoYouOrPartnerGetBenefitsForm.options) {
-      s"rendered with a value of '${option.value}'" must {
-        s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(form.bind(Map("value" -> s"${option.value}"))))
-          assertContainsRadioButton(doc, option.id, "value", option.value, isChecked = true)
-
-          for (unselectedOption <- DoYouOrPartnerGetBenefitsForm.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, isChecked = false)
-          }
-        }
-      }
-    }
-  }
 }

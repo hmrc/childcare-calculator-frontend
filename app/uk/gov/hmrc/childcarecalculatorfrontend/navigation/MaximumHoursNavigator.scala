@@ -68,6 +68,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute,
     DoYouGetBenefitsId -> doYouGetBenefitsRoute,
     DoYouOrPartnerGetBenefitsId -> doYouOrPartnerGetBenefitsRoute,
+    WhoGetsTheBenefitsId -> whoGetsTheBenefitsRoute,
     DoYouGetCarersAllowanceId -> doYouGetCarersAllowanceRoute,
     DoYouGetIncomeBasedBenefitsId -> doYouGetIncomeBasedBenefitsRoute,
     DoYouGetSevereDisabilityPremiumId -> doYouGetSevereDisabilityPremiumRoute,
@@ -197,9 +198,15 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def doYouOrPartnerGetBenefitsRoute(answers: UserAnswers): Call = {
     utils.getCall(answers.doYouOrPartnerGetBenefits) {
+      case true => benefitsRoutes.WhoGetsTheBenefitsController.onPageLoad()
+      case false => endOfBenefitsQuestions(answers)
+    }
+  }
+
+  private def whoGetsTheBenefitsRoute(answers: UserAnswers): Call = {
+    utils.getCall(answers.whoGetsTheBenefits) {
       case `you` | `both` => benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad()
       case `partner` => benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad()
-      case `neither` => endOfBenefitsQuestions(answers)
     }
   }
 
@@ -236,7 +243,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
   }
 
   private def endOfYourBenefitsQuestions(answers: UserAnswers): Call = {
-    answers.doYouOrPartnerGetBenefits match {
+    answers.whoGetsTheBenefits match {
       case Some(`both`) => benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad()
       case _ => endOfBenefitsQuestions(answers)
     }

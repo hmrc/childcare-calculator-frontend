@@ -22,7 +22,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{carersAllowanceBenefits, disabilityBenefits, highRatedDisabilityBenefits, incomeBenefits, neither, severelyDisabledPremium}
 
 import java.time.LocalDate
-import scala.util.Try
 
 // scalastyle:off number.of.methods
 
@@ -275,14 +274,12 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
   }
 
   def whoGetsBenefits: Option[String] = cacheMap.getEntry[String](WhoGetsBenefitsId.toString) match {
-    case None => doYouOrPartnerGetBenefits
+    case None => whoGetsTheBenefits
     case option => option
   }
 
-  //TODO: look into rewriting how this is used when the old pages are removed.
-  // Should be able to do whoGetsBenefits and doYouOrYourPartnerGetAnyBenefits checks by checking doYouOrPartnerGetBenefits once.
   def doYouOrYourPartnerGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouOrYourPartnerGetAnyBenefitsId.toString) match {
-    case None => doYouOrPartnerGetBenefits.map(_ != neither)
+    case None => doYouOrPartnerGetBenefits
     case option => option
   }
 
@@ -292,7 +289,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
   }
 
   def doYouGetBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetBenefitsId.toString)
-  def doYouOrPartnerGetBenefits: Option[String] = cacheMap.getEntry[String](DoYouOrPartnerGetBenefitsId.toString)
+  def doYouOrPartnerGetBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouOrPartnerGetBenefitsId.toString)
+  def whoGetsTheBenefits: Option[String] = cacheMap.getEntry[String](WhoGetsTheBenefitsId.toString)
   def doYouGetCarersAllowance: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetCarersAllowanceId.toString)
   def doYouGetIncomeBasedBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetIncomeBasedBenefitsId.toString)
   def doYouGetSevereDisabilityPremium: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetSevereDisabilityPremiumId.toString)

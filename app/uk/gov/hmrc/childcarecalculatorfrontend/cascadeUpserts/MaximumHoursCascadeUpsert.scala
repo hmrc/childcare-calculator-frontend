@@ -40,6 +40,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
       DoYouGetBenefitsId.toString -> ((v, cm) => storeDoYouGetBenefits(v, cm)),
       DoYouOrPartnerGetBenefitsId.toString -> ((v, cm) => storeDoYouOrPartnerGetBenefits(v, cm)),
+      WhoGetsTheBenefitsId.toString -> ((v, cm) => storeWhoGetsTheBenefits(v, cm)),
       DoYouGetIncomeBasedBenefitsId.toString -> ((v, cm) => storeDoYouGetIncomeBasedBenefits(v, cm)),
       DoYouGetDisabilityBenefitsId.toString -> ((v, cm) => storeDoYouGetDisabilityBenefits(v, cm)),
       DoesPartnerGetIncomeBasedBenefitsId.toString -> ((v, cm) => storeDoesPartnerGetIncomeBasedBenefits(v, cm)),
@@ -258,7 +259,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeDoYouGetBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsBoolean(false) =>
-        cacheMap.copy(data = cacheMap.data - DoYouOrPartnerGetBenefitsId.toString -
+        cacheMap.copy(data = cacheMap.data - DoYouOrPartnerGetBenefitsId.toString - WhoGetsTheBenefitsId.toString -
           DoYouGetCarersAllowanceId.toString - DoesPartnerGetCarersAllowanceId.toString -
           DoYouGetIncomeBasedBenefitsId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
           DoYouGetSevereDisabilityPremiumId.toString - DoesPartnerGetSevereDisabilityPremiumId.toString -
@@ -266,7 +267,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
           DoYouGetHigherRateDisabilityBenefitsId.toString - DoesPartnerGetHigherRateDisabilityBenefitsId.toString
         )
       case _ =>
-        cacheMap.copy(data = cacheMap.data - DoYouOrPartnerGetBenefitsId.toString -
+        cacheMap.copy(data = cacheMap.data - DoYouOrPartnerGetBenefitsId.toString - WhoGetsTheBenefitsId.toString -
           DoesPartnerGetCarersAllowanceId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
           DoesPartnerGetSevereDisabilityPremiumId.toString - DoesPartnerGetDisabilityBenefitsId.toString -
           DoesPartnerGetHigherRateDisabilityBenefitsId.toString
@@ -280,20 +281,8 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeDoYouOrPartnerGetBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsString(`you`) =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString -
-          DoesPartnerGetCarersAllowanceId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
-          DoesPartnerGetSevereDisabilityPremiumId.toString - DoesPartnerGetDisabilityBenefitsId.toString -
-          DoesPartnerGetHigherRateDisabilityBenefitsId.toString
-        )
-      case JsString(`partner`) =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString -
-          DoYouGetCarersAllowanceId.toString - DoYouGetIncomeBasedBenefitsId.toString -
-          DoYouGetSevereDisabilityPremiumId.toString - DoYouGetDisabilityBenefitsId.toString -
-          DoYouGetHigherRateDisabilityBenefitsId.toString
-        )
-      case JsString(`neither`) =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString -
+      case JsBoolean(false) =>
+        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString - WhoGetsTheBenefitsId.toString -
           DoYouGetCarersAllowanceId.toString - DoesPartnerGetCarersAllowanceId.toString -
           DoYouGetIncomeBasedBenefitsId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
           DoYouGetSevereDisabilityPremiumId.toString - DoesPartnerGetSevereDisabilityPremiumId.toString -
@@ -307,6 +296,26 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       data = mapToStore.data - DoYouGetAnyBenefitsId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
         WhoGetsBenefitsId.toString - WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString
     ))
+  }
+
+  private def storeWhoGetsTheBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
+    val mapToStore = value match {
+      case JsString(`you`) =>
+        cacheMap.copy(data = cacheMap.data -
+          DoesPartnerGetCarersAllowanceId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
+          DoesPartnerGetSevereDisabilityPremiumId.toString - DoesPartnerGetDisabilityBenefitsId.toString -
+          DoesPartnerGetHigherRateDisabilityBenefitsId.toString
+        )
+      case JsString(`partner`) =>
+        cacheMap.copy(data = cacheMap.data -
+          DoYouGetCarersAllowanceId.toString - DoYouGetIncomeBasedBenefitsId.toString -
+          DoYouGetSevereDisabilityPremiumId.toString - DoYouGetDisabilityBenefitsId.toString -
+          DoYouGetHigherRateDisabilityBenefitsId.toString
+        )
+      case _ =>
+        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString)
+    }
+    store(WhoGetsTheBenefitsId.toString, value, mapToStore)
   }
 
   private def storeDoYouGetIncomeBasedBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {

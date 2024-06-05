@@ -1242,23 +1242,16 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
   "doYouOrPartnerGetBenefitsRoute" must {
-    "redirect to Carers Allowance if the answer is You or Both" in {
+    "redirect to Who Gets The Benefits if the answer is Yes" in {
       val answers = spy(userAnswers())
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you) thenReturn Some(both)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(true)
 
       val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
-      result mustEqual benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad
+      result mustBe benefitsRoutes.WhoGetsTheBenefitsController.onPageLoad()
     }
-    "redirect to Partner Carers Allowance if the answer is Partner" in {
+    "redirect to Your Age if the answer is No and Parent or Both are working" in {
       val answers = spy(userAnswers())
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(partner)
-
-      val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
-      result mustEqual benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad
-    }
-    "redirect to Your Age if the answer is Neither and Parent or Both are working" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(neither)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(false)
       when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
 
       val result1 = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
@@ -1266,13 +1259,32 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       result1 mustBe routes.YourAgeController.onPageLoad()
       result2 mustBe routes.YourAgeController.onPageLoad()
     }
-    "redirect to Your Partners Age if the answer is Neither and only Partner is working" in {
+    "redirect to Your Partners Age if the answer is No and only Partner is working" in {
       val answers = spy(userAnswers())
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(neither)
+      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(false)
       when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
 
       val result = navigator.nextPage(DoYouOrPartnerGetBenefitsId, NormalMode).value(answers)
       result mustBe routes.YourPartnersAgeController.onPageLoad()
+    }
+  }
+
+  "whoGetsTheBenefitsRoute" must {
+    "redirect to Carers Allowance if the answer is You or Both" in {
+      val answers = spy(userAnswers())
+      when(answers.whoGetsTheBenefits) thenReturn Some(you) thenReturn Some(both)
+
+      val result1 = navigator.nextPage(WhoGetsTheBenefitsId, NormalMode).value(answers)
+      val result2 = navigator.nextPage(WhoGetsTheBenefitsId, NormalMode).value(answers)
+      result1 mustEqual benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad
+      result2 mustEqual benefitsRoutes.DoYouGetCarersAllowanceController.onPageLoad
+    }
+    "redirect to Partner Carers Allowance if the answer is Partner" in {
+      val answers = spy(userAnswers())
+      when(answers.whoGetsTheBenefits) thenReturn Some(partner)
+
+      val result = navigator.nextPage(WhoGetsTheBenefitsId, NormalMode).value(answers)
+      result mustEqual benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad
     }
   }
 
@@ -1329,7 +1341,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "redirect to Higher Rate Disability Benefits if the answer is false and both get benefits" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetDisabilityBenefits) thenReturn Some(true)
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(both)
+      when(answers.whoGetsTheBenefits) thenReturn Some(both)
 
       val result = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
       result mustBe benefitsRoutes.DoYouGetHigherRateDisabilityBenefitsController
@@ -1338,7 +1350,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "redirect to Your Partners Age if the answer is false, both dont get benefits and partner is working" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetDisabilityBenefits) thenReturn Some(false)
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoGetsTheBenefits) thenReturn Some(you)
       when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
 
       val result = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
@@ -1347,7 +1359,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "redirect to Your Age if the answer is false, both dont get benefits and you or both are working" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetDisabilityBenefits) thenReturn Some(false)
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoGetsTheBenefits) thenReturn Some(you)
       when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
 
       val result1 = navigator.nextPage(DoYouGetDisabilityBenefitsId, NormalMode).value(answers)
@@ -1361,7 +1373,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "redirect to Partner Carer Allowance if both get benefits" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetHigherRateDisabilityBenefits) thenReturn Some(true)
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(both)
+      when(answers.whoGetsTheBenefits) thenReturn Some(both)
 
       val result = navigator.nextPage(DoYouGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
       result mustEqual benefitsRoutes.DoesPartnerGetCarersAllowanceController.onPageLoad
@@ -1369,7 +1381,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "redirect to Your Partners Age if both dont get benefits and partner is working" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetHigherRateDisabilityBenefits) thenReturn Some(false)
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoGetsTheBenefits) thenReturn Some(you)
       when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
 
       val result = navigator.nextPage(DoYouGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)
@@ -1378,7 +1390,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "redirect to Your Age if both dont get benefits and you or both are working" in {
       val answers = spy(userAnswers())
       when(answers.doYouGetHigherRateDisabilityBenefits) thenReturn Some(false) thenReturn Some(true)
-      when(answers.doYouOrPartnerGetBenefits) thenReturn Some(you)
+      when(answers.whoGetsTheBenefits) thenReturn Some(you)
       when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(both)
 
       val result1 = navigator.nextPage(DoYouGetHigherRateDisabilityBenefitsId, NormalMode).value(answers)

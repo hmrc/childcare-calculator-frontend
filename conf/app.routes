@@ -386,6 +386,9 @@ POST        /you-get-benefits                                  uk.gov.hmrc.child
 GET         /you-or-partner-get-benefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onPageLoad()
 POST        /you-or-partner-get-benefits                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouOrPartnerGetBenefitsController.onSubmit()
 
+GET         /who-gets-the-benefits                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.WhoGetsTheBenefitsController.onPageLoad()
+POST        /who-gets-the-benefits                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.WhoGetsTheBenefitsController.onSubmit()
+
 GET         /you-get-carers-allowance                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetCarersAllowanceController.onPageLoad()
 POST        /you-get-carers-allowance                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits.DoYouGetCarersAllowanceController.onSubmit()
 

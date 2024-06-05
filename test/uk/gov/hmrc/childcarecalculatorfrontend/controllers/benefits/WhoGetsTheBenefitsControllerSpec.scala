@@ -18,31 +18,31 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers.benefits
 
 import play.api.data.Form
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.JsString
 import play.api.mvc.Call
 import play.api.test.Helpers.{contentAsString, defaultAwaitTimeout, redirectLocation, status}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.ControllerSpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits.DoYouOrPartnerGetBenefitsId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsTheBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits.WhoGetsTheBenefitsId
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.doYouOrPartnerGetBenefitsErrorKey
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits.doYouOrPartnerGetBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.You
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefits.whoGetsTheBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FakeNavigator, controllers}
 
-class DoYouOrPartnerGetBenefitsControllerSpec extends ControllerSpecBase {
+class WhoGetsTheBenefitsControllerSpec extends ControllerSpecBase {
 
   val onwardRoute: Call = controllers.routes.YourAgeController.onPageLoad()
-  val view: doYouOrPartnerGetBenefits = application.injector.instanceOf[doYouOrPartnerGetBenefits]
+  val view: whoGetsTheBenefits = application.injector.instanceOf[whoGetsTheBenefits]
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): DoYouOrPartnerGetBenefitsController =
-    new DoYouOrPartnerGetBenefitsController(mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): WhoGetsTheBenefitsController =
+    new WhoGetsTheBenefitsController(mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()): String = view(form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = WhoGetsTheBenefitsForm()): String = view(form)(fakeRequest, messages).toString
 
-  "GET /you-or-partner-get-benefits" must {
+  "GET /who-gets-the-benefits" must {
     "return OK and the correct view" in {
       val result = controller().onPageLoad()(fakeRequest)
 
@@ -51,12 +51,12 @@ class DoYouOrPartnerGetBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly when the question has previously been answered" in {
-      val validData = Map(DoYouOrPartnerGetBenefitsId.toString -> JsBoolean(true))
+      val validData = Map(WhoGetsTheBenefitsId.toString -> JsString(You))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
+      contentAsString(result) mustBe viewAsString(WhoGetsTheBenefitsForm().fill(You))
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -67,9 +67,9 @@ class DoYouOrPartnerGetBenefitsControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /you-or-partner-get-benefits" must {
+  "POST /who-gets-the-benefits" must {
     "redirect to next page when answer is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", You)).withMethod("POST")
 
       val result = controller().onSubmit()(postRequest)
 
@@ -79,7 +79,7 @@ class DoYouOrPartnerGetBenefitsControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = BooleanForm(doYouOrPartnerGetBenefitsErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm = WhoGetsTheBenefitsForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit()(postRequest)
 
@@ -88,7 +88,7 @@ class DoYouOrPartnerGetBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", You)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
