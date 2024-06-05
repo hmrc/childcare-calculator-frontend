@@ -15,41 +15,35 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouOrPartnerGetBenefitsForm
 
 @this(
         layout: Layout,
         formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button,
-        inputRadio: playComponents.input_radio,
+        submit_button: playComponents.submit_button,
+        error_summary: playComponents.error_summary,
+        inputYesNo: playComponents.input_yes_no,
         appConfig: FrontendAppConfig
 )
 
-@(form: Form[String])(implicit request: Request[_], messages: Messages)
+@(form: Form[Boolean])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("doYouOrPartnerGetBenefits.title"))
     else messages("doYouOrPartnerGetBenefits.title")
 }
 
-@layout(pageTitle = title) {
-    @errorSummary(form.errors)
+@layout(
+    pageTitle = title
+) {
+    @error_summary(form.errors)
 
     @formWithCSRF(action = controllers.benefits.routes.DoYouOrPartnerGetBenefitsController.onSubmit(), Symbol("autoComplete") -> "off") {
-        @inputRadio(
-            legend = Html(messages("doYouOrPartnerGetBenefits.heading")),
-            legendClass = Some("govuk-fieldset__legend--xl"),
+        @inputYesNo(
+            label = Text(messages("doYouOrPartnerGetBenefits.heading")),
+            labelClass = Some("govuk-fieldset__legend--xl"),
             isPageHeading = true,
-            inputs = DoYouOrPartnerGetBenefitsForm.options.map { radioOption =>
-                RadioItem(
-                    value = Some(radioOption.value),
-                    content = HtmlContent(messages(radioOption.messageKey))
-                )
-            },
             field = form("value")
         )
-        @submitButton()
+        @submit_button()
     }
 }

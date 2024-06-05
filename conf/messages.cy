@@ -1532,12 +1532,14 @@ doYouGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych yn cael budd-
 
 doYouOrPartnerGetBenefits.title = A ydych chi neu’ch partner yn cael budd-daliadau?
 doYouOrPartnerGetBenefits.heading = A ydych chi neu’ch partner yn cael budd-daliadau?
-doYouOrPartnerGetBenefits.you = Chi
-doYouOrPartnerGetBenefits.partner = Partner
-doYouOrPartnerGetBenefits.both = Y ddau ohonoch
-doYouOrPartnerGetBenefits.neither = Dim un o’r ddau ohonoch
 doYouOrPartnerGetBenefits.error.notCompleted = Dewiswch ‘Iawn’ os ydych chi neu’ch partner yn cael budd-daliadau
 
+whoGetsTheBenefits.title = Pwy sy’n cael y budd-daliadau hyn?
+whoGetsTheBenefits.heading = Pwy sy’n cael y budd-daliadau hyn?
+whoGetsTheBenefits.you = Chi
+whoGetsTheBenefits.partner = Partner
+whoGetsTheBenefits.both = Y ddau ohonoch
+whoGetsTheBenefits.error.notCompleted = Dewiswch pwy sy’n cael y budd-daliadau
 
 doYouGetCarersAllowance.title = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?
 doYouGetCarersAllowance.heading = A ydych chi’n cael Lwfans Gofalwr neu Daliad Cymorth Gofalwr?

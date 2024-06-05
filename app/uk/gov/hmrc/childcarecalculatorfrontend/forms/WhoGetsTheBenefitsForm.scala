@@ -19,17 +19,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Forms.{of, single}
 import play.api.data.format.Formatter
 import play.api.data.{Form, FormError}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsBenefitsForm.produceError
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothNeitherEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{doYouOrPartnerGetBenefitsErrorKey, unknownErrorKey}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whoGetsTheBenefitsErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
-object DoYouOrPartnerGetBenefitsForm extends FormErrorHelper {
+object WhoGetsTheBenefitsForm extends FormErrorHelper {
 
-  private val doYouOrPartnerGetBenefitsFormatter: Formatter[String] = new Formatter[String] {
+  private val whoGetsTheBenefitsFormatter: Formatter[String] = new Formatter[String] {
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, doYouOrPartnerGetBenefitsErrorKey)
+      case None => produceError(key, whoGetsTheBenefitsErrorKey)
       case _ => produceError(key, unknownErrorKey)
     }
 
@@ -37,20 +36,19 @@ object DoYouOrPartnerGetBenefitsForm extends FormErrorHelper {
   }
 
   def apply(): Form[String] =
-    Form(single("value" -> of(doYouOrPartnerGetBenefitsFormatter)))
+    Form(single("value" -> of(whoGetsTheBenefitsFormatter)))
 
   def options: Seq[InputOption] = Seq(
     doYouOrPartnerGetBenefitsInputOption(YouPartnerBothNeitherEnum.YOU.toString, "value"),
     doYouOrPartnerGetBenefitsInputOption(YouPartnerBothNeitherEnum.PARTNER.toString, "value-2"),
-    doYouOrPartnerGetBenefitsInputOption(YouPartnerBothNeitherEnum.BOTH.toString, "value-3"),
-    doYouOrPartnerGetBenefitsInputOption(YouPartnerBothNeitherEnum.NEITHER.toString, "value-4")
+    doYouOrPartnerGetBenefitsInputOption(YouPartnerBothNeitherEnum.BOTH.toString, "value-3")
   )
 
   private def doYouOrPartnerGetBenefitsInputOption(option: String, id: String) =
     new InputOption(
       id = id,
       value = option,
-      messageKey = s"doYouOrPartnerGetBenefits.$option"
+      messageKey = s"whoGetsTheBenefits.$option"
     )
 
   private def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)

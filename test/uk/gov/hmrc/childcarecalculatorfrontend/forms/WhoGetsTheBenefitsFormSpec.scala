@@ -20,17 +20,17 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class DoYouOrPartnerGetBenefitsFormSpec extends FormBehaviours {
+class WhoGetsTheBenefitsFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "value" -> DoYouOrPartnerGetBenefitsForm.options.head.value
+    "value" -> WhoGetsTheBenefitsForm.options.head.value
   )
 
-  val form: Form[String] = DoYouOrPartnerGetBenefitsForm()
+  val form: Form[String] = WhoGetsTheBenefitsForm()
 
   "DoYouOrPartnerGetBenefitsForm" must {
-    behave like questionForm[String](DoYouOrPartnerGetBenefitsForm.options.head.value)
+    behave like questionForm[String](WhoGetsTheBenefitsForm.options.head.value)
 
-    behave like formWithOptionFieldError("value", doYouOrPartnerGetBenefitsErrorKey, DoYouOrPartnerGetBenefitsForm.options.map { x => x.value }: _*)
+    behave like formWithOptionFieldError("value", whoGetsTheBenefitsErrorKey, WhoGetsTheBenefitsForm.options.map { x => x.value }: _*)
   }
 }
