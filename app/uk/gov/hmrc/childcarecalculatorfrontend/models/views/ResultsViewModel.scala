@@ -43,7 +43,8 @@ case class ResultsViewModel(firstParagraph: List[String] = List.empty,
 
   def isEligibleOnlyToMinimumFreeHours: Boolean = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours.contains(BigDecimal(freeHoursForEngland)) || freeHours.contains(BigDecimal(freeHoursForWales)) || freeHours.contains(BigDecimal(freeHoursForScotland)) || freeHours.contains(BigDecimal(freeHoursForNI)))
   def isEligibleToMaximumFreeHours: Boolean = freeHours.contains(BigDecimal(30))
-  def hasIneligibleMessages: Boolean = freeChildcareWorkingParentsEligibilityMsg.nonEmpty || taxFreeChildcareEligibilityMsg.nonEmpty
+  def hasIneligibleMessages: Boolean = (freeChildcareWorkingParentsEligibilityMsg.nonEmpty && !freeChildcareWorkingParents) ||
+    (taxFreeChildcareEligibilityMsg.nonEmpty && tfc.isEmpty)
   def isEligibleToAllSchemes: Boolean = noOfEligibleSchemes == 4
   def showTwoYearOldInfo: Boolean = {
     if (childrenAgeGroups.contains(TwoYears)) {

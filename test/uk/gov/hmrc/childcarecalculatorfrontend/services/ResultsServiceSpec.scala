@@ -26,7 +26,7 @@ import play.api.mvc.Request
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils._
 import uk.gov.hmrc.http.HeaderCarrier
@@ -40,12 +40,13 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
   val freeHours: FreeHours = mock[FreeHours]
   val freeChildcareWorkingParents: FreeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
   val maxFreeHours: MaxFreeHours = mock[MaxFreeHours]
+  val taxFreeChildcare: TaxFreeChildcare = mock[TaxFreeChildcare]
   val util: Utils = mock[Utils]
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val req: Request[_] = mock[Request[_]]
 
   override def beforeEach(): Unit = {
-    reset(firstParagraphBuilder, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours, util)
+    reset(firstParagraphBuilder, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours, taxFreeChildcare, util)
     super.beforeEach()
   }
 
@@ -55,6 +56,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     freeHours,
     freeChildcareWorkingParents,
     maxFreeHours,
+    taxFreeChildcare,
     firstParagraphBuilder,
     util
   )
@@ -460,12 +462,26 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
       }
     }
 
-    "Return View Model with Free Hours and TFC ineligible messages" when {
+    "Return View Model with correct Free Hours and TFC ineligible messages" when {
       val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
       lazy val msgKeyFreeHours = "result.free.childcare.working.parents.ineligible"
       lazy val msgKeyTFC = "result.tfc.ineligible"
 
-      "The user is eligible but not in england" in {
+      "The user is eligible" in {
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+        when(taxFreeChildcare.eligibility(any())) thenReturn Eligible
+
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+
+        values.freeChildcareWorkingParentsEligibilityMsg mustBe
+          None
+        values.taxFreeChildcareEligibilityMsg mustBe
+          None
+      }
+      "The user passes eligibility criteria (catch all in case the first guard case fails somehow)" in {
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
@@ -479,7 +495,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         when(answers.hasChildEligibleForTfc) thenReturn true
 
-        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
+        val values = await(TestService.getResultsViewModel(answers, Location.SCOTLAND))
 
         values.freeChildcareWorkingParentsEligibilityMsg mustBe
           None
