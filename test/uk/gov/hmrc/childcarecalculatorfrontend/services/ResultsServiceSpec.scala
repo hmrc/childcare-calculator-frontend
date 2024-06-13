@@ -485,7 +485,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.location) thenReturn Some(Location.SCOTLAND)
+        when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.childrenAgeGroups) thenReturn Some(Set(FourYears))
         when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
         when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
@@ -495,12 +495,30 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         when(answers.hasChildEligibleForTfc) thenReturn true
 
-        val values = await(TestService.getResultsViewModel(answers, Location.SCOTLAND))
+        val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeChildcareWorkingParentsEligibilityMsg mustBe
           None
         values.taxFreeChildcareEligibilityMsg mustBe
           None
+      }
+      "The user is ineligibile but isn't in England" in {
+        val answers = spy(userAnswers())
+
+        when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
+        when(answers.location) thenReturn Some(Location.SCOTLAND)
+        when(answers.childrenAgeGroups) thenReturn None
+        when(answers.childcareCosts) thenReturn Some(ChildcareConstants.yes)
+        when(answers.approvedProvider) thenReturn Some(ChildcareConstants.YES)
+        when(answers.doYouLiveWithPartner) thenReturn Some(false)
+        when(answers.areYouInPaidWork) thenReturn Some(false)
+
+        val values = await(TestService.getResultsViewModel(answers, Location.SCOTLAND))
+
+        values.freeChildcareWorkingParentsEligibilityMsg mustBe
+          None
+        values.taxFreeChildcareEligibilityMsg mustBe
+          Some(messages(s"$msgKeyTFC.paidEmployment"))
       }
       "There is no eligible child for free hours but otherwise eligible" in {
         val answers = spy(userAnswers())
