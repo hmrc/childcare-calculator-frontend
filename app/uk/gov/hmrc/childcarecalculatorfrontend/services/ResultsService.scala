@@ -222,6 +222,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     lazy val msgKey = "result.free.childcare.working.parents.ineligible"
     freeChildcareWorkingParents.eligibility(answers) match {
       case Eligible => None
+      case _ if !inEngland => None
       case _ if !hasEligibileChildren =>
         Some(messages(s"$msgKey.noChildrenInAgeRange"))
       case _ if hasPartner && !bothInPaidWork =>
