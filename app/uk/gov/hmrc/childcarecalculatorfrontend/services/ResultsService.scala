@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -38,6 +38,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
                                freeHours: FreeHours,
                                freeChildcareWorkingParents: FreeChildcareWorkingParents,
                                maxFreeHours: MaxFreeHours,
+                               taxFreeChildcare: TaxFreeChildcare,
                                firstParagraphBuilder: FirstParagraphBuilder,
                                utils: Utils)(implicit ec: ExecutionContext) {
   def getResultsViewModel(answers: UserAnswers, location: Location)
@@ -182,7 +183,8 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
 
     lazy val msgKey = "result.tfc.ineligible"
 
-    answers match {
+    taxFreeChildcare.eligibility(answers) match {
+      case Eligible => None
       case _ if answers.childcareCosts.contains(no) || answers.approvedProvider.contains(NO) =>
         Some(messages(s"$msgKey.noCostsWithApprovedProvider"))
       case _ if hasPartner && !bothInPaidWork =>
@@ -218,8 +220,8 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     lazy val bothEligibleMaxEarnings = !answers.eitherOfYouMaximumEarnings.getOrElse(false)
 
     lazy val msgKey = "result.free.childcare.working.parents.ineligible"
-    answers match {
-      case _ if !inEngland => None
+    freeChildcareWorkingParents.eligibility(answers) match {
+      case Eligible => None
       case _ if !hasEligibileChildren =>
         Some(messages(s"$msgKey.noChildrenInAgeRange"))
       case _ if hasPartner && !bothInPaidWork =>
