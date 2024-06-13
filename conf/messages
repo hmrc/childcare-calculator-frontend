@@ -340,7 +340,7 @@ doYouGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
 doYouGetAnyBenefits.li.pensionCredit = Pension Credit
 doYouGetAnyBenefits.li.disabilityAllowance = Disability Living Allowance
 doYouGetAnyBenefits.li.adultDisabilityPayments = Disability Payment (Scotland only)
-doYouGetAnyBenefits.li.attendanceAllowance = Attendance allowance
+doYouGetAnyBenefits.li.attendanceAllowance = Attendance Allowance
 doYouGetAnyBenefits.li.independencePayment = Personal Independence Payment
 doYouGetAnyBenefits.li.carersAllowance = Carer’s Allowance
 
@@ -353,7 +353,8 @@ doYouOrYourPartnerGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
 doYouOrYourPartnerGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
 doYouOrYourPartnerGetAnyBenefits.li.pensionCredit = Pension Credit
 doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance = Disability Living Allowance
-doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance = Attendance allowance
+doYouOrYourPartnerGetAnyBenefits.li.adultDisabilityPayments = Disability Payment (Scotland only)
+doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance = Attendance Allowance
 doYouOrYourPartnerGetAnyBenefits.li.independencePayment = Personal Independence Payment
 doYouOrYourPartnerGetAnyBenefits.li.carersAllowance = Carer’s Allowance
 
@@ -623,9 +624,6 @@ youAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance (
 youAnyTheseBenefitsCY.li.pensions = Incapacity Benefit
 youAnyTheseBenefitsCY.li.disability = Widowed Parent’s Allowance
 
-youAnyTheseBenefitsCY.li.attendance = Attendance allowance
-youAnyTheseBenefitsCY.li.independance = Personal Independence Payment
-
 youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.error.notCompleted = Select yes if you’ve had any of these benefits this year
 youAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you get Carer’s Allowance
@@ -639,7 +637,7 @@ partnerAnyTheseBenefitsCY.li.employment_support = Income-related Employment and 
 partnerAnyTheseBenefitsCY.li.pensions = Pension Credit
 partnerAnyTheseBenefitsCY.li.disability = Disability Living Allowance
 partnerAnyTheseBenefitsCY.li.adultDisability = Disability Payment (Scotland only)
-partnerAnyTheseBenefitsCY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsCY.li.attendance = Attendance Allowance
 partnerAnyTheseBenefitsCY.li.independance = Personal Independence Payment
 partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
@@ -656,10 +654,6 @@ bothAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance 
 bothAnyTheseBenefitsCY.li.pensions = Incapacity Benefit
 bothAnyTheseBenefitsCY.li.disability = Widowed Parent’s Allowance
 bothAnyTheseBenefitsCY.li.carers = Carer’s Allowance
-
-bothAnyTheseBenefitsCY.li.attendance = Attendance allowance
-bothAnyTheseBenefitsCY.li.independance = Personal Independence Payment
-
 
 bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any of these benefits this year?
 bothAnyTheseBenefitsCY.error.notCompleted = Select yes if you or your partner had any of these benefits this year
@@ -891,10 +885,6 @@ youAnyTheseBenefitsPY.li.employment_support = Employment and Support Allowance (
 youAnyTheseBenefitsPY.li.pensions = Incapacity Benefit
 youAnyTheseBenefitsPY.li.disability = Widowed Parent’s Allowance
 
-youAnyTheseBenefitsPY.li.attendance = Attendance allowance
-youAnyTheseBenefitsPY.li.independance = Personal Independence Payment
-
-
 youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits in the previous year?
 youAnyTheseBenefitsPY.error.notCompleted = Select yes if you had any of these benefits in the previous year
 
@@ -907,7 +897,7 @@ partnerAnyTheseBenefitsPY.li.employment_support = Income-related Employment and 
 partnerAnyTheseBenefitsPY.li.pensions = Pension Credit
 partnerAnyTheseBenefitsPY.li.disability = Disability Living Allowance
 partnerAnyTheseBenefitsPY.li.adultDisability = Disability Payment (Scotland only)
-partnerAnyTheseBenefitsPY.li.attendance = Attendance allowance
+partnerAnyTheseBenefitsPY.li.attendance = Attendance Allowance
 partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
 partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
@@ -924,9 +914,6 @@ bothAnyTheseBenefitsPY.li.employment_support = Employment and Support Allowance 
 bothAnyTheseBenefitsPY.li.pensions = Incapacity Benefit
 bothAnyTheseBenefitsPY.li.disability = Widowed Parent’s Allowance
 bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
-
-bothAnyTheseBenefitsPY.li.attendance = Attendance allowance
-bothAnyTheseBenefitsPY.li.independance = Personal Independence Payment
 
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.error.notCompleted = Select yes if you or your partner had any of these benefits in the previous year
@@ -1597,30 +1584,30 @@ doesPartnerGetIncomeBasedBenefits.heading = Does your partner get Income Based B
 doesPartnerGetIncomeBasedBenefits.hint = This includes Income Support, Income Based Jobseekers Allowance (JSA) and Pension Credit.
 doesPartnerGetIncomeBasedBenefits.error.notCompleted = Select yes if your partner gets Income Based Benefits
 
-doYouGetSevereDisabilityPremium.title = Do you get Severe Disability Premium?
-doYouGetSevereDisabilityPremium.heading = Do you get Severe Disability Premium?
-doYouGetSevereDisabilityPremium.error.notCompleted = Select yes if you get Severe Disability Premium
+doYouGetSevereDisabilityPremium.title = Do you get severe disability premium?
+doYouGetSevereDisabilityPremium.heading = Do you get severe disability premium?
+doYouGetSevereDisabilityPremium.error.notCompleted = Select yes if you get severe disability premium
 
-doesPartnerGetSevereDisabilityPremium.title = Does your partner get Severe Disability Premium?
-doesPartnerGetSevereDisabilityPremium.heading = Does your partner get Severe Disability Premium?
-doesPartnerGetSevereDisabilityPremium.error.notCompleted = Select yes if your partner gets Severe Disability Premium
+doesPartnerGetSevereDisabilityPremium.title = Does your partner get severe disability premium?
+doesPartnerGetSevereDisabilityPremium.heading = Does your partner get severe disability premium?
+doesPartnerGetSevereDisabilityPremium.error.notCompleted = Select yes if your partner gets severe disability premium
 
-doYouGetHigherRateDisabilityBenefits.title = Do you get Higher Rate Disability Benefits?
-doYouGetHigherRateDisabilityBenefits.heading = Do you get Higher Rate Disability Benefits?
+doYouGetHigherRateDisabilityBenefits.title = Do you get higher rate disability benefits?
+doYouGetHigherRateDisabilityBenefits.heading = Do you get higher rate disability benefits?
 doYouGetHigherRateDisabilityBenefits.hint = This includes Enhanced Payments, Higher Rate Payments and Armed Forces Independence Payment (AFIP).
-doYouGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if you get Higher Rate Disability Benefits
+doYouGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if you get higher rate disability benefits
 
-doesPartnerGetHigherRateDisabilityBenefits.title = Does your partner get Higher Rate Disability Benefits?
-doesPartnerGetHigherRateDisabilityBenefits.heading = Does your partner get Higher Rate Disability Benefits?
+doesPartnerGetHigherRateDisabilityBenefits.title = Does your partner get higher rate disability benefits?
+doesPartnerGetHigherRateDisabilityBenefits.heading = Does your partner get higher rate disability benefits?
 doesPartnerGetHigherRateDisabilityBenefits.hint = This includes Enhanced Payments, Higher Rate Payments and Armed Forces Independence Payment (AFIP).
-doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if your partner gets Higher Rate Disability Benefits
+doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted = Select yes if your partner gets higher rate disability benefits
 
-doYouGetDisabilityBenefits.title = Do you get Disability Benefits?
-doYouGetDisabilityBenefits.heading = Do you get Disability Benefits?
+doYouGetDisabilityBenefits.title = Do you get disability benefits?
+doYouGetDisabilityBenefits.heading = Do you get disability benefits?
 doYouGetDisabilityBenefits.hint = This includes Disability Living Allowance (DLA), Disability Payment, Attendance Allowance and Personal Independence Payment (PIP).
-doYouGetDisabilityBenefits.error.notCompleted = Select yes if you get Disability Benefits
+doYouGetDisabilityBenefits.error.notCompleted = Select yes if you get disability benefits
 
-doesPartnerGetDisabilityBenefits.title = Does your partner get Disability Benefits?
-doesPartnerGetDisabilityBenefits.heading = Does your partner get Disability Benefits?
+doesPartnerGetDisabilityBenefits.title = Does your partner get disability benefits?
+doesPartnerGetDisabilityBenefits.heading = Does your partner get disability benefits?
 doesPartnerGetDisabilityBenefits.hint = This includes Disability Living Allowance (DLA), Disability Payment, Attendance Allowance and Personal Independence Payment (PIP).
-doesPartnerGetDisabilityBenefits.error.notCompleted = Select yes if your partner gets Disability Benefits
+doesPartnerGetDisabilityBenefits.error.notCompleted = Select yes if your partner gets disability benefits
