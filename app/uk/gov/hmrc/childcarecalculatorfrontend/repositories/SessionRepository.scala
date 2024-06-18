@@ -18,16 +18,16 @@ package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 
 
 import java.time.Instant
-
 import javax.inject.{Inject, Singleton}
 import org.mongodb.scala.model.Filters._
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model.Updates._
-import org.mongodb.scala.model.{IndexModel, IndexOptions, UpdateOptions}
+import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions, UpdateOptions}
 import play.api.Configuration
-import play.api.libs.json.{JsValue, Json, OFormat}
+import play.api.libs.json.{Format, JsValue, Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,7 +38,8 @@ case class DatedCacheMap(id: String,
                          lastUpdated: Instant = Instant.now())
 
 object DatedCacheMap {
-  implicit val formats: OFormat[DatedCacheMap] = Json.format[DatedCacheMap]
+  implicit val dateFormat: Format[Instant] = MongoJavatimeFormats.Implicits.jatInstantFormat
+  implicit val formats: Format[DatedCacheMap] = Json.format[DatedCacheMap]
 
   def apply(cacheMap: CacheMap): DatedCacheMap = DatedCacheMap(cacheMap.id, cacheMap.data)
 }
@@ -58,12 +59,10 @@ class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(impl
 
   def upsert(cm: CacheMap): Future[Boolean] = {
     val dcm = DatedCacheMap(cm)
-    collection.updateOne(
+    collection.replaceOne(
       filter = equal("id", dcm.id),
-      update = combine(
-        set("data", Codecs.toBson(dcm.data)),
-        set("lastUpdated", Codecs.toBson(dcm.lastUpdated))),
-      UpdateOptions().upsert(true)
+      replacement = dcm,
+      ReplaceOptions().upsert(true)
     ).toFuture().map(_.wasAcknowledged())
   }
 
