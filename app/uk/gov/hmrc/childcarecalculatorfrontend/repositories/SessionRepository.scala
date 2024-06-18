@@ -17,21 +17,24 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 
 
-import java.time.Instant
-import javax.inject.{Inject, Singleton}
+import org.apache.pekko.actor.ActorSystem
+import org.bson.BsonType
 import org.mongodb.scala.model.Filters._
 import org.mongodb.scala.model.Indexes._
 import org.mongodb.scala.model.Updates._
-import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions, UpdateOptions}
-import play.api.Configuration
-import play.api.libs.json.{Format, JsValue, Json, OFormat}
+import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions}
+import play.api.libs.json.{Format, JsValue, Json}
+import play.api.{Configuration, Logging}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
+import java.time.Instant
+import java.util.concurrent.TimeUnit
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.duration.{FiniteDuration, SECONDS}
 import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.duration.SECONDS
 
 case class DatedCacheMap(id: String,
                          data: Map[String, JsValue],
@@ -55,7 +58,7 @@ class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(impl
         .expireAfter(config.get[Long]("mongodb.timeToLiveInSeconds"), SECONDS))
     )
     , extraCodecs = Seq(Codecs.playFormatCodec(CacheMap.formats))
-  ) {
+  ) with Logging {
 
   def upsert(cm: CacheMap): Future[Boolean] = {
     val dcm = DatedCacheMap(cm)
@@ -69,6 +72,18 @@ class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(impl
   def get(id: String): Future[Option[CacheMap]] =
     collection.find[CacheMap](and(equal("id", id))).headOption()
 
+  def resetLastUpdated(): Future[Long] = {
+    collection.updateMany(`type`("lastUpdated", BsonType.STRING), set("lastUpdated", Instant.now()))
+      .toFuture().map(_.getModifiedCount)
+  }
+
+  val actorSystem = ActorSystem()
+  actorSystem.scheduler.scheduleOnce(FiniteDuration(10, TimeUnit.SECONDS)) {
+    resetLastUpdated() map { n =>
+      logger.warn(s"Updated $n documents with a new lastUpdated timestamp")
+    }
+    actorSystem.terminate()
+  }
 }
 
 @Singleton
