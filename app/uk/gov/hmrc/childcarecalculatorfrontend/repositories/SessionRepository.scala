@@ -17,11 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 
 
-import org.apache.pekko.actor.ActorSystem
-import org.bson.BsonType
 import org.mongodb.scala.model.Filters._
 import org.mongodb.scala.model.Indexes._
-import org.mongodb.scala.model.Updates._
 import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions}
 import play.api.libs.json.{Format, JsValue, Json}
 import play.api.{Configuration, Logging}
@@ -31,9 +28,8 @@ import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
 import java.time.Instant
-import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.{FiniteDuration, SECONDS}
+import scala.concurrent.duration.SECONDS
 import scala.concurrent.{ExecutionContext, Future}
 
 case class DatedCacheMap(id: String,
@@ -71,19 +67,6 @@ class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(impl
 
   def get(id: String): Future[Option[CacheMap]] =
     collection.find[CacheMap](and(equal("id", id))).headOption()
-
-  def resetLastUpdated(): Future[Long] = {
-    collection.updateMany(`type`("lastUpdated", BsonType.STRING), set("lastUpdated", Instant.now()))
-      .toFuture().map(_.getModifiedCount)
-  }
-
-  val actorSystem = ActorSystem()
-  actorSystem.scheduler.scheduleOnce(FiniteDuration(10, TimeUnit.SECONDS)) {
-    resetLastUpdated() map { n =>
-      logger.warn(s"Updated $n documents with a new lastUpdated timestamp")
-    }
-    actorSystem.terminate()
-  }
 }
 
 @Singleton
