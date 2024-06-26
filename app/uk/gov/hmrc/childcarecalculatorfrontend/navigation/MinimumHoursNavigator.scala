@@ -56,7 +56,10 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     if(answers.childcareCosts.contains(No)) {
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad
-      } else {
+      } else if ((answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedNineTo23Months.getOrElse(false)) && answers.location.contains(Location.ENGLAND)) {
+        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+      }
+      else {
         routes.ResultController.onPageLoad()
       }
     } else {
@@ -70,7 +73,10 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
     if(answers.approvedProvider.contains(No)) {
       if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
         routes.FreeHoursInfoController.onPageLoad
-      } else {
+      } else if ((answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedNineTo23Months.getOrElse(false)) && answers.location.contains(Location.ENGLAND)) {
+      routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+    }
+      else {
         routes.ResultController.onPageLoad()
       }
     } else {

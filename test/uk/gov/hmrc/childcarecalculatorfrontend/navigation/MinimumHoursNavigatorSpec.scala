@@ -145,12 +145,54 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val schemes = mock[Schemes]
       when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
       when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
-      when(answers.location) thenReturn Some(Location.SCOTLAND)
+      when(answers.location) thenReturn Some(Location.ENGLAND)
       when(answers.childAgedTwo) thenReturn Some(false)
       when(answers.childAgedThreeOrFour) thenReturn Some(false)
       when(freeHours.eligibility(any())) thenReturn NotEligible
 
       navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.ResultController.onPageLoad()
+    }
+
+    "go to `do you live with partner` if user lives in England, has 2 year old, not eligible for min free hours, have childcare cost but no approved provider" in {
+      val answers = spy(userAnswers())
+      val freeHours = mock[FreeHours]
+      val schemes = mock[Schemes]
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
+      when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(answers.childAgedTwo) thenReturn Some(true)
+      when(answers.childAgedThreeOrFour) thenReturn Some(false)
+      when(freeHours.eligibility(any())) thenReturn NotEligible
+
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad()
+    }
+
+    "go to `do you live with partner` if user lives in England, has 9 to 22 month old, not eligible for min free hours, have childcare cost but no approved provider" in {
+      val answers = spy(userAnswers())
+      val freeHours = mock[FreeHours]
+      val schemes = mock[Schemes]
+      when(answers.approvedProvider) thenReturn Some(YesNoUnsureEnum.NO.toString)
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.YES.toString)
+      when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(answers.childrenAgeGroups) thenReturn Some(Set(NineTo23Months))
+      when(answers.childAgedTwo) thenReturn Some(false)
+      when(answers.childAgedThreeOrFour) thenReturn Some(false)
+      when(freeHours.eligibility(any())) thenReturn NotEligible
+
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad()
+    }
+
+    "go to `do you live with partner` if user lives in England, has 9 to 22 month old and 2 year old, not eligible for min free hours, has no childcare cost" in {
+      val answers = spy(userAnswers())
+      val freeHours = mock[FreeHours]
+      val schemes = mock[Schemes]
+      when(answers.childcareCosts) thenReturn Some(YesNoNotYetEnum.NO.toString)
+      when(answers.location) thenReturn Some(Location.ENGLAND)
+      when(answers.childrenAgeGroups) thenReturn Some(Set(NineTo23Months, TwoYears))
+      when(answers.childAgedThreeOrFour) thenReturn Some(false)
+      when(freeHours.eligibility(any())) thenReturn NotEligible
+
+      navigator(freeHours, schemes).nextPage(ApprovedProviderId, NormalMode).value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad()
     }
 
     "go to `free hours result` if user lives in NI, not eligible for min free hours, have childcare cost but no approved provider" in {
