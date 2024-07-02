@@ -25,12 +25,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 class FreeChildcareWorkingParents @Inject() (tfc: TaxFreeChildcare, appConfig: FrontendAppConfig) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
-    val hasChildrenInAgeGroups = {
-      if(appConfig.allowFreeHoursFromNineMonths) {
-        answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
-      }
-      else answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
-    }
+    val hasChildrenInAgeGroups = answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
+
     val tfcEligibility = tfc.eligibility(answers)
     answers.location.map {
       case ENGLAND if hasChildrenInAgeGroups && tfcEligibility == Eligible =>
