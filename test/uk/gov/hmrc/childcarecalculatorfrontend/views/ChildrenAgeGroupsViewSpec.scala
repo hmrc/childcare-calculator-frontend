@@ -32,16 +32,9 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
   val fieldKey: String = ChildrenAgeGroupsForm.formId
   val errorMessage = s"$messageKeyPrefix.error.select"
 
-  val values: Seq[(String, String)] = if(frontendAppConfig.allowFreeHoursFromNineMonths)
+  val values: Seq[(String, String)] =
     Seq(
       (s"$messageKeyPrefix.$nineTo23Months", nineTo23Months),
-      (s"$messageKeyPrefix.$twoYears", twoYears),
-      (s"$messageKeyPrefix.$threeYears", threeYears),
-      (s"$messageKeyPrefix.$fourYears", fourYears),
-      (s"$messageKeyPrefix.or", "divider"),
-      (s"$messageKeyPrefix.$noneOfThese", noneOfThese)
-    ) else
-    Seq(
       (s"$messageKeyPrefix.$twoYears", twoYears),
       (s"$messageKeyPrefix.$threeYears", threeYears),
       (s"$messageKeyPrefix.$fourYears", fourYears),

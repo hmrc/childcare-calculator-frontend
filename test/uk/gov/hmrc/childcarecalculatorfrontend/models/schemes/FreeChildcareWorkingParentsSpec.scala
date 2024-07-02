@@ -38,6 +38,7 @@ class FreeChildcareWorkingParentsSpec extends SchemeSpec with MockitoSugar {
     "return `NotEligible`" when {
       "user does not have a 2 year old or a 3 or 4 year old" in {
         when(tfc.eligibility(any())) thenReturn Eligible
+        when(answers.isChildAgedNineTo23Months) thenReturn Some(false)
         when(answers.isChildAgedTwo) thenReturn Some(false)
         when(answers.isChildAgedThreeOrFour) thenReturn Some(false)
         when(answers.location) thenReturn Some(ENGLAND)
@@ -46,7 +47,7 @@ class FreeChildcareWorkingParentsSpec extends SchemeSpec with MockitoSugar {
 
       "user does not live in England" in {
         when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.isChildAgedTwo) thenReturn Some(true)
+        when(answers.isChildAgedNineTo23Months) thenReturn Some(true)
         when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
         when(answers.location) thenReturn Some(SCOTLAND)
         freeChildcareWorkingParents(tfc, appConfig).eligibility(answers) mustEqual NotEligible

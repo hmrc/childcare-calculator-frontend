@@ -47,13 +47,13 @@
             legend = messages("childrenAgeGroups.heading"),
             isPageHeading = true,
             hint = Some(messages("childrenAgeGroups.hint")),
-            inputs = (if(appConfig.allowFreeHoursFromNineMonths) Seq(
+            inputs = (Seq(
                 CheckboxItem(
                     content = Text(messages(s"childrenAgeGroups.$nineTo23Months")),
                     value = nineTo23Months,
                     checked = form.data.values.toList.contains(nineTo23Months)
                 ))
-            else Nil) ++ Seq(
+            ) ++ Seq(
                 CheckboxItem(
                     content = Text(messages(s"childrenAgeGroups.$twoYears")),
                     value = twoYears,

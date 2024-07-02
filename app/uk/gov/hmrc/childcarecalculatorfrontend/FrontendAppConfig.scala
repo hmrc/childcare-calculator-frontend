@@ -66,12 +66,10 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
 
   lazy val navigationAudit: Boolean = config.getBoolean("feature.navigationAudit")
 
-  lazy val nineMonthRuleCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.nineMonthRuleCutoff"))
   lazy val maxFreeHoursCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.maxFreeHoursCutoff"))
 
   //This scheme overlaps the max hours scheme, after the date for allowMaxFreeHoursFromNineMonths they will become the same
   def maxFreeHoursAmount: Double = if(allowMaxFreeHoursFromNineMonths) eligibleMaxFreeHours else freeHoursForEngland
-  def allowFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(nineMonthRuleCutoff)
 
   def allowMaxFreeHoursFromNineMonths: Boolean = !LocalDate.now().isBefore(maxFreeHoursCutoff)
 }
