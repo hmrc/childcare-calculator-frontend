@@ -64,7 +64,7 @@ class EligibilityServiceSpec extends SchemeSpec with MockitoSugar with ScalaFutu
     }
 
     "return a SchemeResults object when given minimum data" in {
-      val schemeResults = SchemeResults(schemes = Nil, tfcRollout = false, thirtyHrsRollout = true)
+      val schemeResults = SchemeResults(schemes = Nil)
       val answers = spy(userAnswers())
 
       when(answers.location) thenReturn Some(Location.ENGLAND)

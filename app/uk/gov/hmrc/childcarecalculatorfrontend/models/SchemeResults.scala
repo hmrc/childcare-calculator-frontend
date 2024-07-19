@@ -53,9 +53,7 @@ object Scheme {
 }
 
 case class SchemeResults (
-                           schemes: List[Scheme],
-                           tfcRollout: Boolean = false,
-                           thirtyHrsRollout: Boolean = false
+                           schemes: List[Scheme]
                          )
 
 object SchemeResults {
