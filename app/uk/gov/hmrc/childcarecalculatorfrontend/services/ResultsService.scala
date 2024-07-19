@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EarningsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -37,7 +37,6 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
                                eligibilityService: EligibilityService,
                                freeHours: FreeHours,
                                freeChildcareWorkingParents: FreeChildcareWorkingParents,
-                               maxFreeHours: MaxFreeHours,
                                taxFreeChildcare: TaxFreeChildcare,
                                firstParagraphBuilder: FirstParagraphBuilder,
                                utils: Utils)(implicit ec: ExecutionContext) {
@@ -150,11 +149,10 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
   private def getViewModelWithFreeHours(answers: UserAnswers, resultViewModel: ResultsViewModel) = {
     val freeHoursEligibility = freeHours.eligibility(answers)
     val freeChildcareWorkingParentsEligibility = freeChildcareWorkingParents.eligibility(answers)
-    val maxFreeHoursEligibility = maxFreeHours.eligibility(answers)
     val location: Option[Location.Value] = answers.location
 
     freeHoursEligibility match {
-      case Eligible if maxFreeHoursEligibility == Eligible => resultViewModel.copy(freeHours = Some(eligibleMaxFreeHours))
+      case _ if freeChildcareWorkingParentsEligibility == Eligible && answers.isChildAgedThreeOrFour.getOrElse(true) => resultViewModel.copy(freeHours = Some(eligibleMaxFreeHours))
       case _ if freeChildcareWorkingParentsEligibility == Eligible => resultViewModel.copy(freeHours = Some(appConfig.maxFreeHoursAmount))
       case Eligible => getFreeHoursForLocation(location, resultViewModel)
       case _ => resultViewModel
