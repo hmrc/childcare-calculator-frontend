@@ -26,7 +26,7 @@ import play.api.mvc.Request
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, MaxFreeHours, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeChildcareWorkingParents, FreeHours, TaxFreeChildcare}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.utils._
 import uk.gov.hmrc.http.HeaderCarrier
@@ -39,14 +39,13 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
   val eligibilityService: EligibilityService = mock[EligibilityService]
   val freeHours: FreeHours = mock[FreeHours]
   val freeChildcareWorkingParents: FreeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-  val maxFreeHours: MaxFreeHours = mock[MaxFreeHours]
   val taxFreeChildcare: TaxFreeChildcare = mock[TaxFreeChildcare]
   val util: Utils = mock[Utils]
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val req: Request[_] = mock[Request[_]]
 
   override def beforeEach(): Unit = {
-    reset(firstParagraphBuilder, eligibilityService, freeHours, freeChildcareWorkingParents, maxFreeHours, taxFreeChildcare, util)
+    reset(firstParagraphBuilder, eligibilityService, freeHours, freeChildcareWorkingParents, taxFreeChildcare, util)
     super.beforeEach()
   }
 
@@ -55,7 +54,6 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     eligibilityService,
     freeHours,
     freeChildcareWorkingParents,
-    maxFreeHours,
     taxFreeChildcare,
     firstParagraphBuilder,
     util
@@ -304,7 +302,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(freeHours.eligibility(any())) thenReturn Eligible
-        when(maxFreeHours.eligibility(any())) thenReturn NotEligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -319,7 +317,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(freeHours.eligibility(any())) thenReturn Eligible
-        when(maxFreeHours.eligibility(any())) thenReturn NotEligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -334,7 +332,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.WALES)
         when(freeHours.eligibility(any())) thenReturn Eligible
-        when(maxFreeHours.eligibility(any())) thenReturn NotEligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -349,33 +347,34 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(answers.location) thenReturn Some(Location.NORTHERN_IRELAND)
         when(freeHours.eligibility(any())) thenReturn Eligible
-        when(maxFreeHours.eligibility(any())) thenReturn NotEligible
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe Some(12.5)
       }
 
-      "User is eligible for max free hours" in {
+      "User is eligible for max free hours for three to four year olds" in {
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(freeHours.eligibility(any())) thenReturn Eligible
-        when(maxFreeHours.eligibility(any())) thenReturn Eligible
+        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.freeHours mustBe Some(30)
       }
 
-      "User is eligible for working parent free hours" in {
+      "User is eligible for working parent free hours for non three to four year olds" in {
         val schemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
         when(freeHours.eligibility(any())) thenReturn Eligible
-        when(maxFreeHours.eligibility(any())) thenReturn NotEligible
+        when(answers.isChildAgedThreeOrFour) thenReturn Some(false)
         when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))

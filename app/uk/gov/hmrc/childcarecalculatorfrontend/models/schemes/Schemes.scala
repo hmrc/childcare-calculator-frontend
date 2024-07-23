@@ -24,8 +24,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class Schemes(val schemes: Scheme*) {
 
   @Inject()
-  def this(freeHours: FreeHours, maxFreeHours: MaxFreeHours, taxCredits: TaxCredits, taxFreeChildcare: TaxFreeChildcare) =
-    this(Seq[Scheme](freeHours, maxFreeHours, taxCredits, taxFreeChildcare): _*)
+  def this(freeHours: FreeHours, taxCredits: TaxCredits, taxFreeChildcare: TaxFreeChildcare) =
+    this(Seq[Scheme](freeHours, taxCredits, taxFreeChildcare): _*)
 
   def allSchemesDetermined(answers: UserAnswers): Boolean = {
     !schemes.map(_.eligibility(answers)).contains(NotDetermined)
