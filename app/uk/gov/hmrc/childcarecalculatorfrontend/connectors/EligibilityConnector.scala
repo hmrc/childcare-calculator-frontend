@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.HttpReads.Implicits._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EligibilityConnector @Inject()(appConfig: FrontendAppConfig, http: HttpClient)(implicit ec: ExecutionContext) {
+abstract class EligibilityConnector @Inject()(appConfig: FrontendAppConfig, http: HttpClient)(implicit ec: ExecutionContext) {
 
   def getEligibility(eligibilityInput: Household)(implicit headerCarrier: HeaderCarrier): Future[SchemeResults] = {
     http.POST[Household, SchemeResults](appConfig.eligibilityUrl, eligibilityInput)
