@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
-import javax.inject.Inject
 import play.api.libs.json.{JsBoolean, JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.benefits._
+
+import javax.inject.Inject
 
 class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
@@ -37,14 +37,6 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v, cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
       WhoGetsBenefitsId.toString -> ((v, cm) => storeWhoGetsBenefits(v, cm)),
       DoYouGetAnyBenefitsId.toString -> ((v, cm) => storeDoYouGetAnyBenefits(v, cm)),
-
-      DoYouGetBenefitsId.toString -> ((v, cm) => storeDoYouGetBenefits(v, cm)),
-      DoYouOrPartnerGetBenefitsId.toString -> ((v, cm) => storeDoYouOrPartnerGetBenefits(v, cm)),
-      WhoGetsTheBenefitsId.toString -> ((v, cm) => storeWhoGetsTheBenefits(v, cm)),
-      DoYouGetIncomeBasedBenefitsId.toString -> ((v, cm) => storeDoYouGetIncomeBasedBenefits(v, cm)),
-      DoYouGetDisabilityBenefitsId.toString -> ((v, cm) => storeDoYouGetDisabilityBenefits(v, cm)),
-      DoesPartnerGetIncomeBasedBenefitsId.toString -> ((v, cm) => storeDoesPartnerGetIncomeBasedBenefits(v, cm)),
-      DoesPartnerGetDisabilityBenefitsId.toString -> ((v, cm) => storeDoesPartnerGetDisabilityBenefits(v, cm)),
 
       YourAgeId.toString -> ((v, cm) => storeYourAge(v, cm)),
       YourPartnersAgeId.toString -> ((v, cm) => storeYourPartnersAge(v, cm)),
@@ -254,108 +246,6 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       case _ => cacheMap
     }
     store(YourPartnersAgeId.toString, value, mapToStore)
-  }
-
-  private def storeDoYouGetBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) =>
-        cacheMap.copy(data = cacheMap.data - DoYouOrPartnerGetBenefitsId.toString - WhoGetsTheBenefitsId.toString -
-          DoYouGetCarersAllowanceId.toString - DoesPartnerGetCarersAllowanceId.toString -
-          DoYouGetIncomeBasedBenefitsId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
-          DoYouGetSevereDisabilityPremiumId.toString - DoesPartnerGetSevereDisabilityPremiumId.toString -
-          DoYouGetDisabilityBenefitsId.toString - DoesPartnerGetDisabilityBenefitsId.toString -
-          DoYouGetHigherRateDisabilityBenefitsId.toString - DoesPartnerGetHigherRateDisabilityBenefitsId.toString
-        )
-      case _ =>
-        cacheMap.copy(data = cacheMap.data - DoYouOrPartnerGetBenefitsId.toString - WhoGetsTheBenefitsId.toString -
-          DoesPartnerGetCarersAllowanceId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
-          DoesPartnerGetSevereDisabilityPremiumId.toString - DoesPartnerGetDisabilityBenefitsId.toString -
-          DoesPartnerGetHigherRateDisabilityBenefitsId.toString
-        )
-    }
-    store(DoYouGetBenefitsId.toString, value, mapToStore.copy(
-      data = mapToStore.data - DoYouGetAnyBenefitsId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
-        WhoGetsBenefitsId.toString - WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString
-    ))
-  }
-
-  private def storeDoYouOrPartnerGetBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString - WhoGetsTheBenefitsId.toString -
-          DoYouGetCarersAllowanceId.toString - DoesPartnerGetCarersAllowanceId.toString -
-          DoYouGetIncomeBasedBenefitsId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
-          DoYouGetSevereDisabilityPremiumId.toString - DoesPartnerGetSevereDisabilityPremiumId.toString -
-          DoYouGetDisabilityBenefitsId.toString - DoesPartnerGetDisabilityBenefitsId.toString -
-          DoYouGetHigherRateDisabilityBenefitsId.toString - DoesPartnerGetHigherRateDisabilityBenefitsId.toString
-        )
-      case _ =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString)
-    }
-    store(DoYouOrPartnerGetBenefitsId.toString, value, mapToStore.copy(
-      data = mapToStore.data - DoYouGetAnyBenefitsId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
-        WhoGetsBenefitsId.toString - WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString
-    ))
-  }
-
-  private def storeWhoGetsTheBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsString(`you`) =>
-        cacheMap.copy(data = cacheMap.data -
-          DoesPartnerGetCarersAllowanceId.toString - DoesPartnerGetIncomeBasedBenefitsId.toString -
-          DoesPartnerGetSevereDisabilityPremiumId.toString - DoesPartnerGetDisabilityBenefitsId.toString -
-          DoesPartnerGetHigherRateDisabilityBenefitsId.toString
-        )
-      case JsString(`partner`) =>
-        cacheMap.copy(data = cacheMap.data -
-          DoYouGetCarersAllowanceId.toString - DoYouGetIncomeBasedBenefitsId.toString -
-          DoYouGetSevereDisabilityPremiumId.toString - DoYouGetDisabilityBenefitsId.toString -
-          DoYouGetHigherRateDisabilityBenefitsId.toString
-        )
-      case _ =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetBenefitsId.toString)
-    }
-    store(WhoGetsTheBenefitsId.toString, value, mapToStore)
-  }
-
-  private def storeDoYouGetIncomeBasedBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetSevereDisabilityPremiumId.toString)
-      case _ =>
-        cacheMap
-    }
-    store(DoYouGetIncomeBasedBenefitsId.toString, value, mapToStore)
-  }
-
-  private def storeDoYouGetDisabilityBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) =>
-        cacheMap.copy(data = cacheMap.data - DoYouGetHigherRateDisabilityBenefitsId.toString)
-      case _ =>
-        cacheMap
-    }
-    store(DoYouGetDisabilityBenefitsId.toString, value, mapToStore)
-  }
-
-  private def storeDoesPartnerGetIncomeBasedBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) =>
-        cacheMap.copy(data = cacheMap.data - DoesPartnerGetSevereDisabilityPremiumId.toString)
-      case _ =>
-        cacheMap
-    }
-    store(DoesPartnerGetIncomeBasedBenefitsId.toString, value, mapToStore)
-  }
-
-  private def storeDoesPartnerGetDisabilityBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) =>
-        cacheMap.copy(data = cacheMap.data - DoesPartnerGetHigherRateDisabilityBenefitsId.toString)
-      case _ =>
-        cacheMap
-    }
-    store(DoesPartnerGetDisabilityBenefitsId.toString, value, mapToStore)
   }
 
   private def clearSessionData(value: JsValue, cacheMap: CacheMap): CacheMap = {

@@ -251,22 +251,5 @@ object ChildcareConstants {
   val partnerEmpIncomeCYFormField = "partnerEmploymentIncomeCY"
   val defaultFormValueField = "value"
 
-  val doYouGetBenefitsErrorKey = "doYouGetBenefits.error.notCompleted"
-  val doYouOrPartnerGetBenefitsErrorKey = "doYouOrPartnerGetBenefits.error.notCompleted"
   val whoGetsTheBenefitsErrorKey = "whoGetsTheBenefits.error.notCompleted"
-
-  val doYouGetCarersAllowanceErrorKey = "doYouGetCarersAllowance.error.notCompleted"
-  val doesPartnerGetCarersAllowanceErrorKey = "doesPartnerGetCarersAllowance.error.notCompleted"
-
-  val doYouGetIncomeBasedBenefitsErrorKey = "doYouGetIncomeBasedBenefits.error.notCompleted"
-  val doesPartnerGetIncomeBasedBenefitsErrorKey = "doesPartnerGetIncomeBasedBenefits.error.notCompleted"
-
-  val doYouGetSevereDisabilityPremiumErrorKey = "doYouGetSevereDisabilityPremium.error.notCompleted"
-  val doesPartnerGetSevereDisabilityPremiumErrorKey = "doesPartnerGetSevereDisabilityPremium.error.notCompleted"
-
-  val doYouGetHigherRateDisabilityBenefitsErrorKey = "doYouGetHigherRateDisabilityBenefits.error.notCompleted"
-  val doesPartnerGetHigherRateDisabilityBenefitsErrorKey = "doesPartnerGetHigherRateDisabilityBenefits.error.notCompleted"
-
-  val doYouGetDisabilityBenefitsErrorKey = "doYouGetDisabilityBenefits.error.notCompleted"
-  val doesPartnerGetDisabilityBenefitsErrorKey = "doesPartnerGetDisabilityBenefits.error.notCompleted"
 }
