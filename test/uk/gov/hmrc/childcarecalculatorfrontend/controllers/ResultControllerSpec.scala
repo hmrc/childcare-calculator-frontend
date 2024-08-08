@@ -22,13 +22,12 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.Lang
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, TaxOrUniversalCreditsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.TaxOrUniversalCreditsEnum.{NONE, TC}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, ResultsService}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
@@ -61,7 +60,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
                  resultService: ResultsService): ResultController =
     new ResultController(frontendAppConfig,
       mcc,
-      FakeDataCacheConnector,
+      FakeDataCacheService,
       dataRetrievalAction,
       new DataRequiredAction,
       resultService,
