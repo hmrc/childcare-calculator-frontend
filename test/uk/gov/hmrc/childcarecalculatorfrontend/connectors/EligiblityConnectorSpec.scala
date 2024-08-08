@@ -25,13 +25,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, SchemeResults}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.client.HttpClientV2
 import org.scalatestplus.play.PlaySpec
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import play.api.libs.json.Json
+
 import scala.concurrent.{ExecutionContext, Future}
 
+
 class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutures {
-  val mockHttp = mock[HttpClient]
+  val mockHttp = mock[HttpClientV2]
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
   implicit val request = FakeRequest()
   implicit val hc = HeaderCarrier()
@@ -45,8 +48,14 @@ class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutur
 
       val schemesResult = SchemeResults (schemes = Nil)
 
-      when(
+     /* when(
         mockHttp.POST[Household, SchemeResults](any(), any(), any())(any(), any(), any(), any())
+      ).thenReturn(Future.successful(schemesResult))
+    */
+      when(
+        mockHttp.post(any())(any())
+          .withBody[Household](any())
+          .execute[SchemeResults]
       ).thenReturn(Future.successful(schemesResult))
 
       val res = mockConnector.getEligibility(
