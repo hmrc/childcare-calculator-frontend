@@ -23,9 +23,9 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.audit.DefaultAuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import uk.gov.hmrc.play.audit.model.DataEvent
-import uk.gov.hmrc.play.bootstrap.audit.DefaultAuditConnector
 
 import scala.concurrent.{ExecutionContext, Future}
 

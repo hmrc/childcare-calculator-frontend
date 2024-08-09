@@ -23,6 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 
+
 class WhichChildrenBlindViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[Int] {
 
   val view = application.injector.instanceOf[whichChildrenBlind]

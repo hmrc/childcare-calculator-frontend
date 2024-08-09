@@ -16,22 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
-import org.mockito.Mockito._
 import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.play.PlaySpec
 import play.api.test.FakeRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, SchemeResults}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.HttpClient
-import org.scalatestplus.play.PlaySpec
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
+
 import scala.concurrent.{ExecutionContext, Future}
 
+
 class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutures {
-  val mockHttp = mock[HttpClient]
+  val mockHttp = mock[HttpClientV2]
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
   implicit val request = FakeRequest()
   implicit val hc = HeaderCarrier()
@@ -42,11 +44,25 @@ class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutur
   "Eligibility Connector" must {
 
     "get eligibility result" in {
-
-      val schemesResult = SchemeResults (schemes = Nil)
+      val schemesResult = SchemeResults(schemes = Nil)
+      val testRequestBuilder = mock[RequestBuilder]
 
       when(
-        mockHttp.POST[Household, SchemeResults](any(), any(), any())(any(), any(), any(), any())
+        frontendAppConfig.eligibilityUrl
+      ).thenReturn("http://localhost:9000/test")
+
+      when(
+        mockHttp.post(any())(any())
+      ).thenReturn(testRequestBuilder)
+
+      when(
+        testRequestBuilder
+          .withBody[Household](any())(any(), any(), any())
+      ).thenReturn(testRequestBuilder)
+
+      when(
+        testRequestBuilder
+          .execute[SchemeResults](any(), any())
       ).thenReturn(Future.successful(schemesResult))
 
       val res = mockConnector.getEligibility(

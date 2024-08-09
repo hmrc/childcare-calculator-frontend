@@ -24,11 +24,11 @@ import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, WhichChildrenBlindId, WhichChildrenDisabilityId, WhoHasChildcareCostsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 
@@ -154,7 +154,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): WhoHasChildcareCostsController =
     new WhoHasChildcareCostsController(frontendAppConfig, mcc,
-      FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
   val defaultValues: Map[String, String] = Map("Foo" -> "0", "Bar" ->"1")

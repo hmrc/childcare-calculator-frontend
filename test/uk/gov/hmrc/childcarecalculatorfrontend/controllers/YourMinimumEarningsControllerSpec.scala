@@ -23,11 +23,11 @@ import play.api.data.Form
 import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourAgeId, YourMinimumEarningsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
 
@@ -42,7 +42,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new YourMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, mockUtils, view)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString

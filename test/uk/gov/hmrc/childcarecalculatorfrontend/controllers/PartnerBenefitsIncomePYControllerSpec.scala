@@ -20,11 +20,11 @@ import play.api.data.Form
 import play.api.libs.json.JsNumber
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerBenefitsIncomePYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerBenefitsIncomePYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerBenefitsIncomePY
 
@@ -36,7 +36,7 @@ class PartnerBenefitsIncomePYControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerBenefitsIncomePYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new PartnerBenefitsIncomePYController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[BigDecimal] = PartnerBenefitsIncomePYForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString

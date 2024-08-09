@@ -20,11 +20,11 @@ import play.api.data.Form
 import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.OtherIncomeAmountPYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.OtherIncomeAmountPYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, OtherIncomeAmountPY}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountPY
 
@@ -37,7 +37,7 @@ class OtherIncomeAmountPYControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new OtherIncomeAmountPYController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new OtherIncomeAmountPYController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, new OtherIncomeAmountPYForm(frontendAppConfig), view)
 
   def viewAsString(form: Form[OtherIncomeAmountPY] = otherIncomeForm) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString

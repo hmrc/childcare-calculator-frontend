@@ -20,12 +20,12 @@ import play.api.data.Form
 import play.api.libs.json.{JsNumber, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourStatutoryWeeksForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayTypeId, YourStatutoryWeeksId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.StatutoryPayTypeEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.viewmodels.StatutoryPayWeeksViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryWeeks
@@ -48,7 +48,7 @@ class YourStatutoryWeeksControllerSpec extends ControllerSpecBase {
   val viewModel = new StatutoryPayWeeksViewModel(frontendAppConfig, MATERNITY)
 
   private def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction) =
-    new YourStatutoryWeeksController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new YourStatutoryWeeksController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, new YourStatutoryWeeksForm(frontendAppConfig), view)
 
   def viewAsString(form: Form[Int] = form) = view(frontendAppConfig, form, NormalMode, viewModel)(fakeRequest, messages).toString

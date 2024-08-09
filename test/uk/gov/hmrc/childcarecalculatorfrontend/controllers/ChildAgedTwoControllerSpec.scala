@@ -20,11 +20,11 @@ import play.api.data.Form
 import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedTwoId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 
@@ -40,7 +40,7 @@ class ChildAgedTwoControllerSpec extends ControllerSpecBase {
   def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
-    new ChildAgedTwoController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new ChildAgedTwoController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages).toString
