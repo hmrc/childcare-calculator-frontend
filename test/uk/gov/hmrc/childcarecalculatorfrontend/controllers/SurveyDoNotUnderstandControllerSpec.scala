@@ -20,11 +20,10 @@ import play.api.data.Form
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionStatus, SubmissionSuccessful}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, SplunkSubmissionServiceInterface, SubmissionStatus, SubmissionSuccessful}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 import uk.gov.hmrc.http.HeaderCarrier
@@ -38,7 +37,7 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new SurveyDoNotUnderstandController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new SurveyDoNotUnderstandController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService(), view)
 
   def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = view(frontendAppConfig, form)(fakeRequest, messages).toString

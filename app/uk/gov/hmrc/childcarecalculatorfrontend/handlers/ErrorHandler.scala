@@ -18,32 +18,34 @@ package uk.gov.hmrc.childcarecalculatorfrontend.handlers
 
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.Request
+import play.api.mvc.{Request, RequestHeader}
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
+
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ErrorHandler @Inject()(
                               val messagesApi: MessagesApi,
                               errorTemplate: error_template
-                            ) extends FrontendErrorHandler with I18nSupport {
+                            )(implicit val ec: ExecutionContext) extends FrontendErrorHandler with I18nSupport {
 
-  override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit rh: Request[_]): Html =
-    errorTemplate(pageTitle, heading, message)
+  override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] =
+    Future.successful(errorTemplate(pageTitle, heading, message))
 
-  override def badRequestTemplate(implicit request: Request[_]): Html =
-    errorTemplate(
+  override def badRequestTemplate(implicit request: RequestHeader): Future[Html] =
+    Future.successful(errorTemplate(
       Messages("global.error.InternalServerError500.title"),
       Messages("global.error.InternalServerError500.heading"),
-      Messages("global.error.InternalServerError500.message"))
+      Messages("global.error.InternalServerError500.message")))
 
-  override def internalServerErrorTemplate(implicit request: Request[_]): Html = {
-    errorTemplate(
+  override def internalServerErrorTemplate(implicit request: RequestHeader): Future[Html] = {
+    Future.successful(errorTemplate(
       Messages("ccc.error.InternalServerError500.title"),
       Messages("ccc.error.InternalServerError500.heading"),
       Messages("ccc.error.InternalServerError500.message"),
-      )
+    ))
   }
 }
 

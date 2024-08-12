@@ -20,11 +20,11 @@ import play.api.data.Form
 import play.api.libs.json.JsNumber
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentWorkHoursForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentWorkHoursId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentWorkHours
 
@@ -38,7 +38,7 @@ class ParentWorkHoursControllerSpec extends ControllerSpecBase {
   val parentWorkHoursForm = new ParentWorkHoursForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new ParentWorkHoursController(mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new ParentWorkHoursController(mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, new ParentWorkHoursForm(frontendAppConfig), view)
 
   def viewAsString(form: Form[BigDecimal] = parentWorkHoursForm) = view(form, NormalMode)(fakeRequest, messages).toString

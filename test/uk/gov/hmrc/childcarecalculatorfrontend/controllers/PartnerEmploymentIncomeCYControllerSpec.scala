@@ -20,11 +20,11 @@ import play.api.data.Form
 import play.api.libs.json.{JsBoolean, JsNumber, Json}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerEmploymentIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerEmploymentIncomeCYId, PartnerMaximumEarningsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerEmploymentIncomeCY
@@ -40,7 +40,7 @@ class PartnerEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerEmploymentIncomeCYController(frontendAppConfig, mcc,
-      FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+      FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, taxYearInfo, new PartnerEmploymentIncomeCYForm(frontendAppConfig), view)
 
   def viewAsString(form: Form[BigDecimal] = new PartnerEmploymentIncomeCYForm(frontendAppConfig).apply()) =

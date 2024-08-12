@@ -21,11 +21,11 @@ import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.FakeDataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.{YourStatutoryPayTypeForm, YourStatutoryStartDateForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourStatutoryPayTypeId, YourStatutoryStartDateId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourStatutoryStartDate
 import uk.gov.hmrc.time.TaxYear
@@ -48,7 +48,7 @@ class YourStatutoryStartDateControllerSpec extends ControllerSpecBase {
   val currentTaxYear: Int =  new TaxYear(LocalDate.now().getYear).currentYear
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalAction): YourStatutoryStartDateController =
-    new YourStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheConnector, new FakeNavigator(desiredRoute = onwardRoute),
+    new YourStatutoryStartDateController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[LocalDate] = YourStatutoryStartDateForm(statutoryType)): String =
