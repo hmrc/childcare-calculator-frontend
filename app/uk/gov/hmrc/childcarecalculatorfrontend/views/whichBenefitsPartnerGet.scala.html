@@ -17,8 +17,9 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @this(
         layout: Layout,
@@ -33,11 +34,29 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[Set[String]],
-        mode: Mode
+        mode: Mode,
+        userAnswers: Option[UserAnswers]
 )(
         implicit request: Request[_],
         messages: Messages
 )
+
+@inputs = @{
+    val location = userAnswers.flatMap(_.location)
+    def createCheckboxItems(options: Seq[WhichBenefitsEnum.Value]): Seq[CheckboxItem] = {
+        options.map { checkboxOption =>
+            CheckboxItem(
+                content = HtmlContent(messages(s"whichBenefitsYouGet.${checkboxOption}")),
+                value = checkboxOption.toString
+            )
+        }
+    }
+    val inputs: Seq[CheckboxItem] = location match {
+        case Some(Location.SCOTLAND) => createCheckboxItems(WhichBenefitsEnum.sortedScottishWhichBenefits)
+        case _ => createCheckboxItems(WhichBenefitsEnum.sortedWhichBenefits)
+    }
+    inputs
+}
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("whichBenefitsPartnerGet.title")) else messages("whichBenefitsPartnerGet.title")
@@ -53,12 +72,7 @@
             field = form("value"),
             legend = messages("whichBenefitsPartnerGet.heading"),
             hint = Some(messages("whichBenefits.select.all")),
-            inputs = WhichBenefitsEnum.sortedWhichBenefits.map { checkboxOption =>
-                CheckboxItem(
-                content = HtmlContent(messages(s"whichBenefitsPartnerGet.${checkboxOption}")),
-                value = checkboxOption.toString
-                )
-            }
+            inputs = inputs
         )
 
         @detailSummary(

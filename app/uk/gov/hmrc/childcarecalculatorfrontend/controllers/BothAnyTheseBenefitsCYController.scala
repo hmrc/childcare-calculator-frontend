@@ -49,7 +49,7 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(bothAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo))
+      Ok(bothAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo, Some(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
@@ -59,7 +59,7 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
       validateCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
+          Future.successful(BadRequest(bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, Some(request.userAnswers)))),
         value =>
           dataCacheConnector.save[Boolean](request.sessionId, BothAnyTheseBenefitsCYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(BothAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))

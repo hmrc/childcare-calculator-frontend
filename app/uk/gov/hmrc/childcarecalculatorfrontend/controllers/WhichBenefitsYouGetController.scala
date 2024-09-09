@@ -48,14 +48,14 @@ class WhichBenefitsYouGetController @Inject()(
         case None => WhichBenefitsYouGetForm()
         case Some(value) => WhichBenefitsYouGetForm().fill(value)
       }
-      Ok(whichBenefitsYouGet(appConfig, preparedForm, mode))
+      Ok(whichBenefitsYouGet(appConfig, preparedForm, mode, Some(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       WhichBenefitsYouGetForm().bindFromRequest().fold(
         (formWithErrors: Form[Set[String]]) => {
-          Future.successful(BadRequest(whichBenefitsYouGet(appConfig, formWithErrors, mode)))
+          Future.successful(BadRequest(whichBenefitsYouGet(appConfig, formWithErrors, mode, Some(request.userAnswers))))
         },
         value => {
           dataCacheConnector.save[Set[String]](request.sessionId, WhichBenefitsYouGetId.toString, value).map(cacheMap =>

@@ -49,14 +49,14 @@ class BothAnyTheseBenefitsPYController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(bothAnyTheseBenefitsPY(appConfig, preparedForm, mode, taxYearInfo))
+      Ok(bothAnyTheseBenefitsPY(appConfig, preparedForm, mode, taxYearInfo, Some(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       BooleanForm(bothAnyTheseBenefitsPYErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(bothAnyTheseBenefitsPY(appConfig, formWithErrors, mode, taxYearInfo))),
+          Future.successful(BadRequest(bothAnyTheseBenefitsPY(appConfig, formWithErrors, mode, taxYearInfo, Some(request.userAnswers)))),
         value =>
           dataCacheConnector.save[Boolean](request.sessionId, BothAnyTheseBenefitsPYId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(BothAnyTheseBenefitsPYId, mode)(new UserAnswers(cacheMap))))

@@ -16,7 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @this(layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -25,19 +26,42 @@
     error_summary: playComponents.error_summary,
     inputYesNo: playComponents.input_yes_no)
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Boolean],
+    mode: Mode,
+    userAnswers: Option[UserAnswers]
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
-@bulletList = @{
-Seq(messages("doYouGetAnyBenefits.li.carersAllowance"),
-    messages("doYouGetAnyBenefits.li.disabilityAllowance"),
-    messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
-    messages("doYouGetAnyBenefits.li.attendanceAllowance"),
-    messages("doYouGetAnyBenefits.li.independencePayment"),
-    messages("doYouGetAnyBenefits.li.pensionCredit"),
-    messages("doYouGetAnyBenefits.li.incomeSupport"),
-    messages("doYouGetAnyBenefits.li.jsa"),
-    messages("doYouGetAnyBenefits.li.esa"))
-}
+@location = @{userAnswers.flatMap(_.location)}
+
+@bulletList = @{location match {
+                case Some(Location.SCOTLAND) => {
+                    Seq(messages("doYouGetAnyBenefits.li.scottishCarersAllowance"),
+                        messages("doYouGetAnyBenefits.li.disabilityAllowance"),
+                        messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
+                        messages("doYouGetAnyBenefits.li.attendanceAllowance"),
+                        messages("doYouGetAnyBenefits.li.independencePayment"),
+                        messages("doYouGetAnyBenefits.li.pensionCredit"),
+                        messages("doYouGetAnyBenefits.li.incomeSupport"),
+                        messages("doYouGetAnyBenefits.li.jsa"),
+                        messages("doYouGetAnyBenefits.li.esa"))
+                }
+                case _ => {
+                    Seq(messages("doYouGetAnyBenefits.li.carersAllowance"),
+                    messages("doYouGetAnyBenefits.li.disabilityAllowance"),
+                    messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
+                    messages("doYouGetAnyBenefits.li.attendanceAllowance"),
+                    messages("doYouGetAnyBenefits.li.independencePayment"),
+                    messages("doYouGetAnyBenefits.li.pensionCredit"),
+                    messages("doYouGetAnyBenefits.li.incomeSupport"),
+                    messages("doYouGetAnyBenefits.li.jsa"),
+                    messages("doYouGetAnyBenefits.li.esa"))
+                }
+            }}
 
 @layout(
     pageTitle= if(form.errors.nonEmpty) {

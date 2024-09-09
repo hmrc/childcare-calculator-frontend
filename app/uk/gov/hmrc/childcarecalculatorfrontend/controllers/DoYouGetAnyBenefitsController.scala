@@ -48,14 +48,14 @@ class DoYouGetAnyBenefitsController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode))
+      Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode, Some(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       BooleanForm(doYouGetAnyBenefitsErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode, Some(request.userAnswers)))),
         value =>
           dataCacheConnector.save[Boolean](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))

@@ -138,6 +138,7 @@ object WhichBenefitsEnum extends Enumeration {
   val HIGHRATEDISABILITYBENEFITS = Value("highRateDisabilityBenefits")
   val SEVEREDISABILITYPREMIUM = Value("severeDisabilityPremium")
   val CARERSALLOWANCE = Value("carersAllowance")
+  val SCOTTISHCARERSALLOWANCE = Value("scottishCarersAllowance")
 
   val enumReads: Reads[WhichBenefitsEnum] = EnumUtils.enumReads(WhichBenefitsEnum)
   val enumWrites: Writes[WhichBenefitsEnum] = EnumUtils.enumWrites
@@ -150,6 +151,14 @@ object WhichBenefitsEnum extends Enumeration {
       HIGHRATEDISABILITYBENEFITS,
       SEVEREDISABILITYPREMIUM,
       CARERSALLOWANCE,
+      INCOMEBENEFITS,
+    )
+  val sortedScottishWhichBenefits  =
+    Seq(
+      DISABILITYBENEFITS,
+      HIGHRATEDISABILITYBENEFITS,
+      SEVEREDISABILITYPREMIUM,
+      SCOTTISHCARERSALLOWANCE,
       INCOMEBENEFITS,
     )
 }

@@ -48,14 +48,14 @@ class WhichBenefitsPartnerGetController @Inject()(
         case None => WhichBenefitsPartnerGetForm()
         case Some(value) => WhichBenefitsPartnerGetForm().fill(value)
       }
-      Ok(whichBenefitsPartnerGet(appConfig, preparedForm, mode))
+      Ok(whichBenefitsPartnerGet(appConfig, preparedForm, mode, Some(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       WhichBenefitsPartnerGetForm().bindFromRequest().fold(
         (formWithErrors: Form[Set[String]]) => {
-          Future.successful (BadRequest (whichBenefitsPartnerGet (appConfig, formWithErrors, mode)))
+          Future.successful (BadRequest (whichBenefitsPartnerGet (appConfig, formWithErrors, mode, Some(request.userAnswers))))
         },
         value => {
           dataCacheConnector.save[Set[String]] (request.sessionId, WhichBenefitsPartnerGetId.toString, value).map (cacheMap =>

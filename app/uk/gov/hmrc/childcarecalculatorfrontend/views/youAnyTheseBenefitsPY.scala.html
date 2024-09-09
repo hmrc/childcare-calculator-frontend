@@ -16,8 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 
 @this(
     layout: Layout,
@@ -28,7 +28,18 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Boolean],
+    mode: Mode,
+    taxYearInfo: TaxYearInfo,
+    userAnswers: Option[UserAnswers]
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
+
+@location = @{userAnswers.flatMap(_.location)}
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("youAnyTheseBenefitsPY.title")) else messages("youAnyTheseBenefitsPY.title")
@@ -43,15 +54,31 @@
     @heading(messages("youAnyTheseBenefitsPY.heading"))
     <p class="govuk-body">@messages("youAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
 
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("youAnyTheseBenefitsPY.li.income_support")</li>
-        <li>@messages("youAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
-        <li>@messages("youAnyTheseBenefitsPY.li.carers")</li>
-        <li>@messages("youAnyTheseBenefitsPY.li.employment_support")</li>
-        <li>@messages("youAnyTheseBenefitsPY.li.pensions")</li>
-        <li>@messages("youAnyTheseBenefitsPY.li.disability")</li>
+    @location match {
+        case Some(Location.SCOTLAND) => {
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("youAnyTheseBenefitsPY.li.income_support")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.scottishCarersAllowance")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.employment_support")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.pensions")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.disability")</li>
+        </ul>
+        }
+        case _ => {
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("youAnyTheseBenefitsPY.li.income_support")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.carers")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.employment_support")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.pensions")</li>
+            <li>@messages("youAnyTheseBenefitsPY.li.disability")</li>
+        </ul>
+        }
+    }
 
-    </ul>
+
+
     @formWithCSRF(action = YouAnyTheseBenefitsPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(

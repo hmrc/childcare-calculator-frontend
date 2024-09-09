@@ -16,8 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 
 @this(
     layout: Layout,
@@ -28,22 +28,47 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Boolean],
+    mode: Mode,
+    taxYearInfo: TaxYearInfo,
+    userAnswers: Option[UserAnswers]
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
+
+@location = @{userAnswers.flatMap(_.location)}
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerAnyTheseBenefitsPY.title")) else messages("partnerAnyTheseBenefitsPY.title")
 }
-@bulletList = @{
-    Seq(messages("partnerAnyTheseBenefitsPY.li.income_support"),
-    messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance"),
-    messages("partnerAnyTheseBenefitsPY.li.employment_support"),
-    messages("partnerAnyTheseBenefitsPY.li.pensions"),
-    messages("partnerAnyTheseBenefitsPY.li.disability"),
-    messages("partnerAnyTheseBenefitsPY.li.adultDisability"),
-    messages("partnerAnyTheseBenefitsPY.li.attendance"),
-    messages("partnerAnyTheseBenefitsPY.li.independance"),
-    messages("partnerAnyTheseBenefitsPY.li.carers"))
-}
+@bulletList = @{location match {
+                case Some(Location.SCOTLAND) => {
+                    Seq(messages("partnerAnyTheseBenefitsPY.li.income_support"),
+                    messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance"),
+                    messages("partnerAnyTheseBenefitsPY.li.employment_support"),
+                    messages("partnerAnyTheseBenefitsPY.li.pensions"),
+                    messages("partnerAnyTheseBenefitsPY.li.disability"),
+                    messages("partnerAnyTheseBenefitsPY.li.adultDisability"),
+                    messages("partnerAnyTheseBenefitsPY.li.attendance"),
+                    messages("partnerAnyTheseBenefitsPY.li.independance"),
+                    messages("partnerAnyTheseBenefitsPY.li.scottishCarersAllowance"))
+                }
+                case _ => {
+                    Seq(messages("partnerAnyTheseBenefitsPY.li.income_support"),
+                    messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance"),
+                    messages("partnerAnyTheseBenefitsPY.li.employment_support"),
+                    messages("partnerAnyTheseBenefitsPY.li.pensions"),
+                    messages("partnerAnyTheseBenefitsPY.li.disability"),
+                    messages("partnerAnyTheseBenefitsPY.li.adultDisability"),
+                    messages("partnerAnyTheseBenefitsPY.li.attendance"),
+                    messages("partnerAnyTheseBenefitsPY.li.independance"),
+                    messages("partnerAnyTheseBenefitsPY.li.carers"))
+                }
+            }}
+
 @layout(
     pageTitle = title
 ) {

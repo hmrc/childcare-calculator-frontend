@@ -24,8 +24,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouAnyTheseBenefitsIdCY
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, WhichBenefitsEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{youAnyTheseBenefitsCYCarerAllowanceErrorKey, youAnyTheseBenefitsCYErrorKey}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode, WhichBenefitsEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{youAnyTheseBenefitsCYCarerAllowanceErrorKey, youAnyTheseBenefitsCYErrorKey, youAnyTheseBenefitsCYScottishCarerAllowanceErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youAnyTheseBenefitsCY
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -49,7 +49,7 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(youAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo))
+      Ok(youAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo, Some(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
@@ -59,7 +59,7 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
       validateCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(youAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
+          Future.successful(BadRequest(youAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, Some(request.userAnswers)))),
         value =>
           dataCacheConnector.save[Boolean](request.sessionId, YouAnyTheseBenefitsIdCY.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(YouAnyTheseBenefitsIdCY, mode)(new UserAnswers(cacheMap))))
@@ -78,9 +78,13 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
       userAnswers.whichBenefitsYouGet match {
       case Some(benefits) if !boundForm.hasErrors => {
         val hasCarerAllowance = benefits.exists( x => x == WhichBenefitsEnum.CARERSALLOWANCE.toString)
+        val hasScottishCarerAllowance = benefits.exists( x => x == WhichBenefitsEnum.SCOTTISHCARERSALLOWANCE.toString)
         val youAnyBenefitsValue = boundForm.value.getOrElse(true)
+        val isScotland = userAnswers.location.contains(Location.SCOTLAND)
 
-        if(hasCarerAllowance && !youAnyBenefitsValue) {
+        if (hasScottishCarerAllowance && !youAnyBenefitsValue && isScotland) {
+            boundForm.withError("value", youAnyTheseBenefitsCYScottishCarerAllowanceErrorKey)
+        } else if(hasCarerAllowance && !youAnyBenefitsValue && !isScotland) {
             boundForm.withError("value", youAnyTheseBenefitsCYCarerAllowanceErrorKey)
         } else {
           boundForm

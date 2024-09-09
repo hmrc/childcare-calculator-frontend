@@ -16,8 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 
 @this(
         layout: Layout,
@@ -32,11 +32,14 @@
         appConfig: FrontendAppConfig,
         form: Form[Boolean],
         mode: Mode,
-        taxYearInfo: TaxYearInfo
+        taxYearInfo: TaxYearInfo,
+        userAnswers: Option[UserAnswers]
 )(
         implicit request: Request[_],
         messages: Messages
 )
+
+@location = @{userAnswers.flatMap(_.location)}
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages(s"youAnyTheseBenefitsCY.title")) else messages(s"youAnyTheseBenefitsCY.title")
@@ -52,14 +55,28 @@
     <p class="govuk-body">@messages("youAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
     @playComponents.list(
-        bulletList = Seq (
-        messages("youAnyTheseBenefitsCY.li.income_support"),
-        messages("youAnyTheseBenefitsCY.li.jobseekers_allowance"),
-        messages("youAnyTheseBenefitsCY.li.carers"),
-        messages("youAnyTheseBenefitsCY.li.employment_support"),
-        messages("youAnyTheseBenefitsCY.li.pensions"),
-        messages("youAnyTheseBenefitsCY.li.disability")
-    ))
+        bulletList = location match {
+                        case Some(Location.SCOTLAND) => {
+                                Seq (
+                                    messages("youAnyTheseBenefitsCY.li.income_support"),
+                                    messages("youAnyTheseBenefitsCY.li.jobseekers_allowance"),
+                                    messages("youAnyTheseBenefitsCY.li.scottishCarersAllowance"),
+                                    messages("youAnyTheseBenefitsCY.li.employment_support"),
+                                    messages("youAnyTheseBenefitsCY.li.pensions"),
+                                    messages("youAnyTheseBenefitsCY.li.disability"))
+                        }
+                        case _ => {
+                                Seq (
+                                messages("youAnyTheseBenefitsCY.li.income_support"),
+                                messages("youAnyTheseBenefitsCY.li.jobseekers_allowance"),
+                                messages("youAnyTheseBenefitsCY.li.carers"),
+                                messages("youAnyTheseBenefitsCY.li.employment_support"),
+                                messages("youAnyTheseBenefitsCY.li.pensions"),
+                                messages("youAnyTheseBenefitsCY.li.disability"))
+                        }
+                    }
+    )
+
     @formWithCSRF(action = YouAnyTheseBenefitsCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @inputYesNo(
