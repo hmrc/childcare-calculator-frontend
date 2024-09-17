@@ -17,13 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerAnyTheseBenefitsPYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, PartnerAnyTheseBenefitsPYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
@@ -35,14 +35,19 @@ class PartnerAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[partnerAnyTheseBenefitsPY]
   val taxYearInfo = new TaxYearInfo
-
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  val location = Location.ENGLAND
+
+  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+
+  def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
+
+  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new PartnerAnyTheseBenefitsPYController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, taxYearInfo, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, taxYearInfo, location)(fakeRequest, messages).toString
 
   "PartnerAnyTheseBenefitsPY Controller" must {
 
@@ -54,7 +59,8 @@ class PartnerAnyTheseBenefitsPYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true))
+      val validData = Map(LocationId.toString -> JsString(location.toString),
+                          PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)

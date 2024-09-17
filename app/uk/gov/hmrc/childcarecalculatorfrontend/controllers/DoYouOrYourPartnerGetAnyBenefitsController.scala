@@ -44,21 +44,31 @@ class DoYouOrYourPartnerGetAnyBenefitsController @Inject()(appConfig: FrontendAp
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.doYouOrYourPartnerGetAnyBenefits match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+      request.userAnswers.location match {
+        case None =>
+          Redirect(routes.LocationController.onPageLoad(mode))
+
+        case Some(location) =>
+          val preparedForm = request.userAnswers.doYouOrYourPartnerGetAnyBenefits match {
+            case None => BooleanForm()
+            case Some(value) => BooleanForm().fill(value)
+          }
+          Ok(doYouOrYourPartnerGetAnyBenefits(appConfig, preparedForm, mode, location))
       }
-      Ok(doYouOrYourPartnerGetAnyBenefits(appConfig, preparedForm, mode, Some(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(doYouOrYourPartnerGetAnyBenefitsErrorKey).bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(doYouOrYourPartnerGetAnyBenefits(appConfig, formWithErrors, mode, Some(request.userAnswers)))),
-        value =>
-          dataCacheConnector.save[Boolean](request.sessionId, DoYouOrYourPartnerGetAnyBenefitsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
-      )
+      if (request.userAnswers.location.isEmpty) {
+        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      } else {
+        BooleanForm(doYouOrYourPartnerGetAnyBenefitsErrorKey).bindFromRequest().fold(
+          (formWithErrors: Form[Boolean]) =>
+            Future.successful(BadRequest(doYouOrYourPartnerGetAnyBenefits(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
+          value =>
+            dataCacheConnector.save[Boolean](request.sessionId, DoYouOrYourPartnerGetAnyBenefitsId.toString, value).map(cacheMap =>
+              Redirect(navigator.nextPage(DoYouOrYourPartnerGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
+        )
+      }
   }
 }

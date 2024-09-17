@@ -16,23 +16,23 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import play.api.data.validation.{Invalid, Valid, Constraint}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
+import play.api.data.validation.{Constraint, Invalid, Valid}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsYouGetErrorKey}
 
 object WhichBenefitsYouGetForm extends FormErrorHelper {
 
-  def WhichBenefitsYouGetFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
+  def whichBenefitsYouGetFormatter(validBenefitOptions: Set[String]): Formatter[String] = new Formatter[String] {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
+      case Some(s) if optionIsValid(s, validBenefitOptions) => Right(s)
       case None => produceError(key, whichBenefitsYouGetErrorKey)
       case _ => produceError(key, unknownErrorKey)
     }
 
-    def unbind(key: String, value: String) = Map(key -> value)
+    def unbind(key: String, value: String): Map[String, String] = Map(key -> value)
   }
 
   private def constraint(): Constraint[Set[String]] = Constraint {
@@ -42,16 +42,25 @@ object WhichBenefitsYouGetForm extends FormErrorHelper {
       Invalid(whichBenefitsYouGetErrorKey)
   }
 
-  def apply(): Form[Set[String]] =
+  def apply(location: Location.Value): Form[Set[String]] = {
+    val validBenefitOptions = validBenefitOptionsForLocation(location)
     Form(
-        "value" -> set(of(WhichBenefitsYouGetFormatter))
+        "value" -> set(of(whichBenefitsYouGetFormatter(validBenefitOptions)))
           .verifying(constraint())
       )
+  }
 
   lazy val options: Seq[(String, String)] = WhichBenefitsEnum.sortedWhichBenefits.map {
     value =>
       s"whichBenefitsYouGet.$value" -> value.toString
   }
 
-  def optionIsValid(value: String): Boolean = WhichBenefitsEnum.sortedWhichBenefits.map(_.toString).contains(value)
+  def optionIsValid(value: String, validWhichBenefits: Set[String]): Boolean = { validWhichBenefits.contains(value) }
+
+  private def validBenefitOptionsForLocation(location: Location.Value): Set[String] = {
+    location match {
+      case Location.SCOTLAND => WhichBenefitsEnum.sortedScottishWhichBenefits.map(_.toString).toSet
+      case _ => WhichBenefitsEnum.sortedWhichBenefits.map(_.toString).toSet
+    }
+  }
 }

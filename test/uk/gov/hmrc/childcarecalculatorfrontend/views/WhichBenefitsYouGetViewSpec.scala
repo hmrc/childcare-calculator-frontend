@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
 
@@ -29,13 +29,13 @@ class WhichBenefitsYouGetViewSpec extends NewViewBehaviours with NewCheckboxView
   val messageKeyPrefix = "whichBenefitsYouGet"
   val fieldKey = "value"
   val errorMessage = "error.invalid"
-
+  val location: Location.Value = Location.ENGLAND
   val values: Seq[(String, String)] = WhichBenefitsYouGetForm.options
 
-  def form: Form[Set[String]] = WhichBenefitsYouGetForm()
+  def form: Form[Set[String]] = WhichBenefitsYouGetForm(location)
 
   def createView(form: Form[Set[String]] = form): Html =
-    mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+    mockView(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
 
   "WhichBenefitsYouGet view" must {
 
@@ -49,7 +49,7 @@ class WhichBenefitsYouGetViewSpec extends NewViewBehaviours with NewCheckboxView
 
   "whichBenefitsYouGet view " must {
     s"display correct content when loaded" in {
-      val view = mockView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+      val view = mockView(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.benefits"))
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.income.support"))
       assertContainsText(asDocument(view), messages("whichBenefitsList.typeof.jobseeker.allowance"))

@@ -52,25 +52,49 @@ class BenefitsSpec extends PlaySpec {
         mappedBenefits.get.highRateDisabilityBenefits mustBe true
       }
 
-      "We have carers allowance benefits" in {
+      "We have carers allowance benefits for non scottish users" in {
         val rawBenefits = Some(Set(CARERSALLOWANCE.toString))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
         mappedBenefits.get.carersAllowance mustBe true
       }
 
-      "We have a known benefit and an unkonwn benefit" in {
+      "We have Carer's Allowance or Carer Support System benefits for scottish users" in {
+        val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+
+        mappedBenefits.get.scottishCarersAllowance mustBe true
+      }
+
+      "We have a known benefit and an unkonwn benefit for non scottish users" in {
         val rawBenefits = Some(Set(CARERSALLOWANCE.toString,"unknown benefit"))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
         mappedBenefits.get.carersAllowance mustBe true
       }
 
-      "We have all benefits" in {
+      "We have a known benefit and an unkonwn benefit for scottish users" in {
+        val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString,"unknown benefit"))
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+
+        mappedBenefits.get.scottishCarersAllowance mustBe true
+      }
+
+      "We have all benefits for non scottish users" in {
         val rawBenefits = Some(Set(CARERSALLOWANCE.toString, HIGHRATEDISABILITYBENEFITS.toString, DISABILITYBENEFITS.toString, INCOMEBENEFITS.toString))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits).get
 
         mappedBenefits.carersAllowance mustBe true
+        mappedBenefits.highRateDisabilityBenefits mustBe true
+        mappedBenefits.disabilityBenefits mustBe true
+        mappedBenefits.incomeBenefits mustBe true
+      }
+
+      "We have all benefits for scottish users" in {
+        val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString, HIGHRATEDISABILITYBENEFITS.toString, DISABILITYBENEFITS.toString, INCOMEBENEFITS.toString))
+        val mappedBenefits = Benefits.populateFromRawData(rawBenefits).get
+
+        mappedBenefits.scottishCarersAllowance mustBe true
         mappedBenefits.highRateDisabilityBenefits mustBe true
         mappedBenefits.disabilityBenefits mustBe true
         mappedBenefits.incomeBenefits mustBe true

@@ -20,7 +20,7 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerAnyTheseBenefitsCY
 
@@ -32,21 +32,36 @@ class PartnerAnyTheseBenefitsCYViewSpec extends NewYesNoViewBehaviours {
 
   val messageKeyPrefix = "partnerAnyTheseBenefitsCY"
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView(location:Location.Value) = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, location)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm(location:Location.Value) = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo, location)(fakeRequest, messages)
 
-  "PartnerAnyTheseBenefitsCY view" must {
-
-    behave like normalPage(createView, messageKeyPrefix, "li.income_support", "li.jobseekers_allowance",
+  "PartnerAnyTheseBenefitsCY view for non scottish users" must {
+    val location: Location.Value = Location.ENGLAND
+    behave like normalPage(createView(location:Location.Value), messageKeyPrefix, "li.income_support", "li.jobseekers_allowance",
       "li.employment_support", "li.pensions", "li.disability", "li.attendance", "li.independance", "li.carers")
 
-    behave like pageWithBackLink(createView)
+    behave like pageWithBackLink(createView(location:Location.Value))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerAnyTheseBenefitsCYController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm(location:Location.Value), messageKeyPrefix, routes.PartnerAnyTheseBenefitsCYController.onSubmit(NormalMode).url)
 
     "contain tax year info" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(createView(location:Location.Value)())
+      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+    }
+  }
+
+  "PartnerAnyTheseBenefitsCY view for scottish users" must {
+    val location: Location.Value = Location.SCOTLAND
+    behave like normalPage(createView(location:Location.Value), messageKeyPrefix, "li.income_support", "li.jobseekers_allowance",
+      "li.employment_support", "li.pensions", "li.disability", "li.attendance", "li.independance", "li.scottishCarersAllowance")
+
+    behave like pageWithBackLink(createView(location:Location.Value))
+
+    behave like yesNoPage(createViewUsingForm(location:Location.Value), messageKeyPrefix, routes.PartnerAnyTheseBenefitsCYController.onSubmit(NormalMode).url)
+
+    "contain tax year info" in {
+      val doc = asDocument(createView(location:Location.Value)())
       assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
     }
   }

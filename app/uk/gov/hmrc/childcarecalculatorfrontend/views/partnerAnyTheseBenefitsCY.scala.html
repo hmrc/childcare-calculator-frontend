@@ -17,7 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo}
 
 @this(
     layout: Layout,
@@ -32,13 +32,11 @@
     form: Form[Boolean],
     mode: Mode,
     taxYearInfo: TaxYearInfo,
-    userAnswers: Option[UserAnswers]
+    location : Location.Value
 )(
     implicit request: Request[_],
     messages: Messages
 )
-
-@location = @{userAnswers.flatMap(_.location)}
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerAnyTheseBenefitsCY.title")) else messages("partnerAnyTheseBenefitsCY.title")
@@ -55,7 +53,7 @@
     <p class="govuk-body">@messages("partnerAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
     @location match {
-            case Some(Location.SCOTLAND) => {
+            case Location.SCOTLAND => {
                 <ul class="govuk-list govuk-list--bullet">
                     <li>@messages("partnerAnyTheseBenefitsCY.li.income_support")</li>
                     <li>@messages("partnerAnyTheseBenefitsCY.li.jobseekers_allowance")</li>

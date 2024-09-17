@@ -48,7 +48,8 @@ case class Benefits(
                      disabilityBenefits: Boolean = false,
                      highRateDisabilityBenefits: Boolean = false,
                      incomeBenefits: Boolean = false,
-                     carersAllowance: Boolean = false
+                     carersAllowance: Boolean = false,
+                     scottishCarersAllowance: Boolean = false
                    )
 
 object Benefits {
@@ -61,6 +62,7 @@ object Benefits {
         case `disabilityBenefits` => benefits.copy(disabilityBenefits = true)
         case `highRatedDisabilityBenefits` => benefits.copy(highRateDisabilityBenefits = true)
         case `carersAllowanceBenefits` => benefits.copy(carersAllowance = true)
+        case `scottishCarersAllowanceBenefits` => benefits.copy(scottishCarersAllowance = true)
         case _ => benefits
       }
     }))

@@ -17,34 +17,40 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, Json}
+import play.api.libs.json.{JsBoolean, JsString, Json}
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothAnyTheseBenefitsCYId, WhichBenefitsPartnerGetId, WhichBenefitsYouGetId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothAnyTheseBenefitsCYId, LocationId, WhichBenefitsPartnerGetId, WhichBenefitsYouGetId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothAnyTheseBenefitsCY
 
+
 class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
   val taxYearInfo = new TaxYearInfo
   val view = application.injector.instanceOf[bothAnyTheseBenefitsCY]
-
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  val location = Location.ENGLAND
+
+  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+
+  def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
+
+  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new BothAnyTheseBenefitsCYController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, taxYearInfo, view)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()): String = view(frontendAppConfig,
                                                                                   form,
                                                                                   NormalMode,
-                                                                                  taxYearInfo)(fakeRequest, messages).toString
+                                                                                  taxYearInfo, location)(fakeRequest, messages).toString
 
   "BothAnyTheseBenefitsCY Controller" must {
 
@@ -56,7 +62,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(BothAnyTheseBenefitsCYId.toString -> JsBoolean(true))
+      val validData = Map(LocationId.toString -> JsString(location.toString),
+                          BothAnyTheseBenefitsCYId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -83,11 +90,15 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
-    "return a Bad Request and errors when parent answered they get carers allowance and on current page they select 'No'" in {
+    "return a Bad Request and errors when parent answered they get carers allowance and on current page they select 'No' for non scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
 
-      val carerAllowance = Map(WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits")))
+      val location = Location.ENGLAND
+      val carerAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
 
@@ -97,11 +108,73 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.carers.allowance")
     }
 
-    "return a Bad Request and errors when partner answered they get carers allowance and on current page they select 'No'" in {
+    "return a Bad Request and errors when parent answered they get either carer's allowance or carer support system and " +
+                                          "on current page they select 'No' for scottish users for scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
 
-      val carerAllowance = Map(WhichBenefitsYouGetId.toString -> Json.toJson(Seq("incomeBenefits")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("carersAllowance")))
+      val location = Location.SCOTLAND
+      val scottishCarersAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
+
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
+
+      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.scottishCarers.allowance")
+    }
+
+    "return a Bad Request and errors when partner answered they get carers allowance and on current page they select 'No' for non scottish users" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
+
+      val location = Location.ENGLAND
+      val carerAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
+
+      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.carers.allowance")
+    }
+
+    "return a Bad Request and errors when partner answered they get either carer's allowance or carer support system " +
+                                      "and on current page they select 'No' for scottish users for scottish users" in {
+
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
+
+      val location = Location.SCOTLAND
+      val scottishCarersAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
+
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
+
+      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe BAD_REQUEST
+      contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.scottishCarers.allowance")
+    }
+
+    "return a Bad Request and errors when parent and partner both answered they get carers allowance and on current " +
+      "                                                               page they select 'No' for non scottish users" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
+
+      val location = Location.ENGLAND
+      val carerAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
+
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
 
@@ -111,28 +184,55 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.carers.allowance")
     }
 
-    "return a Bad Request and errors when parent and partner both answered they get carers allowance and on current page they select 'No'" in {
+    "return a Bad Request and errors when parent and partner both answered they get either carer's allowance or " +
+                                    "carer support system and on current page they select 'No' for scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
 
-      val carerAllowance = Map(WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("carersAllowance")))
+      val location = Location.SCOTLAND
+      val scottishCarersAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
 
-
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
 
       val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe BAD_REQUEST
-      contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.carers.allowance")
+      contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.scottishCarers.allowance")
     }
 
-    "redirect to next page when parent or partner or both answered they get carers allowance and they select 'Yes'" in {
+    "redirect to next page when parent or partner or both answered they get carers allowance and they select 'Yes' for non scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
-      val carerAllowance = Map(WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("carersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits")))
+      val location = Location.ENGLAND
+      val carerAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
+
+      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(onwardRoute.url)
+    }
+
+    "redirect to next page when parent or partner or both answered they get carer's allowance or carer support system " +
+                                                                      "and they select 'Yes' for scottish users" in {
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
+
+      val location = Location.SCOTLAND
+      val scottishCarersAllowance = Map(
+        LocationId.toString -> JsString(location.toString),
+        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
+        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+      )
+
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
 
       val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
 

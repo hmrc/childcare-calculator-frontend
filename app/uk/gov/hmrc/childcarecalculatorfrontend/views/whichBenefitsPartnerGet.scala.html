@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @this(
         layout: Layout,
@@ -35,14 +34,14 @@
         appConfig: FrontendAppConfig,
         form: Form[Set[String]],
         mode: Mode,
-        userAnswers: Option[UserAnswers]
+        location : Location.Value
 )(
         implicit request: Request[_],
         messages: Messages
 )
 
 @inputs = @{
-    val location = userAnswers.flatMap(_.location)
+
     def createCheckboxItems(options: Seq[WhichBenefitsEnum.Value]): Seq[CheckboxItem] = {
         options.map { checkboxOption =>
             CheckboxItem(
@@ -52,7 +51,7 @@
         }
     }
     val inputs: Seq[CheckboxItem] = location match {
-        case Some(Location.SCOTLAND) => createCheckboxItems(WhichBenefitsEnum.sortedScottishWhichBenefits)
+        case (Location.SCOTLAND) => createCheckboxItems(WhichBenefitsEnum.sortedScottishWhichBenefits)
         case _ => createCheckboxItems(WhichBenefitsEnum.sortedWhichBenefits)
     }
     inputs

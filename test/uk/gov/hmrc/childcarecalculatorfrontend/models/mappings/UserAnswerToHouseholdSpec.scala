@@ -23,7 +23,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS, SCOTTISHCARERSALLOWANCE}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
@@ -131,10 +131,29 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
-      "has location and tax credits" in {
+      "has location and tax credits for non-scottish users" in {
         val parent = Claimant(
           hours = Some(BigDecimal(54.9)),
           benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
+          escVouchers = Some(YesNoUnsureEnum.NO),
+          minimumEarnings = Some(MinimumEarnings(0.0,None,None))
+        )
+
+        val household = Household(credits = Some(CreditsEnum.TAXCREDITS), location = Location.ENGLAND, parent = parent)
+        val answers = spy(userAnswers())
+
+        when(answers.location) thenReturn Some(Location.ENGLAND)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, CARERSALLOWANCE.toString))
+        when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+
+        userAnswerToHousehold.convert(answers) mustEqual household
+      }
+
+      "has location and tax credits for scottish users" in {
+        val parent = Claimant(
+          hours = Some(BigDecimal(54.9)),
+          benefits = Some(Benefits(highRateDisabilityBenefits = true, scottishCarersAllowance = true)),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
@@ -144,7 +163,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(54.9))
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, CARERSALLOWANCE.toString))
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, SCOTTISHCARERSALLOWANCE.toString))
         when(answers.taxOrUniversalCredits) thenReturn Some("tc")
 
         userAnswerToHousehold.convert(answers) mustEqual household

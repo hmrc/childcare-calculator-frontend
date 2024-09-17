@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @this(layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -30,16 +29,14 @@
     appConfig: FrontendAppConfig,
     form: Form[Boolean],
     mode: Mode,
-    userAnswers: Option[UserAnswers]
+    location : Location.Value
 )(
     implicit request: Request[_],
     messages: Messages
 )
 
-@location = @{userAnswers.flatMap(_.location)}
-
 @bulletList = @{location match {
-                case Some(Location.SCOTLAND) => {
+                case Location.SCOTLAND => {
                     Seq(messages("doYouGetAnyBenefits.li.scottishCarersAllowance"),
                         messages("doYouGetAnyBenefits.li.disabilityAllowance"),
                         messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),

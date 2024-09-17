@@ -51,6 +51,7 @@ object ChildcareConstants {
   val highRatedDisabilityBenefits: String = WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
   val severelyDisabledPremium: String = WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
   val carersAllowanceBenefits: String = WhichBenefitsEnum.CARERSALLOWANCE.toString
+  val scottishCarersAllowanceBenefits: String = WhichBenefitsEnum.SCOTTISHCARERSALLOWANCE.toString
 
   val firstMonthOfTaxYear = 4
   val startDayOfTaxYear = 6
