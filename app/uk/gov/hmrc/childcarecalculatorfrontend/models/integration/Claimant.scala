@@ -62,7 +62,7 @@ object Benefits {
         case `disabilityBenefits` => benefits.copy(disabilityBenefits = true)
         case `highRatedDisabilityBenefits` => benefits.copy(highRateDisabilityBenefits = true)
         case `carersAllowanceBenefits` => benefits.copy(carersAllowance = true)
-        case `scottishCarersAllowanceBenefits` => benefits.copy(scottishCarersAllowance = true)
+        case `scottishCarersAllowanceBenefits` => benefits.copy(carersAllowance = true)
         case _ => benefits
       }
     }))

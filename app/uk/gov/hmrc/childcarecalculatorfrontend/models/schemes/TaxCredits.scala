@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible, WhichBenefitsEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible, WhichBenefitsEnum, Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
@@ -29,7 +29,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
       case SingleHousehold(parent) =>
         singleEligibility(parent)
       case JointHousehold(parent, partner) =>
-        jointEligibility(parent, partner)
+        jointEligibility(parent, partner, answers)
     }
   }.getOrElse(NotDetermined)
 
@@ -41,7 +41,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
     }
   }
 
-  private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
+  private def jointEligibility(parent: Parent, partner: Parent, answers: UserAnswers): Eligibility = {
 
     val eligibleViaHours: Boolean = {
 
@@ -51,9 +51,10 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
       overIndividualHours && overJointHours
     }
 
+    val location = answers.location.get
     val eligibleViaBenefits: Boolean = {
-      (parent.hours >= individualHours && partner.benefits.intersect(applicableBenefits).nonEmpty) ||
-        (partner.hours >= individualHours && parent.benefits.intersect(applicableBenefits).nonEmpty)
+      (parent.hours >= individualHours && partner.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty) ||
+        (partner.hours >= individualHours && parent.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty)
     }
 
     if (eligibleViaBenefits || eligibleViaHours) {
@@ -71,4 +72,11 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
   //Only carer's allowance is considered as benefit to eligible
   private val applicableBenefits: Set[WhichBenefitsEnum.Value] =
     Set(CARERSALLOWANCE)
+
+  private def applicableBenefitsByLocation(location: Location.Value): Set[WhichBenefitsEnum.Value] = {
+    location match {
+      case Location.SCOTLAND => Set(SCOTTISHCARERSALLOWANCE)
+      case _ => Set(CARERSALLOWANCE)
+    }
+  }
 }

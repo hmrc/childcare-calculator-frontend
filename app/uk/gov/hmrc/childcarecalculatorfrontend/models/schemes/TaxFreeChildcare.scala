@@ -17,8 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import javax.inject.Inject
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.CARERSALLOWANCE
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible, WhichBenefitsEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, SCOTTISHCARERSALLOWANCE}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible, WhichBenefitsEnum, Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
@@ -27,7 +27,7 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
   override def eligibility(answers: UserAnswers): Eligibility = {
     household(answers).map {
       case SingleHousehold(parent) => singleEligibility(parent)
-      case JointHousehold(parent, partner) => jointEligibility(parent, partner)
+      case JointHousehold(parent, partner) => jointEligibility(parent, partner, answers)
     }
   }.getOrElse(NotDetermined)
 
@@ -39,10 +39,11 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
     }
   }
 
-  private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
+  private def jointEligibility(parent: Parent, partner: Parent, answers: UserAnswers): Eligibility = {
 
-    if ((isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefits).nonEmpty)) ||
-      (isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefits).nonEmpty))) {
+    val location = answers.location.get
+    if ((isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty)) ||
+      (isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty))) {
       Eligible
     } else {
       NotEligible
@@ -55,5 +56,11 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
   private def isEligible(parent: Parent): Boolean =
     (parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
 
+  private def applicableBenefitsByLocation(location: Location.Value): Set[WhichBenefitsEnum.Value] = {
+    location match {
+      case Location.SCOTLAND => Set(SCOTTISHCARERSALLOWANCE)
+      case _ => Set(CARERSALLOWANCE)
+    }
+  }
 
 }
