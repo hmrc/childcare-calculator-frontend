@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import play.api.data.validation.{Constraint, Invalid, Valid}
+import play.api.data.validation.{Invalid, Valid, Constraint}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsPartnerGetErrorKey}
 
@@ -44,7 +44,6 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
 
   def apply(location: Location.Value): Form[Set[String]] = {
     val validPartnerBenefitOptions = validPartnerBenefitOptionsForLocation(location)
-
     Form(
       "value" -> set(of(whichBenefitsPartnerGetFormatter(validPartnerBenefitOptions)))
         .verifying(constraint())
@@ -64,6 +63,4 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
       case _ => WhichBenefitsEnum.sortedWhichBenefits.map(_.toString).toSet
     }
   }
-
 }
-

@@ -54,8 +54,6 @@
 
     <p class="govuk-body">@messages("bothAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
-
-
     @location match {
         case Location.SCOTLAND => {
         <ul class="govuk-list govuk-list--bullet">
@@ -88,6 +86,5 @@
         )
         @submitButton()
     }
-
 }
 

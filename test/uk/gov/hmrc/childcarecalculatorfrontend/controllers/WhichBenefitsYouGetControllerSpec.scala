@@ -36,9 +36,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   val location = Location.SCOTLAND
-
   val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
-
   def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =

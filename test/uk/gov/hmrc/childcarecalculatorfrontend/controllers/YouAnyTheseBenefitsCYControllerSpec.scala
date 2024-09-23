@@ -35,13 +35,10 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[youAnyTheseBenefitsCY]
   val taxYearInfo = new TaxYearInfo
-
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   val location = Location.ENGLAND
-
   val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
-
   def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
@@ -111,7 +108,6 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       status(result) mustBe BAD_REQUEST
       contentAsString(result) contains messages("youAnyTheseBenefitsCY.error.scottishCarers.allowance")
     }
-
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")

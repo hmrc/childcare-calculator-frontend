@@ -62,7 +62,6 @@ class DoYouGetAnyBenefitsController @Inject()(appConfig: FrontendAppConfig,
       if (request.userAnswers.location.isEmpty) {
         Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
       } else {
-
       BooleanForm(doYouGetAnyBenefitsErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
