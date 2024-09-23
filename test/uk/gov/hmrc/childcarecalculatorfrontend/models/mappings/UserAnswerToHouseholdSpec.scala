@@ -153,7 +153,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
       "has location and tax credits for scottish users" in {
         val parent = Claimant(
           hours = Some(BigDecimal(54.9)),
-          benefits = Some(Benefits(highRateDisabilityBenefits = true, scottishCarersAllowance = true)),
+          benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )

@@ -59,11 +59,11 @@ class BenefitsSpec extends PlaySpec {
         mappedBenefits.get.carersAllowance mustBe true
       }
 
-      "We have Carer's Allowance or Carer Support System benefits for scottish users" in {
+      "We have Carer’s Allowance or Carer Support Payment benefits for scottish users" in {
         val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
-        mappedBenefits.get.scottishCarersAllowance mustBe true
+        mappedBenefits.get.carersAllowance mustBe true
       }
 
       "We have a known benefit and an unkonwn benefit for non scottish users" in {
@@ -77,7 +77,7 @@ class BenefitsSpec extends PlaySpec {
         val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString,"unknown benefit"))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
 
-        mappedBenefits.get.scottishCarersAllowance mustBe true
+        mappedBenefits.get.carersAllowance mustBe true
       }
 
       "We have all benefits for non scottish users" in {
@@ -94,7 +94,7 @@ class BenefitsSpec extends PlaySpec {
         val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString, HIGHRATEDISABILITYBENEFITS.toString, DISABILITYBENEFITS.toString, INCOMEBENEFITS.toString))
         val mappedBenefits = Benefits.populateFromRawData(rawBenefits).get
 
-        mappedBenefits.scottishCarersAllowance mustBe true
+        mappedBenefits.carersAllowance mustBe true
         mappedBenefits.highRateDisabilityBenefits mustBe true
         mappedBenefits.disabilityBenefits mustBe true
         mappedBenefits.incomeBenefits mustBe true

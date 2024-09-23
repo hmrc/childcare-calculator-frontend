@@ -108,7 +108,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.carers.allowance")
     }
 
-    "return a Bad Request and errors when parent answered they get either carer's allowance or carer support system and " +
+    "return a Bad Request and errors when parent answered they get either carer’s allowance or carer support payment and " +
                                           "on current page they select 'No' for scottish users for scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
 
@@ -144,7 +144,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages("bothAnyTheseBenefitsCY.error.carers.allowance")
     }
 
-    "return a Bad Request and errors when partner answered they get either carer's allowance or carer support system " +
+    "return a Bad Request and errors when partner answered they get either carer’s allowance or carer support payment " +
                                       "and on current page they select 'No' for scottish users for scottish users" in {
 
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
@@ -221,7 +221,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
-    "redirect to next page when parent or partner or both answered they get carer's allowance or carer support system " +
+    "redirect to next page when parent or partner or both answered they get carer’s allowance or carer support payment " +
                                                                       "and they select 'Yes' for scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 

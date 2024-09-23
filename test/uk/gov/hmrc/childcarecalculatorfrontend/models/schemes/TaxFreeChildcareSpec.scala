@@ -21,14 +21,18 @@ import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible, WhichBenefitsEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NotDetermined, NotEligible, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar {
 
   def tfc(tfcHousehold: ModelFactory = new ModelFactory): TaxFreeChildcare = spy(new TaxFreeChildcare(tfcHousehold))
 
-  val applicableBenefits: Seq[WhichBenefitsEnum.Value] = Seq(CARERSALLOWANCE)
+  val location = Location.SCOTLAND
+  val applicableBenefits: Seq[WhichBenefitsEnum.Value] = location match {
+    case Location.SCOTLAND => Seq(SCOTTISHCARERSALLOWANCE)
+    case _ => Seq(CARERSALLOWANCE)
+  }
 
   val answers: UserAnswers = mock[UserAnswers]
   val modelFactory: ModelFactory = mock[ModelFactory]
@@ -37,6 +41,7 @@ class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar {
   "eligibility" must {
 
     "return `NotDetermined` if `household` is undefined" in {
+      when(answers.location) thenReturn Some(Location.SCOTLAND)
       when(household(any())) thenReturn None
       tfc(household).eligibility(answers) mustEqual NotDetermined
     }

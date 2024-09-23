@@ -25,11 +25,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
+    val location = answers.location.get
     household(answers).map {
       case SingleHousehold(parent) =>
         singleEligibility(parent)
       case JointHousehold(parent, partner) =>
-        jointEligibility(parent, partner, answers)
+        jointEligibility(parent, partner, location)
     }
   }.getOrElse(NotDetermined)
 
@@ -41,7 +42,7 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
     }
   }
 
-  private def jointEligibility(parent: Parent, partner: Parent, answers: UserAnswers): Eligibility = {
+  private def jointEligibility(parent: Parent, partner: Parent, location: Location.Value): Eligibility = {
 
     val eligibleViaHours: Boolean = {
 
@@ -51,7 +52,6 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
       overIndividualHours && overJointHours
     }
 
-    val location = answers.location.get
     val eligibleViaBenefits: Boolean = {
       (parent.hours >= individualHours && partner.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty) ||
         (partner.hours >= individualHours && parent.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty)

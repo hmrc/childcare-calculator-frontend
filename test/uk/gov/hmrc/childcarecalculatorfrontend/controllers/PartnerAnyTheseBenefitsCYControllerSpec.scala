@@ -95,7 +95,7 @@ class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages("partnerAnyTheseBenefitsCY.error.carers.allowance")
     }
 
-    "return a Bad Request and errors when partner answered they get either carer's allowance or carer support system " +
+    "return a Bad Request and errors when partner answered they get either carer’s allowance or carer support payment " +
                                                         "and on current page they select 'No' for scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "false")).withMethod("POST")
 
@@ -139,7 +139,7 @@ class PartnerAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
-    "redirect to next page when parent answered they get either carer's allowance or carer support System and they select 'Yes' for scottish users" in {
+    "redirect to next page when parent answered they get either carer’s allowance or carer support payment and they select 'Yes' for scottish users" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
       val location = Location.SCOTLAND

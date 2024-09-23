@@ -25,9 +25,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
+    val location = answers.location.get
     household(answers).map {
       case SingleHousehold(parent) => singleEligibility(parent)
-      case JointHousehold(parent, partner) => jointEligibility(parent, partner, answers)
+      case JointHousehold(parent, partner) => jointEligibility(parent, partner, location)
     }
   }.getOrElse(NotDetermined)
 
@@ -39,9 +40,9 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
     }
   }
 
-  private def jointEligibility(parent: Parent, partner: Parent, answers: UserAnswers): Eligibility = {
+  private def jointEligibility(parent: Parent, partner: Parent, location: Location.Value): Eligibility = {
 
-    val location = answers.location.get
+
     if ((isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty)) ||
       (isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty))) {
       Eligible
