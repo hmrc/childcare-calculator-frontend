@@ -17,13 +17,12 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{YouPartnerBothEnum, Location}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class TCSchemeInEligibilityMsgBuilder {
 
   val defaultInEligibilityMsg = "result.tc.not.eligible.para1"
-  val defaultScottishInEligibilityMsg = "result.tc.not.eligible.scottish.para1"
 
   def getMessage(answers: UserAnswers)(implicit messages: Messages): String = {
     if (answers.doYouLiveWithPartner.getOrElse(false)) {
@@ -49,7 +48,7 @@ class TCSchemeInEligibilityMsgBuilder {
       case Some(Both) => messageForPartnerJourneyWithBothInWork(answers)
       case Some(Partner) => messageForPartnerJourneyOnlyPartnerInWork(answers)
       case Some(You) => messageForPartnerJourneyOnlyParentInWork(answers)
-      case _ => if (answers.location.toString == Location.SCOTLAND.toString) messages(defaultScottishInEligibilityMsg) else messages(defaultInEligibilityMsg)
+      case _ => messages(defaultInEligibilityMsg)
     }
   }
 
@@ -92,6 +91,7 @@ class TCSchemeInEligibilityMsgBuilder {
     if (answers.childrenBelow16AndExactly16Disabled.isEmpty) {
       messages("result.tc.not.eligible.user.no.child.below.16")
     } else {
-      if (answers.location.toString == Location.SCOTLAND.toString) messages(defaultScottishInEligibilityMsg) else messages(defaultInEligibilityMsg) }
+      messages(defaultInEligibilityMsg)
+    }
   }
 }

@@ -19,6 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
+
 @this(
     layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -52,26 +53,18 @@
     <p class="govuk-body">@messages("bothAnyTheseBenefitsPY.tax_year", taxYearInfo.previousTaxYearStart, taxYearInfo.previousTaxYearEnd)</p>
 
     @playComponents.list(
-        bulletList = location match {
-                        case Location.SCOTLAND => {
-                            Seq(
-                                messages("bothAnyTheseBenefitsPY.li.income_support"),
-                                messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance"),
-                                messages("bothAnyTheseBenefitsPY.li.scottishCarersAllowance"),
-                                messages("bothAnyTheseBenefitsPY.li.employment_support"),
-                                messages("bothAnyTheseBenefitsPY.li.pensions"),
-                                messages("bothAnyTheseBenefitsPY.li.disability"))
-                        }
-                        case _ => {
-                            Seq(
-                            messages("bothAnyTheseBenefitsPY.li.income_support"),
-                            messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance"),
-                            messages("bothAnyTheseBenefitsPY.li.carers"),
-                            messages("bothAnyTheseBenefitsPY.li.employment_support"),
-                            messages("bothAnyTheseBenefitsPY.li.pensions"),
-                            messages("bothAnyTheseBenefitsPY.li.disability"))
-                        }
-                    }
+        bulletList = Seq(
+            messages("bothAnyTheseBenefitsPY.li.income_support"),
+            messages("bothAnyTheseBenefitsPY.li.jobseekers_allowance"),
+            if(location == Location.SCOTLAND) {
+                messages("bothAnyTheseBenefitsPY.li.scottishCarersAllowance")
+            } else {
+                messages("bothAnyTheseBenefitsPY.li.carers")
+            }
+            ,messages("bothAnyTheseBenefitsPY.li.employment_support"),
+            messages("bothAnyTheseBenefitsPY.li.pensions"),
+            messages("bothAnyTheseBenefitsPY.li.disability")
+        )
     )
 
     @formWithCSRF(action = BothAnyTheseBenefitsPYController.onSubmit(mode), Symbol("autoComplete") -> "off") {

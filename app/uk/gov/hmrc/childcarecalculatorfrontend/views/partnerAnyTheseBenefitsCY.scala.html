@@ -52,35 +52,21 @@
 
     <p class="govuk-body">@messages("partnerAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
-    @location match {
-            case Location.SCOTLAND => {
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.income_support")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.employment_support")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.pensions")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.disability")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.adultDisability")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.attendance")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.independance")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.scottishCarersAllowance")</li>
-                </ul>
-            }
-            case _ => {
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.income_support")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.employment_support")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.pensions")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.disability")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.adultDisability")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.attendance")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.independance")</li>
-                    <li>@messages("partnerAnyTheseBenefitsCY.li.carers")</li>
-                </ul>
-            }
-    }
-
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("partnerAnyTheseBenefitsCY.li.income_support")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.employment_support")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.pensions")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.disability")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.adultDisability")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.attendance")</li>
+        <li>@messages("partnerAnyTheseBenefitsCY.li.independance")</li>
+        @if(location == Location.SCOTLAND) {
+            <li>@messages("partnerAnyTheseBenefitsCY.li.scottishCarersAllowance")</li>
+        } else {
+            <li>@messages("partnerAnyTheseBenefitsCY.li.carers")</li>
+        }
+    </ul>
     @formWithCSRF(action = PartnerAnyTheseBenefitsCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
@@ -92,6 +78,5 @@
         @submitButton()
 
     }
-
 }
 

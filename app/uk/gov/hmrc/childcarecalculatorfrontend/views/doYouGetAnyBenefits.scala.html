@@ -35,30 +35,22 @@
     messages: Messages
 )
 
-@bulletList = @{location match {
-                case Location.SCOTLAND => {
-                    Seq(messages("doYouGetAnyBenefits.li.scottishCarersAllowance"),
-                        messages("doYouGetAnyBenefits.li.disabilityAllowance"),
-                        messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
-                        messages("doYouGetAnyBenefits.li.attendanceAllowance"),
-                        messages("doYouGetAnyBenefits.li.independencePayment"),
-                        messages("doYouGetAnyBenefits.li.pensionCredit"),
-                        messages("doYouGetAnyBenefits.li.incomeSupport"),
-                        messages("doYouGetAnyBenefits.li.jsa"),
-                        messages("doYouGetAnyBenefits.li.esa"))
-                }
-                case _ => {
-                    Seq(messages("doYouGetAnyBenefits.li.carersAllowance"),
-                    messages("doYouGetAnyBenefits.li.disabilityAllowance"),
-                    messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
-                    messages("doYouGetAnyBenefits.li.attendanceAllowance"),
-                    messages("doYouGetAnyBenefits.li.independencePayment"),
-                    messages("doYouGetAnyBenefits.li.pensionCredit"),
-                    messages("doYouGetAnyBenefits.li.incomeSupport"),
-                    messages("doYouGetAnyBenefits.li.jsa"),
-                    messages("doYouGetAnyBenefits.li.esa"))
-                }
-            }}
+@bulletList = @{
+Seq(
+    if(location == Location.SCOTLAND) {
+        messages("doYouGetAnyBenefits.li.scottishCarersAllowance")
+    } else {
+        messages("doYouGetAnyBenefits.li.carersAllowance")
+    }
+    ,messages("doYouGetAnyBenefits.li.disabilityAllowance"),
+    messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
+    messages("doYouGetAnyBenefits.li.attendanceAllowance"),
+    messages("doYouGetAnyBenefits.li.independencePayment"),
+    messages("doYouGetAnyBenefits.li.pensionCredit"),
+    messages("doYouGetAnyBenefits.li.incomeSupport"),
+    messages("doYouGetAnyBenefits.li.jsa"),
+    messages("doYouGetAnyBenefits.li.esa"))
+}
 
 @layout(
     pageTitle= if(form.errors.nonEmpty) {

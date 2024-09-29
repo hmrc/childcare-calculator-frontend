@@ -54,29 +54,18 @@
 
     <p class="govuk-body">@messages("bothAnyTheseBenefitsCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
-    @location match {
-        case Location.SCOTLAND => {
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("bothAnyTheseBenefitsCY.li.income_support")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("bothAnyTheseBenefitsCY.li.income_support")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
+        @if(location == Location.SCOTLAND) {
             <li>@messages("bothAnyTheseBenefitsCY.li.scottishCarersAllowance")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.employment_support")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.pensions")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.disability")</li>
-        </ul>
-        }
-        case _ => {
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("bothAnyTheseBenefitsCY.li.income_support")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
+        } else {
             <li>@messages("bothAnyTheseBenefitsCY.li.carers")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.employment_support")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.pensions")</li>
-            <li>@messages("bothAnyTheseBenefitsCY.li.disability")</li>
-        </ul>
         }
-    }
-
+        <li>@messages("bothAnyTheseBenefitsCY.li.employment_support")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.pensions")</li>
+        <li>@messages("bothAnyTheseBenefitsCY.li.disability")</li>
+    </ul>
     @formWithCSRF(action = BothAnyTheseBenefitsCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(

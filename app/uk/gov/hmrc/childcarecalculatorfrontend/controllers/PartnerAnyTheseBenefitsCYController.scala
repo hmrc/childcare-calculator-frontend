@@ -89,7 +89,7 @@ class PartnerAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig
         val hasCarerAllowance = benefits.exists( x => x == WhichBenefitsEnum.CARERSALLOWANCE.toString)
         val hasScottishCarerAllowance = benefits.exists( x => x == WhichBenefitsEnum.SCOTTISHCARERSALLOWANCE.toString)
         val partnerAnyBenefitsValue = boundForm.value.getOrElse(true)
-        val isScotland = userAnswers.location.contains(Location.SCOTLAND)
+        val isScotland = userAnswers.location.get.equals(Location.SCOTLAND)
 
         if (hasScottishCarerAllowance && !partnerAnyBenefitsValue && isScotland) {
           boundForm.withError("value", partnerAnyTheseBenefitsCYScottishCarerAllowanceErrorKey)

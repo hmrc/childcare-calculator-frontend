@@ -40,19 +40,19 @@
 )
 
 @inputs = @{
-
-    def createCheckboxItems(options: Seq[WhichBenefitsEnum.Value]): Seq[CheckboxItem] = {
-        options.map { checkboxOption =>
+    def createCheckboxItems(benefits: Seq[WhichBenefitsEnum.Value]): Seq[CheckboxItem] = {
+        benefits.map { checkboxOption =>
             CheckboxItem(
                 content = HtmlContent(messages(s"whichBenefitsYouGet.${checkboxOption}")),
                 value = checkboxOption.toString
             )
         }
     }
-    val inputs: Seq[CheckboxItem] = location match {
-        case (Location.SCOTLAND) => createCheckboxItems(WhichBenefitsEnum.sortedScottishWhichBenefits)
-        case _ => createCheckboxItems(WhichBenefitsEnum.sortedWhichBenefits)
-    }
+    val inputs: Seq[CheckboxItem] = if(location == Location.SCOTLAND) {
+                                        createCheckboxItems(WhichBenefitsEnum.sortedScottishWhichBenefits)
+                                    } else {
+                                        createCheckboxItems(WhichBenefitsEnum.sortedWhichBenefits)
+                                    }
     inputs
 }
 

@@ -42,30 +42,22 @@
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerAnyTheseBenefitsPY.title")) else messages("partnerAnyTheseBenefitsPY.title")
 }
-@bulletList = @{location match {
-                case Location.SCOTLAND => {
-                    Seq(messages("partnerAnyTheseBenefitsPY.li.income_support"),
-                    messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance"),
-                    messages("partnerAnyTheseBenefitsPY.li.employment_support"),
-                    messages("partnerAnyTheseBenefitsPY.li.pensions"),
-                    messages("partnerAnyTheseBenefitsPY.li.disability"),
-                    messages("partnerAnyTheseBenefitsPY.li.adultDisability"),
-                    messages("partnerAnyTheseBenefitsPY.li.attendance"),
-                    messages("partnerAnyTheseBenefitsPY.li.independance"),
-                    messages("partnerAnyTheseBenefitsPY.li.scottishCarersAllowance"))
-                }
-                case _ => {
-                    Seq(messages("partnerAnyTheseBenefitsPY.li.income_support"),
-                    messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance"),
-                    messages("partnerAnyTheseBenefitsPY.li.employment_support"),
-                    messages("partnerAnyTheseBenefitsPY.li.pensions"),
-                    messages("partnerAnyTheseBenefitsPY.li.disability"),
-                    messages("partnerAnyTheseBenefitsPY.li.adultDisability"),
-                    messages("partnerAnyTheseBenefitsPY.li.attendance"),
-                    messages("partnerAnyTheseBenefitsPY.li.independance"),
-                    messages("partnerAnyTheseBenefitsPY.li.carers"))
-                }
-            }}
+@bulletList = @{
+    Seq(messages("partnerAnyTheseBenefitsPY.li.income_support"),
+    messages("partnerAnyTheseBenefitsPY.li.jobseekers_allowance"),
+    messages("partnerAnyTheseBenefitsPY.li.employment_support"),
+    messages("partnerAnyTheseBenefitsPY.li.pensions"),
+    messages("partnerAnyTheseBenefitsPY.li.disability"),
+    messages("partnerAnyTheseBenefitsPY.li.adultDisability"),
+    messages("partnerAnyTheseBenefitsPY.li.attendance"),
+    messages("partnerAnyTheseBenefitsPY.li.independance"),
+    if(location == Location.SCOTLAND) {
+        messages("partnerAnyTheseBenefitsPY.li.scottishCarersAllowance")
+    } else {
+        messages("partnerAnyTheseBenefitsPY.li.carers")
+    })
+}
+
 @layout(
     pageTitle = title
 ) {

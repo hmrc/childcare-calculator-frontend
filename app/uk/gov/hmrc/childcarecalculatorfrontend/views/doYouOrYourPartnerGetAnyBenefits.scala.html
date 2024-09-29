@@ -46,34 +46,21 @@
 
     @heading(messages("doYouOrYourPartnerGetAnyBenefits.heading"))
 
-    @location match {
-          case Location.SCOTLAND => {
-            <ul class="govuk-list govuk-list--bullet">
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.scottishCarersAllowance")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.adultDisabilityPayments")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.independencePayment")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.pensionCredit")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.incomeSupport")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.jsa")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.esa")</li>
-            </ul>
-          }
-          case _ => {
-            <ul class="govuk-list govuk-list--bullet">
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.carersAllowance")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.adultDisabilityPayments")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.independencePayment")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.pensionCredit")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.incomeSupport")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.jsa")</li>
-                <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.esa")</li>
-            </ul>
-          }
+    <ul class="govuk-list govuk-list--bullet">
+    @if(location == Location.SCOTLAND) {
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.scottishCarersAllowance")</li>
+    } else {
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.carersAllowance")</li>
     }
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance")</li>
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.adultDisabilityPayments")</li>
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance")</li>
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.independencePayment")</li>
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.pensionCredit")</li>
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.incomeSupport")</li>
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.jsa")</li>
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.esa")</li>
+    </ul>
 
     @formWithCSRF(action = DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
