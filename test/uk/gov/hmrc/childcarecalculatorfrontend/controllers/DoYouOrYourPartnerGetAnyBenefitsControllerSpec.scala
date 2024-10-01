@@ -17,13 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouOrYourPartnerGetAnyBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouOrYourPartnerGetAnyBenefitsId, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.doYouOrYourPartnerGetAnyBenefitsErrorKey
@@ -33,11 +33,16 @@ class DoYouOrYourPartnerGetAnyBenefitsControllerSpec extends ControllerSpecBase 
 
   val view = application.injector.instanceOf[doYouOrYourPartnerGetAnyBenefits]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+
+  val location = Location.ENGLAND
+  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+  def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
+
+  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new DoYouOrYourPartnerGetAnyBenefitsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode,location)(fakeRequest, messages).toString
 
   "DoYouOrYourPartnerGetAnyBenefits Controller" must {
 
@@ -49,7 +54,8 @@ class DoYouOrYourPartnerGetAnyBenefitsControllerSpec extends ControllerSpecBase 
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true))
+      val validData = Map(LocationId.toString -> JsString(location.toString),
+                          DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)

@@ -17,7 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsPartnerGetForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
 
 @this(
@@ -33,11 +33,29 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[Set[String]],
-        mode: Mode
+        mode: Mode,
+        location : Location.Value
 )(
         implicit request: Request[_],
         messages: Messages
 )
+
+@inputs = @{
+    def createCheckboxItems(benefits: Seq[WhichBenefitsEnum.Value]): Seq[CheckboxItem] = {
+        benefits.map { checkboxOption =>
+            CheckboxItem(
+                content = HtmlContent(messages(s"whichBenefitsYouGet.${checkboxOption}")),
+                value = checkboxOption.toString
+            )
+        }
+    }
+    val inputs: Seq[CheckboxItem] = if(location == Location.SCOTLAND) {
+                                        createCheckboxItems(WhichBenefitsEnum.sortedScottishWhichBenefits)
+                                    } else {
+                                        createCheckboxItems(WhichBenefitsEnum.sortedWhichBenefits)
+                                    }
+    inputs
+}
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("whichBenefitsPartnerGet.title")) else messages("whichBenefitsPartnerGet.title")
@@ -53,12 +71,7 @@
             field = form("value"),
             legend = messages("whichBenefitsPartnerGet.heading"),
             hint = Some(messages("whichBenefits.select.all")),
-            inputs = WhichBenefitsEnum.sortedWhichBenefits.map { checkboxOption =>
-                CheckboxItem(
-                content = HtmlContent(messages(s"whichBenefitsPartnerGet.${checkboxOption}")),
-                value = checkboxOption.toString
-                )
-            }
+            inputs = inputs
         )
 
         @detailSummary(

@@ -17,15 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class WhichBenefitsPartnerGetFormSpec extends CheckboxBehaviours[String] {
 
-  val form = WhichBenefitsPartnerGetForm()
+  val location: Location.Value = Location.ENGLAND
+  val form = WhichBenefitsPartnerGetForm(location)
 
-  override val validOptions: Set[String] = WhichBenefitsEnum.values.map(_.toString)
-
+  override val validOptions: Set[String] = WhichBenefitsEnum.values.map(_.toString).filterNot(_ == "scottishCarersAllowance" )
   override val fieldName = "value"
 
   "WhichBenefitsPartnerGet form" must {

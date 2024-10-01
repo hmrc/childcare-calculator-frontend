@@ -20,7 +20,7 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode,Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouOrYourPartnerGetAnyBenefits
 
 class DoYouOrYourPartnerGetAnyBenefitsViewSpec extends NewYesNoViewBehaviours {
@@ -29,17 +29,29 @@ class DoYouOrYourPartnerGetAnyBenefitsViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix = "doYouOrYourPartnerGetAnyBenefits"
   val view = application.injector.instanceOf[doYouOrYourPartnerGetAnyBenefits]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView(location:Location.Value) = () => view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm(location:Location.Value)= (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
 
-  "DoYouOrYourPartnerGetAnyBenefits view" must {
+  "DoYouOrYourPartnerGetAnyBenefits view for non-scottish users" must {
+    val location: Location.Value = Location.ENGLAND
 
-    behave like normalPage(createView, messageKeyPrefix, "li.incomeSupport", "li.jsa", "li.esa", "li.pensionCredit",
+    behave like normalPage(createView(location), messageKeyPrefix, "li.incomeSupport", "li.jsa", "li.esa", "li.pensionCredit",
       "li.disabilityAllowance", "li.attendanceAllowance", "li.independencePayment", "li.carersAllowance")
 
-    behave like pageWithBackLink(createView)
+    behave like pageWithBackLink(createView(location))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm(location), messageKeyPrefix, routes.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(NormalMode).url)
+  }
+
+  "DoYouOrYourPartnerGetAnyScottishBenefits view for scottish users" must {
+
+    val location: Location.Value = Location.SCOTLAND
+    behave like normalPage(createView(location), messageKeyPrefix, "li.incomeSupport", "li.jsa", "li.esa", "li.pensionCredit",
+      "li.disabilityAllowance", "li.attendanceAllowance", "li.independencePayment", "li.scottishCarersAllowance")
+
+    behave like pageWithBackLink(createView(location))
+
+    behave like yesNoPage(createViewUsingForm(location), messageKeyPrefix, routes.DoYouOrYourPartnerGetAnyBenefitsController.onSubmit(NormalMode).url)
   }
 }

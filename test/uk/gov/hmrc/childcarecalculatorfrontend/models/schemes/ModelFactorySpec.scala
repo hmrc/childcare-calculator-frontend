@@ -117,7 +117,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
 
     "partner user" when {
 
-      "return `Some` when all data is available" in {
+      "return `Some` when all data is available CARERSALLOWANCE for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
@@ -133,7 +133,23 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         )
       }
 
-      "return `Some` when users don't work" in {
+      "return `Some` when all data is available for scottish users" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        factory(answers).value mustEqual JointHousehold(
+          Parent(110, Set(DISABILITYBENEFITS)),
+          Parent(120, Set(SCOTTISHCARERSALLOWANCE))
+        )
+      }
+
+      "return `Some` when users don't work for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
@@ -145,6 +161,21 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers).value mustEqual JointHousehold(
           Parent(0, Set(DISABILITYBENEFITS)),
           Parent(0, Set(CARERSALLOWANCE))
+        )
+      }
+
+      "return `Some` when users don't work for scottish users" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.NEITHER.toString)
+
+        factory(answers).value mustEqual JointHousehold(
+          Parent(0, Set(DISABILITYBENEFITS)),
+          Parent(0, Set(SCOTTISHCARERSALLOWANCE))
         )
       }
 
@@ -178,7 +209,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         )
       }
 
-      "return `None` when `whoIsInPaidEmployment` is undefined and the user has indicated at least one parent is in work" in {
+      "return `None` when `whoIsInPaidEmployment` is undefined and the user has indicated at least one parent is in work for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
@@ -190,7 +221,19 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers) mustNot be(defined)
       }
 
-      "return `None` when `parentWorkHours` is undefined and the user is employed" in {
+      "return `None` when `whoIsInPaidEmployment` is undefined and the user has indicated at least one parent is in work for scottish users" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        factory(answers) mustNot be(defined)
+      }
+
+      "return `None` when `parentWorkHours` is undefined and the user is employed for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
@@ -202,7 +245,19 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers) mustNot be(defined)
       }
 
-      "return `None` when `parentWorkHours` is undefined both the user and their partner are employed" in {
+      "return `None` when `parentWorkHours` is undefined and the user is employed for scottish users" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        factory(answers) mustNot be(defined)
+      }
+
+      "return `None` when `parentWorkHours` is undefined both the user and their partner are employed for  non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
@@ -214,7 +269,19 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers) mustNot be(defined)
       }
 
-      "return `None` when `doYouOrYourPartnerGetBenefits` is undefined" in {
+      "return `None` when `parentWorkHours` is undefined both the user and their partner are employed for scottish users" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        factory(answers) mustNot be(defined)
+      }
+
+      "return `None` when `doYouOrYourPartnerGetBenefits` is undefined for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
@@ -226,7 +293,19 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers) mustNot be(defined)
       }
 
-      "return `None` when `whoGetsBenefits` is undefined but the user has indicated that at least one parent claims benefits" in {
+      "return `None` when `doYouOrYourPartnerGetBenefits` is undefined for scottish users" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        factory(answers) mustNot be(defined)
+      }
+
+      "return `None` when `whoGetsBenefits` is undefined but the user has indicated that at least one parent claims benefits for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
@@ -238,7 +317,19 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers) mustNot be(defined)
       }
 
-      "return `None` when `whichBenefitsYouGet` is undefined but the user gets benefits" in {
+      "return `None` when `whoGetsBenefits` is undefined but the user has indicated that at least one parent claims benefits for scottish users" in {
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        factory(answers) mustNot be(defined)
+      }
+
+      "return `None` when `whichBenefitsYouGet` is undefined but the user gets benefits for non scottish users" in {
 
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -251,7 +342,20 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers) mustNot be(defined)
       }
 
-      "return `None` when `whichBenefitsYouGet` is undefined and the user and their partner both get benefits" in {
+      "return `None` when `whichBenefitsYouGet` is undefined but the user gets benefits for scottish users" in {
+
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.YOU.toString)
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
+        factory(answers) mustNot be(defined)
+      }
+
+      "return `None` when `whichBenefitsYouGet` is undefined and the user and their partner both get benefits for non scottish users" in {
 
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -261,6 +365,19 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
+        factory(answers) mustNot be(defined)
+      }
+
+      "return `None` when `whichBenefitsYouGet` is undefined and the user and their partner both get benefits for scottish users" in {
+
+        val answers = spy(helper())
+        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
+        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
+        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
+        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
+        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
         factory(answers) mustNot be(defined)
       }
 

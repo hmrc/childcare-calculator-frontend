@@ -16,8 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo}
 
 @this(
     layout: Layout,
@@ -28,7 +28,16 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Boolean],
+    mode: Mode,
+    taxYearInfo: TaxYearInfo,
+    location : Location.Value
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerAnyTheseBenefitsPY.title")) else messages("partnerAnyTheseBenefitsPY.title")
@@ -42,8 +51,13 @@
     messages("partnerAnyTheseBenefitsPY.li.adultDisability"),
     messages("partnerAnyTheseBenefitsPY.li.attendance"),
     messages("partnerAnyTheseBenefitsPY.li.independance"),
-    messages("partnerAnyTheseBenefitsPY.li.carers"))
+    if(location == Location.SCOTLAND) {
+        messages("partnerAnyTheseBenefitsPY.li.scottishCarersAllowance")
+    } else {
+        messages("partnerAnyTheseBenefitsPY.li.carers")
+    })
 }
+
 @layout(
     pageTitle = title
 ) {

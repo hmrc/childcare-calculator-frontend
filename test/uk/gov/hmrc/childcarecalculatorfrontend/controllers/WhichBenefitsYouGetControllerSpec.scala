@@ -17,13 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.Json
+import play.api.libs.json.{JsString, Json}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsYouGetId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, WhichBenefitsYouGetId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
@@ -35,11 +35,15 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
   val view = application.injector.instanceOf[whichBenefitsYouGet]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  val location = Location.SCOTLAND
+  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+  def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
+
+  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new WhichBenefitsYouGetController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm(location)) = view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages).toString
 
   "WhichBenefitsYouGet Controller" must {
 
@@ -52,18 +56,20 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
+        LocationId.toString -> JsString(location.toString),
         WhichBenefitsYouGetId.toString -> Json.toJson(Seq(WhichBenefitsYouGetForm.options.head._2))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhichBenefitsYouGetForm().fill(Set(WhichBenefitsYouGetForm.options.head._2)))
+      contentAsString(result) mustBe viewAsString(WhichBenefitsYouGetForm(location).fill(Set(WhichBenefitsYouGetForm.options.head._2)))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", WhichBenefitsYouGetForm.options.toSeq.head._2)).withMethod("POST")
-
+      print(location)
+      print("location")
       val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -72,7 +78,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value")).withMethod("POST")
-      val boundForm = WhichBenefitsYouGetForm().bind(Map("value[0]" -> "invalid value"))
+      val boundForm = WhichBenefitsYouGetForm(location).bind(Map("value[0]" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

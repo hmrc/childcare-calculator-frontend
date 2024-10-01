@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichBenefitsYouGetId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -44,23 +44,34 @@ class WhichBenefitsYouGetController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.whichBenefitsYouGet match {
-        case None => WhichBenefitsYouGetForm()
-        case Some(value) => WhichBenefitsYouGetForm().fill(value)
+      request.userAnswers.location match {
+        case None =>
+          Redirect(routes.LocationController.onPageLoad(mode))
+
+        case Some(location) =>
+          val preparedForm = request.userAnswers.whichBenefitsYouGet match {
+            case None => WhichBenefitsYouGetForm(location)
+            case Some(value) => WhichBenefitsYouGetForm(location).fill(value)
+          }
+          Ok(whichBenefitsYouGet(appConfig, preparedForm, mode, location))
       }
-      Ok(whichBenefitsYouGet(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      WhichBenefitsYouGetForm().bindFromRequest().fold(
-        (formWithErrors: Form[Set[String]]) => {
-          Future.successful(BadRequest(whichBenefitsYouGet(appConfig, formWithErrors, mode)))
-        },
-        value => {
-          dataCacheConnector.save[Set[String]](request.sessionId, WhichBenefitsYouGetId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhichBenefitsYouGetId, mode)(new UserAnswers(cacheMap))))
-        }
-      )
+      if (request.userAnswers.location.isEmpty) {
+        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      } else {
+        val location = request.userAnswers.location.get
+        WhichBenefitsYouGetForm(location).bindFromRequest().fold(
+          (formWithErrors: Form[Set[String]]) => {
+            Future.successful(BadRequest(whichBenefitsYouGet(appConfig, formWithErrors, mode, location)))
+          },
+          value => {
+            dataCacheConnector.save[Set[String]](request.sessionId, WhichBenefitsYouGetId.toString, value).map(cacheMap =>
+              Redirect(navigator.nextPage(WhichBenefitsYouGetId, mode)(new UserAnswers(cacheMap))))
+          }
+        )
+      }
   }
 }

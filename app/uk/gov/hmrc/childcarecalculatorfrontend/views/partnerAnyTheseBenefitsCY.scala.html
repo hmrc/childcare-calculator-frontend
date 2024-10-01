@@ -16,8 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo}
 
 @this(
     layout: Layout,
@@ -28,7 +28,15 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(  appConfig: FrontendAppConfig,
+    form: Form[Boolean],
+    mode: Mode,
+    taxYearInfo: TaxYearInfo,
+    location : Location.Value
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("partnerAnyTheseBenefitsCY.title")) else messages("partnerAnyTheseBenefitsCY.title")
@@ -53,7 +61,11 @@
         <li>@messages("partnerAnyTheseBenefitsCY.li.adultDisability")</li>
         <li>@messages("partnerAnyTheseBenefitsCY.li.attendance")</li>
         <li>@messages("partnerAnyTheseBenefitsCY.li.independance")</li>
-        <li>@messages("partnerAnyTheseBenefitsCY.li.carers")</li>
+        @if(location == Location.SCOTLAND) {
+            <li>@messages("partnerAnyTheseBenefitsCY.li.scottishCarersAllowance")</li>
+        } else {
+            <li>@messages("partnerAnyTheseBenefitsCY.li.carers")</li>
+        }
     </ul>
     @formWithCSRF(action = PartnerAnyTheseBenefitsCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
@@ -66,6 +78,5 @@
         @submitButton()
 
     }
-
 }
 

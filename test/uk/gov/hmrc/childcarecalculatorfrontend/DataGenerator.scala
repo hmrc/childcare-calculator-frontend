@@ -46,7 +46,7 @@ object DataGenerator {
     if (date.getMonthValue <= 8) {
       date.minusYears(17)
     } else {
-      date.minusYears(16)
+      date.minusYears(16).minusDays(1)
     }
   val ageUnder16Relative: LocalDate => LocalDate = (date : LocalDate) =>
     date.minusYears(1)

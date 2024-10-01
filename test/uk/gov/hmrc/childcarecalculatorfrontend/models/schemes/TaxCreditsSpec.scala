@@ -27,8 +27,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with EitherValues {
 
-  val applicableBenefits: Seq[WhichBenefitsEnum.Value] =
-    Seq(CARERSALLOWANCE)
+  val location = Location.SCOTLAND
+  val applicableBenefits: Seq[WhichBenefitsEnum.Value] = location match {
+    case Location.SCOTLAND => Seq(SCOTTISHCARERSALLOWANCE)
+    case _ => Seq(CARERSALLOWANCE)
+  }
 
   def taxCredits(household: ModelFactory = new ModelFactory): TaxCredits = spy(new TaxCredits(household))
 
@@ -38,6 +41,7 @@ class TaxCreditsSpec extends SchemeSpec with MockitoSugar with OptionValues with
   ".eligibility" must {
 
     "return `NotDetermined` if `household` is undefined" in {
+      when(answers.location) thenReturn Some(Location.SCOTLAND)
       when(household(any())) thenReturn None
       taxCredits(household).eligibility(answers) mustEqual NotDetermined
     }

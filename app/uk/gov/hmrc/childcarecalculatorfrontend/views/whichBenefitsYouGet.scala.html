@@ -18,7 +18,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 
 @this(
     layout: Layout,
@@ -29,7 +29,32 @@
     submitButton: playComponents.submit_button,
     detailSummary: playComponents.detail_summary
 )
-@(appConfig: FrontendAppConfig, form: Form[Set[String]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Set[String]],
+    mode: Mode,
+    location : Location.Value
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
+
+@inputs = @{
+    def createCheckboxItems(benefits: Seq[WhichBenefitsEnum.Value]): Seq[CheckboxItem] = {
+        benefits.map { checkboxOption =>
+            CheckboxItem(
+                content = HtmlContent(messages(s"whichBenefitsYouGet.${checkboxOption}")),
+                value = checkboxOption.toString
+            )
+        }
+    }
+    val inputs: Seq[CheckboxItem] = if(location == Location.SCOTLAND) {
+                                        createCheckboxItems(WhichBenefitsEnum.sortedScottishWhichBenefits)
+                                    } else {
+                                        createCheckboxItems(WhichBenefitsEnum.sortedWhichBenefits)
+                                    }
+    inputs
+}
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("whichBenefitsYouGet.title")) else messages("whichBenefitsYouGet.title")
@@ -46,15 +71,9 @@
         @inputCheckBox(
             legend = messages("whichBenefitsYouGet.heading"),
             hint = Some(messages("whichBenefits.select.all")),
-            inputs = WhichBenefitsEnum.sortedWhichBenefits.map { checkboxOption =>
-                CheckboxItem(
-                    content = HtmlContent(messages(s"whichBenefitsYouGet.${checkboxOption}")),
-                    value = checkboxOption.toString
-                )
-            },
+            inputs = inputs,
             field = form("value")
         )
-
         @detailSummary(
             messages("whichBenefitsYouGet.help"),
         ) {

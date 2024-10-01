@@ -109,9 +109,11 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
           "3" -> Json.toJson(AboutYourChild("Baz", ageOf16Over)),
           "4" -> Json.toJson(AboutYourChild("Josh", ageOf19))
         )
-      )
 
+      )
+      println(answers)
       val result = helper(answers).childrenOver16
+      print(result)
       result.value must contain(0 -> AboutYourChild(
         foo, ageOf16Over))
       result.value must contain(3 -> AboutYourChild("Baz", ageOf16Over))

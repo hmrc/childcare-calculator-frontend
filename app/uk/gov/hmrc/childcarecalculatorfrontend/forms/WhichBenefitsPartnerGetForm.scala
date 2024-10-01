@@ -20,14 +20,14 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import play.api.data.validation.{Invalid, Valid, Constraint}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, WhichBenefitsEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichBenefitsPartnerGetErrorKey}
 
 object WhichBenefitsPartnerGetForm extends FormErrorHelper {
 
-  def WhichBenefitsPartnerGetFormatter = new Formatter[String] {
+  def whichBenefitsPartnerGetFormatter(validPartnerBenefitOptions: Set[String]): Formatter[String]  = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
+      case Some(s) if optionIsValid(s, validPartnerBenefitOptions)  => Right(s)
       case None => produceError(key, whichBenefitsPartnerGetErrorKey)
       case _ => produceError(key, unknownErrorKey)
     }
@@ -42,16 +42,25 @@ object WhichBenefitsPartnerGetForm extends FormErrorHelper {
       Invalid(whichBenefitsPartnerGetErrorKey)
   }
 
-  def apply(): Form[Set[String]] =
+  def apply(location: Location.Value): Form[Set[String]] = {
+    val validPartnerBenefitOptions = validPartnerBenefitOptionsForLocation(location)
     Form(
-      "value" -> set(of(WhichBenefitsPartnerGetFormatter))
+      "value" -> set(of(whichBenefitsPartnerGetFormatter(validPartnerBenefitOptions)))
         .verifying(constraint())
     )
+  }
 
   lazy val options: Seq[(String, String)] = WhichBenefitsEnum.sortedWhichBenefits.map {
     value =>
       s"whichBenefitsYouGet.$value" -> value.toString
   }
 
-  def optionIsValid(value: String): Boolean = WhichBenefitsEnum.sortedWhichBenefits.map(_.toString).contains(value)
+  def optionIsValid(value: String, validWhichBenefits: Set[String]): Boolean = { validWhichBenefits.contains(value) }
+
+  private def validPartnerBenefitOptionsForLocation(location: Location.Value): Set[String] = {
+    location match {
+      case Location.SCOTLAND => WhichBenefitsEnum.sortedScottishWhichBenefits.map(_.toString).toSet
+      case _ => WhichBenefitsEnum.sortedWhichBenefits.map(_.toString).toSet
+    }
+  }
 }

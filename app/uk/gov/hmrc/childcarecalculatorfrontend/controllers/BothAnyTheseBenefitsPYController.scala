@@ -45,21 +45,31 @@ class BothAnyTheseBenefitsPYController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.bothAnyTheseBenefitsPY match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+      request.userAnswers.location match {
+        case None =>
+          Redirect(routes.LocationController.onPageLoad(mode))
+
+        case Some(location) =>
+          val preparedForm = request.userAnswers.bothAnyTheseBenefitsPY match {
+            case None => BooleanForm()
+            case Some(value) => BooleanForm().fill(value)
+          }
+          Ok(bothAnyTheseBenefitsPY(appConfig, preparedForm, mode, taxYearInfo, location))
       }
-      Ok(bothAnyTheseBenefitsPY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      BooleanForm(bothAnyTheseBenefitsPYErrorKey).bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(bothAnyTheseBenefitsPY(appConfig, formWithErrors, mode, taxYearInfo))),
-        value =>
-          dataCacheConnector.save[Boolean](request.sessionId, BothAnyTheseBenefitsPYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(BothAnyTheseBenefitsPYId, mode)(new UserAnswers(cacheMap))))
-      )
+      if (request.userAnswers.location.isEmpty) {
+        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      } else {
+        BooleanForm(bothAnyTheseBenefitsPYErrorKey).bindFromRequest().fold(
+          (formWithErrors: Form[Boolean]) =>
+            Future.successful(BadRequest(bothAnyTheseBenefitsPY(appConfig, formWithErrors, mode, taxYearInfo, request.userAnswers.location.get))),
+          value =>
+            dataCacheConnector.save[Boolean](request.sessionId, BothAnyTheseBenefitsPYId.toString, value).map(cacheMap =>
+              Redirect(navigator.nextPage(BothAnyTheseBenefitsPYId, mode)(new UserAnswers(cacheMap))))
+        )
+      }
   }
 }

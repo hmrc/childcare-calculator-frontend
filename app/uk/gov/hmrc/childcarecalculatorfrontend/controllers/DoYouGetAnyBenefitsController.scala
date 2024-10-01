@@ -44,21 +44,31 @@ class DoYouGetAnyBenefitsController @Inject()(appConfig: FrontendAppConfig,
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+      request.userAnswers.location match {
+        case None =>
+          Redirect(routes.LocationController.onPageLoad(mode))
+
+        case Some(location) =>
+          val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
+            case None => BooleanForm()
+            case Some(value) => BooleanForm().fill(value)
+          }
+          Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode, location))
       }
-      Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
+      if (request.userAnswers.location.isEmpty) {
+        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      } else {
       BooleanForm(doYouGetAnyBenefitsErrorKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
         value =>
           dataCacheConnector.save[Boolean](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
       )
+    }
   }
 }

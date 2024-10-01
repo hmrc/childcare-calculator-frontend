@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location,Mode}
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 
@@ -29,7 +29,16 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Boolean],
+    mode: Mode,
+    taxYearInfo: TaxYearInfo,
+    location : Location.Value
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("bothAnyTheseBenefitsCY.title")) else messages("bothAnyTheseBenefitsCY.title")
@@ -48,7 +57,11 @@
     <ul class="govuk-list govuk-list--bullet">
         <li>@messages("bothAnyTheseBenefitsCY.li.income_support")</li>
         <li>@messages("bothAnyTheseBenefitsCY.li.jobseekers_allowance")</li>
-        <li>@messages("bothAnyTheseBenefitsCY.li.carers")</li>
+        @if(location == Location.SCOTLAND) {
+            <li>@messages("bothAnyTheseBenefitsCY.li.scottishCarersAllowance")</li>
+        } else {
+            <li>@messages("bothAnyTheseBenefitsCY.li.carers")</li>
+        }
         <li>@messages("bothAnyTheseBenefitsCY.li.employment_support")</li>
         <li>@messages("bothAnyTheseBenefitsCY.li.pensions")</li>
         <li>@messages("bothAnyTheseBenefitsCY.li.disability")</li>
@@ -62,6 +75,5 @@
         )
         @submitButton()
     }
-
 }
 

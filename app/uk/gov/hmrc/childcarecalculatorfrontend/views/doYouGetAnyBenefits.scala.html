@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 
 @this(layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -25,11 +25,24 @@
     error_summary: playComponents.error_summary,
     inputYesNo: playComponents.input_yes_no)
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(
+    appConfig: FrontendAppConfig,
+    form: Form[Boolean],
+    mode: Mode,
+    location : Location.Value
+)(
+    implicit request: Request[_],
+    messages: Messages
+)
 
 @bulletList = @{
-Seq(messages("doYouGetAnyBenefits.li.carersAllowance"),
-    messages("doYouGetAnyBenefits.li.disabilityAllowance"),
+Seq(
+    if(location == Location.SCOTLAND) {
+        messages("doYouGetAnyBenefits.li.scottishCarersAllowance")
+    } else {
+        messages("doYouGetAnyBenefits.li.carersAllowance")
+    }
+    ,messages("doYouGetAnyBenefits.li.disabilityAllowance"),
     messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
     messages("doYouGetAnyBenefits.li.attendanceAllowance"),
     messages("doYouGetAnyBenefits.li.independencePayment"),

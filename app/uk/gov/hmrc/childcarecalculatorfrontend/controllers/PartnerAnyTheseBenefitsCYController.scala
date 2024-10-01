@@ -24,8 +24,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerAnyTheseBenefitsCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, WhichBenefitsEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{partnerAnyTheseBenefitsCYCarerAllowanceErrorKey, partnerAnyTheseBenefitsCYErrorKey}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, WhichBenefitsEnum, Location}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{partnerAnyTheseBenefitsCYCarerAllowanceErrorKey, partnerAnyTheseBenefitsCYErrorKey, partnerAnyTheseBenefitsCYScottishCarerAllowanceErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerAnyTheseBenefitsCY
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -45,25 +45,34 @@ class PartnerAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.partnerAnyTheseBenefitsCY match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
+      request.userAnswers.location match {
+        case None =>
+          Redirect(routes.LocationController.onPageLoad(mode))
+
+        case Some(location) =>
+          val preparedForm = request.userAnswers.partnerAnyTheseBenefitsCY match {
+            case None => BooleanForm()
+            case Some(value) => BooleanForm().fill(value)
+          }
+          Ok(partnerAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo, location))
       }
-      Ok(partnerAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
 
       val boundForm = BooleanForm(partnerAnyTheseBenefitsCYErrorKey).bindFromRequest()
-
-      validateCarersAllowance(boundForm, request.userAnswers).fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(partnerAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo))),
-        value =>
-          dataCacheConnector.save[Boolean](request.sessionId, PartnerAnyTheseBenefitsCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))
-      )
+      if (request.userAnswers.location.isEmpty) {
+        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      } else {
+        validateCarersAllowance(boundForm, request.userAnswers).fold(
+          (formWithErrors: Form[Boolean]) =>
+            Future.successful(BadRequest(partnerAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, request.userAnswers.location.get))),
+          value =>
+            dataCacheConnector.save[Boolean](request.sessionId, PartnerAnyTheseBenefitsCYId.toString, value).map(cacheMap =>
+              Redirect(navigator.nextPage(PartnerAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))
+        )
+      }
   }
 
   /**
@@ -78,9 +87,13 @@ class PartnerAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig
     userAnswers.whichBenefitsPartnerGet match {
       case Some(benefits) if !boundForm.hasErrors => {
         val hasCarerAllowance = benefits.exists( x => x == WhichBenefitsEnum.CARERSALLOWANCE.toString)
+        val hasScottishCarerAllowance = benefits.exists( x => x == WhichBenefitsEnum.SCOTTISHCARERSALLOWANCE.toString)
         val partnerAnyBenefitsValue = boundForm.value.getOrElse(true)
+        val isScotland = userAnswers.location.get.equals(Location.SCOTLAND)
 
-        if(hasCarerAllowance && !partnerAnyBenefitsValue) {
+        if (hasScottishCarerAllowance && !partnerAnyBenefitsValue && isScotland) {
+          boundForm.withError("value", partnerAnyTheseBenefitsCYScottishCarerAllowanceErrorKey)
+        } else if(hasCarerAllowance && !partnerAnyBenefitsValue && !isScotland) {
           boundForm.withError("value", partnerAnyTheseBenefitsCYCarerAllowanceErrorKey)
         } else {
           boundForm

@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 
 @this(
         layout: Layout,
@@ -30,7 +30,8 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[Boolean],
-        mode: Mode
+        mode: Mode,
+        location : Location.Value
 )(
         implicit request: Request[_],
         messages: Messages
@@ -46,7 +47,11 @@
     @heading(messages("doYouOrYourPartnerGetAnyBenefits.heading"))
 
     <ul class="govuk-list govuk-list--bullet">
+    @if(location == Location.SCOTLAND) {
+        <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.scottishCarersAllowance")</li>
+    } else {
         <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.carersAllowance")</li>
+    }
         <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance")</li>
         <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.adultDisabilityPayments")</li>
         <li>@messages("doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance")</li>
