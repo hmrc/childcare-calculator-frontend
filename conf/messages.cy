@@ -1368,13 +1368,7 @@ result.tfc.ineligible.noEligibleChild = Nid yw plant yn gymwys o 1 Medi ar ôl e
 
 result.tc.title=Credydau treth
 result.tc.period=dros y flwyddyn i ddod i fynd tuag at gostau eich cartref.
-result.tc.not.eligible.para1=Ni allwch gael help drwy gredydau treth. I gael help, bydd angen i chi weithio 16 awr neu fwy yr wythnos os ydych yn sengl. Os oes gennych chi bartner mae angen i chi weithio o leiaf 24 awr rhyngoch chi (gydag 1 ohonoch yn gweithio o leiaf 16 awr yr wythnos), ond dim ond un ohonoch chi sydd angen gweithio 16 awr os yw’r llall yn cael Lwfans Gofalwr. Mae’n rhaid i’ch plant fod o dan 16 oed ac ni allwch fod yn cael Credyd Cynhwysol. Mae faint o gredydau treth rydych yn eu cael yn lleihau’n dibynnu ar faint rydych yn ei ennill a faint o blant sydd gennych chi.
 result.uc.not.eligible.para=Ni allwch gael help drwy Gredydau Treth gan eich bod chi wedi dweud wrthym eich bod eisoes yn cael Credyd Cynhwysol.
-result.tc.not.eligible.single.user.hours.less.than.16=Ni allwch gael cymorth gofal plant gan gredydau treth oherwydd bod angen i chi weithio 16 awr neu fwy yr wythnos.
-result.tc.not.eligible.partner.journey.hours.less.than.minimum=Ni allwch gael cymorth gofal plant gan gredydau treth gan y byddai angen i chi a’ch partner weithio 16 awr neu fwy yr wythnos.
-result.tc.not.eligible.partner.journey.hours.less.than.minimum.partner.receiving.benefits=Ni allwch gael cymorth gofal plant gan gredydau treth. Er bod eich partner yn cael budd-dal a fyddai’n ei wneud yn gymwys, mae angen i chi weithio 16 awr neu fwy yr wythnos.
-result.tc.not.eligible.partner.journey.hours.less.than.minimum.parent.receiving.benefits=Ni allwch gael cymorth gofal plant gan gredydau treth. Er eich bod yn cael budd-dal a fyddai’n eich gwneud yn gymwys, mae angen i’ch partner weithio 16 awr neu fwy yr wythnos.
-result.tc.not.eligible.user.no.child.below.16=Ni allwch gael cymorth gofal plant o gredydau treth gan nad oes gennych blentyn dan 16 oed (neu dan 17 oed os yw’n anabl).
 result.tc.not.eligible.title=Cymorth gofal plant drwy gredydau treth
 result.tc.not.eligible.tc.para1=Efallai y bydd angen i chi wirio ar wahân a ydych yn gymwys i
 result.tc.scheme.guidance.link=gael help gyda chostau gofal plant gan ddefnyddio Credyd Cynhwysol
