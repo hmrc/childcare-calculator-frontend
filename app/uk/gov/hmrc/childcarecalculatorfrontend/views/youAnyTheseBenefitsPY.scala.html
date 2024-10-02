@@ -55,7 +55,7 @@
     <ul class="govuk-list govuk-list--bullet">
         <li>@messages("youAnyTheseBenefitsPY.li.income_support")</li>
         <li>@messages("youAnyTheseBenefitsPY.li.jobseekers_allowance")</li>
-        if(location == Location.SCOTLAND) {
+        @if(location == Location.SCOTLAND) {
             <li>@messages("youAnyTheseBenefitsPY.li.scottishCarersAllowance")</li>
         } else {
             <li>@messages("youAnyTheseBenefitsPY.li.carers")</li>
