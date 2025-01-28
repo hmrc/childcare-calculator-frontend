@@ -1,10 +1,10 @@
-import sbt._
-import play.core.PlayVersion
+
+import sbt.*
 import play.sbt.PlayImport.ws
 
 object AppDependencies {
 
-  val bootstrapFrontendVersion = "9.7.0"
+  private val bootstrapFrontendVersion = "9.7.0"
 
   val compile: Seq[ModuleID] = Seq(
     ws,
@@ -14,18 +14,9 @@ object AppDependencies {
     "uk.gov.hmrc"        %% "tax-year"                           % "5.0.0"
   )
 
-  trait TestDependencies {
-    lazy val scope: String = "test"
-    lazy val test : Seq[ModuleID] = ???
-  }
+  val test: Seq[ModuleID] = Seq(
+    "uk.gov.hmrc" %% "bootstrap-test-play-30" % bootstrapFrontendVersion % Test
+  )
 
-  object Test {
-    def apply(): Seq[ModuleID] = new TestDependencies {
-      override lazy val test = Seq(
-        "uk.gov.hmrc"                   %%  "bootstrap-test-play-30"    % bootstrapFrontendVersion,
-      ).map(_ % scope)
-    }.test
-  }
-
-  def apply(): Seq[ModuleID] = compile ++ Test()
+  val all: Seq[ModuleID] = compile ++ test
 }
