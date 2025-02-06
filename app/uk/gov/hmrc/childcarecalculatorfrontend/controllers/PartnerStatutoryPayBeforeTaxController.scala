@@ -80,7 +80,7 @@ class PartnerStatutoryPayBeforeTaxController @Inject()(
             value =>
               dataCacheConnector.save[Boolean](request.sessionId, PartnerStatutoryPayBeforeTaxId.toString, value).map(cacheMap =>
                 Redirect(navigator.nextPage(PartnerStatutoryPayBeforeTaxId, mode)(new UserAnswers(cacheMap))))
-      )
+          )
     }
   }
 }
