@@ -17,44 +17,46 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode,Location}
+import play.twirl.api.Html
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 
-class DoYouGetAnyBenefitsViewSpec extends NewYesNoViewBehaviours {
+class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ParentsBenefits] {
 
-  override val form = BooleanForm()
-
+  override val form = DoYouGetAnyBenefitsForm()
+  val testView = application.injector.instanceOf[doYouGetAnyBenefits]
   val messageKeyPrefix = "doYouGetAnyBenefits"
-  val view = application.injector.instanceOf[doYouGetAnyBenefits]
+  val fieldKey: String = DoYouGetAnyBenefitsForm.formId
+  val errorMessage = s"$messageKeyPrefix.error.select"
 
+  override val values: Seq[(String, String)] =
+    Seq(
+      (s"$messageKeyPrefix.$CarersAllowance", CarersAllowance.toString),
+      (s"$messageKeyPrefix.$IncapacityBenefit", IncapacityBenefit.toString),
+      (s"$messageKeyPrefix.$SevereDisablement", SevereDisablement.toString),
+      (s"$messageKeyPrefix.$EmploymentAndSupportAllowance", EmploymentAndSupportAllowance.toString),
+      (s"$messageKeyPrefix.$NICreditsForIncapacity", NICreditsForIncapacity.toString),
+      (s"$messageKeyPrefix.$CarersCredit", CarersCredit.toString),
+      (s"$messageKeyPrefix.or", "divider"),
+      (s"$messageKeyPrefix.$NoneOfThese", NoneOfThese.toString)
+    )
+  override def createView(form: Form[Set[ParentsBenefits]] = form): Html =
+    testView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createView(location:Location.Value) = () => view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
+  "DoYouGetAnyBenefits view" must {
+    behave like normalPage(createView, messageKeyPrefix)
 
-  def createViewUsingForm(location:Location.Value) = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
+    behave like pageWithBackLink(createView)
 
-  "DoYouGetAnyBenefits view for non-scottish users" must {
+    behave like checkboxPage()
 
-    val location: Location.Value = Location.ENGLAND
-    behave like normalPage(createView(location), messageKeyPrefix, "li.incomeSupport", "li.jsa", "li.esa", "li.pensionCredit",
-      "li.disabilityAllowance", "li.attendanceAllowance", "li.independencePayment", "li.carersAllowance")
-
-    behave like pageWithBackLink(createView(location))
-
-    behave like yesNoPage(createViewUsingForm(location), messageKeyPrefix, routes.DoYouGetAnyBenefitsController.onSubmit(NormalMode).url)
+    "display correct content when loaded" in {
+      val view = createView()
+      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.hint"))
+      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.or"))
+    }
   }
-
-  "DoYouGetAnyScottishBenefits view for scottish users" must {
-
-    val location: Location.Value = Location.SCOTLAND
-    behave like normalPage(createView(location), messageKeyPrefix, "li.incomeSupport", "li.jsa", "li.esa", "li.pensionCredit",
-      "li.disabilityAllowance", "li.attendanceAllowance", "li.independencePayment", "li.scottishCarersAllowance")
-
-    behave like pageWithBackLink(createView(location))
-
-    behave like yesNoPage(createViewUsingForm(location), messageKeyPrefix, routes.DoYouGetAnyBenefitsController.onSubmit(NormalMode).url)
-  }
-
 }

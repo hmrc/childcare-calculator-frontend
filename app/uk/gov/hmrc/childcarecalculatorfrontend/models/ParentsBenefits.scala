@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-import play.api.libs.json.{Format, JsString, Json, Reads, Writes}
+import play.api.libs.json.{Format, JsString, Reads, Writes}
 
 sealed trait ParentsBenefits
 
