@@ -45,8 +45,12 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     YourChildcareVouchersId -> yourChildcareVoucherRoute,
     PartnerChildcareVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
     WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
+
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
+    DoesYourPartnerGetAnyBenefitsId -> doesYourPartnerGetAnyBenefitsRoute,
+
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
+
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
@@ -101,16 +105,21 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     }
 
 
-  private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call = {
-    answers.doYouGetAnyBenefits.map {
-      youGetBenefits =>
-        if (youGetBenefits.contains(ParentsBenefits.NoneOfThese)) {
-          routes.YourAgeController.onPageLoad(NormalMode)
-        } else {
-          routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
-        }
-    }.getOrElse(SessionExpiredRouter.route(getClass.getName,"doYouGetAnyBenefitsRoute",Some(answers)))
-  }
+  private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call =
+    answers.doYouLiveWithPartner match {
+      case Some(true)  => routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      case Some(false) => routes.YourAgeController.onPageLoad(NormalMode)
+
+      case None        => SessionExpiredRouter.route(getClass.getName, "doYouGetAnyBenefitsRoute", Some(answers))
+    }
+
+  private def doesYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call =
+    answers.whoIsInPaidEmployment match {
+      case Some(`you` | `both`) => routes.YourAgeController.onPageLoad(NormalMode)
+      case Some(`partner`)      => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+
+      case None => SessionExpiredRouter.route(getClass.getName, "doYouOrYourPartnerGetAnyBenefitsRoute", Some(answers))
+    }
 
   private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
 
