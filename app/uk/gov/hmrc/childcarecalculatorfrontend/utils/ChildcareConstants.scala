@@ -74,8 +74,8 @@ object ChildcareConstants {
   val nineteen = 19
   val sixteen = 16
 
-  val tcSchemeGuidanceLinkUrl = "https://www.gov.uk/topic/benefits-credits/tax-credits"
-  val ucSchemeGuidanceLinkUrl = "https://www.gov.uk/help-with-childcare-costs/universal-credit"
+
+  val ucSchemeGuidanceLinkUrl = "https://www.gov.uk/guidance/universal-credit-childcare-costs"
 
   val extraHelpTFCLink = "https://www.gov.uk/apply-for-tax-free-childcare"
 
