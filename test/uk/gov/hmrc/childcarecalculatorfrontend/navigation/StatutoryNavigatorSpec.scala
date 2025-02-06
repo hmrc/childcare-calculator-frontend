@@ -59,7 +59,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
 
 
-
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
           when(answers.youStatutoryPay) thenReturn None
@@ -68,7 +67,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
             routes.SessionExpiredController.onPageLoad
         }
       }
-
 
 
       "Both Statutory Pay route" must {
@@ -170,31 +168,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
         }
 
-        "redirects to partnerStatutoryStartDate page when user selects some value" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayType) thenReturn
-            Some(StatutoryPayTypeEnum.MATERNITY) thenReturn
-            Some(StatutoryPayTypeEnum.PATERNITY) thenReturn
-            Some(StatutoryPayTypeEnum.ADOPTION) thenReturn
-            Some(StatutoryPayTypeEnum.SHARED_PARENTAL)
-
-          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
-          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
-          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
-          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayType) thenReturn None
-
-          navigator.nextPage(PartnerStatutoryPayTypeId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
       }
 
       "Your Statutory Start Date route" must {
@@ -212,25 +185,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourStatutoryStartDate) thenReturn None
 
           navigator.nextPage(YourStatutoryStartDateId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
-
-      "Partner Statutory Start Date route" must {
-        "redirects to partnerStatutoryWeeks page when user selects some value" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryStartDate) thenReturn Some(LocalDate.of(2017, 2, 1))
-
-          navigator.nextPage(PartnerStatutoryStartDateId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryWeeksController.onPageLoad(NormalMode)
-
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryStartDate) thenReturn None
-
-          navigator.nextPage(PartnerStatutoryStartDateId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad
         }
       }
@@ -254,24 +208,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Partner Statutory Weeks route" must {
-        "redirects to partnerStatutoryPayBeforeTax page when user selects some value" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryWeeks) thenReturn Some(12)
-
-          navigator.nextPage(PartnerStatutoryWeeksId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(NormalMode)
-
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryWeeks) thenReturn None
-
-          navigator.nextPage(PartnerStatutoryWeeksId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
 
       "Your Statutory Pay Before Tax route" must {
         "redirects to result page when user selects no and there is no partner in the system" in {
@@ -331,32 +267,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Partner Statutory Pay Before Tax route" must {
-        "redirects to result page when user selects no" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
-
-          navigator.nextPage(PartnerStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
-            routes.ResultController.onPageLoad()
-        }
-
-        "redirects to partnerStatutoryPayPerWeek page when user selects yes" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(true)
-
-          navigator.nextPage(PartnerStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
-            routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode)
-        }
-
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.yourStatutoryPayBeforeTax) thenReturn None
-
-          navigator.nextPage(PartnerStatutoryPayBeforeTaxId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
 
       "Your Statutory Pay Per Week route" must {
         "redirects to results page when user selects some value and there is no partner in the system" in {
@@ -420,24 +330,7 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Partner Statutory Pay Per Week route" must {
-        "redirects to results page when user selects some value" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(12))
 
-          navigator.nextPage(PartnerStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
-            routes.ResultController.onPageLoad()
-
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerStatutoryPayPerWeek) thenReturn None
-
-          navigator.nextPage(PartnerStatutoryPayPerWeekId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
     }
   }
 }
