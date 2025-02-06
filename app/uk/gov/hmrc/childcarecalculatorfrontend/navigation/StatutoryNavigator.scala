@@ -36,15 +36,10 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
     PartnerStatutoryPayId -> partnerStatutoryPayRoute,
     WhoGotStatutoryPayId -> whoGotStatutoryPayRoute,
     YourStatutoryPayTypeId -> yourStatutoryPayTypeRoute,
-    PartnerStatutoryPayTypeId -> partnerStatutoryPayTypeRoute,
     YourStatutoryStartDateId -> yourStatutoryStartDateRoute,
-    PartnerStatutoryStartDateId -> partnerStatutoryStartDateRoute,
     YourStatutoryWeeksId -> yourStatutoryWeeksRoute,
-    PartnerStatutoryWeeksId -> partnerStatutoryWeeksRoute,
     YourStatutoryPayBeforeTaxId -> yourStatutoryPayBeforeTaxRoute,
-    PartnerStatutoryPayBeforeTaxId -> partnerStatutoryPayBeforeTaxRoute,
-    YourStatutoryPayPerWeekId -> yourStatutoryPayPerWeekRoute,
-    PartnerStatutoryPayPerWeekId -> partnerStatutoryPayPerWeekRoute
+    YourStatutoryPayPerWeekId -> yourStatutoryPayPerWeekRoute
   )
 
   private def bothStatutoryPayRoute(answers: UserAnswers) = {
@@ -79,29 +74,14 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
   private def yourStatutoryPayTypeRoute(answers: UserAnswers)  =
     utils.getCall(answers.yourStatutoryPayType) { case _ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode)}
 
-  private def partnerStatutoryPayTypeRoute(answers: UserAnswers)  =
-    utils.getCall(answers.partnerStatutoryPayType) {
-      case _ => routes.PartnerStatutoryStartDateController.onPageLoad(NormalMode)
-    }
-
   private def yourStatutoryStartDateRoute(answers: UserAnswers) =
     utils.getCall(answers.yourStatutoryStartDate) {
       case _ => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
     }
 
-  private def partnerStatutoryStartDateRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerStatutoryStartDate) {
-      case _ => routes.PartnerStatutoryWeeksController.onPageLoad(NormalMode)
-    }
-
   private def yourStatutoryWeeksRoute(answers: UserAnswers) =
     utils.getCall(answers.yourStatutoryWeeks) {
       case _ => routes.YourStatutoryPayBeforeTaxController.onPageLoad(NormalMode)
-    }
-
-  private def partnerStatutoryWeeksRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerStatutoryWeeks) {
-      case _ => routes.PartnerStatutoryPayBeforeTaxController.onPageLoad(NormalMode)
     }
 
   private def yourStatutoryPayBeforeTaxRoute(answers: UserAnswers) = {
@@ -126,12 +106,6 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
     }
   }
 
-  private def partnerStatutoryPayBeforeTaxRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerStatutoryPayBeforeTax) {
-      case true => routes.PartnerStatutoryPayPerWeekController.onPageLoad(NormalMode)
-      case false =>  routes.ResultController.onPageLoad()
-    }
-
   private def yourStatutoryPayPerWeekRoute(answers: UserAnswers) = {
     utils.getCall(answers.yourStatutoryPayPerWeek) { case _ => nextPageYourStatutoryPayPerWeek(answers)}
   }
@@ -152,9 +126,5 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
   }
 
 
-  private def partnerStatutoryPayPerWeekRoute(answers: UserAnswers) =
-    utils.getCall(answers.partnerStatutoryPayPerWeek) {
-      case _ => routes.ResultController.onPageLoad()
-    }
 
 }
