@@ -240,6 +240,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def doYouGetAnyBenefits: Option[Set[ParentsBenefits]] = cacheMap.getEntry[Set[ParentsBenefits]](DoYouGetAnyBenefitsId.toString)
 
+  def doesYourPartnerGetAnyBenefits: Option[Set[ParentsBenefits]] = cacheMap.getEntry[Set[ParentsBenefits]](DoesYourPartnerGetAnyBenefitsId.toString)
+
   def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
 
   def yourChildcareVouchers: Option[Boolean] = cacheMap.getEntry[Boolean](YourChildcareVouchersId.toString)
