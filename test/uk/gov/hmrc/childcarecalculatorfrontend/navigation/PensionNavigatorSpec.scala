@@ -323,22 +323,6 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "How Much You Pay Pension PY Route" must {
-        "redirects to BothTheseBenefitsPY page when user provides valid input and lives with partner" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-
-          navigator.nextPage(HowMuchYouPayPensionPYId, NormalMode).value(answers) mustBe routes.BothAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        }
-
-        "redirects to parent benefits page when user is single" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
-
-          navigator.nextPage(HowMuchYouPayPensionPYId, NormalMode).value(answers) mustBe routes.YouAnyTheseBenefitsPYController.onPageLoad(NormalMode)
-        }
-      }
-
       "How Much Partner Pay Pension PY Route" must {
         "redirects to BothOtherIncomeLY page when user provides valid input and" in {
           val answers = spy(userAnswers())

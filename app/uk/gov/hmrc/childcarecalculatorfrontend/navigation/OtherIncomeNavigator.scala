@@ -41,12 +41,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
     PartnerOtherIncomeAmountCYId -> howMuchPartnerOtherIncomeRouteCY,
     OtherIncomeAmountCYId -> howMuchBothOtherIncomeRouteCY,
     YourOtherIncomeLYId -> yourOtherIncomeRoutePY,
-    PartnerAnyOtherIncomeLYId -> partnerOtherIncomeRoutePY,
-    BothOtherIncomeLYId -> bothOtherIncomeRoutePY,
-    WhoOtherIncomePYId -> whoGetsOtherIncomeRoutePY,
-    YourOtherIncomeAmountPYId -> howMuchYourOtherIncomeRoutePY,
-    PartnerOtherIncomeAmountPYId -> howMuchPartnerOtherIncomeRoutePY,
-    OtherIncomeAmountPYId -> howMuchBothOtherIncomeRoutePY
+    PartnerAnyOtherIncomeLYId -> partnerOtherIncomeRoutePY
   )
 
   private def yourOtherIncomeRouteCY(answers: UserAnswers) = {
@@ -118,35 +113,6 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
       case true => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
       case false => routes.BothStatutoryPayController.onPageLoad(NormalMode)
     }
-
-  private def bothOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.bothOtherIncomeLY) {
-      case true => routes.WhoOtherIncomePYController.onPageLoad(NormalMode)
-      case false => routes.BothStatutoryPayController.onPageLoad(NormalMode)
-    }
-
-  private def whoGetsOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.whoOtherIncomePY) {
-      case `you` => routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case `partner` => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case `both` => routes.OtherIncomeAmountPYController.onPageLoad(NormalMode)
-    }
-
-  private def howMuchYourOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.yourOtherIncomeAmountPY) { case _ =>
-      utils.getCall(answers.doYouLiveWithPartner) {
-        case false => routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        case true => routes.BothStatutoryPayController.onPageLoad(NormalMode)
-      }
-    }
-
-  private def howMuchPartnerOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.partnerOtherIncomeAmountPY) { case _ =>
-      routes.BothStatutoryPayController.onPageLoad(NormalMode)
-    }
-
-  private def howMuchBothOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.otherIncomeAmountPY) { case _ => routes.BothStatutoryPayController.onPageLoad(NormalMode) }
 
   private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
     utils.getCall(answersType) {

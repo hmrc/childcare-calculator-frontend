@@ -26,28 +26,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBot
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
-  * Contains the navigation for current and previous year statutory pay pages
-  */
-class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends SubNavigator {
+ * Contains the navigation for current and previous year statutory pay pages
+ */
+class StatutoryNavigator @Inject()(utils: Utils, scheme: TaxCredits) extends SubNavigator {
 
   override protected def routeMap = Map(
-    BothStatutoryPayId -> bothStatutoryPayRoute,
     YouStatutoryPayId -> yourStatutoryPayRoute,
     PartnerStatutoryPayId -> partnerStatutoryPayRoute,
-    WhoGotStatutoryPayId -> whoGotStatutoryPayRoute,
-    YourStatutoryPayTypeId -> yourStatutoryPayTypeRoute,
-    YourStatutoryStartDateId -> yourStatutoryStartDateRoute,
-    YourStatutoryWeeksId -> yourStatutoryWeeksRoute,
-    YourStatutoryPayBeforeTaxId -> yourStatutoryPayBeforeTaxRoute,
-    YourStatutoryPayPerWeekId -> yourStatutoryPayPerWeekRoute
   )
 
-  private def bothStatutoryPayRoute(answers: UserAnswers) = {
-    utils.getCall(answers.bothStatutoryPay) {
-      case true => routes.WhoGotStatutoryPayController.onPageLoad(NormalMode)
-      case false =>  routes.ResultController.onPageLoad()
-    }
-  }
 
 
   private def yourStatutoryPayRoute(answers: UserAnswers) = {
@@ -64,66 +51,6 @@ class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends Su
     }
   }
 
-  private def whoGotStatutoryPayRoute(answers: UserAnswers) =
-    utils.getCall(answers.whoGotStatutoryPay) {
-      case YouPartnerBothEnum.YOU => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
-      case YouPartnerBothEnum.PARTNER => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
-      case YouPartnerBothEnum.BOTH => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
-    }
-
-  private def yourStatutoryPayTypeRoute(answers: UserAnswers)  =
-    utils.getCall(answers.yourStatutoryPayType) { case _ => routes.YourStatutoryStartDateController.onPageLoad(NormalMode)}
-
-  private def yourStatutoryStartDateRoute(answers: UserAnswers) =
-    utils.getCall(answers.yourStatutoryStartDate) {
-      case _ => routes.YourStatutoryWeeksController.onPageLoad(NormalMode)
-    }
-
-  private def yourStatutoryWeeksRoute(answers: UserAnswers) =
-    utils.getCall(answers.yourStatutoryWeeks) {
-      case _ => routes.YourStatutoryPayBeforeTaxController.onPageLoad(NormalMode)
-    }
-
-  private def yourStatutoryPayBeforeTaxRoute(answers: UserAnswers) = {
-    utils.getCall(answers.yourStatutoryPayBeforeTax) {
-      case true => routes.YourStatutoryPayPerWeekController.onPageLoad(NormalMode)
-      case false =>  nextPageForYourStatutoryPayBeforeTaxNoSelection(answers)
-    }
-  }
-
-  private def nextPageForYourStatutoryPayBeforeTaxNoSelection(answers: UserAnswers) = {
-
-    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
-    val whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = answers.whoGotStatutoryPay
-
-    if(hasPartner){
-      utils.getCall(whoGotStatutoryPay){
-        case YouPartnerBothEnum.YOU => routes.ResultController.onPageLoad()
-        case _ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
-      }
-    }else{
-      routes.ResultController.onPageLoad()
-    }
-  }
-
-  private def yourStatutoryPayPerWeekRoute(answers: UserAnswers) = {
-    utils.getCall(answers.yourStatutoryPayPerWeek) { case _ => nextPageYourStatutoryPayPerWeek(answers)}
-  }
-
-
-  private def nextPageYourStatutoryPayPerWeek(answers: UserAnswers) = {
-    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
-    val whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = answers.whoGotStatutoryPay
-
-    whoGotStatutoryPay match {
-      case Some(_) if hasPartner =>
-        utils.getCall(whoGotStatutoryPay){
-          case YouPartnerBothEnum.YOU => routes.ResultController.onPageLoad()
-          case _ => routes.PartnerStatutoryPayTypeController.onPageLoad(NormalMode)
-        }
-      case None => routes.ResultController.onPageLoad()
-    }
-  }
 
 
 
