@@ -17,17 +17,21 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 
-@this(layout: Layout,
-    formWithCSRF: FormWithCSRF,
-    heading: playComponents.heading,
-    submit_button: playComponents.submit_button,
-    error_summary: playComponents.error_summary,
-    inputYesNo: playComponents.input_yes_no)
+@this(
+  layout: Layout,
+  formWithCSRF: FormWithCSRF,
+  heading: playComponents.heading,
+  inputCheckBox: playComponents.input_check_box,
+  submit_button: playComponents.submit_button,
+  error_summary: playComponents.error_summary
+)
 
 @(
     appConfig: FrontendAppConfig,
-    form: Form[Boolean],
+    form: Form[Set[ParentsBenefits]],
     mode: Mode,
     location : Location.Value
 )(
@@ -35,44 +39,65 @@
     messages: Messages
 )
 
-@bulletList = @{
-Seq(
-    if(location == Location.SCOTLAND) {
-        messages("doYouGetAnyBenefits.li.scottishCarersAllowance")
-    } else {
-        messages("doYouGetAnyBenefits.li.carersAllowance")
-    }
-    ,messages("doYouGetAnyBenefits.li.disabilityAllowance"),
-    messages("doYouGetAnyBenefits.li.adultDisabilityPayments"),
-    messages("doYouGetAnyBenefits.li.attendanceAllowance"),
-    messages("doYouGetAnyBenefits.li.independencePayment"),
-    messages("doYouGetAnyBenefits.li.pensionCredit"),
-    messages("doYouGetAnyBenefits.li.incomeSupport"),
-    messages("doYouGetAnyBenefits.li.jsa"),
-    messages("doYouGetAnyBenefits.li.esa"))
+@title = @{
+  if(form.errors.nonEmpty) messages("site.title.error", messages("doYouGetAnyBenefits.title")) else messages("doYouGetAnyBenefits.title")
 }
 
-@layout(
-    pageTitle= if(form.errors.nonEmpty) {
-        messages("site.title.error", messages("doYouGetAnyBenefits.title"))
-    } else {
-        messages("doYouGetAnyBenefits.title")
-    }
-) {
+@layout(pageTitle = title) {
 
     @error_summary(form.errors)
 
-    @heading(messages("doYouGetAnyBenefits.heading"))
-
-    @playComponents.list(pageKey = None, addCssClass = None, bulletList)
-
     @formWithCSRF(action = DoYouGetAnyBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
-        @inputYesNo(
-            label = Text(messages("doYouGetAnyBenefits.heading")),
-            labelClass = Some("govuk-visually-hidden"),
-            field = form("value")
+        @inputCheckBox(
+            field = form("value"),
+            legend = messages("doYouGetAnyBenefits.heading"),
+            isPageHeading = true,
+            hint = Some(messages("doYouGetAnyBenefits.select.all")),
+            inputs = Seq(
+              CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$CarersAllowance")),
+                value = CarersAllowance.toString,
+                checked = form.data.values.toList.contains(CarersAllowance.toString)
+              ),
+              CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$IncapacityBenefit")),
+                value = IncapacityBenefit.toString,
+                checked = form.data.values.toList.contains(IncapacityBenefit.toString)
+              ),
+              CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$SevereDisablement")),
+                value = SevereDisablement.toString,
+                checked = form.data.values.toList.contains(SevereDisablement.toString)
+              ),
+              CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$EmploymentAndSupportAllowance")),
+                value = EmploymentAndSupportAllowance.toString,
+                checked = form.data.values.toList.contains(EmploymentAndSupportAllowance.toString)
+              ),
+              CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$NICreditsForIncapacity")),
+                value = NICreditsForIncapacity.toString,
+                checked = form.data.values.toList.contains(NICreditsForIncapacity.toString)
+              ),
+              CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$CarersCredit")),
+                value = CarersCredit.toString,
+                checked = form.data.values.toList.contains(CarersCredit.toString)
+              ),
+
+              CheckboxItem(
+                divider = Some(messages("doYouGetAnyBenefits.or"))
+              ),
+              CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$NoneOfThese")),
+                value = NoneOfThese.toString,
+                checked = form.data.values.toList.contains(NoneOfThese),
+                behaviour = Some(ExclusiveCheckbox)
+              )
+            )
         )
+
         @submit_button()
     }
 }

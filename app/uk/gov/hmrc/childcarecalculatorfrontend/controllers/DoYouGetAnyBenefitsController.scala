@@ -22,9 +22,9 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, DoYouGetAnyBenefitsForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouGetAnyBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.doYouGetAnyBenefitsErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
@@ -50,23 +50,23 @@ class DoYouGetAnyBenefitsController @Inject()(appConfig: FrontendAppConfig,
 
         case Some(location) =>
           val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
-            case None => BooleanForm()
-            case Some(value) => BooleanForm().fill(value)
+            case None => DoYouGetAnyBenefitsForm()
+            case Some(value) => DoYouGetAnyBenefitsForm().fill(value)
           }
           Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode, location))
       }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      if (request.userAnswers.location.isEmpty) {
-        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
-      } else {
-      BooleanForm(doYouGetAnyBenefitsErrorKey).bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+    if (request.userAnswers.location.isEmpty) {
+      Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+    } else {
+      DoYouGetAnyBenefitsForm().bindFromRequest().fold(
+        formWithErrors =>
           Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
+
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[Set[ParentsBenefits]](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
       )
     }

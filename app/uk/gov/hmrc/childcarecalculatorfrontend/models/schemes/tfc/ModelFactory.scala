@@ -17,8 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
 import javax.inject.Inject
-
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, WhichBenefitsEnum, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, SelfEmployedOrApprenticeOrNeitherEnum, WhichBenefitsEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class ModelFactory @Inject() () {
@@ -118,10 +117,10 @@ class ModelFactory @Inject() () {
       }
 
       doYouGetAnyBenefits <- answers.doYouGetAnyBenefits
-      benefits <- if (doYouGetAnyBenefits) {
-        answers.whichBenefitsYouGet
-      } else {
+      benefits <- if (doYouGetAnyBenefits.contains(ParentsBenefits.NoneOfThese)) {
         Some(Set.empty)
+      } else {
+        answers.whichBenefitsYouGet
       }
     } yield SingleHousehold(Parent(minEarnings, !maxEarnings, selfEmployed, apprentice, benefits.map(WhichBenefitsEnum.withName)))
 

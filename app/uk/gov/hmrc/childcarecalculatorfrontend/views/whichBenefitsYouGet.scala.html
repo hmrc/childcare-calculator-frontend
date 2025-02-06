@@ -60,9 +60,7 @@
     if(form.errors.nonEmpty) messages("site.title.error", messages("whichBenefitsYouGet.title")) else messages("whichBenefitsYouGet.title")
 }
 
-@layout(
-    pageTitle = title
-) {
+@layout(pageTitle = title) {
 
     @errorSummary(form.errors)
     @formWithCSRF(action = WhichBenefitsYouGetController.onSubmit(mode), Symbol("autoComplete") -> "off") {
