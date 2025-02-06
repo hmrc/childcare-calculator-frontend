@@ -104,10 +104,10 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
   private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call = {
     answers.doYouGetAnyBenefits.map {
       youGetBenefits =>
-        if (youGetBenefits) {
-          routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
-        } else {
+        if (youGetBenefits.contains(ParentsBenefits.NoneOfThese)) {
           routes.YourAgeController.onPageLoad(NormalMode)
+        } else {
+          routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
         }
     }.getOrElse(SessionExpiredRouter.route(getClass.getName,"doYouGetAnyBenefitsRoute",Some(answers)))
   }
