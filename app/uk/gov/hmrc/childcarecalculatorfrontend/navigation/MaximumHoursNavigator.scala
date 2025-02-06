@@ -30,7 +30,6 @@ import javax.inject.Inject
 class MaximumHoursNavigator @Inject()(utils: Utils,
                                       override val schemes: Schemes,
                                       freeChildcareWorkingParents: FreeChildcareWorkingParents,
-                                      taxCredits: TaxCredits,
                                       tfc: TaxFreeChildcare,
                                       esc: EmploymentSupportedChildcare)
   extends ResultsNavigator {
@@ -126,8 +125,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     } else SessionExpiredRouter.route(getClass.getName,"doYouOrYourPartnerGetAnyBenefitsRoute",Some(answers))
   }
 
-  private def isEligibleToGoToResultPage(answers: UserAnswers) = answers.doYouLiveWithPartner.getOrElse(false) && (answers.whoIsInPaidEmployment.contains(you) || answers.whoIsInPaidEmployment.contains(partner)) &&
-    taxCredits.eligibility(answers).equals(NotEligible) && esc.eligibility(answers).equals(NotEligible)
+  private def isEligibleToGoToResultPage(answers: UserAnswers) = answers.doYouLiveWithPartner.getOrElse(false) && (answers.whoIsInPaidEmployment.contains(you) || answers.whoIsInPaidEmployment.contains(partner)) && esc.eligibility(answers).equals(NotEligible)
 
   private def whoGetsBenefitsRoute(answers: UserAnswers): Call = {
     if (answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(partner)) {
@@ -281,7 +279,6 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
     if (schemes.allSchemesDetermined(answers)) {
       if (
-        taxCredits.eligibility(answers) == NotEligible &&
           tfc.eligibility(answers) == NotEligible &&
           esc.eligibility(answers) == NotEligible) {
 
