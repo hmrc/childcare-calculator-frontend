@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoesYourPartnerGetAnyBenefitsForm
 
 @this(
   layout: Layout,
@@ -37,57 +37,57 @@
 )(implicit request: Request[_], messages: Messages)
 
 @title = @{
-  if(form.errors.nonEmpty) messages("site.title.error", messages("doYouGetAnyBenefits.title")) else messages("doYouGetAnyBenefits.title")
+  if(form.errors.nonEmpty) messages("site.title.error", messages("doesYourPartnerGetAnyBenefits.title")) else messages("doesYourPartnerGetAnyBenefits.title")
 }
 
 @layout(pageTitle = title) {
 
     @error_summary(form.errors)
 
-    @formWithCSRF(action = DoYouGetAnyBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = DoesYourPartnerGetAnyBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @inputCheckBox(
-            field = form(DoYouGetAnyBenefitsForm.formId),
-            legend = messages("doYouGetAnyBenefits.heading"),
+            field = form(DoesYourPartnerGetAnyBenefitsForm.formId),
+            legend = messages("doesYourPartnerGetAnyBenefits.heading"),
             isPageHeading = true,
-            hint = Some(messages("doYouGetAnyBenefits.select.all")),
+            hint = Some(messages("doesYourPartnerGetAnyBenefits.select.all")),
             inputs = Seq(
               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$CarersAllowance")),
+                content = Text(messages(s"doesYourPartnerGetAnyBenefits.$CarersAllowance")),
                 value = CarersAllowance.toString,
                 checked = form.data.values.toList.contains(CarersAllowance.toString)
               ),
               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$IncapacityBenefit")),
+                content = Text(messages(s"doesYourPartnerGetAnyBenefits.$IncapacityBenefit")),
                 value = IncapacityBenefit.toString,
                 checked = form.data.values.toList.contains(IncapacityBenefit.toString)
               ),
               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$SevereDisablement")),
+                content = Text(messages(s"doesYourPartnerGetAnyBenefits.$SevereDisablement")),
                 value = SevereDisablement.toString,
                 checked = form.data.values.toList.contains(SevereDisablement.toString)
               ),
               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$EmploymentAndSupportAllowance")),
+                content = Text(messages(s"doesYourPartnerGetAnyBenefits.$EmploymentAndSupportAllowance")),
                 value = EmploymentAndSupportAllowance.toString,
                 checked = form.data.values.toList.contains(EmploymentAndSupportAllowance.toString)
               ),
               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$NICreditsForIncapacity")),
+                content = Text(messages(s"doesYourPartnerGetAnyBenefits.$NICreditsForIncapacity")),
                 value = NICreditsForIncapacity.toString,
                 checked = form.data.values.toList.contains(NICreditsForIncapacity.toString)
               ),
               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$CarersCredit")),
+                content = Text(messages(s"doesYourPartnerGetAnyBenefits.$CarersCredit")),
                 value = CarersCredit.toString,
                 checked = form.data.values.toList.contains(CarersCredit.toString)
               ),
 
               CheckboxItem(
-                divider = Some(messages("doYouGetAnyBenefits.or"))
+                divider = Some(messages("doesYourPartnerGetAnyBenefits.or"))
               ),
               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$NoneOfThese")),
+                content = Text(messages(s"doesYourPartnerGetAnyBenefits.$NoneOfThese")),
                 value = NoneOfThese.toString,
                 checked = form.data.values.toList.contains(NoneOfThese),
                 behaviour = Some(ExclusiveCheckbox)
