@@ -29,7 +29,7 @@ class FreeHoursInfoViewSpec extends NewViewBehaviours {
   def createView = () => view(false, false, true, true, Location.ENGLAND)(fakeRequest, messages)
 
   "FreeHoursInfo view" must {
-    behave like normalPage(createView, messageKeyPrefix, "heading2", "li.vouchers", "li.tfc", "li.tax_credits")
+    behave like normalPage(createView, messageKeyPrefix, "heading2", "li.vouchers", "li.tfc")
 
     Seq(ENGLAND, SCOTLAND, WALES).foreach { location =>
       s"display correct content when user with location $location and have child aged 2" in {

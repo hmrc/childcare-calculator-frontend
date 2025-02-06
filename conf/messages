@@ -101,10 +101,9 @@ whatToTellTheCalculator.li.costs = your likely weekly or monthly approved childc
 whatToTellTheCalculator.li.benefits = any disability benefits they get
 whatToTellTheCalculator.time = It should take around 5 minutes to complete.
 whatToTellTheCalculator.indent = You can change your answers as many times as you like to recalculate and compare your results.
-whatToTellTheCalculator.tcUc = Tax credits and Universal Credit
-whatToTellTheCalculator.p1.a = If you already get tax credits, you can use the calculator to find out how much you could claim for childcare.
-whatToTellTheCalculator.p2.a = If you are not eligible to continue claiming tax credits, you may need to check separately if you are eligible to
-whatToTellTheCalculator.p2.link = get help with childcare costs using Universal Credit
+whatToTellTheCalculator.uc = Universal Credit
+whatToTellTheCalculator.p1.a = If you’re eligible for Universal Credit, you need to check here if you can
+whatToTellTheCalculator.p2.link = get help with childcare costs (opens in new tab)
 
 
 location.title = Where do you live?
@@ -182,7 +181,6 @@ freeHoursInfo.guidance.isNotEligibleForOnlyOneScheme = By giving more informatio
 freeHoursInfo.li.workingParents = Free Childcare For Working Parents
 freeHoursInfo.li.vouchers = childcare vouchers (existing users only)
 freeHoursInfo.li.tfc = Tax-Free Childcare
-freeHoursInfo.li.tax_credits = tax credits (existing users only)
 freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So if you’re here to see what support you can get from them, you should select that you
 freeHoursInfo.no.childcare.link = expect to have childcare costs in the future
 freeHoursInfo.no.childcare.para.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
@@ -813,7 +811,7 @@ yourIncomeInfoPY.li.benefits_income = income from benefits
 yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
 
-bothIncomeInfoPY.title = You and your partner’s income for the previoys year
+bothIncomeInfoPY.title = You and your partner’s income for the previous year
 bothIncomeInfoPY.heading = You and your partner’s income for the previous year
 bothIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
 bothIncomeInfoPY.guidance = You will now be asked about you and your partner’s income for the previous year.
