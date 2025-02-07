@@ -36,16 +36,16 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
   def createViewWithAmount = (amount: BigDecimal) => view(frontendAppConfig, form, NormalMode, amount)(fakeRequest, messages)
 
   "YourMinimumEarnings view" must {
-    behave like normalPageWithTitleAsString(
-      view = createView,
-      messageKeyPrefix = messageKeyPrefix,
-      messageKeyPostfix = "",
-      title = messages("yourMinimumEarnings.title"),
-      heading = Some(""),
-      expectedGuidanceKeys= Seq(),
-      args = 0
-    )
-
+    "have the correct banner title" in {
+      val doc = asDocument(createView())
+      val nav = doc.getElementsByClass("govuk-header__service-name")
+      nav.text mustBe messages("site.service_name")
+    }
+    "display the correct page title" in {
+      val amount = BigDecimal(40)
+      val doc = asDocument(createViewWithAmount(amount))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.form", amount))
+    }
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(
@@ -58,10 +58,7 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
     "show correct guidance and value of minimum earnings" in {
       val amount = BigDecimal(40)
       val doc = asDocument(createViewWithAmount(amount))
-
-      assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
-      assertContainsText(doc, messages(s"$messageKeyPrefix.para2"))
-      assertContainsText(doc, messages(s"$messageKeyPrefix.heading", amount))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.form", amount))
     }
   }
 
