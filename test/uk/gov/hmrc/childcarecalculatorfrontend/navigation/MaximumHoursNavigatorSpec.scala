@@ -34,11 +34,20 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  def navigator(schemes: Schemes, freeChildcareWorkingParents: FreeChildcareWorkingParents, tfc: TaxFreeChildcare, esc: EmploymentSupportedChildcare): SubNavigator =
-    new MaximumHoursNavigator(new Utils, schemes, freeChildcareWorkingParents, tfc, esc)
+  def navigator(
+    schemes: Schemes,
+    freeChildcareWorkingParents: FreeChildcareWorkingParents,
+    tfc: TaxFreeChildcare,
+    esc: EmploymentSupportedChildcare
+  ): SubNavigator =
+    new MaximumHoursNavigator(schemes, freeChildcareWorkingParents, tfc, esc)
 
-  def navigator(schemes: Schemes): SubNavigator = new MaximumHoursNavigator(new Utils,
-    schemes, mock[FreeChildcareWorkingParents], mock[TaxFreeChildcare], mock[EmploymentSupportedChildcare])
+  def navigator(schemes: Schemes): SubNavigator = new MaximumHoursNavigator(
+    schemes,
+    mock[FreeChildcareWorkingParents],
+    mock[TaxFreeChildcare],
+    mock[EmploymentSupportedChildcare]
+  )
 
   def navigator: SubNavigator = navigator(new Schemes())
 
@@ -104,50 +113,30 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
 
-  "Do you get childcare vouchers from your employer?" when {
-    "user will be taken to DoYouOrYourPartnerGetAnyBenefits screen from YourChildcareVouchers screen when any selection is done and " +
-      "lives with partner" in {
+  "Do you get childcare vouchers from your employer?" must {
+    "always go to 'do you get any of these benefits'" in {
       val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.yourChildcareVouchers) thenReturn
-        Some(true) thenReturn
-        Some(false)
-
-      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-
-    }
-
-    "user will be taken to DoYouGetAnyBenefits screen from YourChildcareVouchers screen when any selection is done and " +
-      "does not lives with partner" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(false)
-      when(answers.yourChildcareVouchers) thenReturn
-        Some(true) thenReturn
-        Some(false)
 
       navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
         routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-
     }
   }
 
-  "Does your partner get childcare vouchers from their employer?" when {
-    "user with partner will be taken to Do you get any benefits screen from PartnerChildcareVouchers screen when any selection is done" in {
+  "Does your partner get childcare vouchers from their employer?" must {
+    "always go to 'do you get any of these benefits'" in {
       val answers = spy(userAnswers())
-      when(answers.partnerChildcareVouchers) thenReturn
-        Some(true) thenReturn
-        Some(false)
 
       navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+    }
+  }
 
+  "Do either of you get childcare vouchers from your employer?" must {
+    "always go to 'do you get any of these benefits'" in {
+      val answers = spy(userAnswers())
+
+      navigator.nextPage(WhoGetsVouchersId, NormalMode).value(answers) mustBe
+        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
     }
   }
 
