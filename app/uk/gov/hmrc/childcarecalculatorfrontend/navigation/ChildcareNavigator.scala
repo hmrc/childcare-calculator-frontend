@@ -31,7 +31,6 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
   override protected lazy val routeMap: PartialFunction[Identifier, UserAnswers => Call] = {
     case NoOfChildrenId => _ => routes.AboutYourChildController.onPageLoad(NormalMode, 0)
     case AboutYourChildId(id) => aboutYourChildRoutes(id)
-    case ChildApprovedEducationId(id) => childApprovedEducationRoutes(id)
     case ChildStartEducationId(id) => childEducationStartRoutes(id)
     case ChildrenDisabilityBenefitsId => childrenDisabilityBenefitsRoutes
     case WhichChildrenDisabilityId => whichChildrenDisabilityRoutes
@@ -50,39 +49,11 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
       noOfChildren   <- answers.noOfChildren
       aboutYourChild <- answers.aboutYourChild
     } yield if (isLastChild(id, noOfChildren)) {
-      val childrenOver16 = answers.childrenOver16
-      if (answers.childrenOver16.fold(false)(c=>c.nonEmpty)) {
-        routes.ChildApprovedEducationController.onPageLoad(NormalMode, childrenOver16.get.head._1)
-      } else {
         routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
-      }
     } else {
       routes.AboutYourChildController.onPageLoad(NormalMode, id + 1)
     }
   }.getOrElse(SessionExpiredRouter.route(getClass.getName,"aboutYourChildRoutes",Some(answers)))
-
-  private def     childApprovedEducationRoutes(id: Int)(answers: UserAnswers): Call = {
-
-    def next(i: Int, childrenOver16: Map[Int, AboutYourChild]): Option[Int] = {
-      val ints: Seq[Int] = childrenOver16.keys.toSeq
-      ints.lift(ints.indexOf(i) + 1)
-    }
-
-    def childIsOver19(dob: LocalDate) = dob.isBefore(now.minusYears(19))
-
-    for {
-      childrenOver16    <- answers.childrenOver16
-      childHasApprovedEducation <- answers.childApprovedEducation(id)
-      dob               <- childrenOver16.get(id).map(_.dob)
-    } yield if (childHasApprovedEducation && childIsOver19(dob)) {
-      routes.ChildStartEducationController.onPageLoad(NormalMode, id)
-    } else {
-      next(id, childrenOver16).map {
-        nextId =>
-          routes.ChildApprovedEducationController.onPageLoad(NormalMode, nextId)
-      }.getOrElse(routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode))
-    }
-  }.getOrElse(SessionExpiredRouter.route(getClass.getName,"childApprovedEducationRoutes",Some(answers)))
 
   private def childEducationStartRoutes(id: Int)(answers: UserAnswers): Call = {
 
@@ -92,10 +63,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
     }
     answers.childrenOver16.map {
       childrenOver16 =>
-        next(id, childrenOver16).map {
-          nextId =>
-            routes.ChildApprovedEducationController.onPageLoad(NormalMode, nextId)
-        }.getOrElse(routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode))
+        routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
     }.getOrElse(SessionExpiredRouter.route(getClass.getName,"childEducationStartRoutes",Some(answers)))
   }
 

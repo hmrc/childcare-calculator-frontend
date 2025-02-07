@@ -1105,11 +1105,6 @@ aboutYourChild.dob.nth.error.notReal.year = Year must include 4 numbers
 aboutYourChild.dob.nth.error.range.min = The date of your {0} child’s date of birth cannot be more than 20 years ago
 aboutYourChild.dob.nth.error.range.max = Your {0} child’s date of birth cannot be in the future
 
-childApprovedEducation.title = Is your child in approved education or training?
-childApprovedEducation.heading = Is your child {0} in approved education or training?
-childApprovedEducation.checkYourAnswersLabel = Is your child in approved education or training?
-childApprovedEducation.error.notCompleted = Select yes if {0} is in approved education or training
-
 childRegisteredBlind.title = Is your child registered blind?
 childRegisteredBlind.heading = Is {0} registered blind?
 childRegisteredBlind.error.notCompleted = Select yes if {0} is registered blind
