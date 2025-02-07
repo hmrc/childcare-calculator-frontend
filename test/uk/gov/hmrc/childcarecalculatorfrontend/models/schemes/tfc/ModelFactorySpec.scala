@@ -94,8 +94,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.partnerSelfEmployed) thenReturn Some(true)
         when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
 
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-
         factory(answers).value mustEqual JointHousehold(
           Parent(minEarnings = false, maxEarnings = true, selfEmployed = true, apprentice = false, Set.empty),
           Parent(minEarnings = false, maxEarnings = true, selfEmployed = true, apprentice = false, Set.empty)
@@ -117,8 +115,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.partnerSelfEmployed) thenReturn Some(true)
         when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
 
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-
         factory(answers) mustNot be(defined)
       }
 
@@ -135,8 +131,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
 
         when(answers.yourSelfEmployed) thenReturn Some(true)
         when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
-
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
 
         factory(answers).value mustEqual JointHousehold(
           Parent(minEarnings = false, maxEarnings = true, selfEmployed = false, apprentice = true, Set.empty),

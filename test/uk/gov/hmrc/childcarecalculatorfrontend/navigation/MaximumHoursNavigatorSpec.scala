@@ -140,93 +140,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     }
   }
 
-  "Do you or your partner get any benefits" when {
-
-    "not all schemes are determined" when {
-
-      "go to `Which of you gets benefits` when you answer `yes`" in {
-        val answers = spy(userAnswers())
-        val schemes = mock[Schemes]
-
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
-
-        val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
-        result mustEqual routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
-      }
-
-      "go to 'what is your age' when you answer 'no'" in {
-        val answers = spy(userAnswers())
-        val schemes = mock[Schemes]
-
-        when(answers.whoIsInPaidEmployment) thenReturn Some(you)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-
-        val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
-        result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
-      }
-
-      "go to 'what is your age' when you answer 'no' and partner in paid employment" in {
-        val answers = spy(userAnswers())
-        val schemes = mock[Schemes]
-
-        when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-
-        val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
-        result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
-      }
-
-      "go to result page when you answer 'no', only parent in paid employment and not eligible for TC" in {
-        val answers = spy(userAnswers())
-        val schemes = mock[Schemes]
-        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-
-        val tfc = mock[TaxFreeChildcare]
-        val esc = mock[EmploymentSupportedChildcare]
-
-        when(esc.eligibility(any()))  thenReturn NotEligible
-
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(you)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-
-        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
-        result mustEqual routes.ResultController.onPageLoad()
-      }
-
-      "go to result page when you answer 'no', only partner in paid employment and not eligible for TC" in {
-        val answers = spy(userAnswers())
-        val schemes = mock[Schemes]
-        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-
-        val tfc = mock[TaxFreeChildcare]
-        val esc = mock[EmploymentSupportedChildcare]
-
-
-        when(esc.eligibility(any()))  thenReturn NotEligible
-
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-
-        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
-        result mustEqual routes.ResultController.onPageLoad()
-      }
-
-    }
-
-    "go to `Session expired` when there is no answer for `Do you or your partner get any benefits`" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-
-      when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn None
-      when(schemes.allSchemesDetermined(any())) thenReturn false
-
-      val result = navigator(schemes).nextPage(DoYouOrYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
-      result mustEqual routes.SessionExpiredController.onPageLoad
-    }
-  }
-
   "Do you get any benefits" when {
 
     "doYouLiveWithPartner is None" must {
@@ -312,20 +225,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
 
       result mustEqual routes.SessionExpiredController.onPageLoad
-    }
-  }
-
-  "Who gets benefits" when {
-    "partner user will be taken to which benefits do you get page when user selects You/both" in {
-      val answers = spy(userAnswers())
-      when(answers.whoGetsBenefits) thenReturn Some("you") thenReturn Some("both")
-      navigator.nextPage(WhoGetsBenefitsId, NormalMode).value(answers) mustBe routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
-    }
-
-    "partner user will be taken to which benefits does your partner get page when user selects Partner" in {
-      val answers = spy(userAnswers())
-      when(answers.whoGetsBenefits) thenReturn Some("partner")
-      navigator.nextPage(WhoGetsBenefitsId, NormalMode).value(answers) mustBe routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
     }
   }
 
@@ -463,7 +362,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(both)
-        when(answers.whoGetsBenefits) thenReturn Some(both)
 
         val result = navigator(schemes).nextPage(WhichBenefitsYouGetId, NormalMode).value(answers)
         result mustEqual routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
@@ -475,7 +373,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(both)
-        when(answers.whoGetsBenefits) thenReturn Some(you)
 
         val result = navigator(schemes).nextPage(WhichBenefitsYouGetId, NormalMode).value(answers)
         result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
@@ -487,7 +384,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
-        when(answers.whoGetsBenefits) thenReturn Some(you)
 
         val result = navigator(schemes).nextPage(WhichBenefitsYouGetId, NormalMode).value(answers)
         result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
@@ -499,7 +395,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(you)
-        when(answers.whoGetsBenefits) thenReturn Some(you)
 
         val result = navigator(schemes).nextPage(WhichBenefitsYouGetId, NormalMode).value(answers)
         result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
@@ -511,7 +406,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(you)
-        when(answers.whoGetsBenefits) thenReturn Some(both)
 
         val result = navigator(schemes).nextPage(WhichBenefitsYouGetId, NormalMode).value(answers)
         result mustEqual routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)

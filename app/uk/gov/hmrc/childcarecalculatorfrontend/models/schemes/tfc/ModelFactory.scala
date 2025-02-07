@@ -71,26 +71,9 @@ class ModelFactory @Inject() () {
         Some(false)
       }
 
-      anyBenefits <- answers.doYouOrYourPartnerGetAnyBenefits
-      parentBenefits <- if (anyBenefits) {
-        answers.whoGetsBenefits.flatMap {
-          case str if str != Partner => answers.whichBenefitsYouGet
-          case _ => Some(Set.empty)
-        }
-      } else {
-        Some(Set.empty)
-      }
+      parentBenefits = answers.whichBenefitsYouGet.getOrElse(Set.empty)
+      partnerBenefits = answers.whichBenefitsPartnerGet.getOrElse(Set.empty)
 
-      partnerBenefits <- if (anyBenefits) {
-        answers.whoGetsBenefits.flatMap {
-          case str if str != You =>
-            answers.whichBenefitsPartnerGet
-          case _ =>
-            Some(Set.empty)
-        }
-      } else {
-        Some(Set.empty)
-      }
     } yield JointHousehold(
       Parent(parentMinEarnings, !parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits.map(WhichBenefitsEnum.withName)),
       Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits.map(WhichBenefitsEnum.withName))
