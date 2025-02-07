@@ -40,7 +40,6 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
     YourOtherIncomeAmountCYId -> howMuchYourOtherIncomeRouteCY,
     PartnerOtherIncomeAmountCYId -> howMuchPartnerOtherIncomeRouteCY,
     OtherIncomeAmountCYId -> howMuchBothOtherIncomeRouteCY,
-    YourOtherIncomeLYId -> yourOtherIncomeRoutePY,
     PartnerAnyOtherIncomeLYId -> partnerOtherIncomeRoutePY
   )
 
@@ -97,16 +96,6 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
       routes.BothIncomeInfoPYController.onPageLoad(),
       routes.ResultController.onPageLoad())
 
-
-
-  private def yourOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.yourOtherIncomeLY) {
-      case true => routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case false => utils.getCall(answers.doYouLiveWithPartner){
-        case false => routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        case _ => routes.BothStatutoryPayController.onPageLoad(NormalMode)
-      }
-    }
 
   private def partnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeLY) {

@@ -475,50 +475,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
   "Previous Year Other Income Route Navigation" when {
 
     "in Normal mode" must {
-      "Parent Other Income PY Route" must {
-        "redirects to YourOtherIncomeAmountLY page when user selects yes" in {
-          val answers = spy(userAnswers())
-          when(answers.yourOtherIncomeLY) thenReturn Some(true)
-
-          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.YourOtherIncomeAmountPYController.onPageLoad(NormalMode)
-        }
-
-        "redirects to YouStatutoryPay page when user selects no and in single parent journey" in {
-          val answers = spy(userAnswers())
-          when(answers.yourOtherIncomeLY) thenReturn Some(false)
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
-
-          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.YouStatutoryPayController.onPageLoad(NormalMode)
-        }
-
-        "redirects to BothStatutoryPay page when user selects no and there is partner in the system" in {
-          val answers = spy(userAnswers())
-          when(answers.yourOtherIncomeLY) thenReturn Some(false)
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-
-          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayController.onPageLoad(NormalMode)
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.yourOtherIncomeLY) thenReturn None
-
-          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-
-        "redirects to sessionExpired page when user selects no and doYouLiveWithPartner is None" in {
-          val answers = spy(userAnswers())
-          when(answers.yourOtherIncomeLY) thenReturn Some(false)
-          when(answers.doYouLiveWithPartner) thenReturn None
-
-          navigator().nextPage(YourOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
 
       "Partner Other Income PY Route" must {
         "redirects to PartnerOtherIncomeAmountPY page when user selects yes" in {

@@ -41,34 +41,6 @@ class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
     "in Normal mode" must {
 
-
-      "Your Statutory Pay route" must {
-        "redirects to result page when user selects no" in {
-          val answers = spy(userAnswers())
-          when(answers.youStatutoryPay) thenReturn Some(false)
-
-          navigator.nextPage(YouStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.ResultController.onPageLoad()
-        }
-
-        "redirects to yourStatutoryPayType page when user selects yes" in {
-          val answers = spy(userAnswers())
-          when(answers.youStatutoryPay) thenReturn Some(true)
-
-          navigator.nextPage(YouStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
-        }
-
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.youStatutoryPay) thenReturn None
-
-          navigator.nextPage(YouStatutoryPayId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
-
       "Partner Statutory Pay Type route" must {
 
         "redirects to partnerStatutoryPayType page when user selects yes" in {

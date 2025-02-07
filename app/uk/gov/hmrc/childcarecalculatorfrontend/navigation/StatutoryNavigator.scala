@@ -31,18 +31,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 class StatutoryNavigator @Inject()(utils: Utils, scheme: TaxCredits) extends SubNavigator {
 
   override protected def routeMap = Map(
-    YouStatutoryPayId -> yourStatutoryPayRoute,
-    PartnerStatutoryPayId -> partnerStatutoryPayRoute,
+    PartnerStatutoryPayId -> partnerStatutoryPayRoute
   )
-
-
-
-  private def yourStatutoryPayRoute(answers: UserAnswers) = {
-    utils.getCall(answers.youStatutoryPay) {
-      case true => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
-      case false => routes.ResultController.onPageLoad()
-    }
-  }
 
   private def partnerStatutoryPayRoute(answers: UserAnswers) = {
     utils.getCall(answers.partnerStatutoryPay) {
