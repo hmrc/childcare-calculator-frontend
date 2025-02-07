@@ -379,3 +379,5 @@ POST       /you-get-same-income-previous-year                  uk.gov.hmrc.child
 
 GET        /both-get-same-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
 POST       /both-get-same-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
+
+GET        /average-weekly-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.AverageWeeklyEarningController.onPageLoad(mode: Mode ?= NormalMode)

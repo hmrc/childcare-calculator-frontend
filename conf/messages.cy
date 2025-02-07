@@ -1515,6 +1515,48 @@ incomeSummary.yourBenefitsIncome=Eich incwm o fudd-daliadau
 incomeSummary.otherIncome=Incwm arall
 incomeSummary.incomeFromBenefits=Incwm o fudd-daliadau
 
+yourAverageWeeklyEarnings.title = Eich enillion wythnosol cyfartalog
+yourAverageWeeklyEarnings.heading = Eich enillion wythnosol cyfartalog
+yourAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm eich cyflog wythnosol neu elw o hunangyflogaeth am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
+yourAverageWeeklyEarnings.heading2 = Os byddwch ar absenoldeb
+yourAverageWeeklyEarnings.para2 = Rydym ond eisiau gwybod faint a enilloch cyn i chi fynd ar unrhyw un o’r mathau hyn o absenoldeb:
+yourAverageWeeklyEarnings.li.maternity = mamolaeth
+yourAverageWeeklyEarnings.li.paternity = tadolaeth
+yourAverageWeeklyEarnings.li.adoption = mabwysiadu
+yourAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
+yourAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
+yourAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
+yourAverageWeeklyEarnings.para3 = Mae’n bosibl y byddwch yn dal yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch yn gweithio o leiaf 16 awr yr wythnos ar gyfartaledd dros y 3 mis nesaf.
+yourAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol i chi, dewiswch iawn.
+
+partnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog eich partner
+partnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog eich partner
+partnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth eich partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
+partnerAverageWeeklyEarnings.heading2 = Os aeth eich partner ar absenoldeb
+partnerAverageWeeklyEarnings.para2 = Does ond angen i ni wybod faint roedden nhw’n ei ennill cyn iddyn nhw fynd ar unrhyw un o’r mathau hyn o absenoldeb:
+partnerAverageWeeklyEarnings.li.maternity = mamolaeth
+partnerAverageWeeklyEarnings.li.paternity = tadolaeth
+partnerAverageWeeklyEarnings.li.adoption = mabwysiadu
+partnerAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
+partnerAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
+partnerAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
+partnerAverageWeeklyEarnings.para3 = Mae’n bosibl y bydd eich partner yn dal yn gymwys ar gyfer y cynllun os yw ei incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddant yn gweithio o leiaf 16 awr yr wythnos, ar gyfartaledd, dros y 3 mis nesaf.
+partnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol iddynt, dewiswch iawn.
+
+yourAndPartnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog chi a’ch partner
+yourAndPartnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog chi a’ch partner
+yourAndPartnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth chi a’ch partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
+yourAndPartnerAverageWeeklyEarnings.heading2 = If either of you went on leave
+yourAndPartnerAverageWeeklyEarnings.para2 = We only need to know how much you or your partner earned before going on any of these types of leave:
+yourAndPartnerAverageWeeklyEarnings.li.maternity = maternity
+yourAndPartnerAverageWeeklyEarnings.li.paternity = paternity
+yourAndPartnerAverageWeeklyEarnings.li.adoption = adoption
+yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
+yourAndPartnerAverageWeeklyEarnings.li.sickLeave = sick leave
+yourAndPartnerAverageWeeklyEarnings.heading3 = Part year workers
+yourAndPartnerAverageWeeklyEarnings.para3 = You or your partner may still qualify for the scheme if your income is below the minimum threshold. This applies only if you or your partner will work at least 16 hours a week, on average, over the next 3 months.
+yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select yes.
+
 urBanner.title=Helpwch i wella GOV.UK
 urBanner.message=Gallwch fod yn rhan o wneud gwasanaethau’r llywodraeth yn well
 urBanner.message.link=https://signup.take-part-in-research.service.gov.uk/?utm_campaign=ChildcareCalcBanner&utm_source=Other&utm_medium=other&t=HMRC&id=143

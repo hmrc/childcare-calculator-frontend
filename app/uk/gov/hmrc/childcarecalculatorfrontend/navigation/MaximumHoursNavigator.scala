@@ -177,18 +177,14 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def yourAgeRoute(answers: UserAnswers) = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
     } else {
       routes.YourPartnersAgeController.onPageLoad(NormalMode)
     }
   }
 
   private def yourPartnerAgeRoute(answers: UserAnswers): Call = {
-    if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(partner)) {
-      routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
-    } else {
-      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
-    }
+      routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
   }
 
   private def yourMinimumEarningsRoute(answers: UserAnswers): Call = {
