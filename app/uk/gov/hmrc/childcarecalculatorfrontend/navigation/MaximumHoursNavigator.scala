@@ -27,30 +27,25 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, User
 import javax.inject.Inject
 
 // scalastyle:off number.of.methods
-class MaximumHoursNavigator @Inject()(utils: Utils,
-                                      override val schemes: Schemes,
-                                      freeChildcareWorkingParents: FreeChildcareWorkingParents,
-                                      tfc: TaxFreeChildcare,
-                                      esc: EmploymentSupportedChildcare)
-  extends ResultsNavigator {
+class MaximumHoursNavigator @Inject()(
+  override val schemes: Schemes,
+  freeChildcareWorkingParents: FreeChildcareWorkingParents,
+  tfc: TaxFreeChildcare,
+  esc: EmploymentSupportedChildcare
+) extends ResultsNavigator {
 
   override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
-
-
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     WhoIsInPaidEmploymentId -> whoIsInPaidWorkRoute,
-    YourChildcareVouchersId -> yourChildcareVoucherRoute,
-    PartnerChildcareVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
-    WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
-
+    YourChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+    PartnerChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+    WhoGetsVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     DoesYourPartnerGetAnyBenefitsId -> doesYourPartnerGetAnyBenefitsRoute,
-
     WhoGetsBenefitsId -> whoGetsBenefitsRoute,
-
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
@@ -96,14 +91,6 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
       case _ => SessionExpiredRouter.route(getClass.getName,"whoIsInPaidWorkRoute", Some(answers))
     }
   }
-
-
-  private def yourChildcareVoucherRoute(answers: UserAnswers): Call =
-    utils.getCall(answers.doYouLiveWithPartner) {
-      case true => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      case false => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-    }
-
 
   private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call =
     answers.doYouLiveWithPartner match {
