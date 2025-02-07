@@ -34,9 +34,6 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       DoYouLiveWithPartnerId.toString() -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
       WhoIsInPaidEmploymentId.toString -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
       AreYouInPaidWorkId.toString -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
-      DoYouOrYourPartnerGetAnyBenefitsId.toString -> ((v, cm) => storeYouOrYourPartnerGetAnyBenefits(v, cm)),
-      WhoGetsBenefitsId.toString -> ((v, cm) => storeWhoGetsBenefits(v, cm)),
-      DoYouGetAnyBenefitsId.toString -> ((v, cm) => storeDoYouGetAnyBenefits(v, cm)),
 
       YourAgeId.toString -> ((v, cm) => storeYourAge(v, cm)),
       YourPartnersAgeId.toString -> ((v, cm) => storeYourPartnersAge(v, cm)),
@@ -52,10 +49,12 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
     val mapToStore = if (value.equals(JsBoolean(false))) {
       cacheMap copy (data = cacheMap.data - WhoIsInPaidEmploymentId.toString -
-        HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString - DoYouOrYourPartnerGetAnyBenefitsId.toString -
-        WhoGetsBenefitsId.toString  - WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString - YourPartnersAgeId.toString -
+        HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString -
+        WhatIsYourPartnersTaxCodeId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString -
+        WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString - YourPartnersAgeId.toString -
         PartnerSelfEmployedOrApprenticeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
-        EitherOfYouMaximumEarningsId.toString - BothStatutoryPayId.toString - WhoGotStatutoryPayId.toString - PartnerStatutoryPayTypeId.toString -
+        EitherOfYouMaximumEarningsId.toString - BothStatutoryPayId.toString -
+        WhoGotStatutoryPayId.toString - PartnerStatutoryPayTypeId.toString -
         PartnerStatutoryStartDateId.toString - PartnerStatutoryWeeksId.toString - PartnerStatutoryPayBeforeTaxId.toString -
         PartnerStatutoryPayPerWeekId.toString)
     } else if (value.equals(JsBoolean(true))) {
@@ -97,6 +96,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString - BothPaidPensionPYId.toString -
             WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString - WhoOtherIncomePYId.toString -
             OtherIncomeAmountPYId.toString - BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString - BothBenefitsIncomePYId.toString)
+
         case JsString(`partner`) =>
           cacheMap copy (data = cacheMap.data - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - YourChildcareVouchersId.toString - WhoGetsVouchersId.toString -
@@ -125,8 +125,11 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
         case JsString(`neither`) =>
           cacheMap copy (data = cacheMap.data -
             HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
-            HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
-            DoYouOrYourPartnerGetAnyBenefitsId.toString - WhoGetsBenefitsId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
+            HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
+            WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
+            DoYouGetAnyBenefitsId.toString -
+
+            YourAgeId.toString -
             YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
             PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString -
             TaxOrUniversalCreditsId.toString -
@@ -154,36 +157,6 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       }
 
     store(WhoIsInPaidEmploymentId.toString, value, mapToStore)
-  }
-
-
-  private def storeYouOrYourPartnerGetAnyBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(false)) {
-      cacheMap copy (data = cacheMap.data - WhoGetsBenefitsId.toString - WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString)
-    } else {
-      cacheMap
-    }
-    store(DoYouOrYourPartnerGetAnyBenefitsId.toString, value, mapToStore)
-  }
-
-  private def storeWhoGetsBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsString(you)) {
-      cacheMap copy (data = cacheMap.data - WhichBenefitsPartnerGetId.toString)
-    } else if (value == JsString(partner)) {
-      cacheMap copy (data = cacheMap.data - WhichBenefitsYouGetId.toString)
-    }else {
-      cacheMap
-    }
-    store(WhoGetsBenefitsId.toString, value, mapToStore)
-  }
-
-  private def storeDoYouGetAnyBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(false)) {
-      cacheMap copy (data = cacheMap.data - WhichBenefitsYouGetId.toString)
-    }else {
-      cacheMap
-    }
-    store(DoYouGetAnyBenefitsId.toString, value, mapToStore)
   }
 
   private def AreYouSelfEmployedOrApprentice(value: JsValue, cacheMap: CacheMap): CacheMap = {

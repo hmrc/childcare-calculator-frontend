@@ -344,39 +344,17 @@ doesYourPartnerGetAnyBenefits.checkYourAnswersLabel = Does your partner get any 
 doesYourPartnerGetAnyBenefits.error.select = Select which benefits your partner gets
 doesYourPartnerGetAnyBenefits.error.exclusive = Select which benefits your partner gets, or select ’No, they do not get any of these benefits’
 
-doYouOrYourPartnerGetAnyBenefits.title = Do you or your partner get any of these benefits?
-doYouOrYourPartnerGetAnyBenefits.heading = Do you or your partner get any of these benefits?
-doYouOrYourPartnerGetAnyBenefits.checkYourAnswersLabel = Do you or your partner get any of these benefits?
-doYouOrYourPartnerGetAnyBenefits.error.notCompleted = Select yes if you or your partner get any benefits
-doYouOrYourPartnerGetAnyBenefits.li.incomeSupport = Income Support
-doYouOrYourPartnerGetAnyBenefits.li.jsa = Income-based Jobseeker’s Allowance
-doYouOrYourPartnerGetAnyBenefits.li.esa = Income-related Employment and Support Allowance
-doYouOrYourPartnerGetAnyBenefits.li.pensionCredit = Pension Credit
-doYouOrYourPartnerGetAnyBenefits.li.disabilityAllowance = Disability Living Allowance
-doYouOrYourPartnerGetAnyBenefits.li.adultDisabilityPayments = Disability Payment (Scotland only)
-doYouOrYourPartnerGetAnyBenefits.li.attendanceAllowance = Attendance Allowance
-doYouOrYourPartnerGetAnyBenefits.li.independencePayment = Personal Independence Payment
-doYouOrYourPartnerGetAnyBenefits.li.carersAllowance = Carer’s Allowance
-doYouOrYourPartnerGetAnyBenefits.li.scottishCarersAllowance = Carer’s Allowance or Carer Support Payment
 
-whoGetsBenefits.title = Who gets benefits?
-whoGetsBenefits.heading = Who gets benefits?
-whoGetsBenefits.you = You
-whoGetsBenefits.partner = Partner
-whoGetsBenefits.both = Both
-whoGetsBenefits.checkYourAnswersLabel = Who gets benefits?
-whoGetsBenefits.error.notCompleted = Select who gets benefits
+
 
 whichBenefitsYouGet.title = Which benefits do you get?
 whichBenefitsYouGet.heading = Which benefits do you get?
-
 whichBenefitsYouGet.incomeBenefits = Income benefits
 whichBenefitsYouGet.disabilityBenefits = Disability benefits
 whichBenefitsYouGet.highRateDisabilityBenefits = Higher rate disability benefits
 whichBenefitsYouGet.severeDisabilityPremium = Severe disability premium
 whichBenefitsYouGet.carersAllowance = Carer’s Allowance
 whichBenefitsYouGet.scottishCarersAllowance = Carer’s Allowance or Carer Support Payment
-
 whichBenefitsYouGet.checkYourAnswersLabel = Which benefits do you get?
 whichBenefitsYouGet.error.notCompleted = Select which benefits you get
 whichBenefits.select.all = Select all that apply.
@@ -412,6 +390,9 @@ whichBenefitsList.typeof.higher.rate.benefit.disability.payment = Disability Pay
 whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance = Attendance Allowance (higher rate)
 whichBenefitsList.typeof.higher.rate.benefit.personal.payment = Personal Independence Payment (enhanced daily living component)
 whichBenefitsList.typeof.higher.rate.benefit.independent.payment = Armed Forces Independence Payment
+
+
+
 
 yourPartnersAge.title = What’s your partner’s age?
 yourPartnersAge.heading = What’s your partner’s age?

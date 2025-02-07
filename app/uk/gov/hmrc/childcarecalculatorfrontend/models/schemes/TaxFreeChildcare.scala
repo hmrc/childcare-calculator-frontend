@@ -40,19 +40,13 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
     }
   }
 
-  private def jointEligibility(parent: Parent, partner: Parent, location: Location.Value): Eligibility = {
-
-
+  private def jointEligibility(parent: Parent, partner: Parent, location: Location.Value): Eligibility =
     if ((isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty)) ||
       (isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty))) {
       Eligible
     } else {
       NotEligible
     }
-  }
-
-  //Only carer's allowance is considered as benefit to eligible
-  private val applicableBenefits: Set[WhichBenefitsEnum.Value] = Set(CARERSALLOWANCE)
 
   private def isEligible(parent: Parent): Boolean =
     (parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
