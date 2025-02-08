@@ -75,7 +75,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           dob = todaysDate.minusYears(7),
           disability = Some(Disability(disabled = true, severelyDisabled = true, blind = true)),
           childcareCost = Some(ChildCareCost(Some(200.0), Some(PeriodEnum.MONTHLY))),
-          education = Some(Education(inEducation = true, startDate = Some((todaysDate.minusMonths(6))))))
+          education = None)
         val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0,None,None)))
 
         val household = Household(location = Location.ENGLAND, children = List(child1), parent = claimant)
@@ -83,7 +83,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.noOfChildren) thenReturn Some(1)
-        when(answers.childApprovedEducation(0)) thenReturn Some(true)
         when(answers.childStartEducation(0)) thenReturn Some(todaysDate.minusMonths(6))
         when(answers.expectedChildcareCosts(0)) thenReturn Some(BigDecimal(200.0))
         when(answers.childcarePayFrequency(0)) thenReturn Some(ChildcarePayFrequency.MONTHLY)

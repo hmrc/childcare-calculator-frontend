@@ -85,14 +85,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
           None
         }
 
-        val childInEducation = answers.childApprovedEducation(i).getOrElse(false)
-        val childStartDate = answers.childStartEducation(i)
-        val childEducation = if (childInEducation) {
-          Some(Education(childInEducation, childStartDate))
-        } else {
-          None
-        }
-
         val childIsBlindValue = childIsBlind(answers, totalChildren, i)
 
         val child = Child(
@@ -100,8 +92,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
           name = childDOB.get._1,
           dob = childDOB.get._2,
           disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childIsBlindValue),
-          childcareCost = childcareCost,
-          education = childEducation
+          childcareCost = childcareCost
         )
 
         childList ::= child

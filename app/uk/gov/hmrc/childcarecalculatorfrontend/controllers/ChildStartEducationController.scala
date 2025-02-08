@@ -52,17 +52,14 @@ class ChildStartEducationController @Inject() (
                               (implicit request: DataRequest[A]): Future[Result] = {
     for {
       child <- request.userAnswers.aboutYourChild(childIndex)
-      name  <- request.userAnswers.childApprovedEducation(childIndex).flatMap {
-        case true  => Some(child.name)
-        case false => None
-      }
-    } yield block(name, child.dob)
+    } yield block(child.name, child.dob)
   }.getOrElse(sessionExpired("validateIndex",Some(request.userAnswers)))
 
   def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
       validateIndex(childIndex) {
         (name, dob) =>
+          println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@name and dob in submit" + name + dob)
           val preparedForm = request.userAnswers.childStartEducation(childIndex) match {
             case None => ChildStartEducationForm(dob, name)
             case Some(value) => ChildStartEducationForm(dob, name).fill(value)
@@ -75,6 +72,7 @@ class ChildStartEducationController @Inject() (
     implicit request =>
       validateIndex(childIndex) {
         (name, dob) =>
+          println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@name and dob in submit" + name + dob)
           ChildStartEducationForm(dob, name).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(childStartEducation(appConfig, formWithErrors, mode, childIndex, name))),

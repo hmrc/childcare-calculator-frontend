@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
+/*package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
 case class ChildApprovedEducationId(id: Int) extends Identifier
 
 object ChildApprovedEducationId {
   override def toString: String = "childApprovedEducation"
-}
+}*/

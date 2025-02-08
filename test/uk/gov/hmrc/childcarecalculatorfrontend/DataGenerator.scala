@@ -74,10 +74,6 @@ object DataGenerator {
       "3" -> Json.toJson(AboutYourChild("Baz", sampleDate)),
       "4" -> Json.toJson(AboutYourChild("Raz", sampleDate))
     ),
-    ChildApprovedEducationId.toString -> Json.obj(
-      "0" -> true,
-      "1" -> true
-    ),
     ChildStartEducationId.toString -> Json.obj(
       "0" -> childStartEducationDate
     ),

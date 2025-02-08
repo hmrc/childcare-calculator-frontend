@@ -90,12 +90,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)
 
-  def childApprovedEducation: Option[Map[Int, Boolean]] = cacheMap.getEntry[Map[Int, Boolean]](ChildApprovedEducationId.toString)
-
-  def childApprovedEducation(childIndex: Int): Option[Boolean] = {
-    childApprovedEducation.flatMap(_.get(childIndex))
-  }
-
   def childcarePayFrequency: Option[Map[Int, ChildcarePayFrequency.Value]] =
     cacheMap.getEntry[Map[Int, ChildcarePayFrequency.Value]](ChildcarePayFrequencyId.toString)
 

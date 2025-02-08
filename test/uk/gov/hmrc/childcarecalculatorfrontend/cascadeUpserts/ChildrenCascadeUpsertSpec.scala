@@ -59,37 +59,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     "Save aboutYourChild data " must {
       "remove child education data when there is no child age above 16" in {
         val result = cascadeUpsert(AboutYourChildId.toString, Map("0" -> Json.toJson(AboutYourChild("Foo", ageOfExactly15))), DataGenerator.sample)
-
-        result.data.get(ChildApprovedEducationId.toString) mustBe None
         result.data.get(ChildStartEducationId.toString) mustBe None
-      }
-    }
-
-    "Save childApprovedEducation data " must {
-      "not remove anything if object is not present" in {
-        val data = DataGenerator().deleteObject(ChildStartEducationId.toString)
-
-        val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("0" -> false, "1" -> false)), data.sample)
-
-        result.data.get(ChildStartEducationId.toString) mustBe None
-      }
-      "remove childEducationStartDate data when children with age above 19 and below 20 selects no for childApprovedEducation" in {
-        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(), Json.obj("0" -> Json.toJson(AboutYourChild("Foo", ageOf19)), "1" -> Json.toJson(AboutYourChild("Bar", ageOf19)),
-          "2" -> Json.toJson(AboutYourChild("Raz", ageOf19)), "3" -> Json.toJson(AboutYourChild("Baz", ageOfOver16)), "4" -> Json.toJson(AboutYourChild("Quux", ageOfExactly15))))
-          .overWriteObject(ChildStartEducationId.toString, Json.obj("0" -> childStartEducationDate, "1" -> childStartEducationDate, "2" -> childStartEducationDate))
-
-        val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("0" -> false, "1" -> false)), sampleData.sample)
-        result.data.get(ChildStartEducationId.toString) mustBe Some(Json.obj("2" -> childStartEducationDate))
-      }
-
-      "remove childEducationStartDate data when children with age above 19 and below 20 and children between 16 to 18 selects no for childApprovedEducation" in {
-        val sampleData = DataGenerator().overWriteObject(AboutYourChildId.toString(), Json.obj("0" -> Json.toJson(AboutYourChild("Foo", ageOf19)),
-          "1" -> Json.toJson(AboutYourChild("Bar", ageOf19)), "2" -> Json.toJson(AboutYourChild("Raz", ageOf19)), "3" -> Json.toJson(AboutYourChild("Baz", ageOfOver16))))
-          .overWriteObject(ChildApprovedEducationId.toString, Json.obj("0" -> true, "1" -> true, "2" -> true, "3" -> false))
-          .overWriteObject(ChildStartEducationId.toString, Json.obj("0" -> childStartEducationDate, "1" -> childStartEducationDate, "2" -> childStartEducationDate))
-
-        val result = cascadeUpsert(ChildApprovedEducationId.toString, Json.toJson(Map("1" -> false, "2" -> false, "3" -> true)), sampleData.sample)
-        result.data.get(ChildStartEducationId.toString) mustBe Some(Json.obj("0" -> childStartEducationDate))
       }
     }
 
