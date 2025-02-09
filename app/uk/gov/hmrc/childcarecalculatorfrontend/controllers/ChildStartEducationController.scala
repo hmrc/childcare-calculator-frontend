@@ -59,7 +59,6 @@ class ChildStartEducationController @Inject() (
     implicit request =>
       validateIndex(childIndex) {
         (name, dob) =>
-          println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@name and dob in submit" + name + dob)
           val preparedForm = request.userAnswers.childStartEducation(childIndex) match {
             case None => ChildStartEducationForm(dob, name)
             case Some(value) => ChildStartEducationForm(dob, name).fill(value)
@@ -72,7 +71,6 @@ class ChildStartEducationController @Inject() (
     implicit request =>
       validateIndex(childIndex) {
         (name, dob) =>
-          println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@name and dob in submit" + name + dob)
           ChildStartEducationForm(dob, name).bindFromRequest().fold(
             (formWithErrors: Form[LocalDate]) =>
               Future.successful(BadRequest(childStartEducation(appConfig, formWithErrors, mode, childIndex, name))),

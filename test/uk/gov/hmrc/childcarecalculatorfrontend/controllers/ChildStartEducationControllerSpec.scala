@@ -44,8 +44,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
   val validBirthday: LocalDate = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
   val requiredData: Map[String, JsObject] = Map(
     AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", validBirthday)),
-      "1" -> Json.toJson(AboutYourChild("Bar", validBirthday))
+      "0" -> Json.toJson(AboutYourChild("Foo", validBirthday))
     )
   )
   val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
