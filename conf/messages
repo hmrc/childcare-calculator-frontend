@@ -1193,13 +1193,6 @@ yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a w
 yourStatutoryPayPerWeek.error.required = Enter how much {0} pay you got a week
 yourStatutoryPayPerWeek.error.invalid = Enter numbers from 1 to 99.99 for your {0} pay
 
-partnerStatutoryPayPerWeek.title = How much {0} pay did your partner get a week before tax?
-partnerStatutoryPayPerWeek.heading = How much {0} pay did your partner get a week before tax?
-partnerStatutoryPayPerWeek.info = Partner’s {0} pay a week before tax
-partnerStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did your partner get a week before tax?
-partnerStatutoryPayPerWeek.error.required = Enter how much {0} pay your partner got a week
-partnerStatutoryPayPerWeek.error.invalid = Enter numbers from 1 to 99.99 for your partner’s {0} pay
-
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs
 result.eligible.heading = You are eligible for:

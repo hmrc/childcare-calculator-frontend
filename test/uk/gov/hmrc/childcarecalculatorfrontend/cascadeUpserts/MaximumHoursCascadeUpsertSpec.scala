@@ -58,7 +58,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
         ))
 
         val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap)
@@ -91,7 +90,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
         ))
 
         val result = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap)

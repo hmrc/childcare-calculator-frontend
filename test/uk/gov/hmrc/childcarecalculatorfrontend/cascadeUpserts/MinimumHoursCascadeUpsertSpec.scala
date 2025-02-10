@@ -113,8 +113,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
-        ))
+          ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
         result.data mustBe Map(
@@ -163,8 +162,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
-        ))
+         ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
         result.data mustBe Map(
@@ -214,9 +212,8 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
-          PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
-        ))
+          PartnerStatutoryPayBeforeTaxId.toString -> JsString("true")
+          ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
         result.data mustBe Map(
@@ -271,8 +268,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
-        ))
+          ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
         result.data mustBe Map(
