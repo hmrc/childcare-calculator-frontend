@@ -179,7 +179,8 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20)),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
-        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20)))) //TODO Add in Statutory Data
+        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
+      )) //TODO Add in Statutory Data
 
       // Partner In Paid Employment
       val originalCacheMap2 = new CacheMap("id", Map(
@@ -470,12 +471,11 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         BothOtherIncomeLYId.toString -> JsBoolean(true),
-        WhoOtherIncomePYId.toString -> JsString(both), //
+        WhoOtherIncomePYId.toString -> JsString(both),//
         OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20)),
-        BothAnyTheseBenefitsPYId.toString -> JsBoolean(true),
+        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
-        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
-      )) //TODO Add in Statutory Data
+        BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20)))) //TODO Add in Statutory Data
 
       // Partner and Parent earning more than minimum earnings
       val originalCacheMap2 = new CacheMap("id", Map(
@@ -501,14 +501,14 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         OtherIncomeAmountCYId.toString -> Json.toJson(OtherIncomeAmountCY(20, 20)),
         BothAnyTheseBenefitsCYId.toString -> JsBoolean(true),
         WhosHadBenefitsId.toString -> JsString(both),
-        BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(20, 20)),
+        BenefitsIncomeCYId.toString ->Json.toJson(BenefitsIncomeCY(20, 20)),
 
         EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         BothOtherIncomeLYId.toString -> JsBoolean(true),
-        WhoOtherIncomePYId.toString -> JsString(both), //
+        WhoOtherIncomePYId.toString -> JsString(both),//
         OtherIncomeAmountPYId.toString -> Json.toJson(OtherIncomeAmountPY(20, 20)),
         BothAnyTheseBenefitsPYId.toString -> JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
