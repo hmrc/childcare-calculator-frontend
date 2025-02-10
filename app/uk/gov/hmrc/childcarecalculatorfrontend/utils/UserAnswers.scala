@@ -38,8 +38,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def yourStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](YourStatutoryStartDateId.toString)
 
-  def partnerStatutoryPayPerWeek: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerStatutoryPayPerWeekId.toString)
-
   def yourStatutoryPayPerWeek: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayPerWeekId.toString)
 
   def partnerStatutoryPayBeforeTax: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayBeforeTaxId.toString)

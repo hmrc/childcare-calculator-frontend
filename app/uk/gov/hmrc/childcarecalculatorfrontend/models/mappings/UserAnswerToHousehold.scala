@@ -267,10 +267,10 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits = determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
 
-    val statutoryPay = answers.yourStatutoryStartDate.flatMap {
+    /*val statutoryPay = answers.yourStatutoryStartDate.flatMap {
       startDate =>
         buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks, startDate, PreviousYear)
-    }
+    } */
 
     incomeValue match {
       case Some(x) if x > 0 =>
@@ -279,7 +279,7 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statutoryPay,
+          //statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ => None
@@ -296,10 +296,10 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits =  determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
 
-    val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
+   /* val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
       startDate =>
         buildStatutoryPay(answers.partnerStatutoryPayPerWeek, answers.partnerStatutoryWeeks, startDate, PreviousYear)
-    }
+    }*/
 
     incomeValue match {
       case Some(x) if x > 0 =>
@@ -308,7 +308,7 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statutoryPay,
+        //  statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ =>
@@ -326,10 +326,10 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits =  determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
 
-    val statutoryPay = answers.yourStatutoryStartDate.flatMap {
+   /* val statutoryPay = answers.yourStatutoryStartDate.flatMap {
       startDate =>
         buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks, startDate, CurrentYear)
-    }
+    }*/
 
     incomeValue match {
       case Some(x) if x > 0 =>
@@ -338,7 +338,7 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statutoryPay,
+        //  statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ =>
@@ -356,11 +356,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits = determineIncomeValue(answers.partnerBenefitsIncomeCY, answers.benefitsIncomeCY, partnerBenefitsCY)
 
-    val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.partnerStatutoryPayPerWeek, answers.partnerStatutoryWeeks, startDate, CurrentYear)
-    }
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
@@ -368,7 +363,6 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ =>
@@ -503,27 +497,6 @@ sealed trait StatutoryPay extends TaxYearInfo {
         }
       }
     }
-  }
-
-  def buildStatutoryPay(value: Option[BigDecimal], totalWeeksTaken: Option[Int], statutoryStartDate: LocalDate, year: Year): Option[StatutoryIncome] = {
-
-    val totalWeeksForTaxYear: Option[Int] = determineWeeksWithinSingleYear(totalWeeksTaken, statutoryStartDate, year)
-
-    (value, totalWeeksForTaxYear) match {
-      case (Some(v), Some(w)) if w > 0 =>
-        Some(StatutoryIncome(
-          statutoryWeeks = w.toDouble,
-          statutoryAmount = Some(v)
-        ))
-      case (None, Some(w)) if w > 0 =>
-        Some(StatutoryIncome(
-          statutoryWeeks = w.toDouble,
-          statutoryAmount = Some(BigDecimal(defaultStatutoryPay))
-        ))
-      case _ =>
-        None
-    }
-
   }
 
 }
