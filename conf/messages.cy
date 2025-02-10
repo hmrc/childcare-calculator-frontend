@@ -1219,13 +1219,6 @@ yourStatutoryPayPerWeek.checkYourAnswersLabel=Faint o dâl {0} a gawsoch yr wyth
 yourStatutoryPayPerWeek.error.required=Nodwch faint o dâl {0} a gawsoch yr wythnos
 yourStatutoryPayPerWeek.error.invalid=Nodwch rifau rhwng 1 a 99.99 ar gyfer eich tâl {0}
 
-partnerStatutoryPayPerWeek.title=Faint o dâl {0} a gafodd eich partner yr wythnos cyn treth?
-partnerStatutoryPayPerWeek.heading=Faint o dâl {0} a gafodd eich partner yr wythnos cyn treth?
-partnerStatutoryPayPerWeek.info=Tâl {0} eich partner yr wythnos cyn treth
-partnerStatutoryPayPerWeek.checkYourAnswersLabel=Faint o dâl {0} a gafodd eich partner yr wythnos cyn treth?
-partnerStatutoryPayPerWeek.error.required=Nodwch faint o dâl {0} a gafodd eich partner yr wythnos
-partnerStatutoryPayPerWeek.error.invalid=Nodwch rifau rhwng 1 a 99.99 ar gyfer tâl {0} eich partner
-
 result.title=Help y gallech ei gael gyda’ch costau gofal plant
 result.heading=Help y gallech ei gael gyda’ch costau gofal plant
 result.eligible.heading=Rydych yn gymwys ar gyfer:

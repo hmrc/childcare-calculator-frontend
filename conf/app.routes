@@ -344,9 +344,6 @@ POST        /partner-statutory-pay-before-tax                  uk.gov.hmrc.child
 GET         /your-statutory-pay-per-week                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-statutory-pay-per-week                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /partner-statutory-pay-per-week                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-statutory-pay-per-week                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayPerWeekController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
 

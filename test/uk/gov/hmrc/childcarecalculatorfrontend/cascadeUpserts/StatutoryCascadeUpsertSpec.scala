@@ -135,28 +135,12 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
   "Statutory for partner" when {
     "Save Partner Statutory Pay Before Tax data " must {
-      "remove PartnerStatutoryPayPerWeek page data when user selects no option" in {
-        val originalCacheMap = new CacheMap("id", Map(PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
-
-        val result = cascadeUpsert(PartnerStatutoryPayBeforeTaxId.toString, "false", originalCacheMap)
-
-        result.data mustBe Map(PartnerStatutoryPayBeforeTaxId.toString -> JsString("false"))
-      }
-
-      "return original cache map when user selects yes option" in {
-        val originalCacheMap = new CacheMap("id", Map(PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300))))
-
-        val result = cascadeUpsert(PartnerStatutoryPayBeforeTaxId.toString, "true", originalCacheMap)
-
-        result.data mustBe Map(PartnerStatutoryPayBeforeTaxId.toString.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300)))
-      }
 
       "Save Both Statutory Pay Type" must {
         "remove data for PartnerStatutoryStartDate, PartnerStatutoryWeeks, PartnerStatutoryPayBeforeTax and PartnerStatutoryPayBeforeTax " +
           "pages when Statutory Pay Type is changed" in {
 
-          val originalCacheMap = new CacheMap("id", Map(PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
+          val originalCacheMap = new CacheMap("id", Map(
             PartnerStatutoryWeeksId.toString -> JsNumber(200),
             PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
             PartnerStatutoryPayBeforeTaxId.toString -> json.JsString("true"),
@@ -173,7 +157,7 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       "retain the data for PartnerStatutoryStartDate, PartnerStatutoryWeeks and PartnerStatutoryPayBeforeTax pages when" +
         "Statutory Pay Type is not changed" in {
 
-        val originalCacheMap = new CacheMap("id", Map(PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
+        val originalCacheMap = new CacheMap("id", Map(
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryPayTypeId.toString -> json.JsString("maternity")))
@@ -181,7 +165,6 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         val result = cascadeUpsert(PartnerStatutoryPayTypeId.toString, "maternity", originalCacheMap)
 
         result.data mustBe Map(PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)))
 
@@ -205,7 +188,7 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         "remove data for PartnerStatutoryStartDate, PartnerStatutoryWeeks, PartnerStatutoryPayBeforeTax and PartnerStatutoryPayType pages" +
           "when You selected for who got statutory pay" in {
 
-          val originalCacheMap = new CacheMap("id", Map(PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
+          val originalCacheMap = new CacheMap("id", Map(
             PartnerStatutoryWeeksId.toString -> JsNumber(200),
             PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
             PartnerStatutoryPayBeforeTaxId.toString -> json.JsString("true"),
@@ -226,20 +209,11 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         }
 
-        "return original cache map when there is any invalid value for the input" in {
-          val originalCacheMap = new CacheMap("id", Map(PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
-
-          val result = cascadeUpsert(PartnerStatutoryPayTypeId.toString, "invalidvalue", originalCacheMap)
-
-          result.data mustBe Map(PartnerStatutoryPayTypeId.toString -> JsString("invalidvalue"),
-            PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)))
-        }
       }
       "Save Partner Statutory Pay data" must {
         "remove PartnerStatutoryPayPerWeek page data when user selects no option" in {
-          val originalCacheMap = new CacheMap("id", Map(PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(300)),
+          val originalCacheMap = new CacheMap("id", Map(
             PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-            PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200)),
             PartnerStatutoryWeeksId.toString -> JsNumber(200),
             PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
             PartnerStatutoryPayBeforeTaxId.toString -> JsBoolean(true)))
