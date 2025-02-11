@@ -21,9 +21,9 @@ import play.api.libs.json.{JsArray, JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, DoYouGetAnyBenefitsForm}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ChildrenAgeGroupsForm, DoYouGetAnyBenefitsForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouGetAnyBenefitsId, LocationId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Location, NormalMode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -69,7 +69,9 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody((s"${DoYouGetAnyBenefitsForm.formId}[0]", ParentsBenefits.CarersAllowance.toString))
+        .withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -78,8 +80,10 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = DoYouGetAnyBenefitsForm().bind(Map("value" -> "invalid value"))
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody((s"${DoYouGetAnyBenefitsForm.formId}[0]", "invalid value"))
+        .withMethod("POST")
+      val boundForm = DoYouGetAnyBenefitsForm().bind(Map(s"${DoYouGetAnyBenefitsForm.formId}[0]" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

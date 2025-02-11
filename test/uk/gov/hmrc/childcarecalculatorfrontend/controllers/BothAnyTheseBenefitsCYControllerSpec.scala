@@ -23,7 +23,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothAnyTheseBenefitsCYId, LocationId, WhichBenefitsPartnerGetId, WhichBenefitsYouGetId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothAnyTheseBenefitsCYId, DoYouGetAnyBenefitsId, DoesYourPartnerGetAnyBenefitsId, LocationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
@@ -94,8 +94,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.ENGLAND
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
@@ -113,8 +113,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.SCOTLAND
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -131,8 +131,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.ENGLAND
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
 
@@ -150,8 +150,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.SCOTLAND
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -169,8 +169,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.ENGLAND
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
 
 
@@ -189,8 +189,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.SCOTLAND
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -207,8 +207,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.ENGLAND
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("carersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
@@ -226,8 +226,8 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val location = Location.SCOTLAND
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq("scottishCarersAllowance")),
-        WhichBenefitsPartnerGetId.toString -> Json.toJson(Seq("incomeBenefits"))
+        DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))

@@ -34,10 +34,8 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       DoYouLiveWithPartnerId.toString() -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
       WhoIsInPaidEmploymentId.toString -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
       AreYouInPaidWorkId.toString -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
-
       YourAgeId.toString -> ((v, cm) => storeYourAge(v, cm)),
       YourPartnersAgeId.toString -> ((v, cm) => storeYourPartnersAge(v, cm)),
-
       AreYouSelfEmployedOrApprenticeId.toString -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
       PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
       YourMinimumEarningsId.toString -> ((v, cm) => storeMinimumEarnings(v, cm)),
@@ -51,7 +49,9 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       cacheMap copy (data = cacheMap.data - WhoIsInPaidEmploymentId.toString -
         HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString -
         WhatIsYourPartnersTaxCodeId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString -
-        WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString - YourPartnersAgeId.toString -
+        DoYouGetAnyBenefitsId.toString -
+        DoesYourPartnerGetAnyBenefitsId.toString -
+        YourPartnersAgeId.toString -
         PartnerSelfEmployedOrApprenticeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
         EitherOfYouMaximumEarningsId.toString - BothStatutoryPayId.toString -
         WhoGotStatutoryPayId.toString - PartnerStatutoryPayTypeId.toString -

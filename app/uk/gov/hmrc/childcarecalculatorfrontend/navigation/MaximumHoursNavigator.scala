@@ -43,8 +43,10 @@ class MaximumHoursNavigator @Inject()(
     YourChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
     PartnerChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
     WhoGetsVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
     DoesYourPartnerGetAnyBenefitsId -> doesYourPartnerGetAnyBenefitsRoute,
+
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
@@ -57,8 +59,6 @@ class MaximumHoursNavigator @Inject()(
     PartnerMaximumEarningsId ->  partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> eitherMaximumEarningsRoute,
     TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes,
-    WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
-    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute,
   )
 
   val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
@@ -106,21 +106,7 @@ class MaximumHoursNavigator @Inject()(
       case None => SessionExpiredRouter.route(getClass.getName, "doYouOrYourPartnerGetAnyBenefitsRoute", Some(answers))
     }
 
-  private def whichBenefitsYouGetRoute(answers: UserAnswers): Call = {
-    if (answers.doYouLiveWithPartner.contains(true)) {
-      routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
-    } else if(answers.doYouLiveWithPartner.contains(false)) {
-      routes.YourAgeController.onPageLoad(NormalMode)
-    } else SessionExpiredRouter.route(getClass.getName,"whichBenefitsYouGetRoute",Some(answers))
-  }
-
-  private def whichBenefitsPartnerGetRoute(answers: UserAnswers): Call = {
-    if(answers.whoIsInPaidEmployment.contains(partner)) {
-      routes.YourPartnersAgeController.onPageLoad(NormalMode)
-    } else routes.YourAgeController.onPageLoad(NormalMode)
-  }
-
-  private def yourAgeRoute(answers: UserAnswers) = {
+  private def yourAgeRoute(answers: UserAnswers): Call = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
       routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
     } else {
