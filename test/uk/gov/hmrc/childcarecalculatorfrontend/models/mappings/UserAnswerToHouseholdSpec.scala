@@ -817,7 +817,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryWeeks) thenReturn Some(2)
-        when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -873,7 +872,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryWeeks) thenReturn Some(5)
-        when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)

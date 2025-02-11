@@ -27,7 +27,6 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
     Map(
       YouStatutoryPayId.toString -> ((v, cm) => storeYouStatutoryPay(v, cm)),
       YourStatutoryPayTypeId.toString -> ((v, cm) => storeYourStatutoryPayType(v, cm)),
-      YourStatutoryPayBeforeTaxId.toString -> ((v, cm) => storeYourStatutoryPayBeforeTax(v, cm)),
       BothStatutoryPayId.toString -> ((v, cm) => storeBothStatutoryPay(v, cm)),
       PartnerStatutoryPayTypeId.toString -> ((v, cm) => storePartnerStatutoryPayType(v, cm)),
       WhoGotStatutoryPayId.toString -> ((v, cm) => storeWhoGotStatutoryPay(v, cm))
@@ -37,7 +36,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val mapToStore = value match {
       case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YourStatutoryPayTypeId.toString -
          YourStatutoryWeeksId.toString -
-        YourStatutoryStartDateId.toString - YourStatutoryPayBeforeTaxId.toString)
+        YourStatutoryStartDateId.toString)
       case _ => cacheMap
     }
 
@@ -53,20 +52,10 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
       case _ => cacheMap copy (data = cacheMap.data
 
         - YourStatutoryWeeksId.toString
-        - YourStatutoryPayBeforeTaxId.toString
         - YourStatutoryStartDateId.toString)
     }
 
     store(YourStatutoryPayTypeId.toString, value, mapToStore)
-  }
-
-  private def storeYourStatutoryPayBeforeTax(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsString("false") => cacheMap copy (data = cacheMap.data)
-      case _ => cacheMap
-    }
-
-    store(YourStatutoryPayBeforeTaxId.toString, value, mapToStore)
   }
 
   private def storeBothStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -100,7 +89,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
         - YourStatutoryPayTypeId.toString
         - YourStatutoryWeeksId.toString
         - YourStatutoryStartDateId.toString
-        - YourStatutoryPayBeforeTaxId.toString)
+        )
       case JsString("you") => cacheMap copy (data = cacheMap.data
         - PartnerStatutoryPayTypeId.toString
         - PartnerStatutoryWeeksId.toString

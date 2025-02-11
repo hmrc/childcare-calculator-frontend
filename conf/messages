@@ -1300,10 +1300,6 @@ partnerStatutoryStartDate.error.notReal.year = Year must include 4 numbers
 partnerStatutoryStartDate.error.range.min = The date your partner’s {0} pay started cannot be before 6 April {1}
 partnerStatutoryStartDate.error.range.max = The date your partner’s {0} pay started cannot be in the future
 
-yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
 
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs

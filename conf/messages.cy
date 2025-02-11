@@ -1271,10 +1271,6 @@ partnerStatutoryStartDate.error.notReal.year = Mae’n rhaid i’r flwyddyn gynn
 partnerStatutoryStartDate.error.range.min = Ni all dyddiad dechrau eich tâl {0} eich partner fod cyn 6 Ebrill {1}
 partnerStatutoryStartDate.error.range.max = Ni all dyddiad y dechreuodd tâl {0} eich partner fod yn y dyfodol
 
-yourStatutoryPayBeforeTax.title=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-yourStatutoryPayBeforeTax.heading=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-yourStatutoryPayBeforeTax.checkYourAnswersLabel=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-yourStatutoryPayBeforeTax.error.notCompleted=Dewiswch ‘Iawn’ os oedd y tâl {0} hwn yn llai na £100 cyn treth
 
 result.title=Help y gallech ei gael gyda’ch costau gofal plant
 result.heading=Help y gallech ei gael gyda’ch costau gofal plant
