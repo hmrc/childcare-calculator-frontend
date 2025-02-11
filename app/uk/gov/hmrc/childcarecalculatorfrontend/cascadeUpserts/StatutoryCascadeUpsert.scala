@@ -30,7 +30,6 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
       YourStatutoryPayBeforeTaxId.toString -> ((v, cm) => storeYourStatutoryPayBeforeTax(v, cm)),
       BothStatutoryPayId.toString -> ((v, cm) => storeBothStatutoryPay(v, cm)),
       PartnerStatutoryPayTypeId.toString -> ((v, cm) => storePartnerStatutoryPayType(v, cm)),
-      PartnerStatutoryPayBeforeTaxId.toString -> ((v, cm) => storePartnerStatutoryPayBeforeTax(v, cm)),
       WhoGotStatutoryPayId.toString -> ((v, cm) => storeWhoGotStatutoryPay(v, cm))
     )
 
@@ -73,7 +72,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeBothStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsBoolean(false) => cacheMap copy (data = cacheMap.data - PartnerStatutoryPayTypeId.toString - PartnerStatutoryWeeksId.toString -
-        PartnerStatutoryStartDateId.toString - PartnerStatutoryPayBeforeTaxId.toString)
+        PartnerStatutoryStartDateId.toString)
       case _ => cacheMap
     }
 
@@ -88,20 +87,10 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
       case `value` => cacheMap
       case _ => cacheMap copy (data = cacheMap.data
         - PartnerStatutoryWeeksId.toString
-        - PartnerStatutoryPayBeforeTaxId.toString
         - PartnerStatutoryStartDateId.toString)
     }
 
     store(PartnerStatutoryPayTypeId.toString, value, mapToStore)
-  }
-
-  private def storePartnerStatutoryPayBeforeTax(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsString("false") => cacheMap copy (data = cacheMap.data)
-      case _ => cacheMap
-    }
-
-    store(PartnerStatutoryPayBeforeTaxId.toString, value, mapToStore)
   }
 
   private def storeWhoGotStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -116,8 +105,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
       case JsString("you") => cacheMap copy (data = cacheMap.data
         - PartnerStatutoryPayTypeId.toString
         - PartnerStatutoryWeeksId.toString
-        - PartnerStatutoryStartDateId.toString
-        - PartnerStatutoryPayBeforeTaxId.toString)
+        - PartnerStatutoryStartDateId.toString)
       case _ => cacheMap
     }
     store(WhoGotStatutoryPayId.toString, value, mapToStore)

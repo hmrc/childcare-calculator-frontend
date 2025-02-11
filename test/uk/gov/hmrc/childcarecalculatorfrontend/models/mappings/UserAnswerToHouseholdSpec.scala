@@ -471,7 +471,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -523,7 +522,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -574,7 +572,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -624,7 +621,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -674,7 +670,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -724,7 +719,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -774,7 +768,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(5)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -825,7 +818,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(250))
@@ -883,7 +875,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.partnerStatutoryWeeks) thenReturn Some(5)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))

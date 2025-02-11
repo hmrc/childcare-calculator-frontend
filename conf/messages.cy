@@ -1276,11 +1276,6 @@ yourStatutoryPayBeforeTax.heading=A oedd y tâl {0} hwn yn llai na £100 yr wyth
 yourStatutoryPayBeforeTax.checkYourAnswersLabel=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
 yourStatutoryPayBeforeTax.error.notCompleted=Dewiswch ‘Iawn’ os oedd y tâl {0} hwn yn llai na £100 cyn treth
 
-partnerStatutoryPayBeforeTax.title=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-partnerStatutoryPayBeforeTax.heading=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-partnerStatutoryPayBeforeTax.checkYourAnswersLabel=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-partnerStatutoryPayBeforeTax.error.notCompleted=Dewiswch ‘Iawn’ os oedd y tâl {0} hwn yn llai na £100 cyn treth
-
 yourStatutoryPayPerWeek.title=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
 yourStatutoryPayPerWeek.heading=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
 yourStatutoryPayPerWeek.checkYourAnswersLabel=Faint o dâl {0} a gawsoch yr wythnos cyn treth?

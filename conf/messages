@@ -1305,11 +1305,6 @@ yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week befo
 yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
 yourStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
 
-partnerStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
-
 yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
 yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?

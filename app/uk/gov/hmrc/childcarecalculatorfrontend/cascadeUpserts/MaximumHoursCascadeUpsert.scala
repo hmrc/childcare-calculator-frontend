@@ -56,7 +56,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
         WhoGetsBenefitsId.toString  - WhichBenefitsYouGetId.toString - WhichBenefitsPartnerGetId.toString - YourPartnersAgeId.toString -
         PartnerSelfEmployedOrApprenticeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
         EitherOfYouMaximumEarningsId.toString - BothStatutoryPayId.toString - WhoGotStatutoryPayId.toString - PartnerStatutoryPayTypeId.toString -
-        PartnerStatutoryStartDateId.toString - PartnerStatutoryWeeksId.toString - PartnerStatutoryPayBeforeTaxId.toString)
+        PartnerStatutoryStartDateId.toString - PartnerStatutoryWeeksId.toString)
     } else if (value.equals(JsBoolean(true))) {
       cacheMap copy (data = cacheMap.data - AreYouInPaidWorkId.toString - DoYouGetAnyBenefitsId.toString)
     } else cacheMap

@@ -354,9 +354,6 @@ POST        /partner-statutory-start-date                      uk.gov.hmrc.child
 GET         /your-statutory-pay-before-tax                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-statutory-pay-before-tax                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayBeforeTaxController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /partner-statutory-pay-before-tax                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayBeforeTaxController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-statutory-pay-before-tax                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayBeforeTaxController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /your-statutory-pay-per-week                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-statutory-pay-per-week                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayPerWeekController.onSubmit(mode: Mode ?= NormalMode)
 

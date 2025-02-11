@@ -143,7 +143,6 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           val originalCacheMap = new CacheMap("id", Map(
             PartnerStatutoryWeeksId.toString -> JsNumber(200),
             PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-            PartnerStatutoryPayBeforeTaxId.toString -> json.JsString("true"),
             PartnerStatutoryPayTypeId.toString -> json.JsString("maternity")))
 
           val result = cascadeUpsert(PartnerStatutoryPayTypeId.toString, "paternity", originalCacheMap)
@@ -191,7 +190,6 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           val originalCacheMap = new CacheMap("id", Map(
             PartnerStatutoryWeeksId.toString -> JsNumber(200),
             PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-            PartnerStatutoryPayBeforeTaxId.toString -> json.JsString("true"),
             PartnerStatutoryPayTypeId.toString -> json.JsString("maternity")))
 
           val result = cascadeUpsert(WhoGotStatutoryPayId.toString, "you", originalCacheMap)
@@ -215,8 +213,7 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           val originalCacheMap = new CacheMap("id", Map(
             PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
             PartnerStatutoryWeeksId.toString -> JsNumber(200),
-            PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-            PartnerStatutoryPayBeforeTaxId.toString -> JsBoolean(true)))
+            PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1))))
 
           val result = cascadeUpsert(BothStatutoryPayId.toString, false, originalCacheMap)
 
