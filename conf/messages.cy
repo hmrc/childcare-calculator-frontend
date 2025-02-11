@@ -526,7 +526,6 @@ yourIncomeInfo.li.income_paid_work=gwaith am dâl
 yourIncomeInfo.li.pensions=cyfraniadau pensiwn
 yourIncomeInfo.li.other_income=incwm arall
 yourIncomeInfo.li.benefits_income=incwm o fudd-daliadau
-yourIncomeInfo.li.birth_or_adoption=wythnosau a gymerwyd i ffwrdd o’r gwaith ar dâl mamolaeth, tadolaeth, ar y cyd i rieni neu fabwysiadu statudol
 yourIncomeInfo.checkYourAnswersLabel=Eich incwm y flwyddyn hon
 
 partnerIncomeInfo.title=Eich incwm chi ac incwm eich partner y flwyddyn hon
@@ -538,7 +537,7 @@ partnerIncomeInfo.li.pensions=cyfraniadau pensiwn
 partnerIncomeInfo.li.other_income=incwm arall
 partnerIncomeInfo.li.benefits_income=incwm o fudd-daliadau
 partnerIncomeInfo.checkYourAnswersLabel=Incwm eich partner y flwyddyn hon
-partnerIncomeInfo.li.birth_or_adoption=wythnosau a gymerwyd i ffwrdd o’r gwaith ar dâl mamolaeth, tadolaeth, ar y cyd i rieni neu fabwysiadu statudol
+
 
 parentEmploymentIncomeCY.title=Faint y cewch eich talu y flwyddyn hon?
 parentEmploymentIncomeCY.heading=Faint fyddwch chi’n cael eich talu eleni mewn punnoedd?
