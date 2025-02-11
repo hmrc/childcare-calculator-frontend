@@ -107,8 +107,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           BothStatutoryPayId.toString -> JsBoolean(true),
           WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
           PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-          PartnerStatutoryWeeksId.toString -> JsNumber(200)
+          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1))
           ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
@@ -151,8 +150,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           BothStatutoryPayId.toString -> JsBoolean(true),
           WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
           PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-          PartnerStatutoryWeeksId.toString -> JsNumber(200)
+          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1))
          ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
@@ -195,8 +193,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           BothStatutoryPayId.toString -> JsBoolean(true),
           WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
           PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-          PartnerStatutoryWeeksId.toString -> JsNumber(200)
+          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1))
           ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
@@ -242,8 +239,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           BothStatutoryPayId.toString -> JsBoolean(true),
           WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
           PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-          PartnerStatutoryWeeksId.toString -> JsNumber(200)
+          PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1))
           ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)

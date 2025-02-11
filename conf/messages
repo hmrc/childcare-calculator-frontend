@@ -1239,12 +1239,6 @@ yourStatutoryWeeks.error.required = Enter how many weeks of {2} pay you took
 yourStatutoryWeeks.error.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay you took
 yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
 
-partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?
-partnerStatutoryWeeks.heading = How many weeks of {0} pay did your partner take?
-partnerStatutoryWeeks.error.required = Enter how many weeks of {2} pay your partner took
-partnerStatutoryWeeks.error.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay your partner took
-partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
-
 statutoryWeeks.maternity.guidance = This is usually taken as {0} weeks.
 statutoryWeeks.paternity.guidance = This is usually taken as {0} weeks.
 statutoryWeeks.adoption.guidance = This is usually taken as {0} weeks.

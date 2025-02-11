@@ -1210,12 +1210,6 @@ yourStatutoryWeeks.error.required=Nodwch sawl wythnos o dâl {2} a gymeroch
 yourStatutoryWeeks.error.invalid=Nodwch rifau rhwng {0} a {1} i nodi sawl wythnos o dâl {2} a gymeroch
 yourStatutoryWeeks.checkYourAnswersLabel=yourStatutoryWeeks
 
-partnerStatutoryWeeks.title=Sawl wythnos o dâl {0} a gymerodd eich partner?
-partnerStatutoryWeeks.heading=Sawl wythnos o dâl {0} a gymerodd eich partner?
-partnerStatutoryWeeks.error.required=Nodwch sawl wythnos o dâl {2} a gymerodd eich partner
-partnerStatutoryWeeks.error.invalid=Nodwch y rhifau rhwng {0} a {1} i nodi sawl wythnos o dâl {2} a gymerodd eich partner
-partnerStatutoryWeeks.checkYourAnswersLabel=partnerStatutoryWeeks
-
 statutoryWeeks.maternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
 statutoryWeeks.paternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
 statutoryWeeks.adoption.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
