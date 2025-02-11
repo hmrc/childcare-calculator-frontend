@@ -31,7 +31,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
     "return `None` when `doYouLiveWithPartner` is undefined" in {
       val answers = spy(helper())
       when(answers.areYouInPaidWork) thenReturn Some(true)
-      when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
       when(answers.doYouGetAnyBenefits) thenReturn Some(true)
       when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
       factory(answers) mustNot be(defined)
@@ -43,10 +42,9 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.doYouGetAnyBenefits) thenReturn Some(true)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
-        factory(answers).value mustEqual SingleHousehold(Parent(110, Set(DISABILITYBENEFITS)))
+        factory(answers).value mustEqual SingleHousehold(Parent(Set(DISABILITYBENEFITS)))
       }
 
       "return `Some` when a user doesn't work" in {
@@ -55,33 +53,30 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.areYouInPaidWork) thenReturn Some(false)
         when(answers.doYouGetAnyBenefits) thenReturn Some(true)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
-        factory(answers).value mustEqual SingleHousehold(Parent(0, Set(DISABILITYBENEFITS)))
+        factory(answers).value mustEqual SingleHousehold(Parent(Set(DISABILITYBENEFITS)))
       }
 
       "return `Some` when a user has no benefits" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.doYouGetAnyBenefits) thenReturn Some(false)
-        factory(answers).value mustEqual SingleHousehold(Parent(110, Set.empty))
+        factory(answers).value mustEqual SingleHousehold(Parent(Set.empty))
       }
 
       "return 'Some' when a user is self employed for less than 12 months" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.doYouGetAnyBenefits) thenReturn Some(false)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.yourMaximumEarnings) thenReturn Some(false)
-        factory(answers).value mustEqual SingleHousehold(Parent(110, Set.empty))
+        factory(answers).value mustEqual SingleHousehold(Parent(Set.empty))
       }
 
       "return `None` when `areYouInPaidWork` is undefined" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.doYouGetAnyBenefits) thenReturn Some(true)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         factory(answers) mustNot be(defined)
@@ -100,7 +95,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         factory(answers) mustNot be(defined)
       }
@@ -109,7 +103,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.doYouGetAnyBenefits) thenReturn Some(true)
         factory(answers) mustNot be(defined)
       }
@@ -121,15 +114,13 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
         factory(answers).value mustEqual JointHousehold(
-          Parent(110, Set(DISABILITYBENEFITS)),
-          Parent(120, Set(CARERSALLOWANCE))
+          Parent( Set(DISABILITYBENEFITS)),
+          Parent(Set(CARERSALLOWANCE))
         )
       }
 
@@ -137,15 +128,13 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
         factory(answers).value mustEqual JointHousehold(
-          Parent(110, Set(DISABILITYBENEFITS)),
-          Parent(120, Set(SCOTTISHCARERSALLOWANCE))
+          Parent( Set(DISABILITYBENEFITS)),
+          Parent(Set(SCOTTISHCARERSALLOWANCE))
         )
       }
 
@@ -159,8 +148,8 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.NEITHER.toString)
 
         factory(answers).value mustEqual JointHousehold(
-          Parent(0, Set(DISABILITYBENEFITS)),
-          Parent(0, Set(CARERSALLOWANCE))
+          Parent( Set(DISABILITYBENEFITS)),
+          Parent( Set(CARERSALLOWANCE))
         )
       }
 
@@ -174,8 +163,8 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothNeitherEnum.NEITHER.toString)
 
         factory(answers).value mustEqual JointHousehold(
-          Parent(0, Set(DISABILITYBENEFITS)),
-          Parent(0, Set(SCOTTISHCARERSALLOWANCE))
+          Parent(Set(DISABILITYBENEFITS)),
+          Parent(Set(SCOTTISHCARERSALLOWANCE))
         )
       }
 
@@ -183,12 +172,10 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
         factory(answers).value mustEqual JointHousehold(
-          Parent(110, Set.empty),
-          Parent(120, Set.empty)
+          Parent(Set.empty),
+          Parent( Set.empty)
         )
       }
 
@@ -199,21 +186,17 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.partnerMinimumEarnings) thenReturn Some(true)
         when(answers.eitherOfYouMaximumEarnings) thenReturn Some(false)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
 
         factory(answers).value mustEqual JointHousehold(
-          Parent(110, Set.empty),
-          Parent(120, Set.empty)
+          Parent(Set.empty),
+          Parent(Set.empty)
         )
       }
 
       "return `None` when `whoIsInPaidEmployment` is undefined and the user has indicated at least one parent is in work for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -224,8 +207,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
       "return `None` when `whoIsInPaidEmployment` is undefined and the user has indicated at least one parent is in work for scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -237,7 +218,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -249,7 +229,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -261,7 +240,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -273,7 +251,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -285,8 +262,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
@@ -297,8 +272,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
@@ -309,8 +282,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
@@ -321,8 +292,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
@@ -334,8 +303,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.YOU.toString)
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
@@ -347,8 +314,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.YOU.toString)
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
@@ -360,8 +325,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
@@ -373,8 +336,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
@@ -386,8 +347,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
@@ -399,8 +358,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
-        when(answers.partnerWorkHours) thenReturn Some(BigDecimal(120))
         when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
         when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))

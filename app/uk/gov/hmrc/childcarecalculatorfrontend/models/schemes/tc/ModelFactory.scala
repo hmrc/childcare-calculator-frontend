@@ -30,20 +30,6 @@ class ModelFactory @Inject() () {
         for {
 
           anyBenefits <- answers.doYouOrYourPartnerGetAnyBenefits
-
-          parentHours <- answers.whoIsInPaidEmployment.flatMap {
-              case str if str == YouPartnerBothEnum.YOU.toString => answers.parentWorkHours
-              case str if str == YouPartnerBothEnum.BOTH.toString => answers.parentWorkHours
-              case _ => Some(BigDecimal(0))
-            }
-
-
-          partnerHours <- answers.whoIsInPaidEmployment.flatMap {
-            case str if str == YouPartnerBothEnum.PARTNER.toString => answers.partnerWorkHours
-            case str if str == YouPartnerBothEnum.BOTH.toString => answers.partnerWorkHours
-            case _ => Some(BigDecimal(0))
-          }
-
           parentBenefits <- if (anyBenefits) {
             answers.whoGetsBenefits.flatMap {
               case str if str != YouPartnerBothEnum.PARTNER.toString =>
@@ -66,26 +52,20 @@ class ModelFactory @Inject() () {
             Some(Set.empty)
           }
         } yield JointHousehold(
-          Parent(parentHours, parentBenefits.map(WhichBenefitsEnum.withName)),
-          Parent(partnerHours, partnerBenefits.map(WhichBenefitsEnum.withName))
+          Parent(parentBenefits.map(WhichBenefitsEnum.withName)),
+          Parent(partnerBenefits.map(WhichBenefitsEnum.withName))
         )
       case false =>
         for {
 
           areYouInPaidWork <- answers.areYouInPaidWork
-          hours            <- if (areYouInPaidWork) {
-            answers.parentWorkHours
-          } else {
-            Some(BigDecimal(0))
-          }
-
           doYouGetAnyBenefits <- answers.doYouGetAnyBenefits
           benefits            <- if (doYouGetAnyBenefits) {
             answers.whichBenefitsYouGet
           } else {
             Some(Set.empty)
           }
-        } yield SingleHousehold(Parent(hours, benefits.map(WhichBenefitsEnum.withName)))
+        } yield SingleHousehold(Parent(benefits.map(WhichBenefitsEnum.withName)))
     }
   }
 }

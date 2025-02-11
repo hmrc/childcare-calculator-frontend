@@ -186,7 +186,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createParentClaimant(answers: UserAnswers): Claimant = {
-    val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
@@ -208,7 +207,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,
@@ -220,7 +218,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createPartnerClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
-    val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
@@ -242,7 +239,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,

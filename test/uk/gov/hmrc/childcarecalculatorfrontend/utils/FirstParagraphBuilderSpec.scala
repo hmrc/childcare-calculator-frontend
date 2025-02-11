@@ -210,44 +210,9 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
        result mustNot contain("you and your partner are both currently in paid work")
      }
 
-     "You work x hours a week" in {
-       when(answers.areYouInPaidWork) thenReturn Some(true)
-       when(answers.doYouLiveWithPartner) thenReturn Some(false)
-       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-       when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
-
-       paragraphBuilder.buildFirstParagraph(answers) must contain("you work 40 hours a week")
-     }
-
-     "You live on your own and you work x hours a week" in {
-       val answers = spy(userAnswers())
-       when(answers.doYouLiveWithPartner) thenReturn Some(false)
-       when(answers.areYouInPaidWork) thenReturn Some(true)
-       when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
-
-       paragraphBuilder.buildFirstParagraph(answers) must contain("you live on your own")
-       paragraphBuilder.buildFirstParagraph(answers) must contain("you are in paid work")
-       paragraphBuilder.buildFirstParagraph(answers) must contain("you work 40 hours a week")
-     }
 
 
-     "Your partner works x hours a week" in {
-       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
-       when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
 
-       paragraphBuilder.buildFirstParagraph(answers) must contain("your partner works 40 hours a week")
-     }
-
-     "Your and your partner works x hours a week" in {
-       when(answers.doYouLiveWithPartner) thenReturn Some(true)
-       when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-       when(answers.partnerWorkHours) thenReturn Some(BigDecimal(40))
-       when(answers.parentWorkHours) thenReturn Some(BigDecimal(40))
-
-       paragraphBuilder.buildFirstParagraph(answers) must contain("you work 40 hours a week")
-       paragraphBuilder.buildFirstParagraph(answers) must contain("your partner works 40 hours a week")
-     }
    }
  }
 }

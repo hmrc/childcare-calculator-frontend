@@ -27,15 +27,11 @@ class FirstParagraphBuilder @Inject()(utils: Utils){
     val yearlyChildcareCosts = buildSecondSection(answers)
     val whoAreYouLivingWith = buildThirdSection(answers)
     val areYouInPaidWork = buildFourthSection(answers)
-    val yourWeeklyHours = buildFifthSection(answers)
-    val partnerWeeklyHours = buildSixthSection(answers)
     val firstPararagraph = List(
       doYouHaveChildren,
       yearlyChildcareCosts,
       whoAreYouLivingWith,
       areYouInPaidWork,
-      yourWeeklyHours,
-      partnerWeeklyHours
     ).filter(_.nonEmpty)
     firstPararagraph
   }
@@ -83,30 +79,6 @@ class FirstParagraphBuilder @Inject()(utils: Utils){
     })
 
     s"$section4"
-  }
-
-  private def buildFifthSection(answers: UserAnswers)(implicit messages: Messages) = {
-    val areYouInPaidWork = answers.areYouInPaidWork.getOrElse(false) || answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.YOU.toString)
-    val areYouAndPartnerInPaidWork = answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)
-
-    if(areYouInPaidWork || areYouAndPartnerInPaidWork) {
-      val hoursAWeek = answers.parentWorkHours.getOrElse(BigDecimal(0))
-      Messages("results.firstParagraph.youWorkXHoursAweek", hoursAWeek)
-    } else {
-      ""
-    }
-  }
-
-  private def buildSixthSection(answers: UserAnswers)(implicit messages: Messages) = {
-    val isPartnerInPaidWork = answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.PARTNER.toString)
-    val areYouAndPartnerInPaidWork = answers.whoIsInPaidEmployment.contains(YouPartnerBothEnum.BOTH.toString)
-
-    if(isPartnerInPaidWork || areYouAndPartnerInPaidWork) {
-      val hoursAWeek = answers.partnerWorkHours.getOrElse(BigDecimal(0))
-      Messages("results.firstParagraph.yourPartnerWorksXHoursAweek", hoursAWeek)
-    } else {
-      ""
-    }
   }
 
   private def checkIfInPaidWork(answers: UserAnswers)(implicit messages: Messages) = {

@@ -27,47 +27,26 @@ class TaxCredits @Inject() (household: ModelFactory) extends Scheme {
   override def eligibility(answers: UserAnswers): Eligibility = {
     val location = answers.location.get
     household(answers).map {
-      case SingleHousehold(parent) =>
-        singleEligibility(parent)
       case JointHousehold(parent, partner) =>
         jointEligibility(parent, partner, location)
     }
   }.getOrElse(NotDetermined)
 
-  private def singleEligibility(parent: Parent): Eligibility = {
-    if (parent.hours >= individualHours) {
-      Eligible
-    } else {
-      NotEligible
-    }
-  }
 
   private def jointEligibility(parent: Parent, partner: Parent, location: Location.Value): Eligibility = {
 
-    val eligibleViaHours: Boolean = {
-
-      val overJointHours = parent.hours > 0 && partner.hours > 0 && (parent.hours + partner.hours >= jointHours)
-      val overIndividualHours = parent.hours >= individualHours || partner.hours >= individualHours
-
-      overIndividualHours && overJointHours
-    }
-
     val eligibleViaBenefits: Boolean = {
-      (parent.hours >= individualHours && partner.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty) ||
-        (partner.hours >= individualHours && parent.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty)
+      (partner.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty) ||
+        (parent.benefits.intersect(applicableBenefitsByLocation(location)).nonEmpty)
     }
 
-    if (eligibleViaBenefits || eligibleViaHours) {
+    if (eligibleViaBenefits) {
       Eligible
     } else {
       NotEligible
     }
   }
 
-
-  private val jointHours: BigDecimal = 24
-
-  private val individualHours: BigDecimal = 16
 
   //Only carer's allowance is considered as benefit to eligible
   private val applicableBenefits: Set[WhichBenefitsEnum.Value] =

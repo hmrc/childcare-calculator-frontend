@@ -107,7 +107,6 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         DoYouLiveWithPartnerId.toString -> JsBoolean(false),
         AreYouInPaidWorkId.toString -> JsBoolean(true),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
-        ParentWorkHoursId.toString ->JsNumber(18),
         ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
 
       val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -127,8 +126,6 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
         AreYouInPaidWorkId.toString -> JsBoolean(true),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
-        ParentWorkHoursId.toString ->JsNumber(16),
-        PartnerWorkHoursId.toString -> JsNumber(16),
         ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
       val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
@@ -147,7 +144,6 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
         AreYouInPaidWorkId.toString -> JsBoolean(true),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
-        ParentWorkHoursId.toString ->JsNumber(16),
         DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true),
         ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
       val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -166,8 +162,6 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
         AreYouInPaidWorkId.toString -> JsBoolean(true),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
-        ParentWorkHoursId.toString ->JsNumber(10),
-        PartnerWorkHoursId.toString -> JsNumber(20),
         DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(false),
         ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
 
