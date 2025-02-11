@@ -71,12 +71,12 @@ class ModelFactory @Inject() () {
         Some(false)
       }
 
-      parentBenefits = answers.whichBenefitsYouGet.getOrElse(Set.empty)
-      partnerBenefits = answers.whichBenefitsPartnerGet.getOrElse(Set.empty)
+      parentBenefits = answers.doYouGetAnyBenefits.getOrElse(Set.empty)
+      partnerBenefits = answers.doesYourPartnerGetAnyBenefits.getOrElse(Set.empty)
 
     } yield JointHousehold(
-      Parent(parentMinEarnings, !parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits.map(WhichBenefitsEnum.withName)),
-      Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits.map(WhichBenefitsEnum.withName))
+      Parent(parentMinEarnings, !parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits),
+      Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits)
     )
   }
 
@@ -101,16 +101,18 @@ class ModelFactory @Inject() () {
 
       doYouGetAnyBenefits <- answers.doYouGetAnyBenefits
       benefits <- if (doYouGetAnyBenefits.contains(ParentsBenefits.NoneOfThese)) {
-        Some(Set.empty)
+        Some(Set.empty[ParentsBenefits])
       } else {
-        answers.whichBenefitsYouGet
+        answers.doYouGetAnyBenefits
       }
-    } yield SingleHousehold(Parent(minEarnings, !maxEarnings, selfEmployed, apprentice, benefits.map(WhichBenefitsEnum.withName)))
+    } yield SingleHousehold(Parent(minEarnings, !maxEarnings, selfEmployed, apprentice, benefits))
 
-  private def checkMinEarnings(minEarnings: Boolean,
-                       selfOrApprentice: Option[String],
-                       employedLessThan12Months: Boolean ,
-                       self: Boolean): Option[Boolean] = {
+  private def checkMinEarnings(
+    minEarnings: Boolean,
+    selfOrApprentice: Option[String],
+    employedLessThan12Months: Boolean ,
+    self: Boolean
+  ): Option[Boolean] = {
     val strAppOrSelf = if(self) {
       SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
     } else {
@@ -119,7 +121,7 @@ class ModelFactory @Inject() () {
 
     if (!minEarnings) {
       selfOrApprentice.flatMap {
-        case str if str == strAppOrSelf => employedLessThan12MonthsCheck(str, employedLessThan12Months)
+        case str if str == strAppOrSelf => Some(employedLessThan12MonthsCheck(str, employedLessThan12Months))
         case _ => Some(false)
       }
     } else {
@@ -127,13 +129,13 @@ class ModelFactory @Inject() () {
     }
   }
 
-  private def employedLessThan12MonthsCheck(selfEmployedOrApprentice: String, employedLessThan12Months:Boolean) = {
-    if(selfEmployedOrApprentice.equals(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)){
-      Some(true)
-    } else if (selfEmployedOrApprentice.equals(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString) && !employedLessThan12Months){
-      Some(false)
+  private def employedLessThan12MonthsCheck(selfEmployedOrApprentice: String, employedLessThan12Months: Boolean): Boolean = {
+    if (selfEmployedOrApprentice == SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString) {
+      true
+    } else if (selfEmployedOrApprentice == SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString && !employedLessThan12Months) {
+      false
     } else {
-      Some(true)
+      true
     }
   }
 

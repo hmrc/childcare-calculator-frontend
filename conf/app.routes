@@ -55,14 +55,6 @@ POST        /do-you-get-any-benefits                           uk.gov.hmrc.child
 GET         /does-your-partner-get-any-benefits                uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourPartnerGetAnyBenefitsController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /does-your-partner-get-any-benefits                uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourPartnerGetAnyBenefitsController.onSubmit(mode: Mode ?= NormalMode)
 
-
-GET         /which-benefits-you-get                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /which-benefits-you-get                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsYouGetController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /which-benefits-partner-get                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsPartnerGetController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /which-benefits-partner-get                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichBenefitsPartnerGetController.onSubmit(mode: Mode ?= NormalMode)
-
-
 GET         /your-age                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-age                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit(mode: Mode ?= NormalMode)
 

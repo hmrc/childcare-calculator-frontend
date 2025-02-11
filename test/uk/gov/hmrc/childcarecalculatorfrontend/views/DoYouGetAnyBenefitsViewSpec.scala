@@ -55,7 +55,7 @@ class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxView
 
     "display correct content when loaded" in {
       val view = createView()
-      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.hint"))
+      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.select.all"))
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.or"))
     }
   }

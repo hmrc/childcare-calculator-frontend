@@ -176,8 +176,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createParentClaimant(answers: UserAnswers): Claimant = {
-    val benefits = answers.whichBenefitsYouGet
-    val getBenefits = Benefits.populateFromRawData(benefits)
+    val benefits = Benefits.from(answers.doYouGetAnyBenefits)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
       answers.yourChildcareVouchers map {
         case true => YesNoUnsureEnum.YES
@@ -197,7 +196,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      benefits = getBenefits,
+      benefits = benefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,
@@ -207,9 +206,8 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     )
   }
 
-  private def createPartnerClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
-    val benefits = answers.whichBenefitsPartnerGet
-    val getBenefits = Benefits.populateFromRawData(benefits)
+  private def createPartnerClaimant(answers: UserAnswers): Claimant = {
+    val benefits = Benefits.from(answers.doesYourPartnerGetAnyBenefits)
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
       answers.partnerChildcareVouchers map {
         case true => YesNoUnsureEnum.YES
@@ -229,7 +227,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      benefits = getBenefits,
+      benefits = benefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,

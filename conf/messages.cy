@@ -327,49 +327,6 @@ doesYourPartnerGetAnyBenefits.checkYourAnswersLabel = Does your partner get any 
 doesYourPartnerGetAnyBenefits.error.select = Select which benefits your partner gets
 doesYourPartnerGetAnyBenefits.error.exclusive = Select which benefits your partner gets, or select ’No, they do not get any of these benefits’
 
-whichBenefitsYouGet.title=Pa fudd-daliadau ydych yn eu cael?
-whichBenefitsYouGet.heading=Pa fudd-daliadau ydych yn eu cael?
-whichBenefitsYouGet.incomeBenefits=Budd-daliadau sy’n ymwneud ag incwm
-whichBenefitsYouGet.disabilityBenefits=Budd-daliadau anabledd
-whichBenefitsYouGet.highRateDisabilityBenefits=Budd-daliadau anabledd cyfradd uwch
-whichBenefitsYouGet.severeDisabilityPremium=Premiwm anabledd difrifol
-whichBenefitsYouGet.carersAllowance=Lwfans Gofalwr
-whichBenefitsYouGet.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-whichBenefitsYouGet.checkYourAnswersLabel=Pa fudd-daliadau ydych yn eu cael?
-whichBenefitsYouGet.error.notCompleted=Dewiswch pa fudd-daliadau rydych yn eu cael
-whichBenefitsYouGet.help=Help gyda budd-daliadau
-
-whichBenefits.select.all=Dewiswch bob un sy’n berthnasol.
-
-whichBenefitsPartnerGet.title=Pa fudd-daliadau a yw’ch partner yn eu cael?
-whichBenefitsPartnerGet.heading=Pa fudd-daliadau a yw’ch partner yn eu cael?
-whichBenefitsPartnerGet.incomeBenefits=Budd-daliadau sy’n ymwneud ag incwm
-whichBenefitsPartnerGet.disabilityBenefits=Budd-daliadau anabledd
-whichBenefitsPartnerGet.highRateDisabilityBenefits=Budd-daliadau anabledd cyfradd uwch
-whichBenefitsPartnerGet.severeDisabilityPremium=Premiwm anabledd difrifol
-whichBenefitsPartnerGet.carersAllowance=Lwfans Gofalwr
-whichBenefitsPartnerGet.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-whichBenefitsPartnerGet.checkYourAnswersLabel=Pa fudd-daliadau ydych yn eu cael?
-whichBenefitsPartnerGet.error.notCompleted=Dewiswch pa fudd-daliadau y mae eich partner yn eu cael
-whichBenefitsPartnerGet.help=Help gyda budd-daliadau
-
-whichBenefitsList.typeof.income.benefits=Math o fudd-daliadau sy’n ymwneud ag incwm
-whichBenefitsList.typeof.income.support=Cymhorthdal Incwm
-whichBenefitsList.typeof.jobseeker.allowance=Lwfans Ceisio Gwaith ar sail Incwm
-whichBenefitsList.typeof.employer.support.allowance=Lwfans Cyflogaeth a Chymorth yn ymwneud ag incwm
-whichBenefitsList.typeof.pension.credit=Credyd Pensiwn
-whichBenefitsList.typeof.disability.benefits=Mathau o fudd-daliadau anabledd
-whichBenefitsList.typeof.disability.benefit.living.allowance=Lwfans Byw i’r Anabl
-whichBenefitsList.typeof.disability.benefit.adult.payment=Taliad Anabledd (Yr Alban yn unig)
-whichBenefitsList.typeof.disability.benefit.attendance.allowance=Lwfans Gweini
-whichBenefitsList.typeof.disability.benefit.personal.allowance=Taliad Annibyniaeth Personol
-whichBenefitsList.typeof.higher.rate.benefits=Mathau o fudd-daliadau anabledd cyfradd uwch
-whichBenefitsList.typeof.higher.rate.benefit.living.allowance=Lwfans Byw i’r Anabl (elfen gofal ar y gyfradd uchaf)
-whichBenefitsList.typeof.higher.rate.benefit.disability.payment=Taliad Anabledd (elfen bywyd bob dydd ychwanegol)
-whichBenefitsList.typeof.higher.rate.benefit.attendance.allowance=Lwfans Gweini (cyfradd uwch)
-whichBenefitsList.typeof.higher.rate.benefit.personal.payment=Taliad Annibyniaeth Personol (elfen bywyd bob dydd ychwanegol)
-whichBenefitsList.typeof.higher.rate.benefit.independent.payment=Taliad Annibyniaeth y Lluoedd Arfog
-
 yourPartnersAge.title=Beth yw oedran eich partner?
 yourPartnersAge.heading=Beth yw oedran eich partner?
 yourPartnersAge.UNDER18=O dan 18
