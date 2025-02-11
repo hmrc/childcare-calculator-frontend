@@ -1276,12 +1276,6 @@ yourStatutoryPayBeforeTax.heading=A oedd y tâl {0} hwn yn llai na £100 yr wyth
 yourStatutoryPayBeforeTax.checkYourAnswersLabel=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
 yourStatutoryPayBeforeTax.error.notCompleted=Dewiswch ‘Iawn’ os oedd y tâl {0} hwn yn llai na £100 cyn treth
 
-yourStatutoryPayPerWeek.title=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
-yourStatutoryPayPerWeek.heading=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
-yourStatutoryPayPerWeek.checkYourAnswersLabel=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
-yourStatutoryPayPerWeek.error.required=Nodwch faint o dâl {0} a gawsoch yr wythnos
-yourStatutoryPayPerWeek.error.invalid=Nodwch rifau rhwng 1 a 99.99 ar gyfer eich tâl {0}
-
 result.title=Help y gallech ei gael gyda’ch costau gofal plant
 result.heading=Help y gallech ei gael gyda’ch costau gofal plant
 result.eligible.heading=Rydych yn gymwys ar gyfer:

@@ -36,7 +36,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeYouStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YourStatutoryPayTypeId.toString -
-        YourStatutoryPayPerWeekId.toString - YourStatutoryWeeksId.toString -
+         YourStatutoryWeeksId.toString -
         YourStatutoryStartDateId.toString - YourStatutoryPayBeforeTaxId.toString)
       case _ => cacheMap
     }
@@ -51,7 +51,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val mapToStore: CacheMap = existingStatPayType.fold(cacheMap) {
       case `value` => cacheMap
       case _ => cacheMap copy (data = cacheMap.data
-        - YourStatutoryPayPerWeekId.toString
+
         - YourStatutoryWeeksId.toString
         - YourStatutoryPayBeforeTaxId.toString
         - YourStatutoryStartDateId.toString)
@@ -62,7 +62,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   private def storeYourStatutoryPayBeforeTax(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsString("false") => cacheMap copy (data = cacheMap.data - YourStatutoryPayPerWeekId.toString)
+      case JsString("false") => cacheMap copy (data = cacheMap.data)
       case _ => cacheMap
     }
 
@@ -98,7 +98,6 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
      val mapToStore = value match {
       case JsString("partner") => cacheMap copy (data = cacheMap.data
         - YourStatutoryPayTypeId.toString
-        - YourStatutoryPayPerWeekId.toString
         - YourStatutoryWeeksId.toString
         - YourStatutoryStartDateId.toString
         - YourStatutoryPayBeforeTaxId.toString)
