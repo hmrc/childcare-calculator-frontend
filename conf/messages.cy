@@ -478,9 +478,9 @@ taxOrUniversalCredits.none=Dim un o’r rhain
 taxOrUniversalCredits.error.notCompleted=Dewiswch a ydych yn cael Credydau Treth neu Gredyd Cynhwysol
 taxOrUniversalCredits.checkYourAnswersLabel=taxOrUniversalCredits
 
-noOfChildren.title=Sawl plentyn sydd gennych?
-noOfChildren.heading=Sawl plentyn sydd gennych?
-noOfChildren.hint.text=Dim ond plant o dan 20 oed rydych yn gyfrifol amdanyn nhw y dylech eu cynnwys. Er enghraifft, 2
+noOfChildren.title=Faint o blant sydd gennych o dan 18 oed?
+noOfChildren.heading=Faint o blant sydd gennych o dan 18 oed?
+noOfChildren.hint.text=Nodwch nifer y plant o dan 18 oed yr ydych yn gyfrifol amdanynt yn unig. Er enghraifft, 2.
 noOfChildren.error.notCompleted=Mae’n rhaid i sawl plentyn sydd gennych fod yn rhif rhwng 1 a 19
 noOfChildren.error.required=Nodwch sawl plentyn sydd gennych
 noOfChildren.error.non_numeric=Rhowch werth gan ddefnyddio rhifau yn unig
