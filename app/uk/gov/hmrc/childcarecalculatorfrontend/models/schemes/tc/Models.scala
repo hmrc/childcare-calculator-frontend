@@ -22,4 +22,4 @@ sealed trait Household
 case class SingleHousehold(parent: Parent) extends Household
 case class JointHousehold(parent: Parent, partner: Parent) extends Household
 
-case class Parent(benefits: Set[WhichBenefitsEnum.Value])
+case class Parent(hours: BigDecimal, benefits: Set[WhichBenefitsEnum.Value])
