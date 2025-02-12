@@ -544,7 +544,6 @@ yourIncomeInfo.li.income_paid_work = paid work
 yourIncomeInfo.li.pensions = pension contributions
 yourIncomeInfo.li.other_income = other income
 yourIncomeInfo.li.benefits_income = income from benefits
-yourIncomeInfo.li.birth_or_adoption = weeks taken off work while on statutory maternity, paternity, shared parental or adoption pay
 yourIncomeInfo.checkYourAnswersLabel = Your income this year
 
 partnerIncomeInfo.title = You and your partner’s income this year
@@ -556,7 +555,7 @@ partnerIncomeInfo.li.pensions = pension contributions
 partnerIncomeInfo.li.other_income = other income
 partnerIncomeInfo.li.benefits_income = income from benefits
 partnerIncomeInfo.checkYourAnswersLabel = Your partner’s income this year
-partnerIncomeInfo.li.birth_or_adoption = weeks taken off work while on statutory maternity, paternity, shared parental or adoption pay
+
 
 parentEmploymentIncomeCY.title = How much will you get paid this year?
 parentEmploymentIncomeCY.heading = How much will you get paid this year in pounds?
