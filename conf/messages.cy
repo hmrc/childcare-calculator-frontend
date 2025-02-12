@@ -1204,11 +1204,6 @@ statutoryPayTypeLower.paternity=tadolaeth
 statutoryPayTypeLower.adoption=mabwysiadu
 statutoryPayTypeLower.shared-parental=ar y cyd i rieni
 
-yourStatutoryWeeks.title=Sawl wythnos o dâl {0} a gymeroch?
-yourStatutoryWeeks.heading=Sawl wythnos o dâl {0} a gymeroch?
-yourStatutoryWeeks.error.required=Nodwch sawl wythnos o dâl {2} a gymeroch
-yourStatutoryWeeks.error.invalid=Nodwch rifau rhwng {0} a {1} i nodi sawl wythnos o dâl {2} a gymeroch
-yourStatutoryWeeks.checkYourAnswersLabel=yourStatutoryWeeks
 
 statutoryWeeks.maternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
 statutoryWeeks.paternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.

@@ -338,9 +338,6 @@ POST        /your-statutory-pay-type                           uk.gov.hmrc.child
 GET         /partner-statutory-pay                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /partner-statutory-pay                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /your-statutory-weeks                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-statutory-weeks                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryWeeksController.onSubmit(mode: Mode ?= NormalMode)
-
 
 GET         /your-statutory-start-date                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-statutory-start-date                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryStartDateController.onSubmit(mode: Mode ?= NormalMode)

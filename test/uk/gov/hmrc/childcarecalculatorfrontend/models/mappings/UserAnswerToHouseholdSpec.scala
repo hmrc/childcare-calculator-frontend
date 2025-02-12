@@ -319,7 +319,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryWeeks) thenReturn Some(4)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -351,7 +350,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val statutoryStartDate = LocalDate.of(currentTaxYear, 5, 1)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -388,7 +386,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -424,7 +421,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val statutoryStartDate = LocalDate.of(previousTaxYear, 3, 21)
 
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -800,8 +796,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryWeeks) thenReturn Some(2)
-
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -853,8 +847,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
-
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
