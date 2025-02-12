@@ -17,49 +17,30 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.TaxOrUniversalCreditsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewViewBehaviours, NewYesNoViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
 
-class TaxOrUniversalCreditsViewSpec extends NewViewBehaviours {
+class TaxOrUniversalCreditsViewSpec extends NewYesNoViewBehaviours {
 
   val view = application.injector.instanceOf[taxOrUniversalCredits]
 
+  override val form =  BooleanForm()
+
   val messageKeyPrefix = "taxOrUniversalCredits"
 
-  def createView = () => view(frontendAppConfig, TaxOrUniversalCreditsForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "TaxOrUniversalCredits view" must {
 
     behave like normalPage(createView, messageKeyPrefix)
 
     behave like pageWithBackLink(createView)
-  }
 
-  "TaxOrUniversalCredits view" when {
-    "rendered" must {
-      "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(TaxOrUniversalCreditsForm()))
-        for (option <- TaxOrUniversalCreditsForm.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
-      }
-    }
-
-    for(option <- TaxOrUniversalCreditsForm.options) {
-      s"rendered with a value of '${option.value}'" must {
-        s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(TaxOrUniversalCreditsForm().bind(Map("value" -> s"${option.value}"))))
-          assertContainsRadioButton(doc, option.id, "value", option.value, true)
-
-          for(unselectedOption <- TaxOrUniversalCreditsForm.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
-        }
-      }
-    }
+    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
   }
 }

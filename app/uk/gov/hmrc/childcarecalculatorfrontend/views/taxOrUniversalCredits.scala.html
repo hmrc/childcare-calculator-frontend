@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.TaxOrUniversalCreditsForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
@@ -25,9 +24,10 @@
     errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
     inputRadio: playComponents.input_radio,
+    inputYesNo: playComponents.input_yes_no,
     submitButton: playComponents.submit_button,
 )
-@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("taxOrUniversalCredits.title")) else messages("taxOrUniversalCredits.title")
@@ -41,14 +41,8 @@
 
     @formWithCSRF(action = TaxOrUniversalCreditsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
-    @inputRadio(
-        legend = heading(messages("taxOrUniversalCredits.heading")),
-        inputs = TaxOrUniversalCreditsForm.options map { radioOptions =>
-            RadioItem(
-                value = Some(radioOptions.value),
-                content = HtmlContent(messages(radioOptions.messageKey))
-            )
-        },
+    @inputYesNo(
+        label = HtmlContent(heading(messages("taxOrUniversalCredits.heading"))),
         field = form("value")
     )
     @submitButton()

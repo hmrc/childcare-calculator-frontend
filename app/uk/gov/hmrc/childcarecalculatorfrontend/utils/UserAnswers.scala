@@ -208,7 +208,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def noOfChildren: Option[Int] = cacheMap.getEntry[Int](NoOfChildrenId.toString)
 
-  def taxOrUniversalCredits: Option[String] = cacheMap.getEntry[String](TaxOrUniversalCreditsId.toString)
+  def taxOrUniversalCredits: Option[Boolean] = cacheMap.getEntry[Boolean](TaxOrUniversalCreditsId.toString)
 
   def partnerMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMaximumEarningsId.toString)
 

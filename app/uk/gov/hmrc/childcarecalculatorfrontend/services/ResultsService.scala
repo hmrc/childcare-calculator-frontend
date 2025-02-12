@@ -93,13 +93,10 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
         )
       )
 
-      if (result.tfc.isDefined && answers.taxOrUniversalCredits.contains("uc")) {
+      if (result.tfc.isDefined && answers.taxOrUniversalCredits.contains(true)) {
         result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.uc")))
-      } else if (result.tfc.isDefined && result.tc.isDefined && result.esc.isDefined) {
-        result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.tc.esc")))
-      } else if (result.tfc.isDefined && result.tc.isDefined) {
-        result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.tc")))
-      } else if (result.tfc.isDefined && result.esc.isDefined) {
+      }
+      else if (result.tfc.isDefined && result.esc.isDefined) {
         result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.esc")))
       } else {
         result
@@ -114,18 +111,9 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     }
   }
 
-  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[String]) = {
+  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[Boolean]) = {
     if (scheme.amount > 0) {
       scheme.name match {
-        case TCELIGIBILITY =>
-          //Backend calculator returns TC calculation independently of whether user gets TC or not,
-          //since tc can longer be applied to this is hiding the scheme if user doesn't already get it.
-          //TODO: Update cc-eligibility to instead require a tc flag (similar to esc) so frontend doesn't need to undo the tc calc
-          if (taxCreditsOrUC.contains(taxCredits)) {
-            resultViewModel.copy(tc = Some(scheme.amount))
-          } else {
-            resultViewModel
-          }
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
         case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
       }

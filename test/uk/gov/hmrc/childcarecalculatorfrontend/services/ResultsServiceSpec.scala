@@ -196,20 +196,6 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         }
       }
 
-      "It is eligible for TC" when {
-        "We are eligible for TC and already get TC" in {
-          val schemeResults = SchemeResults(List(tcScheme))
-          val answers = spy(userAnswers())
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.taxOrUniversalCredits) thenReturn Some("tc")
-
-          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
-
-          values.tc mustBe Some(500)
-        }
-      }
-
       "It is eligible for TFC scheme" in {
         val schemeResults = SchemeResults(List(tfcScheme))
         val answers = spy(userAnswers())
@@ -251,7 +237,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.taxOrUniversalCredits) thenReturn Some("uc")
+          when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
           val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -263,7 +249,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
           val answers = spy(userAnswers())
 
           when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.taxOrUniversalCredits) thenReturn Some("none")
+          when(answers.taxOrUniversalCredits) thenReturn Some(false)
 
           val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -403,7 +389,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some("none")
+        when(answers.taxOrUniversalCredits) thenReturn Some(false)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -417,7 +403,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+        when(answers.taxOrUniversalCredits) thenReturn Some(false)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -429,7 +415,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+        when(answers.taxOrUniversalCredits) thenReturn Some(false)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -441,7 +427,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some("none")
+        when(answers.taxOrUniversalCredits) thenReturn Some(false)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -453,7 +439,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some("uc")
+        when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 

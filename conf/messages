@@ -467,12 +467,11 @@ eitherOfYouMaximumEarnings.linkText = Find out more about how to calculate you o
 eitherOfYouMaximumEarnings.form = Will either of you earn adjusted net income of over £100,000 a year?
 eitherOfYouMaximumEarnings.error.notCompleted = Select yes if either of you will earn more than £100,000 a year
 
-taxOrUniversalCredits.title = Do you get tax credits or Universal Credit?
-taxOrUniversalCredits.heading = Do you get tax credits or Universal Credit?
-taxOrUniversalCredits.tc = Tax credits (includes Working and Child Tax Credit)
-taxOrUniversalCredits.uc = Universal Credit
-taxOrUniversalCredits.none = None of these
-taxOrUniversalCredits.error.notCompleted = Select if you get Tax Credits or Universal Credit
+taxOrUniversalCredits.title = Do you get Universal Credit?
+taxOrUniversalCredits.heading = Do you get Universal Credit?
+taxOrUniversalCredits.uc = Yes
+taxOrUniversalCredits.none = No
+taxOrUniversalCredits.error.notCompleted = Select whether you get Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 
 noOfChildren.title = How many children do you have under the age of 18?

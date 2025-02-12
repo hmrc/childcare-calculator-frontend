@@ -17,12 +17,12 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
+import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.TaxOrUniversalCreditsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.TaxOrUniversalCreditsId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, TaxOrUniversalCreditsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
@@ -39,7 +39,7 @@ class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
     new TaxOrUniversalCreditsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[String] = TaxOrUniversalCreditsForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "TaxOrUniversalCredits Controller" must {
 
@@ -51,16 +51,16 @@ class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(TaxOrUniversalCreditsId.toString -> JsString(TaxOrUniversalCreditsForm.options.head.value))
+      val validData =  Map(TaxOrUniversalCreditsId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(TaxOrUniversalCreditsForm().fill(TaxOrUniversalCreditsForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", TaxOrUniversalCreditsForm.options.head.value)).withMethod("POST")
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -70,7 +70,7 @@ class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = TaxOrUniversalCreditsForm().bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("taxOrUniversalCredits.error.notCompleted").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -86,7 +86,7 @@ class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", TaxOrUniversalCreditsForm.options.head.value)).withMethod("POST")
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value","true")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
