@@ -158,9 +158,6 @@ POST        /both-other-income-current-year                    uk.gov.hmrc.child
 GET         /you-any-these-benefits-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /you-any-these-benefits-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /partner-any-these-benefits-current-year           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyTheseBenefitsCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-any-these-benefits-current-year           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyTheseBenefitsCYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /both-any-these-benefits-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /both-any-these-benefits-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onSubmit(mode: Mode ?= NormalMode)
 

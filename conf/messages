@@ -628,34 +628,15 @@ youAnyTheseBenefitsCY.li.scottishCarersAllowance = Carer’s Allowance or Carer 
 youAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance (contribution-based)
 youAnyTheseBenefitsCY.li.pensions = Incapacity Benefit
 youAnyTheseBenefitsCY.li.disability = Widowed Parent’s Allowance
-
 youAnyTheseBenefitsCY.checkYourAnswersLabel = Have you had any of these benefits this year?
 youAnyTheseBenefitsCY.error.notCompleted = Select yes if you’ve had any of these benefits this year
 youAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you get Carer’s Allowance
 youAnyTheseBenefitsCY.error.scottishCarers.allowance = Select yes as you previously selected that you receive either Carer’s Allowance or Carer Support Payment
 
-partnerAnyTheseBenefitsCY.title = Has your partner had any of these benefits this year?
-partnerAnyTheseBenefitsCY.heading = Has your partner had any of these benefits this year?
-partnerAnyTheseBenefitsCY.tax_year = This year is 6 April {0} to 5 April {1}.
-partnerAnyTheseBenefitsCY.li.income_support = Income Support
-partnerAnyTheseBenefitsCY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
-partnerAnyTheseBenefitsCY.li.employment_support = Income-related Employment and Support Allowance
-partnerAnyTheseBenefitsCY.li.pensions = Pension Credit
-partnerAnyTheseBenefitsCY.li.disability = Disability Living Allowance
-partnerAnyTheseBenefitsCY.li.adultDisability = Disability Payment (Scotland only)
-partnerAnyTheseBenefitsCY.li.attendance = Attendance Allowance
-partnerAnyTheseBenefitsCY.li.independance = Personal Independence Payment
-partnerAnyTheseBenefitsCY.li.carers = Carer’s Allowance
-partnerAnyTheseBenefitsCY.li.scottishCarersAllowance = Carer’s Allowance or Carer Support Payment
-partnerAnyTheseBenefitsCY.checkYourAnswersLabel = Has your partner had any of these benefits this year?
-partnerAnyTheseBenefitsCY.error.notCompleted = Select yes if your partner had any of these benefits this year
-partnerAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that your partner get Carer’s Allowance
-partnerAnyTheseBenefitsCY.error.scottishCarers.allowance = Select yes as you previously selected that your partner receive either Carer’s Allowance or Carer Support Payment
 
 bothAnyTheseBenefitsCY.title = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.heading = Have you, your partner, or both of you had any of these benefits this year?
 bothAnyTheseBenefitsCY.tax_year = This year is 6 April {0} to 5 April {1}.
-
 bothAnyTheseBenefitsCY.li.income_support = State Pension
 bothAnyTheseBenefitsCY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
 bothAnyTheseBenefitsCY.li.employment_support = Employment and Support Allowance (contribution-based)

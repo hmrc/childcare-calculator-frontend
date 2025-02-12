@@ -184,7 +184,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerPaidPensionCYId.toString -> JsBoolean(true),
         HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
         PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsCYId.toString -> JsBoolean(true),
         PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
 
         ParentPaidWorkPYId.toString -> JsBoolean(true),
@@ -247,7 +246,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerPaidPensionCYId.toString -> JsBoolean(true),
         HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
         PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsCYId.toString -> JsBoolean(true),
         PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
 
         ParentPaidWorkPYId.toString -> JsBoolean(true),
@@ -560,7 +558,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerPaidPensionCYId.toString -> JsBoolean(true),
         HowMuchPartnerPayPensionId.toString -> JsNumber(BigDecimal(20)),
         PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsCYId.toString -> JsBoolean(true),
         PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
 
         ParentPaidWorkPYId.toString -> JsBoolean(true),

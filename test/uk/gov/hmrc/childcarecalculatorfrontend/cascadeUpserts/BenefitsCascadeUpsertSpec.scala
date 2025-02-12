@@ -165,26 +165,6 @@ class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
 
     }
 
-    "Save PartnerAnyTheseBenefitsCY data " must {
-      "remove PartnerBenefitsIncomeCY page data when user selects no option" in {
-        val originalCacheMap = new CacheMap("id", Map(PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20))))
-
-        val result = cascadeUpsert(PartnerAnyTheseBenefitsCYId.toString, false, originalCacheMap)
-
-        result.data mustBe Map(PartnerAnyTheseBenefitsCYId.toString -> JsBoolean(false))
-      }
-
-      "return original cache map when user selects yes option" in {
-        val originalCacheMap = new CacheMap("id", Map(PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20))))
-
-        val result = cascadeUpsert(PartnerAnyTheseBenefitsCYId.toString, true, originalCacheMap)
-
-        result.data mustBe Map(PartnerAnyTheseBenefitsCYId.toString.toString -> JsBoolean(true),
-          PartnerBenefitsIncomeCYId.toString -> JsNumber(BigDecimal(20)))
-      }
-
-    }
-
     "Save BothAnyTheseBenefitsCY data " must {
       "remove whosHadBenefits, youBenefitsIncomeCY, partnerBenefitsIncomeCY and BenefitsIncomeCY pages data" +
         " when user selects no option" in {
