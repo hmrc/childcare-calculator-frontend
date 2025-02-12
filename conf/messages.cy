@@ -1210,32 +1210,6 @@ statutoryWeeks.paternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} 
 statutoryWeeks.adoption.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
 statutoryWeeks.shared-parental.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau rhwng y ddau riant.
 
-yourStatutoryStartDate.title=Ar ba ddyddiad y dechreuodd eich dâl {0}?
-yourStatutoryStartDate.heading=Ar ba ddyddiad y dechreuodd eich dâl {0}?
-yourStatutoryStartDate.hint=Er enghraifft, 31 1 2017
-yourStatutoryStartDate.checkYourAnswersLabel=yourStatutoryStartDate
-yourStatutoryStartDate.error.required = Nodwch y dyddiad y dechreuodd eich dâl {0}
-yourStatutoryStartDate.error.required.day = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys diwrnod
-yourStatutoryStartDate.error.required.month = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys mis
-yourStatutoryStartDate.error.required.year = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys blwyddyn
-yourStatutoryStartDate.error.required.dayMonth = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys diwrnod a mis
-yourStatutoryStartDate.error.required.monthYear = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys mis a blwyddyn
-yourStatutoryStartDate.error.required.dayYear = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys diwrnod a blwyddyn
-yourStatutoryStartDate.error.invalid = Nodwch ddyddiad dilys gan ddefnyddio rhifau
-yourStatutoryStartDate.error.invalid.day = Mae’n rhaid i’r diwrnod y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.month = Mae’n rhaid i’r mis y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.year = Mae’n rhaid i’r flwyddyn y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.dayMonth = Mae’n rhaid i’r diwrnod a’r mis y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.dayYear = Mae’n rhaid i’r diwrnod a’r flwyddyn y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.monthYear = Mae’n rhaid i’r mis a’r flwyddyn y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.notReal = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} fod yn ddyddiad go iawn
-yourStatutoryStartDate.error.notReal.day = Mae’n rhaid i’r diwrnod y dechreuodd eich dâl {0} fod yn rhif dilys
-yourStatutoryStartDate.error.notReal.month = Mae’n rhaid i’r mis y dechreuodd eich dâl {0} fod yn rhif dilys
-yourStatutoryStartDate.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys 4 rhif
-yourStatutoryStartDate.error.range.min = Ni all dyddiad dechrau eich dâl {0} fod cyn 6 Ebrill {1}
-yourStatutoryStartDate.error.range.max = Ni all dyddiad y dechreuodd eich dâl {0} fod yn y dyfodol
-
-
 result.title=Help y gallech ei gael gyda’ch costau gofal plant
 result.heading=Help y gallech ei gael gyda’ch costau gofal plant
 result.eligible.heading=Rydych yn gymwys ar gyfer:
