@@ -776,21 +776,15 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
 
   }
-
-  "isAlreadyReceivingTaxCredits" must {
-    "return true" when {
-      "Someone has tax credits" in {
-        val answers = helper(cacheMap(TaxOrUniversalCreditsId.toString -> JsString(TaxOrUniversalCreditsEnum.TC.toString)))
-        answers.isAlreadyReceivingTaxCredits mustEqual true
-      }
-    }
+// TODO what is the use of these test case
+  "isAlreadyReceivingCredits" must {
     "return false" when {
       "Someone has universal credits" in {
-        val answers = helper(cacheMap(TaxOrUniversalCreditsId.toString -> JsString(TaxOrUniversalCreditsEnum.UC.toString)))
+        val answers = helper(cacheMap(TaxOrUniversalCreditsId.toString -> JsBoolean(true)))
         answers.isAlreadyReceivingTaxCredits mustEqual false
       }
       "Someone has neither universal credits or tax credits" in {
-        val answers = helper(cacheMap())
+        val answers = helper(cacheMap(TaxOrUniversalCreditsId.toString -> JsBoolean(false)))
         answers.isAlreadyReceivingTaxCredits mustEqual false
       }
     }
