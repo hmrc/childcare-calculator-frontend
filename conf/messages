@@ -1264,31 +1264,6 @@ yourStatutoryStartDate.error.notReal.year = Year must include 4 numbers
 yourStatutoryStartDate.error.range.min = The date your {0} pay started cannot be before 6 April {1}
 yourStatutoryStartDate.error.range.max = The date your {0} pay started cannot be in the future
 
-partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
-partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
-partnerStatutoryStartDate.hint = For example, 31 1 2017
-partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
-partnerStatutoryStartDate.error.required = Enter the date your partner’s {0} pay started
-partnerStatutoryStartDate.error.required.day = The date your partner’s {0} pay started must include a day
-partnerStatutoryStartDate.error.required.month = The date your partner’s {0} pay started must include a month
-partnerStatutoryStartDate.error.required.year = The date your partner’s {0} pay started must include a year
-partnerStatutoryStartDate.error.required.dayMonth = The date your partner’s {0} pay started must include a day and month
-partnerStatutoryStartDate.error.required.dayYear = The date your partner’s {0} pay started must include a day and year
-partnerStatutoryStartDate.error.required.monthYear = The date your partner’s {0} pay started must include a month and year
-partnerStatutoryStartDate.error.invalid = Enter a valid date in numbers
-partnerStatutoryStartDate.error.invalid.day = The day your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.month = The month your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.year = The year your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.dayMonth = The day and month your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.dayYear = The day and year your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.monthYear = The month and year your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.notReal = The date your partner’s {0} pay started must be a real date
-partnerStatutoryStartDate.error.notReal.day = The day your partner’s {0} pay started must be a valid number
-partnerStatutoryStartDate.error.notReal.month = The month your partner’s {0} pay started must be a valid number
-partnerStatutoryStartDate.error.notReal.year = Year must include 4 numbers
-partnerStatutoryStartDate.error.range.min = The date your partner’s {0} pay started cannot be before 6 April {1}
-partnerStatutoryStartDate.error.range.max = The date your partner’s {0} pay started cannot be in the future
-
 
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs

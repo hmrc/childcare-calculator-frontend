@@ -461,7 +461,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -510,7 +509,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -558,7 +556,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -605,7 +602,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -652,7 +648,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -699,7 +694,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(currentTaxYear, 5, 1)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -746,7 +740,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.parentWorkHours) thenReturn Some(BigDecimal(32.1))
@@ -794,7 +787,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -845,7 +837,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
 
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)

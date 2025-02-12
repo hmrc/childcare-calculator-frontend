@@ -1235,31 +1235,6 @@ yourStatutoryStartDate.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys
 yourStatutoryStartDate.error.range.min = Ni all dyddiad dechrau eich dâl {0} fod cyn 6 Ebrill {1}
 yourStatutoryStartDate.error.range.max = Ni all dyddiad y dechreuodd eich dâl {0} fod yn y dyfodol
 
-partnerStatutoryStartDate.title=Pryd y dechreuodd tâl {0} eich partner?
-partnerStatutoryStartDate.heading=Pryd y dechreuodd tâl {0} eich partner?
-partnerStatutoryStartDate.hint=Er enghraifft, 31 1 2017
-partnerStatutoryStartDate.checkYourAnswersLabel=partnerStatutoryStartDate
-partnerStatutoryStartDate.error.required = Nodwch y dyddiad y dechreuod tâl {0} eich partner
-partnerStatutoryStartDate.error.required.day = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys diwrnod
-partnerStatutoryStartDate.error.required.month = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys mis
-partnerStatutoryStartDate.error.required.year = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys blwyddyn
-partnerStatutoryStartDate.error.required.dayMonth = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys diwrnod a mis
-partnerStatutoryStartDate.error.required.dayYear = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys mis a blwyddyn
-partnerStatutoryStartDate.error.required.monthYear = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys diwrnod a blwyddyn
-partnerStatutoryStartDate.error.invalid = Nodwch ddyddiad dilys gan ddefnyddio rhifau
-partnerStatutoryStartDate.error.invalid.day = Mae’n rhaid i’r diwrnod y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.month = Mae’n rhaid i’r mis y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.year = Mae’n rhaid i’r flwyddyn y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.dayMonth = Mae’n rhaid i’r diwrnod a’r mis y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.dayYear = Mae’n rhaid i’r diwrnod a’r flwyddyn y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.monthYear = Mae’n rhaid i’r mis a’r flwyddyn y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.notReal = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner fod yn ddyddiad go iawn
-partnerStatutoryStartDate.error.notReal.day = Mae’n rhaid i’r diwrnod y dechreuodd tâl {0} eich partner fod yn rhif dilys
-partnerStatutoryStartDate.error.notReal.month = Mae’n rhaid i’r mis y dechreuodd tâl {0} eich partner fod yn rhif dilys
-partnerStatutoryStartDate.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys 4 rhif
-partnerStatutoryStartDate.error.range.min = Ni all dyddiad dechrau eich tâl {0} eich partner fod cyn 6 Ebrill {1}
-partnerStatutoryStartDate.error.range.max = Ni all dyddiad y dechreuodd tâl {0} eich partner fod yn y dyfodol
-
 
 result.title=Help y gallech ei gael gyda’ch costau gofal plant
 result.heading=Help y gallech ei gael gyda’ch costau gofal plant
