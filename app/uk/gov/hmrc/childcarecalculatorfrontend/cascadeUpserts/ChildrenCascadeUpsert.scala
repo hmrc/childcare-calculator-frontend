@@ -27,7 +27,6 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     Map(
       NoOfChildrenId.toString -> ((v, cm) => storeNoOfChildren(v, cm)),
       AboutYourChildId.toString -> ((v, cm) => storeAboutYourChild(v, cm)),
-      ChildApprovedEducationId.toString -> ((v, cm) => storeChildApprovedEducation(v, cm)),
       ChildrenDisabilityBenefitsId.toString -> ((v, cm) => storeChildrenDisabilityBenefits(v, cm)),
       ChildDisabilityBenefitsId.toString -> ((v, cm) => storeChildDisabilityBenefits(v, cm)),
       WhichChildrenDisabilityId.toString -> ((v, cm) => storeWhichChildrenDisability(v, cm)),
@@ -40,7 +39,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val originalDataSet = cacheMap.data.get("noOfChildren")
     val mapToStore = value match {
       case JsNumber(_) if !originalDataSet.contains(value) => {
-        cacheMap copy (data = cacheMap.data - AboutYourChildId.toString - ChildApprovedEducationId.toString -
+        cacheMap copy (data = cacheMap.data - AboutYourChildId.toString -
           ChildStartEducationId.toString - ChildrenDisabilityBenefitsId.toString - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString -
           ChildRegisteredBlindId.toString - RegisteredBlindId.toString - WhichChildrenBlindId.toString -
           WhoHasChildcareCostsId.toString - ChildcarePayFrequencyId.toString - ExpectedChildcareCostsId.toString)
@@ -54,22 +53,11 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val originalDataSet = cacheMap.data.get("aboutYourChild")
     val mapToStore = value match {
       case JsObject(_) if !originalDataSet.contains(value) =>
-        cacheMap copy (data = cacheMap.data - ChildApprovedEducationId.toString.toString - ChildStartEducationId.toString)
+        cacheMap copy (data = cacheMap.data - ChildStartEducationId.toString)
 
       case _ => cacheMap
     }
     store(AboutYourChildId.toString, value, mapToStore)
-  }
-
-  private def storeChildApprovedEducation(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value.validate[Map[String, Boolean]].fold(_ => cacheMap, newValues => {
-      cacheMap.data.get(ChildStartEducationId.toString).fold(cacheMap)(elementToDelete => {
-        val updatedValues = newValues.filter(!_._2).foldLeft(elementToDelete)((dataObject, element) => dataObject.as[JsObject] - element._1)
-        store(ChildStartEducationId.toString, updatedValues, cacheMap)
-      })
-    })
-
-    store(ChildApprovedEducationId.toString, value, mapToStore)
   }
 
   private def storeChildrenDisabilityBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {

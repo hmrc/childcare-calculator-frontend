@@ -1075,11 +1075,6 @@ aboutYourChild.dob.nth.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys
 aboutYourChild.dob.nth.error.range.min = Ni all y dyddiad ar gyfer dyddiad geni’ch plentyn {0} fod yn fwy nag 20 mlynedd yn y gorffennol
 aboutYourChild.dob.nth.error.range.max = Ni all dyddiad geni’ch plentyn {0} fod yn y dyfodol
 
-childApprovedEducation.title=A yw eich plentyn mewn addysg neu hyfforddiant sydd wedi’i gymeradwyo?
-childApprovedEducation.heading=A yw eich plentyn {0} mewn addysg neu hyfforddiant wedi’i gymeradwyo?
-childApprovedEducation.checkYourAnswersLabel=A yw eich plentyn mewn addysg neu hyfforddiant sydd wedi’i gymeradwyo?
-childApprovedEducation.error.notCompleted=Dewiswch ‘Iawn’ os yw {0} mewn addysg neu hyfforddiant wedi’i gymeradwyo
-
 childRegisteredBlind.title=A yw eich plentyn wedi’i gofrestru’n ddall?
 childRegisteredBlind.heading=A yw dy blentyn {0} wedi’i gofrestru’n ddall?
 childRegisteredBlind.error.notCompleted=Dewiswch ‘Iawn’ os yw {0} wedi’i gofrestru’n ddall

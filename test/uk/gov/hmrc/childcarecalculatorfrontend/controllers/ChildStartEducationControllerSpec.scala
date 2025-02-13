@@ -23,7 +23,7 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildStartEducationForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, ChildApprovedEducationId, ChildStartEducationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, ChildStartEducationId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
@@ -44,12 +44,7 @@ class ChildStartEducationControllerSpec extends ControllerSpecBase {
   val validBirthday: LocalDate = LocalDate.of(LocalDate.now.minusYears(17).getYear, 2, 1)
   val requiredData: Map[String, JsObject] = Map(
     AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", validBirthday)),
-      "1" -> Json.toJson(AboutYourChild("Bar", validBirthday))
-    ),
-    ChildApprovedEducationId.toString -> Json.obj(
-      "0" -> true,
-      "1" -> false
+      "0" -> Json.toJson(AboutYourChild("Foo", validBirthday))
     )
   )
   val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
