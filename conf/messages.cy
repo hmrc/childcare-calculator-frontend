@@ -309,8 +309,7 @@ doYouGetAnyBenefits.CarersCredit = Carer’s Credit
 doYouGetAnyBenefits.NoneOfThese = No, I do not get any of these benefits
 doYouGetAnyBenefits.or = or
 doYouGetAnyBenefits.checkYourAnswersLabel = Do you get any of these benefits?
-doYouGetAnyBenefits.error.select = Select which benefits you get
-doYouGetAnyBenefits.error.exclusive = Select which benefits you get, or select ’No, I do not get any of these benefits’
+doYouGetAnyBenefits.error.select = Select if you get any of these benefits
 
 doesYourPartnerGetAnyBenefits.title = Does your partner get any of these benefits?
 doesYourPartnerGetAnyBenefits.heading = Does your partner get any of these benefits?
@@ -324,8 +323,7 @@ doesYourPartnerGetAnyBenefits.CarersCredit = Carer’s Credit
 doesYourPartnerGetAnyBenefits.NoneOfThese = No, they do not get any of these benefits
 doesYourPartnerGetAnyBenefits.or = or
 doesYourPartnerGetAnyBenefits.checkYourAnswersLabel = Does your partner get any of these benefits?
-doesYourPartnerGetAnyBenefits.error.select = Select which benefits your partner gets
-doesYourPartnerGetAnyBenefits.error.exclusive = Select which benefits your partner gets, or select ’No, they do not get any of these benefits’
+doesYourPartnerGetAnyBenefits.error.select = Select if your partner gets any of these benefits
 
 yourPartnersAge.title=Beth yw oedran eich partner?
 yourPartnersAge.heading=Beth yw oedran eich partner?

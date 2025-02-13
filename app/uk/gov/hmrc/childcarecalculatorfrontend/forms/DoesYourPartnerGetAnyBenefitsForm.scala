@@ -30,9 +30,8 @@ object DoesYourPartnerGetAnyBenefitsForm {
         .verifying("doesYourPartnerGetAnyBenefits.error.select", _.forall(ParentsBenefits.mapping.keySet.contains _))
         .transform[Set[ParentsBenefits]](_.map(ParentsBenefits.mapping), _.map(ParentsBenefits.inverseMappping))
         .verifying("doesYourPartnerGetAnyBenefits.error.select", _.nonEmpty)
-        // TODO: Create tests for this validation and see if it's possible to remove the negation.
         .verifying(
-          "doesYourPartnerGetAnyBenefits.error.exclusive",
+          "doesYourPartnerGetAnyBenefits.error.select",
           set => !(set.contains(ParentsBenefits.NoneOfThese) && set.size > 1)
         )
     )
