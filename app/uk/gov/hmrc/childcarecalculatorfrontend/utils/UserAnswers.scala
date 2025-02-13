@@ -34,7 +34,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def whoWasInPaidWorkPY: Option[String] = cacheMap.getEntry[String](WhoWasInPaidWorkPYId.toString)
 
-  def yourStatutoryPayType: Option[StatutoryPayTypeEnum.Value] = cacheMap.getEntry[StatutoryPayTypeEnum.Value](YourStatutoryPayTypeId.toString)
 
   def whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhoGotStatutoryPayId.toString)
 

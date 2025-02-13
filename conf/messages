@@ -1214,11 +1214,6 @@ partnerStatutoryPay.guidance_extra = This could also be if they started to get t
 partnerStatutoryPay.error.required = Select yes if your partner had statutory pay since 6 April {0}
 
 
-yourStatutoryPayType.title = What kind of statutory pay did you get?
-yourStatutoryPayType.heading = What kind of statutory pay did you get?
-yourStatutoryPayType.error.notCompleted = Select what kind of statutory pay you got
-yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
-
 statutoryPayType.maternity = Maternity
 statutoryPayType.paternity = Paternity
 statutoryPayType.adoption = Adoption

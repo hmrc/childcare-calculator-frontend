@@ -1185,11 +1185,6 @@ partnerStatutoryPay.guidance_extra=Gallai hyn fod hefyd os gwnaeth ddechrau cael
 partnerStatutoryPay.error.required=Dewiswch ‘Iawn’ os cafodd eich partner dâl statudol ers 6 Ebrill {0}
 
 
-yourStatutoryPayType.title=Pa fath o dâl statudol a gawsoch?
-yourStatutoryPayType.heading=Pa fath o dâl statudol a gawsoch?
-yourStatutoryPayType.error.notCompleted=Dewiswch pa fath o dâl statudol a gawsoch
-yourStatutoryPayType.checkYourAnswersLabel=yourStatutoryPayType
-
 statutoryPayType.maternity=Mamolaeth
 statutoryPayType.paternity=Tadolaeth
 statutoryPayType.adoption=Mabwysiadu
