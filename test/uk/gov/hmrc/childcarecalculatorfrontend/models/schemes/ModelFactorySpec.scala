@@ -84,15 +84,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         factory(answers) mustNot be(defined)
       }
 
-      "return `None` when `parentWorkHours` is undefined and `areYouInPaidWork` is true" in {
-        val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
-        factory(answers) mustNot be(defined)
-      }
-
       "return `None` when `doYouGetAnyBenefits` is undefined" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
@@ -216,51 +207,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
         factory(answers) mustNot be(defined)
       }
-
-      "return `None` when `parentWorkHours` is undefined and the user is employed for non scottish users" in {
-        val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
-        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
-        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
-        factory(answers) mustNot be(defined)
-      }
-
-      "return `None` when `parentWorkHours` is undefined and the user is employed for scottish users" in {
-        val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.YOU.toString)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
-        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
-        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
-        factory(answers) mustNot be(defined)
-      }
-
-      "return `None` when `parentWorkHours` is undefined both the user and their partner are employed for  non scottish users" in {
-        val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
-        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
-        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(CARERSALLOWANCE.toString))
-        factory(answers) mustNot be(defined)
-      }
-
-      "return `None` when `parentWorkHours` is undefined both the user and their partner are employed for scottish users" in {
-        val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(true)
-        when(answers.whoGetsBenefits) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
-        when(answers.whichBenefitsPartnerGet) thenReturn Some(Set(SCOTTISHCARERSALLOWANCE.toString))
-        factory(answers) mustNot be(defined)
-      }
-
       "return `None` when `doYouOrYourPartnerGetBenefits` is undefined for non scottish users" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)

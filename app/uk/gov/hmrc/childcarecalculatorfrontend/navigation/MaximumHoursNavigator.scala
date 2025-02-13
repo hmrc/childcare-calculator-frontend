@@ -281,7 +281,6 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
     if (schemes.allSchemesDetermined(answers)) {
       if (
-        taxCredits.eligibility(answers) == NotEligible &&
           tfc.eligibility(answers) == NotEligible &&
           esc.eligibility(answers) == NotEligible) {
 

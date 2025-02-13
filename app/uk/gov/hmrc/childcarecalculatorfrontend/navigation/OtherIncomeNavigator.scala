@@ -93,14 +93,10 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
   }
 
   private def howMuchPartnerOtherIncomeRouteCY(answers: UserAnswers) =
-    processCall(answers,answers.partnerOtherIncomeAmountCY,
-      routes.BothIncomeInfoPYController.onPageLoad(),
-      routes.ResultController.onPageLoad())
+      routes.ResultController.onPageLoad()
 
   private def howMuchBothOtherIncomeRouteCY(answers: UserAnswers) =
-    processCall(answers,answers.otherIncomeAmountCY,
-      routes.BothIncomeInfoPYController.onPageLoad(),
-      routes.ResultController.onPageLoad())
+      routes.ResultController.onPageLoad()
 
 
 
@@ -169,9 +165,9 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
     val tfcEligibility = tfc.eligibility(answers)
     val hasUniversalCredits = answers.taxOrUniversalCredits.contains(universalCredits)
 
-    (tcEligibility, tfcEligibility) match {
-      case (Eligible, Eligible) => if(hasUniversalCredits) notEligibleCall else eligibleCall
-      case (Eligible, NotEligible) => if(!hasUniversalCredits) eligibleCall else notEligibleCall
+     tfcEligibility match {
+      case Eligible => if(hasUniversalCredits) notEligibleCall else eligibleCall
+      case  NotEligible => if(!hasUniversalCredits) eligibleCall else notEligibleCall
       case _ => notEligibleCall
     }
   }
