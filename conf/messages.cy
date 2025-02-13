@@ -1154,12 +1154,6 @@ expectedChildcareCosts.checkYourAnswersLabel=Beth yw eich costau gofal plant dis
 expectedChildcareCosts.error.notCompleted=Nodwch eich costau gofal plant {0} ar gyfer {1}
 expectedChildcareCosts.error.invalid=Mae’n rhaid i’ch costau gofal plant {0} disgwyliedig ar gyfer {1} fod yn rhif rhwng 1 a 9999.99
 
-whoGotStatutoryPay.title=Pwy gafodd dâl statudol?
-whoGotStatutoryPay.heading=Pwy gafodd dâl statudol?
-whoGotStatutoryPay.you=Chi
-whoGotStatutoryPay.partner=Partner
-whoGotStatutoryPay.both=Y ddau
-whoGotStatutoryPay.error.notCompleted=Dewiswch bwy gafodd dâl statudol
 
 youStatutoryPay.title=A ydych wedi cael tâl statudol ers 6 Ebrill {0}?
 youStatutoryPay.heading=A ydych wedi cael tâl statudol ers 6 Ebrill {0}?
@@ -1195,11 +1189,6 @@ statutoryPayTypeLower.paternity=tadolaeth
 statutoryPayTypeLower.adoption=mabwysiadu
 statutoryPayTypeLower.shared-parental=ar y cyd i rieni
 
-
-statutoryWeeks.maternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
-statutoryWeeks.paternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
-statutoryWeeks.adoption.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
-statutoryWeeks.shared-parental.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau rhwng y ddau riant.
 
 result.title=Help y gallech ei gael gyda’ch costau gofal plant
 result.heading=Help y gallech ei gael gyda’ch costau gofal plant

@@ -1183,12 +1183,6 @@ expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare 
 expectedChildcareCosts.error.notCompleted = Enter your {0} childcare costs for {1}
 expectedChildcareCosts.error.invalid = Your expected {0} childcare costs for {1} must be a number from 1 to 9999.99
 
-whoGotStatutoryPay.title = Who got statutory pay?
-whoGotStatutoryPay.heading = Who got statutory pay?
-whoGotStatutoryPay.you = You
-whoGotStatutoryPay.partner = Partner
-whoGotStatutoryPay.both = Both
-whoGotStatutoryPay.error.notCompleted = Select who got statutory pay
 
 youStatutoryPay.title = Have you had statutory pay since 6 April {0}?
 youStatutoryPay.heading = Have you had statutory pay since 6 April {0}?
@@ -1224,10 +1218,6 @@ statutoryPayTypeLower.paternity = paternity
 statutoryPayTypeLower.adoption = adoption
 statutoryPayTypeLower.shared-parental = shared parental
 
-statutoryWeeks.maternity.guidance = This is usually taken as {0} weeks.
-statutoryWeeks.paternity.guidance = This is usually taken as {0} weeks.
-statutoryWeeks.adoption.guidance = This is usually taken as {0} weeks.
-statutoryWeeks.shared-parental.guidance = This is usually taken as {0} weeks between both parents.
 
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs

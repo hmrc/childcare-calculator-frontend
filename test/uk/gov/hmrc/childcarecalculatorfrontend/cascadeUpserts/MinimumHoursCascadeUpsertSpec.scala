@@ -104,8 +104,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
-          BothStatutoryPayId.toString -> JsBoolean(true),
-          WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)
+          BothStatutoryPayId.toString -> JsBoolean(true)
           ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
@@ -145,8 +144,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
-          BothStatutoryPayId.toString -> JsBoolean(true),
-          WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)
+          BothStatutoryPayId.toString -> JsBoolean(true)
          ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
@@ -186,8 +184,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
-          BothStatutoryPayId.toString -> JsBoolean(true),
-          WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)
+          BothStatutoryPayId.toString -> JsBoolean(true)
           ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
@@ -230,8 +227,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
-          BothStatutoryPayId.toString -> JsBoolean(true),
-          WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)
+          BothStatutoryPayId.toString -> JsBoolean(true)
           ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
