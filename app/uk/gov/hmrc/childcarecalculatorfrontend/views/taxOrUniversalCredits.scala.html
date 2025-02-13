@@ -31,13 +31,13 @@
 
 @getMessageKeys(keys: String) = @{
     havePartner match {
-    case Some(true) => messages(s"${keys}_partner")
-    case _ => messages(s"$keys")
+    case Some(true) => messages(s"taxOrUniversalCreditsPartner.$keys")
+    case _ => messages(s"taxOrUniversalCredits.$keys")
     }
 }
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", getMessageKeys("taxOrUniversalCredits.title")) else getMessageKeys("taxOrUniversalCredits.title")
+    if(form.errors.nonEmpty) messages("site.title.error", getMessageKeys("title")) else getMessageKeys("title")
 }
 
 
@@ -51,7 +51,7 @@
     @formWithCSRF(action = TaxOrUniversalCreditsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @inputYesNo(
-        label = HtmlContent(heading(getMessageKeys("taxOrUniversalCredits.heading"))),
+        label = HtmlContent(heading(getMessageKeys("heading"))),
         field = form("value")
     )
     @submitButton()

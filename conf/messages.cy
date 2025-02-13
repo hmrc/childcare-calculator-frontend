@@ -450,9 +450,12 @@ eitherOfYouMaximumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os bydd y nail
 
 taxOrUniversalCredits.title=A ydych yn cael neu Gredyd Cynhwysol? Ydych chi''n cael Credyd Cynhwysol?
 taxOrUniversalCredits.heading=A ydych yn cael neu Gredyd Cynhwysol?
+taxOrUniversalCreditsPartner.title = Do you and your partner get Universal Credit?
+taxOrUniversalCreditsPartner.heading = Do you and your partner get Universal Credit?
 taxOrUniversalCredits.uc=Credyd Cynhwysol
 taxOrUniversalCredits.none=Dim un o’r rhain
 taxOrUniversalCredits.error.notCompleted=Select whether you get Universal Credit
+taxOrUniversalCreditsPartner.error.notCompleted = Select if you and your partner get Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel=taxOrUniversalCredits
 
 noOfChildren.title=Faint o blant sydd gennych o dan 18 oed?

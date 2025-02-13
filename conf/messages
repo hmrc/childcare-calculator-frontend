@@ -469,9 +469,12 @@ eitherOfYouMaximumEarnings.error.notCompleted = Select yes if either of you will
 
 taxOrUniversalCredits.title = Do you get Universal Credit?
 taxOrUniversalCredits.heading = Do you get Universal Credit?
+taxOrUniversalCreditsPartner.title = Do you and your partner get Universal Credit?
+taxOrUniversalCreditsPartner.heading = Do you and your partner get Universal Credit?
 taxOrUniversalCredits.uc = Yes
 taxOrUniversalCredits.none = No
 taxOrUniversalCredits.error.notCompleted = Select whether you get Universal Credit
+taxOrUniversalCreditsPartner.error.notCompleted = Select if you and your partner get Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel = taxOrUniversalCredits
 
 noOfChildren.title = How many children do you have under the age of 18?

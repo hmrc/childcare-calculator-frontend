@@ -39,7 +39,7 @@ class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
     new TaxOrUniversalCreditsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, Some(false))(fakeRequest, messages).toString
 
   "TaxOrUniversalCredits Controller" must {
 

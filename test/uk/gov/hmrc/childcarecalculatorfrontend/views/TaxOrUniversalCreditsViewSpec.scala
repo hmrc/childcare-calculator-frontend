@@ -30,17 +30,28 @@ class TaxOrUniversalCreditsViewSpec extends NewYesNoViewBehaviours {
   override val form =  BooleanForm()
 
   val messageKeyPrefix = "taxOrUniversalCredits"
+  val messageKeyPartnerPrefix = "taxOrUniversalCreditsPartner"
 
-  def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView(isPartner : Option[Boolean]) = () => view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
 
-  "TaxOrUniversalCredits view" must {
+  def createViewUsingForm( isPartner : Option[Boolean]) = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode,  isPartner)(fakeRequest, messages)
 
-    behave like normalPage(createView, messageKeyPrefix)
+  "TaxOrUniversalCredits view when there is partner" must {
 
-    behave like pageWithBackLink(createView)
+    behave like normalPage(createView(Some(true)), messageKeyPartnerPrefix)
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
+    behave like pageWithBackLink(createView(Some(true)))
+
+    behave like yesNoPage(createViewUsingForm(Some(true)), messageKeyPartnerPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
+  }
+
+  "TaxOrUniversalCredits view when there is no partner" must {
+
+    behave like normalPage(createView(Some(false)), messageKeyPrefix)
+
+    behave like pageWithBackLink(createView(Some(false)))
+
+    behave like yesNoPage(createViewUsingForm(Some(false)), messageKeyPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
   }
 }
