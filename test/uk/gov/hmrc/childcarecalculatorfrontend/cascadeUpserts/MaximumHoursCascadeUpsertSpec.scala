@@ -51,8 +51,8 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
         PartnerMaximumEarningsId.toString -> JsBoolean(true),
         BothStatutoryPayId.toString -> JsBoolean(true),
-        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
-        PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
+        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)
+
         ))
 
       val originalCacheMap2 = new CacheMap("id", Map(
@@ -69,8 +69,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
         PartnerMaximumEarningsId.toString -> JsBoolean(true),
         BothStatutoryPayId.toString -> JsBoolean(true),
-        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
-        PartnerStatutoryPayTypeId.toString -> JsString("maternity")
+        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString)
         ))
 
 

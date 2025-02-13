@@ -1213,10 +1213,6 @@ partnerStatutoryPay.checkYourAnswersLabel = Has your partner had statutory pay s
 partnerStatutoryPay.guidance_extra = This could also be if they started to get the pay before 6 April {0} and continued to get it after this date.
 partnerStatutoryPay.error.required = Select yes if your partner had statutory pay since 6 April {0}
 
-partnerStatutoryPayType.title = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.heading = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.error.notCompleted = Select what kind of statutory pay your partner got
-partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
 
 yourStatutoryPayType.title = What kind of statutory pay did you get?
 yourStatutoryPayType.heading = What kind of statutory pay did you get?

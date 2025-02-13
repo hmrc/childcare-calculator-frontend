@@ -1184,10 +1184,6 @@ partnerStatutoryPay.checkYourAnswersLabel=A yw’ch partner wedi cael tâl statu
 partnerStatutoryPay.guidance_extra=Gallai hyn fod hefyd os gwnaeth ddechrau cael y tâl cyn 6 Ebrill {0} a pharhau i’w gael ar ôl y dyddiad hwn.
 partnerStatutoryPay.error.required=Dewiswch ‘Iawn’ os cafodd eich partner dâl statudol ers 6 Ebrill {0}
 
-partnerStatutoryPayType.title=Pa fath o dâl statudol oedd eich partner yn ei gael?
-partnerStatutoryPayType.heading=Pa fath o dâl statudol oedd eich partner yn ei gael?
-partnerStatutoryPayType.error.notCompleted=Dewiswch pa fath o dâl statudol a gafodd eich partner
-partnerStatutoryPayType.checkYourAnswersLabel=partnerStatutoryPayType
 
 yourStatutoryPayType.title=Pa fath o dâl statudol a gawsoch?
 yourStatutoryPayType.heading=Pa fath o dâl statudol a gawsoch?

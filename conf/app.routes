@@ -329,8 +329,6 @@ POST        /both-statutory-pay                                uk.gov.hmrc.child
 GET         /who-got-statutory-pay                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGotStatutoryPayController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /who-got-statutory-pay                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGotStatutoryPayController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /partner-statutory-pay-type                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayTypeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-statutory-pay-type                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayTypeController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /your-statutory-pay-type                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayTypeController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-statutory-pay-type                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourStatutoryPayTypeController.onSubmit(mode: Mode ?= NormalMode)

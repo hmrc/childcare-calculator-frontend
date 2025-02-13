@@ -94,33 +94,6 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   "Statutory for partner" when {
     "Save Partner Statutory Pay Before Tax data " must {
 
-      "Save Both Statutory Pay Type" must {
-        "remove data for PartnerStatutoryStartDate, PartnerStatutoryPayBeforeTax and PartnerStatutoryPayBeforeTax " +
-          "pages when Statutory Pay Type is changed" in {
-
-          val originalCacheMap = new CacheMap("id", Map(
-            PartnerStatutoryPayTypeId.toString -> json.JsString("maternity")))
-
-          val result = cascadeUpsert(PartnerStatutoryPayTypeId.toString, "paternity", originalCacheMap)
-
-          result.data mustBe Map(PartnerStatutoryPayTypeId.toString -> JsString("paternity"))
-
-        }
-
-      }
-
-      "retain the data for PartnerStatutoryStartDate, PartnerStatutoryWeeks and PartnerStatutoryPayBeforeTax pages when" +
-        "Statutory Pay Type is not changed" in {
-
-        val originalCacheMap = new CacheMap("id", Map(
-          PartnerStatutoryPayTypeId.toString -> json.JsString("maternity")))
-
-        val result = cascadeUpsert(PartnerStatutoryPayTypeId.toString, "maternity", originalCacheMap)
-
-        result.data mustBe Map(PartnerStatutoryPayTypeId.toString -> JsString("maternity"))
-
-      }
-
       "who got statutory pay" must {
         "remove data for YourStatutoryStartDate, YourStatutoryWeeks, YourStatutoryPayBeforeTax and YourStatutoryPayType pages" +
           "when partner selected for who got statutory pay" in {
@@ -134,33 +107,11 @@ class StatutoryCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           result.data mustBe Map(WhoGotStatutoryPayId.toString -> JsString("partner"))
         }
 
-        "remove data for PartnerStatutoryStartDate, PartnerStatutoryPayBeforeTax and PartnerStatutoryPayType pages" +
-          "when You selected for who got statutory pay" in {
-
-          val originalCacheMap = new CacheMap("id", Map(
-
-            PartnerStatutoryPayTypeId.toString -> json.JsString("maternity")))
-
-          val result = cascadeUpsert(WhoGotStatutoryPayId.toString, "you", originalCacheMap)
-
-          result.data mustBe Map(WhoGotStatutoryPayId.toString -> JsString("you"))
-        }
-
-
-        "save the data for first time" in {
-          val originalCacheMap = new CacheMap("id", Map())
-
-          val result = cascadeUpsert(PartnerStatutoryPayTypeId.toString, "maternity", originalCacheMap)
-
-          result.data mustBe Map(PartnerStatutoryPayTypeId.toString -> JsString("maternity"))
-
-        }
 
       }
       "Save Partner Statutory Pay data" must {
         "remove PartnerStatutoryPayPerWeek page data when user selects no option" in {
           val originalCacheMap = new CacheMap("id", Map(
-            PartnerStatutoryPayTypeId.toString -> JsString("maternity")
         ))
 
           val result = cascadeUpsert(BothStatutoryPayId.toString, false, originalCacheMap)
