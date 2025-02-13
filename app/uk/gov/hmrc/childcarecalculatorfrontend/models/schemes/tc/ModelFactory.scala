@@ -79,7 +79,9 @@ class ModelFactory @Inject() () {
           } else {
             Some(Set.empty)
           }
-        } yield SingleHousehold(Parent(hours, benefits.map(WhichBenefitsEnum.withName)))
+        }
+
+        yield SingleHousehold(Parent(hours, benefits.map(WhichBenefitsEnum.withName)))
     }
   }
 }
