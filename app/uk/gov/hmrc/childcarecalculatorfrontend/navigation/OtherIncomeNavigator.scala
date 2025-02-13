@@ -23,14 +23,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotDetermined, NotEligible}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{you, both, partner, universalCredits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
   * Contains the navigation for current and previous year other income pages
   */
-class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: TaxFreeChildcare) extends SubNavigator {
+class OtherIncomeNavigator @Inject()(utils: Utils, tfc: TaxFreeChildcare) extends SubNavigator {
 
   override protected def routeMap = Map(
     YourOtherIncomeThisYearId -> yourOtherIncomeRouteCY,
@@ -65,7 +65,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
   private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
       case true => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case false => processTaxCreditsEligibility(answers, routes.BothIncomeInfoPYController.onPageLoad(), routes.ResultController.onPageLoad())
+      case false => routes.ResultController.onPageLoad()
     }
 
   private def bothOtherIncomeRouteCY(answers: UserAnswers) =
@@ -150,18 +150,12 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
     }
   }
 
-  private def processTaxCreditsEligibility(answers: UserAnswers, eligibleCall: Call, notEligibleCall: Call) = {
-    taxCredits.eligibility(answers) match {
-      case Eligible => eligibleCall
-      case NotEligible | NotDetermined => notEligibleCall
-    }
-  }
+
 
   private def taxCreditAndTfcEligibility(answers: UserAnswers,
                                          eligibleCall: Call,
                                          notEligibleCall: Call) = {
 
-    val tcEligibility = taxCredits.eligibility(answers)
     val tfcEligibility = tfc.eligibility(answers)
     val hasUniversalCredits = answers.taxOrUniversalCredits.contains(universalCredits)
 

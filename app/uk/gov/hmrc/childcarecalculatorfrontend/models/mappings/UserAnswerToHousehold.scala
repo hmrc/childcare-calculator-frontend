@@ -27,10 +27,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils, DateTimeUtils}
 
-class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits)
+class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils)
   extends OverallIncome {
 
   private def stringToCreditsEnum(x: Option[String]): Option[CreditsEnum] = x match {

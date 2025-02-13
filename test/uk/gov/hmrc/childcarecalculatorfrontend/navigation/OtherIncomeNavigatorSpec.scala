@@ -23,7 +23,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{TaxCredits, TaxFreeChildcare}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
@@ -31,9 +31,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
-  val taxCredits: TaxCredits = mock[TaxCredits]
+
   val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-  def navigator(tc:TaxCredits = taxCredits, tfcScheme: TaxFreeChildcare = tfc) = new OtherIncomeNavigator(new Utils(), tc, tfcScheme)
+  def navigator( tfcScheme: TaxFreeChildcare = tfc) = new OtherIncomeNavigator(new Utils(),tfcScheme)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -165,7 +165,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(answers.taxOrUniversalCredits) thenReturn Some("tc")
 
               when(tfc.eligibility(any())) thenReturn NotEligible
-              when(taxCredits.eligibility(any())) thenReturn Eligible
 
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
                 routes.BothIncomeInfoPYController.onPageLoad()
@@ -179,7 +178,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(answers.taxOrUniversalCredits) thenReturn Some("tc")
 
               when(tfc.eligibility(any())) thenReturn NotEligible
-              when(taxCredits.eligibility(any())) thenReturn Eligible
 
               navigator().nextPage(BothOtherIncomeThisYearId, NormalMode).value(answers) mustBe
                 routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
@@ -467,7 +465,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             val answers = spy(userAnswers())
             when(answers.whoIsInPaidEmployment) thenReturn Some(both)
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
-            when(taxCredits.eligibility(any())) thenReturn NotEligible
 
             navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -477,7 +474,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             val answers = spy(userAnswers())
             when(answers.whoIsInPaidEmployment) thenReturn Some(both)
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
-            when(taxCredits.eligibility(any())) thenReturn NotDetermined
 
             navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
               routes.ResultController.onPageLoad()

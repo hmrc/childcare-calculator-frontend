@@ -21,14 +21,13 @@ import javax.inject.Inject
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**
   * Contains the navigation for current and previous year statutory pay pages
   */
-class StatutoryNavigator @Inject() (utils: Utils, scheme: TaxCredits) extends SubNavigator {
+class StatutoryNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected def routeMap = Map(
     BothStatutoryPayId -> bothStatutoryPayRoute,
