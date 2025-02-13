@@ -259,13 +259,11 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
     def getCallForVoucherValue(voucherValue: Boolean): Call =
       if (!voucherValue && maxEarnings) {
-          routes.ResultController.onPageLoad()
+        routes.ResultController.onPageLoad()
       } else {
-          answers.doYouLiveWithPartner.contains(true) match {
-          case true => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-          case _    => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
-        }
+        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
       }
+
     (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
       case (Some(parentVoucher), _) => getCallForVoucherValue(parentVoucher)
       case (_, Some(partnerVoucher)) => getCallForVoucherValue(partnerVoucher)

@@ -27,11 +27,20 @@
     inputYesNo: playComponents.input_yes_no,
     submitButton: playComponents.submit_button,
 )
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, havePartner: Option[Boolean])(implicit request: Request[_], messages: Messages)
+
+@getMessageKeys(keys: String) = @{
+    havePartner match {
+    case Some(true) => messages(s"${keys}_partner")
+    case _ => messages(s"$keys")
+    }
+}
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("taxOrUniversalCredits.title")) else messages("taxOrUniversalCredits.title")
+    if(form.errors.nonEmpty) messages("site.title.error", getMessageKeys("taxOrUniversalCredits.title")) else getMessageKeys("taxOrUniversalCredits.title")
 }
+
+
 
 @layout(
     pageTitle = title
@@ -42,7 +51,7 @@
     @formWithCSRF(action = TaxOrUniversalCreditsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
     @inputYesNo(
-        label = HtmlContent(heading(messages("taxOrUniversalCredits.heading"))),
+        label = HtmlContent(heading(getMessageKeys("taxOrUniversalCredits.heading"))),
         field = form("value")
     )
     @submitButton()
