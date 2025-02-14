@@ -1327,6 +1327,48 @@ yourAndPartnerAverageWeeklyEarnings.heading3 = Part year workers
 yourAndPartnerAverageWeeklyEarnings.para3 = You or your partner may still qualify for the scheme if your income is below the minimum threshold. This applies only if you or your partner will work at least 16 hours a week, on average, over the next 3 months.
 yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select yes.
 
+yourAverageWeeklyEarnings.title = Your average weekly earnings
+yourAverageWeeklyEarnings.heading = Your average weekly earnings
+yourAverageWeeklyEarnings.para1 = We need to know your total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
+yourAverageWeeklyEarnings.heading2 = If you went on leave
+yourAverageWeeklyEarnings.para2 = We only want to know much you earned before you went on any of these types of leave:
+yourAverageWeeklyEarnings.li.maternity = maternity
+yourAverageWeeklyEarnings.li.paternity = paternity
+yourAverageWeeklyEarnings.li.adoption = adoption
+yourAverageWeeklyEarnings.li.neonatalCare = neonatal care
+yourAverageWeeklyEarnings.li.sickLeave = sick leave
+yourAverageWeeklyEarnings.heading3 = Part year workers
+yourAverageWeeklyEarnings.para3 = You may still qualify for the scheme if your income is below the minimum threshold. This applies only if you’ll work at least 16 hours a week on average over the next 3 months.
+yourAverageWeeklyEarnings.para4 = If this applies to you, select yes.
+
+partnerAverageWeeklyEarnings.title = Your partner’s average weekly earnings
+partnerAverageWeeklyEarnings.heading = Your partner’s average weekly earnings
+partnerAverageWeeklyEarnings.para1 = We need to know your partner’s total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
+partnerAverageWeeklyEarnings.heading2 = If they went on leave
+partnerAverageWeeklyEarnings.para2 = We only need to know how much they earned before they went on any of these types of leave:
+partnerAverageWeeklyEarnings.li.maternity = maternity
+partnerAverageWeeklyEarnings.li.paternity = paternity
+partnerAverageWeeklyEarnings.li.adoption = adoption
+partnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
+partnerAverageWeeklyEarnings.li.sickLeave = sick leave
+partnerAverageWeeklyEarnings.heading3 = Part year workers
+partnerAverageWeeklyEarnings.para3 = Your partner may still qualify for the scheme if their income is below the minimum threshold. This applies only if they will work at least 16 hours a week, on average, over the next 3 months.
+partnerAverageWeeklyEarnings.para4 = If this applies to them, select yes.
+
+yourAndPartnerAverageWeeklyEarnings.title = You and your partner’s average weekly earnings
+yourAndPartnerAverageWeeklyEarnings.heading = You and your partner’s average weekly earnings
+yourAndPartnerAverageWeeklyEarnings.para1 = We need to know you and your partner’s total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
+yourAndPartnerAverageWeeklyEarnings.heading2 = If either of you went on leave
+yourAndPartnerAverageWeeklyEarnings.para2 = We only need to know how much you or your partner earned before going on any of these types of leave:
+yourAndPartnerAverageWeeklyEarnings.li.maternity = maternity
+yourAndPartnerAverageWeeklyEarnings.li.paternity = paternity
+yourAndPartnerAverageWeeklyEarnings.li.adoption = adoption
+yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
+yourAndPartnerAverageWeeklyEarnings.li.sickLeave = sick leave
+yourAndPartnerAverageWeeklyEarnings.heading3 = Part year workers
+yourAndPartnerAverageWeeklyEarnings.para3 = You or your partner may still qualify for the scheme if your income is below the minimum threshold. This applies only if you or your partner will work at least 16 hours a week, on average, over the next 3 months.
+yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select yes.
+
 urBanner.title = Help improve GOV.UK
 urBanner.message = Get involved in making government services better
 urBanner.message.link = https://signup.take-part-in-research.service.gov.uk/?utm_campaign=ChildcareCalcBanner&utm_source=Other&utm_medium=other&t=HMRC&id=143
