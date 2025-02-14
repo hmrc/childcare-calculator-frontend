@@ -485,14 +485,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
         }
 
-        "redirects to BothStatutoryPay page when user selects no" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyOtherIncomeLY) thenReturn Some(false)
-
-          navigator().nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.BothStatutoryPayController.onPageLoad(NormalMode)
-        }
-
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
           when(answers.partnerAnyOtherIncomeLY) thenReturn None

@@ -1167,10 +1167,6 @@ statutoryPay.li.adoption=mabwysiadu
 statutoryPay.li.shared_parental=ar y cyd i rieni
 statutoryPay.guidance_extra=Gallai fod wedi dechrau cyn y dyddiad hwn ac wedi gorgyffwrdd heibio’r dyddiad.
 
-bothStatutoryPay.title=A ydych chi, eich partner, neu’r ddau ohonoch, wedi cael tâl statudol ers 6 Ebrill {0}?
-bothStatutoryPay.heading=A ydych chi, eich partner, neu’r ddau ohonoch, wedi cael tâl statudol ers 6 Ebrill {0}?
-bothStatutoryPay.checkYourAnswersLabel=A ydych chi, eich partner, neu’r ddau ohonoch, wedi cael tâl statudol ers 6 Ebrill {0}?
-bothStatutoryPay.error.required=Dewiswch ‘Iawn’ os ydych chi, eich partner, neu’r ddau ohonoch wedi cael tâl statudol ers 6ed Ebrill {0}
 
 partnerStatutoryPay.title=A yw’ch partner wedi cael tâl statudol ers 6 Ebrill {0}?
 partnerStatutoryPay.heading=A yw’ch partner wedi cael tâl statudol ers 6 Ebrill {0}?

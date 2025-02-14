@@ -1196,10 +1196,6 @@ statutoryPay.li.adoption = adoption
 statutoryPay.li.shared_parental = shared parental
 statutoryPay.guidance_extra = It could have started before this date and overlapped past it.
 
-bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April {0}?
-bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April {0}?
-bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April {0}?
-bothStatutoryPay.error.required = Select yes if you, your partner, or both of you have had statutory pay since 6th April {0}
 
 partnerStatutoryPay.title = Has your partner had statutory pay since 6 April {0}?
 partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April {0}?

@@ -25,8 +25,7 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      YouStatutoryPayId.toString -> ((v, cm) => storeYouStatutoryPay(v, cm)),
-      BothStatutoryPayId.toString -> ((v, cm) => storeBothStatutoryPay(v, cm))
+      YouStatutoryPayId.toString -> ((v, cm) => storeYouStatutoryPay(v, cm))
     )
 
   private def storeYouStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap = {
@@ -36,15 +35,6 @@ class StatutoryCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
 
     store(YouStatutoryPayId.toString, value, mapToStore)
-  }
-
-  private def storeBothStatutoryPay(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data)
-      case _ => cacheMap
-    }
-
-    store(BothStatutoryPayId.toString, value, mapToStore)
   }
 
 }

@@ -100,7 +100,6 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
   private def partnerOtherIncomeRoutePY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeLY) {
       case true => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-      case false => routes.BothStatutoryPayController.onPageLoad(NormalMode)
     }
 
   private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
