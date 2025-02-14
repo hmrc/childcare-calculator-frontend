@@ -70,29 +70,6 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Partner Benefits CY Route" must {
-        "redirects to partnerBenefitsIncomeCY page when user selects yes" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsCY) thenReturn Some(true)
-
-          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-        }
-
-        "redirects to partner any other income page when user selects no" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsCY) thenReturn Some(false)
-
-          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsCY) thenReturn None
-
-          navigator.nextPage(PartnerAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
-        }
-      }
-
       "Both Benefits CY Route" must {
         "redirects to whosHadBenefits page when user selects yes" in {
           val answers = spy(userAnswers())

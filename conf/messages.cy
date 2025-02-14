@@ -609,24 +609,6 @@ youAnyTheseBenefitsCY.error.notCompleted=Dewiswch ‘Iawn’ os ydych wedi cael 
 youAnyTheseBenefitsCY.error.carers.allowance=Dewiswch ‘Iawn’ gan eich bod chi eisoes wedi dewis eich bod yn cael Lwfans Gofalwr
 youAnyTheseBenefitsCY.error.scottishCarers.allowance=Dewiswch ‘Iawn’ gan eich bod eisoes wedi nodi eich bod yn cael naill ai Lwfans Gofalwr neu Daliad Cymorth Gofalwr
 
-partnerAnyTheseBenefitsCY.title=A yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
-partnerAnyTheseBenefitsCY.heading=A yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
-partnerAnyTheseBenefitsCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-partnerAnyTheseBenefitsCY.li.income_support=Cymhorthdal Incwm
-partnerAnyTheseBenefitsCY.li.jobseekers_allowance=Lwfans Ceisio Gwaith ar sail Incwm
-partnerAnyTheseBenefitsCY.li.employment_support=Lwfans Cyflogaeth a Chymorth yn ymwneud ag incwm
-partnerAnyTheseBenefitsCY.li.pensions=Credyd Pensiwn
-partnerAnyTheseBenefitsCY.li.disability=Lwfans Byw i’r Anabl
-partnerAnyTheseBenefitsCY.li.adultDisability=Taliad Anabledd (Yr Alban yn unig)
-partnerAnyTheseBenefitsCY.li.attendance=Lwfans Gweini
-partnerAnyTheseBenefitsCY.li.independance=Taliad Annibyniaeth Personol
-partnerAnyTheseBenefitsCY.li.carers=Lwfans Gofalwr
-partnerAnyTheseBenefitsCY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-partnerAnyTheseBenefitsCY.checkYourAnswersLabel=A yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
-partnerAnyTheseBenefitsCY.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon
-partnerAnyTheseBenefitsCY.error.carers.allowance=Dewiswch ‘Iawn’ gan eich bod chi eisoes wedi dewis bod eich partner yn cael Lwfans Gofalwr
-partnerAnyTheseBenefitsCY.error.scottishCarers.allowance=Dewiswch ‘Iawn’ gan eich bod eisoes wedi nodi bod eich partner yn cael naill ai Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-
 bothAnyTheseBenefitsCY.title=A ydych chi, eich partner, neu’r ddau ohonoch wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
 bothAnyTheseBenefitsCY.heading=A ydych chi, eich partner, neu’r ddau ohonoch wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
 bothAnyTheseBenefitsCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
