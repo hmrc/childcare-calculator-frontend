@@ -412,12 +412,10 @@ yourAge.checkYourAnswersLabel=Beth yw’ch oedran chi?
 
 yourMinimumEarnings.title = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
 yourMinimumEarnings.heading = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
-yourMinimumEarnings.form = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
 yourMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os ydych yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
 partnerMinimumEarnings.title = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
 partnerMinimumEarnings.heading = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
-partnerMinimumEarnings.form = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
 partnerMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch partner yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
 areYouSelfEmployedOrApprentice.title=A ydych yn hunangyflogedig neu’n brentis?

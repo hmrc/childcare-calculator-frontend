@@ -430,12 +430,10 @@ yourAge.checkYourAnswersLabel = What’s your age?
 
 yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
-yourMinimumEarnings.form = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.error.notCompleted = Select yes if you will earn an average of £{0} or more a week
 
 partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
-partnerMinimumEarnings.form = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.error.notCompleted = Select yes if your partner will earn an average of £{0} or more a week
 
 areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
