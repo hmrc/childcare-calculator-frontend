@@ -36,7 +36,7 @@
 )(implicit request: Request[_], messages: Messages)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("partnerMinimumEarnings.form", amount)) else messages("partnerMinimumEarnings.form", amount)
+    if(form.errors.nonEmpty) messages("site.title.error", messages("partnerMinimumEarnings.title", amount)) else messages("partnerMinimumEarnings.title", amount)
 }
 
 @layout(
