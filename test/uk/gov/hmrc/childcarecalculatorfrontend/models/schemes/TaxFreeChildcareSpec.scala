@@ -20,9 +20,8 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.CarersAllowance
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NotDetermined, NotEligible, ParentsBenefits, WhichBenefitsEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class TaxFreeChildcareSpec extends SchemeSpec with MockitoSugar {

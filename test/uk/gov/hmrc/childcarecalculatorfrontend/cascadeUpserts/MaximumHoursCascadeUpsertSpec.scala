@@ -16,28 +16,25 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
-import java.time.LocalDate
 import play.api.libs.json._
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerPaidWorkPYId, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.IncapacityBenefit
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+
+import java.time.LocalDate
 
 class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
-  lazy val yes: String = YesNoUnsureEnum.YES.toString
-  lazy val no: String = YesNoUnsureEnum.NO.toString
-  lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
+  private val yes: String = YesNoUnsureEnum.YES.toString
+  private val no: String = YesNoUnsureEnum.NO.toString
+  private val notSure: String = YesNoUnsureEnum.NOTSURE.toString
 
-  lazy val disabilityBenefits: String = WhichBenefitsEnum.DISABILITYBENEFITS.toString
-  lazy val incomeBenefits: String = WhichBenefitsEnum.INCOMEBENEFITS.toString
-
-
-  lazy val under18: String = AgeEnum.UNDER18.toString
-  lazy val eighteenToTwenty: String = AgeEnum.EIGHTEENTOTWENTY.toString
-  lazy val twentyOneOrOver: String = AgeEnum.TWENTYONEOROVER.toString
+  private val under18: String = AgeEnum.UNDER18.toString
+  private val eighteenToTwenty: String = AgeEnum.EIGHTEENTOTWENTY.toString
+  private val twentyOneOrOver: String = AgeEnum.TWENTYONEOROVER.toString
 
 
   "saving the doYouLiveWithPartner" when {

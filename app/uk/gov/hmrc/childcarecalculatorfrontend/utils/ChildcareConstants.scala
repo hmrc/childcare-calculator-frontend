@@ -46,13 +46,6 @@ object ChildcareConstants {
   val yes = YesNoNotYetEnum.YES.toString
   val notYet = YesNoNotYetEnum.NOTYET.toString
 
-  val incomeBenefits: String = WhichBenefitsEnum.INCOMEBENEFITS.toString
-  val disabilityBenefits: String = WhichBenefitsEnum.DISABILITYBENEFITS.toString
-  val highRatedDisabilityBenefits: String = WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
-  val severelyDisabledPremium: String = WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
-  val carersAllowanceBenefits: String = WhichBenefitsEnum.CARERSALLOWANCE.toString
-  val scottishCarersAllowanceBenefits: String = WhichBenefitsEnum.SCOTTISHCARERSALLOWANCE.toString
-
   val firstMonthOfTaxYear = 4
   val startDayOfTaxYear = 6
 
