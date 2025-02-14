@@ -334,25 +334,16 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
 
-      "parent with partner, both in paid work and parent earns more than NMW, will be redirected to partner minimum earnings page" in {
+      "parent with partner, both in paid work, will be redirected to you and your average earnings page" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.yourMinimumEarnings) thenReturn Some(true)
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+
+        navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe
+          routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
       }
 
-      "parent with partner, both in paid work and parent does not earn more than NMW, will be redirected to partner minimum earnings page" in {
-        val answers = spy(userAnswers())
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(YouPartnerBothEnum.BOTH.toString)
-        when(answers.yourMinimumEarnings) thenReturn Some(false)
-
-        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
-      }
 
       "redirect to your max earnings page when there is a partner, only parent is in paid work and parent earns more than NMW" in {
         val answers = spy(userAnswers())
@@ -566,10 +557,10 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   }
 
   "Whats Your age" when {
-    "single user will be taken to parent minimum earnings page when user selects any age option " in {
+    "single user will be taken to your average earnings page when user selects any age option " in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(false)
-      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
     }
 
     "partner user with both in paid work will be taken to whats your partners age page when user selects any age option " in {
@@ -579,27 +570,27 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.YourPartnersAgeController.onPageLoad(NormalMode)
     }
 
-    "partner user with only user(You) in paid work will be taken to parent minimum earnings page when user selects any age option " in {
+    "partner user with only user(You) in paid work will be taken to your average earnings page when user selects any age option " in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("you")
-      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
     }
   }
 
   "Whats your partners age" when {
-    "user will be taken to partners minimum earnings page when user selects any age option" in {
+    "user will be taken to partners average earnings page when user selects any age option" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("partner")
-      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
     }
 
-    "both in paid work, selecting any age option redirect to parent's minimum earnings page" in {
+    "both in paid work, selecting any age option redirect to parent's average earnings page" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner) thenReturn Some(true)
       when(answers.whoIsInPaidEmployment) thenReturn Some("both")
-      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
     }
   }
 
