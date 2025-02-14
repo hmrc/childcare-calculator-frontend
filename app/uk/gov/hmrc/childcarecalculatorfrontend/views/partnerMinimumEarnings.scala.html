@@ -47,7 +47,7 @@
 
     @formWithCSRF(action = PartnerMinimumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
         @inputYesNo(
-            label = HtmlContent(heading(messages("partnerMinimumEarnings.form", amount))),
+            label = HtmlContent(heading(messages("partnerMinimumEarnings.heading", amount))),
             field = form("value"),
         )
 

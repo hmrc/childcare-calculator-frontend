@@ -51,13 +51,13 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourMinimumEarningsController.onSubmit(NormalMode).url,
-      legend = Some(messages(s"$messageKeyPrefix.form", 0))
+      legend = Some(messages(s"$messageKeyPrefix.heading", 0))
     )
 
     "show correct guidance and value of minimum earnings" in {
       val amount = BigDecimal(40)
       val doc = asDocument(createViewWithAmount(amount))
-      assertContainsText(doc, messages(s"$messageKeyPrefix.form", amount))
+      assertContainsText(doc, messages(s"$messageKeyPrefix.heading", amount))
     }
   }
 
