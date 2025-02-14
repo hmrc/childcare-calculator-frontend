@@ -23,18 +23,18 @@ sealed trait ParentsBenefits
 object ParentsBenefits {
   case object CarersAllowance extends ParentsBenefits
   case object IncapacityBenefit extends ParentsBenefits
-  case object SevereDisablement extends ParentsBenefits
-  case object EmploymentAndSupportAllowance extends ParentsBenefits
-  case object NICreditsForIncapacity extends ParentsBenefits
+  case object SevereDisablementAllowance extends ParentsBenefits
+  case object ContributionBasedEmploymentAndSupportAllowance extends ParentsBenefits
+  case object NICreditsForIncapacityOrLimitedCapabilityForWork extends ParentsBenefits
   case object CarersCredit extends ParentsBenefits
   case object NoneOfThese extends ParentsBenefits
 
   private val sortedParentsBenefits = List(
     CarersAllowance,
     IncapacityBenefit,
-    SevereDisablement,
-    EmploymentAndSupportAllowance,
-    NICreditsForIncapacity,
+    SevereDisablementAllowance,
+    ContributionBasedEmploymentAndSupportAllowance,
+    NICreditsForIncapacityOrLimitedCapabilityForWork,
     CarersCredit,
     NoneOfThese
   )

@@ -40,7 +40,7 @@ class BenefitsSpec extends PlaySpec {
       }
 
       "income benefits Set contains NICreditsForIncapacity" in {
-        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(NICreditsForIncapacity))
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(NICreditsForIncapacityOrLimitedCapabilityForWork))
 
         Benefits.from(inputBenefits) mustBe Some(Benefits())}
 
@@ -70,13 +70,13 @@ class BenefitsSpec extends PlaySpec {
       }
 
       "income benefits Set contains SevereDisablement" in {
-        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(SevereDisablement))
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(SevereDisablementAllowance))
 
         Benefits.from(inputBenefits) mustBe Some(Benefits(carersAllowance = true))
       }
 
       "income benefits Set contains EmploymentAndSupportAllowance" in {
-        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(EmploymentAndSupportAllowance))
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(ContributionBasedEmploymentAndSupportAllowance))
 
         Benefits.from(inputBenefits) mustBe Some(Benefits(carersAllowance = true))
       }
@@ -87,9 +87,9 @@ class BenefitsSpec extends PlaySpec {
             Set(
               CarersAllowance,
               IncapacityBenefit,
-              SevereDisablement,
-              EmploymentAndSupportAllowance,
-              NICreditsForIncapacity,
+              SevereDisablementAllowance,
+              ContributionBasedEmploymentAndSupportAllowance,
+              NICreditsForIncapacityOrLimitedCapabilityForWork,
               CarersCredit,
             )
           )

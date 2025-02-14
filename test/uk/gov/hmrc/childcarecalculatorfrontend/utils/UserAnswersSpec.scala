@@ -21,7 +21,7 @@ import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{CarersAllowance, IncapacityBenefit, SevereDisablement}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{CarersAllowance, IncapacityBenefit, SevereDisablementAllowance}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 import java.time.LocalDate
@@ -727,7 +727,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
       "'you' get SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablement.toString)))
+          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual true
@@ -735,7 +735,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
       "'partner' gets SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablement.toString)))
+          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual true
@@ -743,8 +743,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
       "'both' get SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablement.toString))),
-          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablement.toString)))
+          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString))),
+          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual true

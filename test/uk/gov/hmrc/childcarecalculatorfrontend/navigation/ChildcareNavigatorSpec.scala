@@ -806,7 +806,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.hasVouchers).thenReturn(false)
         when(answers.doYouGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.CarersAllowance)))
         when(answers.doesYourPartnerGetAnyBenefits)
-          .thenReturn(Some(Set(ParentsBenefits.IncapacityBenefit, ParentsBenefits.EmploymentAndSupportAllowance)))
+          .thenReturn(Some(Set(ParentsBenefits.IncapacityBenefit, ParentsBenefits.ContributionBasedEmploymentAndSupportAllowance)))
         when(answers.taxOrUniversalCredits).thenReturn(Some(true))
 
         val result = navigator.isEligibleForTaxCredits(answers, hasPartner = false)
@@ -855,7 +855,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         val answers = mock[UserAnswers]
         when(answers.hasVouchers).thenReturn(false)
         when(answers.doYouGetAnyBenefits).thenReturn(None)
-        when(answers.doesYourPartnerGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.SevereDisablement)))
+        when(answers.doesYourPartnerGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.SevereDisablementAllowance)))
         when(answers.taxOrUniversalCredits).thenReturn(Some(true))
         when(answers.isOnSevereDisabilityPremium).thenCallRealMethod()
 
