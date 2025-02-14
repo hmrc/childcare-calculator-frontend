@@ -315,7 +315,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "Who Gets Other Income CY RoutePartnerAnyTheseBenefitsCY" must {
+      "Who Gets Other Income CY Route" must {
         "redirects to YourOtherIncomeAmountCY page when user selects you option" in {
           val answers = spy(userAnswers())
           when(answers.whoGetsOtherIncomeCY) thenReturn Some("you")
