@@ -36,9 +36,9 @@ class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxView
     Seq(
       (s"$messageKeyPrefix.$CarersAllowance", CarersAllowance.toString),
       (s"$messageKeyPrefix.$IncapacityBenefit", IncapacityBenefit.toString),
-      (s"$messageKeyPrefix.$SevereDisablement", SevereDisablement.toString),
-      (s"$messageKeyPrefix.$EmploymentAndSupportAllowance", EmploymentAndSupportAllowance.toString),
-      (s"$messageKeyPrefix.$NICreditsForIncapacity", NICreditsForIncapacity.toString),
+      (s"$messageKeyPrefix.$SevereDisablementAllowance", SevereDisablementAllowance.toString),
+      (s"$messageKeyPrefix.$ContributionBasedEmploymentAndSupportAllowance", ContributionBasedEmploymentAndSupportAllowance.toString),
+      (s"$messageKeyPrefix.$NICreditsForIncapacityOrLimitedCapabilityForWork", NICreditsForIncapacityOrLimitedCapabilityForWork.toString),
       (s"$messageKeyPrefix.$CarersCredit", CarersCredit.toString),
       (s"$messageKeyPrefix.or", "divider"),
       (s"$messageKeyPrefix.$NoneOfThese", NoneOfThese.toString)

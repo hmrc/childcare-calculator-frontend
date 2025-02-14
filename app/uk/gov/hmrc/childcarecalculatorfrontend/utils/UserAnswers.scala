@@ -441,7 +441,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def isOnSevereDisabilityPremium: Boolean =
     (doYouGetAnyBenefits.getOrElse(Set.empty) ++ doesYourPartnerGetAnyBenefits.getOrElse(Set.empty))
-      .contains(ParentsBenefits.SevereDisablement)
+      .contains(ParentsBenefits.SevereDisablementAllowance)
 
   def isAlreadyReceivingTaxCredits: Boolean =
     taxOrUniversalCredits match {

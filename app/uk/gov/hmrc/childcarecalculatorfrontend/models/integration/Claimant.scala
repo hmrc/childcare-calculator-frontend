@@ -59,8 +59,8 @@ object Benefits {
   val TfcOrFreeChildcareQualifyingBenefits: Set[ParentsBenefits] = Set(
     CarersAllowance,
     IncapacityBenefit,
-    SevereDisablement,
-    EmploymentAndSupportAllowance
+    SevereDisablementAllowance,
+    ContributionBasedEmploymentAndSupportAllowance
   )
 
   def from(data: Option[Set[ParentsBenefits]]): Option[Benefits] =

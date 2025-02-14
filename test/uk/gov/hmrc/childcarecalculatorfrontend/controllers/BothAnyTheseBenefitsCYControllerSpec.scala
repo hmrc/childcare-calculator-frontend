@@ -42,13 +42,19 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
   def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
-    new BothAnyTheseBenefitsCYController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, taxYearInfo, view)
+    new BothAnyTheseBenefitsCYController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      taxYearInfo,
+      view
+    )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()): String = view(frontendAppConfig,
-                                                                                  form,
-                                                                                  NormalMode,
-                                                                                  taxYearInfo, location)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String =
+    view(frontendAppConfig, form, NormalMode, taxYearInfo, location)(fakeRequest, messages).toString
 
   "BothAnyTheseBenefitsCY Controller" must {
 
@@ -95,7 +101,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
@@ -114,7 +120,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -132,7 +138,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
 
@@ -151,7 +157,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -170,7 +176,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
 
 
@@ -190,7 +196,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -208,7 +214,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val carerAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
@@ -227,7 +233,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val scottishCarersAllowance = Map(
         LocationId.toString -> JsString(location.toString),
         DoYouGetAnyBenefitsId.toString -> Json.toJson(Seq("CarersAllowance")),
-        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("EmploymentAndSupportAllowance"))
+        DoesYourPartnerGetAnyBenefitsId.toString -> Json.toJson(Seq("ContributionBasedEmploymentAndSupportAllowance"))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
