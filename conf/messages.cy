@@ -408,18 +408,12 @@ yourAge.TWENTYONEOROVER=21 neu’n hŷn
 yourAge.error.notCompleted=Dewiswch eich oedran
 yourAge.checkYourAnswersLabel=Beth yw’ch oedran chi?
 
-yourMinimumEarnings.title = Eich enillion wythnosol cyfartalog
-yourMinimumEarnings.heading = Eich enillion wythnosol cyfartalog
-yourMinimumEarnings.para1 = Mae angen i ni wybod cyfanswm eich cyflog wythnosol neu elw o hunangyflogaeth am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-yourMinimumEarnings.para2 = Os ydych chi ar absenoldeb mamolaeth, tadolaeth, mabwysiadu, neu salwch, faint wnaethoch chi ei ennill cyn i chi fynd ar wyliau.
-yourMinimumEarnings.form = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
+yourMinimumEarnings.title = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
+yourMinimumEarnings.heading = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
 yourMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os ydych yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
-partnerMinimumEarnings.title = Enillion wythnosol cyfartalog eich partner
-partnerMinimumEarnings.heading = Enillion wythnosol cyfartalog eich partner
-partnerMinimumEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth eich partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-partnerMinimumEarnings.para2 = Os yw’ch partner ar absenoldeb mamolaeth, absenoldeb tadolaeth, absenoldeb mabwysiadu, neu absenoldeb oherwydd salwch, dyma faint y gwnaeth ei ennill cyn iddo fynd ar gyfnod o absenoldeb.
-partnerMinimumEarnings.form = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
+partnerMinimumEarnings.title = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
+partnerMinimumEarnings.heading = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
 partnerMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch partner yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
 areYouSelfEmployedOrApprentice.title=A ydych yn hunangyflogedig neu’n brentis?

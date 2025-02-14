@@ -40,27 +40,23 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
       view = createView,
       messageKeyPrefix = messageKeyPrefix,
       messageKeyPostfix = "",
-      title = messages("yourMinimumEarnings.title"),
+      title = messages("yourMinimumEarnings.title", 0),
       heading = Some(""),
       expectedGuidanceKeys= Seq(),
       args = 0
     )
-
     behave like pageWithBackLink(createView)
 
     behave like yesNoPage(
       createViewUsingForm,
       messageKeyPrefix,
       routes.YourMinimumEarningsController.onSubmit(NormalMode).url,
-      legend = Some(messages(s"$messageKeyPrefix.form", 0))
+      legend = Some(messages(s"$messageKeyPrefix.heading", 0))
     )
 
     "show correct guidance and value of minimum earnings" in {
       val amount = BigDecimal(40)
       val doc = asDocument(createViewWithAmount(amount))
-
-      assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
-      assertContainsText(doc, messages(s"$messageKeyPrefix.para2"))
       assertContainsText(doc, messages(s"$messageKeyPrefix.heading", amount))
     }
   }

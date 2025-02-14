@@ -426,18 +426,12 @@ yourAge.TWENTYONEOROVER = 21 or over
 yourAge.error.notCompleted = Select your age
 yourAge.checkYourAnswersLabel = What’s your age?
 
-yourMinimumEarnings.title = Your average weekly earnings
-yourMinimumEarnings.heading = Your average weekly earnings
-yourMinimumEarnings.para1 = We need to know your total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
-yourMinimumEarnings.para2 = If you’re on maternity, paternity, adoption, or sick leave, it’s how much you earned before you went on leave.
-yourMinimumEarnings.form = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.title = On average, will you earn £{0} or more a week?
+yourMinimumEarnings.heading = On average, will you earn £{0} or more a week?
 yourMinimumEarnings.error.notCompleted = Select yes if you will earn an average of £{0} or more a week
 
-partnerMinimumEarnings.title = Your partner’s average weekly earnings
-partnerMinimumEarnings.heading = Your partner’s average weekly earnings
-partnerMinimumEarnings.para1 = We need to know your partner’s total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
-partnerMinimumEarnings.para2 = If your partner is on maternity, paternity, adoption, or sick leave, it’s how much they earned before they went on leave.
-partnerMinimumEarnings.form = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.title = On average, will your partner earn £{0} or more a week?
+partnerMinimumEarnings.heading = On average, will your partner earn £{0} or more a week?
 partnerMinimumEarnings.error.notCompleted = Select yes if your partner will earn an average of £{0} or more a week
 
 areYouSelfEmployedOrApprentice.title = Are you self-employed or an apprentice?
