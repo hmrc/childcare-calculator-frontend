@@ -20,7 +20,6 @@ import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.Benefits
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 
 class BenefitsSpec extends PlaySpec {
 

@@ -18,9 +18,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
 import org.mockito.Mockito._
 import org.scalatest.OptionValues
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, SelfEmployedOrApprenticeOrNeitherEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, SelfEmployedOrApprenticeOrNeitherEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class ModelFactorySpec extends SchemeSpec with OptionValues {

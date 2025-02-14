@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.OptionValues
 import org.scalatestplus.mockito.MockitoSugar
@@ -26,9 +25,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{ageExactly15Relati
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode, ParentsBenefits, WhichBenefitsEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Utils}
+
+import java.time.LocalDate
 
 class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSugar {
 

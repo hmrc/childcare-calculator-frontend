@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
-import javax.inject.Inject
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, SelfEmployedOrApprenticeOrNeitherEnum, WhichBenefitsEnum, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class ModelFactory @Inject() () {
+import javax.inject.Inject
+
+class ModelFactory @Inject() {
 
   val TRUE: Boolean = true
   val FALSE: Boolean = false
@@ -35,7 +36,7 @@ class ModelFactory @Inject() () {
     }
   }
 
-  private def createJointHousehold(answers: UserAnswers) = {
+  private def createJointHousehold(answers: UserAnswers): Option[JointHousehold] = {
     for {
       parentMinEarnings <- answers.whoIsInPaidEmployment.flatMap {
         case str if str == You => answers.yourMinimumEarnings
@@ -49,13 +50,13 @@ class ModelFactory @Inject() () {
         case _ => Some(false)
       }
 
-      parentApprentice = checkMinEarnings(parentMinEarnings, answers.areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false),FALSE).getOrElse(false)
+      parentApprentice = checkMinEarnings(parentMinEarnings, answers.areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false), FALSE).getOrElse(false)
 
       partnerApprentice = checkMinEarnings(partnerMinEarnings, answers.partnerSelfEmployedOrApprentice, answers.partnerSelfEmployed.getOrElse(false), FALSE).getOrElse(false)
 
-      parentSelfEmployed = checkMinEarnings(parentMinEarnings, answers.areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false),TRUE).getOrElse(false)
+      parentSelfEmployed = checkMinEarnings(parentMinEarnings, answers.areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false), TRUE).getOrElse(false)
 
-      partnerSelfEmployed = checkMinEarnings(partnerMinEarnings, answers.partnerSelfEmployedOrApprentice, answers.partnerSelfEmployed.getOrElse(false),TRUE).getOrElse(false)
+      partnerSelfEmployed = checkMinEarnings(partnerMinEarnings, answers.partnerSelfEmployedOrApprentice, answers.partnerSelfEmployed.getOrElse(false), TRUE).getOrElse(false)
 
 
       parentMaxEarnings <- if (parentMinEarnings) {
@@ -80,7 +81,7 @@ class ModelFactory @Inject() () {
     )
   }
 
-  private def createSingleHousehold(answers: UserAnswers)  =
+  private def createSingleHousehold(answers: UserAnswers): Option[SingleHousehold] =
     for {
       areYouInPaidWork <- answers.areYouInPaidWork
       minEarnings <- if (areYouInPaidWork) {
