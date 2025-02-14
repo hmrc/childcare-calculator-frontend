@@ -17,29 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsArray, JsBoolean, JsString}
+import play.api.libs.json.{JsArray, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ChildrenAgeGroupsForm, DoYouGetAnyBenefitsForm}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouGetAnyBenefitsId, DoYouLiveWithPartnerId, LocationId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Location, Mode, NormalMode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoesYourPartnerGetAnyBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoesYourPartnerGetAnyBenefitsId, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{doYouGetAnyBenefits, doesYourPartnerGetAnyBenefits}
 
-class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
+class DoesYourPartnerGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[doYouGetAnyBenefits]
-  def onwardRoute = routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+  val view = application.injector.instanceOf[doesYourPartnerGetAnyBenefits]
+  def onwardRoute = routes.YourAgeController.onPageLoad(NormalMode)
 
   val cacheMapWithPreviousAnswers = new CacheMap("id", Map.empty)
 
   def retrievalActionWithPreviousAnswers = new FakeDataRetrievalAction(Some(cacheMapWithPreviousAnswers))
 
   def controller(dataRetrievalAction: DataRetrievalAction = retrievalActionWithPreviousAnswers) =
-    new DoYouGetAnyBenefitsController(
+    new DoesYourPartnerGetAnyBenefitsController(
       frontendAppConfig,
       mcc,
       FakeDataCacheService,
@@ -49,10 +48,10 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[Set[ParentsBenefits]] = DoYouGetAnyBenefitsForm()) =
+  def viewAsString(form: Form[Set[ParentsBenefits]] = DoesYourPartnerGetAnyBenefitsForm()) =
     view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  "DoYouGetAnyBenefits Controller" must {
+  "DoesYourPartnerGetAnyBenefits Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -63,18 +62,18 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(ParentsBenefits.CarersCredit.toString)))
+        DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(ParentsBenefits.CarersCredit.toString)))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(DoYouGetAnyBenefitsForm().fill(Set(ParentsBenefits.CarersCredit)))
+      contentAsString(result) mustBe viewAsString(DoesYourPartnerGetAnyBenefitsForm().fill(Set(ParentsBenefits.CarersCredit)))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest
-        .withFormUrlEncodedBody((s"${DoYouGetAnyBenefitsForm.formId}[0]", ParentsBenefits.CarersAllowance.toString))
+        .withFormUrlEncodedBody((s"${DoesYourPartnerGetAnyBenefitsForm.formId}[0]", ParentsBenefits.CarersAllowance.toString))
         .withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -85,9 +84,9 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest
-        .withFormUrlEncodedBody((s"${DoYouGetAnyBenefitsForm.formId}[0]", "invalid value"))
+        .withFormUrlEncodedBody((s"${DoesYourPartnerGetAnyBenefitsForm.formId}[0]", "invalid value"))
         .withMethod("POST")
-      val boundForm = DoYouGetAnyBenefitsForm().bind(Map(s"${DoYouGetAnyBenefitsForm.formId}[0]" -> "invalid value"))
+      val boundForm = DoesYourPartnerGetAnyBenefitsForm().bind(Map(s"${DoesYourPartnerGetAnyBenefitsForm.formId}[0]" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
