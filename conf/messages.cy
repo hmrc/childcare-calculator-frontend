@@ -448,13 +448,13 @@ eitherOfYouMaximumEarnings.linkText = Dysgwch ragor am sut i gyfrifo incwm net w
 eitherOfYouMaximumEarnings.form = A fydd y naill neu’r llall ohonoch yn ennill incwm net wedi’i addasu dros £100,000 y flwyddyn?
 eitherOfYouMaximumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os bydd y naill neu’r llall ohonoch yn ennill mwy na £100,000 y flwyddyn
 
-taxOrUniversalCredits.title=A ydych yn cael neu Gredyd Cynhwysol? Ydych chi''n cael Credyd Cynhwysol?
-taxOrUniversalCredits.heading=A ydych yn cael neu Gredyd Cynhwysol?
-taxOrUniversalCreditsPartner.title = Do you and your partner get Universal Credit?
-taxOrUniversalCreditsPartner.heading = Do you and your partner get Universal Credit?
+taxOrUniversalCredits.title= A ydych yn cael Credyd Cynhwysol?
+taxOrUniversalCredits.heading= A ydych yn cael Credyd Cynhwysol?
+taxOrUniversalCreditsPartner.title = A ydych chi a’ch partner yn cael Credyd Cynhwysol?
+taxOrUniversalCreditsPartner.heading = A ydych chi a’ch partner yn cael Credyd Cynhwysol?
 taxOrUniversalCredits.uc=Credyd Cynhwysol
 taxOrUniversalCredits.none=Dim un o’r rhain
-taxOrUniversalCredits.error.notCompleted=Select whether you get Universal Credit
+taxOrUniversalCredits.error.notCompleted=Dewiswch a ydych yn cael Credyd Cynhwysol
 taxOrUniversalCreditsPartner.error.notCompleted = Select whether you and your partner get Universal Credit
 taxOrUniversalCredits.checkYourAnswersLabel=taxOrUniversalCredits
 
