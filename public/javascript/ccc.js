@@ -11,7 +11,7 @@ window.onload = function() {
     function getCheckedGAValue value {
         if(value === true) {
             return "Universal Credit)"
-        else (value === "none") {
+        else (value === false) {
             return "None of these"
         }
     }
