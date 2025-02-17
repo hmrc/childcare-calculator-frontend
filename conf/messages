@@ -709,14 +709,6 @@ bothOtherIncomeLY.hint.text = This could have been from a State Pension, investm
 bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
 bothOtherIncomeLY.error.notCompleted = Select yes if you, your partner, or both of you got any other income in the previous year
 
-whoOtherIncomePY.title = Who got other income?
-whoOtherIncomePY.heading = Who got other income?
-whoOtherIncomePY.you = You
-whoOtherIncomePY.partner = Partner
-whoOtherIncomePY.both = Both
-whoOtherIncomePY.checkYourAnswersLabel = Who got other income last year?
-whoOtherIncomePY.error.notCompleted = Select who got other income
-
 whoPaidIntoPensionPY.title = Who paid into a pension?
 whoPaidIntoPensionPY.heading = Who paid into a pension?
 whoPaidIntoPensionPY.you = You
