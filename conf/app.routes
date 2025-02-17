@@ -212,9 +212,6 @@ POST        /how-much-both-pay-pension-current-year            uk.gov.hmrc.child
 GET         /your-income-info-previous-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoPYController.onPageLoad()
 GET         /both-income-info-previous-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothIncomeInfoPYController.onPageLoad()
 
-GET         /both-other-income-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeLYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-other-income-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeLYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /you-any-these-benefits-previous-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /you-any-these-benefits-previous-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onSubmit(mode: Mode ?= NormalMode)
 

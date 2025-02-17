@@ -824,13 +824,6 @@ bothIncomeInfoPY.li.benefits_income = income from benefits
 bothIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last year
 bothIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
-bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income in the previous year?
-bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income in the previous year?
-bothOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
-bothOtherIncomeLY.hint.text = This could have been from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
-bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
-bothOtherIncomeLY.error.notCompleted = Select yes if you, your partner, or both of you got any other income in the previous year
-
 whoPaidIntoPensionPY.title = Who paid into a pension?
 whoPaidIntoPensionPY.heading = Who paid into a pension?
 whoPaidIntoPensionPY.you = You

@@ -802,13 +802,6 @@ bothIncomeInfoPY.li.benefits_income=incwm o fudd-daliadau
 bothIncomeInfoPY.checkYourAnswersLabel=Incwm eich partner y llynedd
 bothIncomeInfoPY.li.birth_or_adoption=wythnosau a thâl a gymerwyd tra roeddech ar absenoldeb oherwydd genedigaeth neu fabwysiadu
 
-bothOtherIncomeLY.title=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol?
-bothOtherIncomeLY.heading=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol?
-bothOtherIncomeLY.year.start.end.date=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothOtherIncomeLY.hint.text=Gallai hyn fod wedi bod o Bensiwn y Wladwriaeth, buddsoddiadau, llog ar gynilion, incwm rhent neu incwm tramor - nid o gynhaliaeth, grantiau myfyrwyr na benthyciadau.
-bothOtherIncomeLY.checkYourAnswersLabel=bothOtherIncomeLY
-bothOtherIncomeLY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol
-
 whoPaidIntoPensionPY.title=Pwy dalodd i mewn i bensiwn?
 whoPaidIntoPensionPY.heading=Pwy dalodd i mewn i bensiwn?
 whoPaidIntoPensionPY.you=Chi
