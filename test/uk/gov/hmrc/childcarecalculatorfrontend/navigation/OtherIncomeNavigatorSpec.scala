@@ -475,25 +475,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
   "Previous Year Other Income Route Navigation" when {
 
     "in Normal mode" must {
-
-      "Partner Other Income PY Route" must {
-        "redirects to PartnerOtherIncomeAmountPY page when user selects yes" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyOtherIncomeLY) thenReturn Some(true)
-
-          navigator().nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyOtherIncomeLY) thenReturn None
-
-          navigator().nextPage(PartnerAnyOtherIncomeLYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
-
       "How Much Both other income CY route" must {
         "redirect to right page when user provides valid input" when {
           "both eligible for tax credits" in {
@@ -609,7 +590,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(you)
-          when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
             routes.SessionExpiredController.onPageLoad

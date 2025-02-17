@@ -967,27 +967,6 @@ childcarePayFrequency.monthly=Bob mis
 childcarePayFrequency.checkYourAnswersLabel=Pa mor aml yr ydych yn talu neu’n disgwyl talu am ofal plant?
 childcarePayFrequency.error.notCompleted=Dewiswch pa mor aml yr ydych yn talu neu’n disgwyl talu am gostau gofal plant
 
-yourOtherIncomeAmountPY.title=Faint oedd eich incwm arall?
-yourOtherIncomeAmountPY.heading=Faint oedd eich incwm arall?
-yourOtherIncomeAmountPY.info=Eich incwm arall
-yourOtherIncomeAmountPY.checkYourAnswersLabel=Faint oedd eich incwm arall?
-
-parentOtherIncomeAmountPY.error.required=Nodwch faint oedd eich incwm arall yn y flwyddyn flaenorol
-parentOtherIncomeAmountPY.error.invalid=Nodwch rifau rhwng 1 a 99999.99 ar gyfer eich incwm arall yn y flwyddyn flaenorol
-
-partnerOtherIncomeAmountPY.error.required=Nodwch faint oedd incwm arall eich partner
-partnerOtherIncomeAmountPY.error.invalid=Nodwch rifau rhwng 1 a 99999.99 ar gyfer incwm arall eich partner
-partnerOtherIncomeAmountPY.title=Faint oedd incwm arall eich partner?
-partnerOtherIncomeAmountPY.heading=Faint oedd incwm arall eich partner?
-partnerOtherIncomeAmountPY.info=Incwm arall partner
-partnerOtherIncomeAmountPY.checkYourAnswersLabel=Faint oedd incwm arall eich partner?
-
-otherIncomeAmountPY.title=Faint oedd eich incwm arall chi a’ch partner?
-otherIncomeAmountPY.heading=Faint oedd eich incwm arall chi a’ch partner?
-otherIncomeAmountPY.parentOtherIncomeAmountPY=Eich incwm arall
-otherIncomeAmountPY.partnerOtherIncomeAmountPY=Incwm arall eich partner
-otherIncomeAmountPY.checkYourAnswersLabel=Faint oedd eich incwm arall chi a’ch partner?
-
 childrenDisabilityBenefits.title=A oes unrhyw un o’ch plant yn cael unrhyw un o’r budd-daliadau anabledd hyn?
 childrenDisabilityBenefits.heading=A oes unrhyw un o’ch plant yn cael unrhyw un o’r budd-daliadau anabledd hyn?
 childrenDisabilityBenefits.disabilities.living.allowance=Lwfans Byw i’r Anabl

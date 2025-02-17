@@ -39,8 +39,7 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
     WhoGetsOtherIncomeCYId -> whoGetsOtherIncomeRouteCY,
     YourOtherIncomeAmountCYId -> howMuchYourOtherIncomeRouteCY,
     PartnerOtherIncomeAmountCYId -> howMuchPartnerOtherIncomeRouteCY,
-    OtherIncomeAmountCYId -> howMuchBothOtherIncomeRouteCY,
-    PartnerAnyOtherIncomeLYId -> partnerOtherIncomeRoutePY
+    OtherIncomeAmountCYId -> howMuchBothOtherIncomeRouteCY
   )
 
   private def yourOtherIncomeRouteCY(answers: UserAnswers) = {
@@ -96,11 +95,6 @@ class OtherIncomeNavigator @Inject()(utils: Utils, taxCredits: TaxCredits, tfc: 
       routes.BothIncomeInfoPYController.onPageLoad(),
       routes.ResultController.onPageLoad())
 
-
-  private def partnerOtherIncomeRoutePY(answers: UserAnswers) =
-    utils.getCall(answers.partnerAnyOtherIncomeLY) {
-      case true => routes.PartnerOtherIncomeAmountPYController.onPageLoad(NormalMode)
-    }
 
   private def processCall[T](answers: UserAnswers, answersType: Option[T], successRoute: Call, failureRoute: Call) = {
     utils.getCall(answersType) {
