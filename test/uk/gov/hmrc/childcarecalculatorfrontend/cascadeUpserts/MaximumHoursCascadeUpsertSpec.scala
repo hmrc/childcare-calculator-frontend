@@ -161,7 +161,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothOtherIncomeLYId.toString -> JsBoolean(true),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
@@ -290,7 +289,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothOtherIncomeLYId.toString -> JsBoolean(true),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
@@ -320,7 +318,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothOtherIncomeLYId.toString -> JsBoolean(true),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
@@ -351,7 +348,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothOtherIncomeLYId.toString -> JsBoolean(true),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
@@ -449,7 +445,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothOtherIncomeLYId.toString -> JsBoolean(true),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
@@ -485,7 +480,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothOtherIncomeLYId.toString -> JsBoolean(true),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
@@ -521,7 +515,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         BothPaidPensionPYId.toString -> JsBoolean(true),
         WhoPaidIntoPensionPYId.toString -> JsString(both),
         HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothOtherIncomeLYId.toString -> JsBoolean(true),
         BothAnyTheseBenefitsPYId.toString ->JsBoolean(true),
         WhosHadBenefitsPYId.toString -> JsString(both),
         BothBenefitsIncomePYId.toString -> Json.toJson(BothBenefitsIncomePY(20, 20))
