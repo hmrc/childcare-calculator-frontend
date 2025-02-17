@@ -131,32 +131,6 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   }
 
 
-  "Approved education start date" must {
-
-    "redirect to `Approved education or training` when this is not the last applicable child" in {
-      val result = navigator.nextPage(ChildStartEducationId(0), NormalMode).value(answers)
-      result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
-    }
-
-    "redirect to `Do your children get disability benefits` when this is the last applicable child" in {
-      val result = navigator.nextPage(ChildStartEducationId(2), NormalMode).value(answers)
-      result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
-    }
-
-    lazy val answers: UserAnswers = userAnswers(
-      aboutYourChildren(
-        foo -> ageOf19,
-        "Spoon" -> dob,
-        bar -> ageOfOver16,
-        "Baz" -> dob
-      )
-    )
-
-    "redirect to `SessionExpired` if the user has no answer for `About your child`" in {
-      val result = navigator.nextPage(ChildStartEducationId(0), NormalMode).value(userAnswers())
-      result mustEqual routes.SessionExpiredController.onPageLoad
-    }
-  }
 
   "Do any of your children get disability benefits" must {
 

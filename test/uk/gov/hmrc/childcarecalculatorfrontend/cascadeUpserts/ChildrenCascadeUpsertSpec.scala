@@ -56,12 +56,6 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       }
     }
 
-    "Save aboutYourChild data " must {
-      "remove child education data when there is no child age above 16" in {
-        val result = cascadeUpsert(AboutYourChildId.toString, Map("0" -> Json.toJson(AboutYourChild("Foo", ageOfExactly15))), DataGenerator.sample)
-        result.data.get(ChildStartEducationId.toString) mustBe None
-      }
-    }
 
     "Save childrenDisabilityBenefits data " must {
       "remove whichChildrenDisability and whichDisabilityBenefits data when childrenDisabilityBenefits is false" in {
