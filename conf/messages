@@ -756,13 +756,6 @@ parentBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how muc
 partnerBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how much your partner will get in benefits this year
 
 
-bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income in the previous year?
-bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income in the previous year?
-bothOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
-bothOtherIncomeLY.hint.text = This could have been from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
-bothOtherIncomeLY.checkYourAnswersLabel = bothOtherIncomeLY
-bothOtherIncomeLY.error.notCompleted = Select yes if you, your partner, or both of you got any other income in the previous year
-
 whoPaidIntoPensionPY.title = Who paid into a pension?
 whoPaidIntoPensionPY.heading = Who paid into a pension?
 whoPaidIntoPensionPY.you = You
