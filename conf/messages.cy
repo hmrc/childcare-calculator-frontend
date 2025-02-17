@@ -741,14 +741,6 @@ bothOtherIncomeLY.hint.text=Gallai hyn fod wedi bod o Bensiwn y Wladwriaeth, bud
 bothOtherIncomeLY.checkYourAnswersLabel=bothOtherIncomeLY
 bothOtherIncomeLY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol
 
-whoOtherIncomePY.title=Pwy gafodd incwm arall?
-whoOtherIncomePY.heading=Pwy gafodd incwm arall?
-whoOtherIncomePY.you=Chi
-whoOtherIncomePY.partner=Partner
-whoOtherIncomePY.both=Y ddau
-whoOtherIncomePY.checkYourAnswersLabel=Pwy gafodd incwm arall y flwyddyn ddiwethaf?
-whoOtherIncomePY.error.notCompleted=Dewiswch pwy gafodd incwm arall
-
 whoPaidIntoPensionPY.title=Pwy dalodd i mewn i bensiwn?
 whoPaidIntoPensionPY.heading=Pwy dalodd i mewn i bensiwn?
 whoPaidIntoPensionPY.you=Chi
