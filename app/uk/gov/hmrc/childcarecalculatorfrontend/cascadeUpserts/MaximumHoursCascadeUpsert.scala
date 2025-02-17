@@ -91,7 +91,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             EmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
             BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString - BothAnyTheseBenefitsCYId.toString -
             WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString - BothPaidPensionPYId.toString -
-            WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString -
+            WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString -
             BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString - BothBenefitsIncomePYId.toString)
         case JsString(`partner`) =>
           cacheMap copy (data = cacheMap.data - HasYourTaxCodeBeenAdjustedId.toString -
@@ -104,7 +104,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString -
             HowMuchBothPayPensionId.toString - BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
             BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString -
-            BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString -
+            BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString -
             BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
             BothBenefitsIncomePYId.toString )
 
@@ -144,7 +144,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString - ParentPaidWorkPYId.toString -
             PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString - PartnerBenefitsIncomePYId.toString -
             EmploymentIncomePYId.toString - BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString -
-            HowMuchBothPayPensionPYId.toString - BothOtherIncomeLYId.toString -
+            HowMuchBothPayPensionPYId.toString -
             BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
             BothBenefitsIncomePYId.toString)
 
