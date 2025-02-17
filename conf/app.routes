@@ -240,15 +240,6 @@ POST        /how-much-you-pay-pension-previous-year            uk.gov.hmrc.child
 GET         /how-much-partner-pay-pension-previous-year        uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /how-much-partner-pay-pension-previous-year        uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionPYController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /your-other-income-amount-previous-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-other-income-amount-previous-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /partner-other-income-amount-previous-year         uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-other-income-amount-previous-year         uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /other-income-amount-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /other-income-amount-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountPYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /childcare-pay-frequency                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
 GET         /childcare-pay-frequency/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
 POST        /childcare-pay-frequency/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onSubmit(mode: Mode ?= NormalMode, id: Int)

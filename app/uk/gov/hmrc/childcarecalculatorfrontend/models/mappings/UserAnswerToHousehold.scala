@@ -245,9 +245,6 @@ sealed trait OverallIncome extends StatutoryPay {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
 
     val pensionValue = determineIncomeValue(answers.howMuchYouPayPensionPY, answers.howMuchBothPayPensionPY, parentPensionPY)
-
-    val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountPY, answers.otherIncomeAmountPY, parentOtherIncomePY)
-
     val benefits = determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
 
     incomeValue match {
@@ -255,7 +252,6 @@ sealed trait OverallIncome extends StatutoryPay {
         Some(Income(
           employmentIncome = incomeValue,
           pension = pensionValue,
-          otherIncome = otherIncome,
           benefits = benefits,
           taxCode = taxCode)
         )
@@ -268,9 +264,6 @@ sealed trait OverallIncome extends StatutoryPay {
     val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
 
     val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPensionPY, answers.howMuchBothPayPensionPY, partnerPensionPY)
-
-    val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountPY, answers.otherIncomeAmountPY, partnerOtherIncomePY)
-
     val benefits =  determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
 
     incomeValue match {
@@ -278,7 +271,6 @@ sealed trait OverallIncome extends StatutoryPay {
         Some(Income(
           employmentIncome = incomeValue,
           pension = pensionValue,
-          otherIncome = otherIncome,
           benefits = benefits,
           taxCode = taxCode)
         )
@@ -350,14 +342,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
   private def partnerBenefitsCY(x: BenefitsIncomeCY) : BigDecimal = {
     x.partnerBenefitsIncome
-  }
-
-  private def parentOtherIncomePY(x: OtherIncomeAmountPY) : BigDecimal = {
-    x.parentOtherIncomeAmountPY
-  }
-
-  private def partnerOtherIncomePY(x: OtherIncomeAmountPY) : BigDecimal = {
-    x.partnerOtherIncomeAmountPY
   }
 
   private def parentOtherIncomeCY(x: OtherIncomeAmountCY) : BigDecimal = {
