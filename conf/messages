@@ -911,26 +911,6 @@ childcarePayFrequency.monthly = Monthly
 childcarePayFrequency.checkYourAnswersLabel = How often do you pay or expect to pay for childcare?
 childcarePayFrequency.error.notCompleted = Select how often you pay or expect to pay for childcare costs
 
-yourOtherIncomeAmountPY.title = How much was your other income?
-yourOtherIncomeAmountPY.heading = How much was your other income?
-yourOtherIncomeAmountPY.info = Your other income
-yourOtherIncomeAmountPY.checkYourAnswersLabel = How much was your other income?
-parentOtherIncomeAmountPY.error.required = Enter how much your other income was in the previous year
-parentOtherIncomeAmountPY.error.invalid = Enter numbers from 1 to 99999.99 for your other income in the previous year
-
-partnerOtherIncomeAmountPY.error.required = Enter how much your partner’s other income was
-partnerOtherIncomeAmountPY.error.invalid = Enter numbers from 1 to 99999.99 for your partner’s other income
-partnerOtherIncomeAmountPY.title = How much was your partner’s other income?
-partnerOtherIncomeAmountPY.heading = How much was your partner’s other income?
-partnerOtherIncomeAmountPY.info = Partner’s other income
-partnerOtherIncomeAmountPY.checkYourAnswersLabel = How much was your partner’s other income?
-
-otherIncomeAmountPY.title = How much was you and your partner’s other income?
-otherIncomeAmountPY.heading = How much was you and your partner’s other income?
-otherIncomeAmountPY.parentOtherIncomeAmountPY = Your other income
-otherIncomeAmountPY.partnerOtherIncomeAmountPY = Partner’s other income
-otherIncomeAmountPY.checkYourAnswersLabel = How much was you and your partner’s other income?
-
 childrenDisabilityBenefits.title = Do any of your children get any of these disability benefits?
 childrenDisabilityBenefits.heading = Do any of your children get any of these disability benefits?
 childrenDisabilityBenefits.disabilities.living.allowance = Disability Living Allowance
