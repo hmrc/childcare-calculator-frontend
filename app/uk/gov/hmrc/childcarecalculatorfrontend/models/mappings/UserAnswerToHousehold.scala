@@ -246,13 +246,10 @@ sealed trait OverallIncome extends StatutoryPay {
   def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
 
-    val pensionValue = determineIncomeValue(answers.howMuchYouPayPensionPY, answers.howMuchBothPayPensionPY, parentPensionPY)
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
-          pension = pensionValue,
           taxCode = taxCode)
         )
       case _ => None
@@ -263,13 +260,10 @@ sealed trait OverallIncome extends StatutoryPay {
   def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
 
-    val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPensionPY, answers.howMuchBothPayPensionPY, partnerPensionPY)
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
           employmentIncome = incomeValue,
-          pension = pensionValue,
           taxCode = taxCode)
         )
       case _ =>
@@ -344,14 +338,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
   private def partnerPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
     x.howMuchPartnerPayPension
-  }
-
-  private def partnerPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
-    x.howMuchPartnerPayPensionPY
-  }
-
-  private def parentPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
-    x.howMuchYouPayPensionPY
   }
 
   private def parentPensionCY(x: HowMuchBothPayPension) : BigDecimal = {

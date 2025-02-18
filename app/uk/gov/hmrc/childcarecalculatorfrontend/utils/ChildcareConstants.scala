@@ -160,7 +160,6 @@ object ChildcareConstants {
   val bothAnyTheseBenefitsCYScottishCarerAllowanceErrorKey = "bothAnyTheseBenefitsCY.error.scottishCarers.allowance"
   val youAnyTheseBenefitsPYErrorKey = "youAnyTheseBenefitsPY.error.notCompleted"
   val partnerAnyTheseBenefitsPYErrorKey = "partnerAnyTheseBenefitsPY.error.notCompleted"
-  val bothAnyTheseBenefitsPYErrorKey = "bothAnyTheseBenefitsPY.error.notCompleted"
   val whosHadBenefitsErrorKey = "whosHadBenefits.error.notCompleted"
 
   val parentPaidWorkPYErrorKey = "parentPaidWorkPY.error.notCompleted"
@@ -176,20 +175,11 @@ object ChildcareConstants {
   val howMuchBothPayPensionInvalidErrorKey = "howMuchBothPayPension.error.invalid"
   val howMuchBothPayPensionRequiredErrorKey = "howMuchBothPayPension.error.required"
 
-  val howMuchYouPayPensionPYInvalidErrorKey = "howMuchYouPayPensionPY.error.invalid"
-  val howMuchYouPayPensionPYRequiredErrorKey = "howMuchYouPayPensionPY.error.required"
-  val howMuchPartnerPayPensionPYInvalidErrorKey = "howMuchPartnerPayPensionPY.error.invalid"
-  val howMuchPartnerPayPensionPYRequiredErrorKey = "howMuchPartnerPayPensionPY.error.required"
-
   val parentBenefitsIncomeCYRequiredErrorKey = "parentBenefitsIncome.error.required"
   val partnerBenefitsIncomeCYRequiredErrorKey = "partnerBenefitsIncome.error.required"
   val partnerBenefitsIncomeCYInvalidErrorKey = "partnerBenefitsIncome.error.invalid"
-  val parentBenefitsIncomePYRequiredErrorKey = "parentBenefitsIncomePY.error.required"
-  val parentBenefitsIncomePYInvalidErrorKey = "parentBenefitsIncomePY.error.invalid"
   val parentBenefitsIncomeInvalidErrorKey = "parentBenefitsIncome.error.invalid"
   val partnerBenefitsIncomeInvalidErrorKey = "partnerBenefitsIncome.error.invalid"
-
-  val whoPaidIntoPensionErrorKey = "whoPaidIntoPensionPY.error.notCompleted"
 
   val parentOtherIncomeRequiredErrorKey = "parentOtherIncome.error.required"
   val parentOtherIncomeInvalidErrorKey = "parentOtherIncome.error.invalid"

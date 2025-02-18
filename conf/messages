@@ -659,7 +659,6 @@ bothPaidPensionCY.heading = Are you, your partner, or both of you paying into a 
 bothPaidPensionCY.checkYourAnswersLabel = Have you, your partner, or both of you paid into a work pension this year?
 bothPaidPensionCY.error.notCompleted = Select yes if you, your partner, or both of you are paying into a work pension this year
 bothPaidPensionCY.tax.year = This year is 6 April {0} to 5 April {1}.
-bothPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
 
 whosHadBenefits.title = Who had benefits?
 whosHadBenefits.heading = Who had benefits?
@@ -668,22 +667,6 @@ whosHadBenefits.partner = Partner
 whosHadBenefits.both = Both
 whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
 whosHadBenefits.error.notCompleted = Select who’s had benefits
-
-youPaidPensionPY.title = Did you pay into a work pension in the previous year?
-youPaidPensionPY.heading = Did you pay into a work pension in the previous year?
-youPaidPensionPY.checkYourAnswersLabel = Did you pay into a work pension in the previous year?
-youPaidPensionPY.error.notCompleted = Select yes if you paid into your work pension in the previous year
-youPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
-partnerPaidPensionPY.title = Did your partner pay into a work pension in the previous year?
-partnerPaidPensionPY.heading = Did your partner pay into a work pension in the previous year?
-partnerPaidPensionPY.checkYourAnswersLabel = Did your partner pay into a work pension in the previous year?
-partnerPaidPensionPY.error.notCompleted = Select yes if your partner paid into a work pension in the previous year
-partnerPaidPensionPY.tax.year = The previous year is 6 April {0} to 5 April {1}.
-
-bothPaidPensionPY.title = Did you, your partner, or both of you pay into a work pension in the previous year?
-bothPaidPensionPY.heading = Did you, your partner, or both of you pay into a work pension in the previous year?
-bothPaidPensionPY.checkYourAnswersLabel = Did you, your partner, or both of you pay into your work pension in the previous year?
-bothPaidPensionPY.error.notCompleted = Select yes if you, your partner, or both of you paid into a work pension in the previous year
 
 parentPaidWorkPY.title = Were you in paid work in the previous year?
 parentPaidWorkPY.heading = Were you in paid work in the previous year?
@@ -756,14 +739,6 @@ parentBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how muc
 partnerBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how much your partner will get in benefits this year
 
 
-whoPaidIntoPensionPY.title = Who paid into a pension?
-whoPaidIntoPensionPY.heading = Who paid into a pension?
-whoPaidIntoPensionPY.you = You
-whoPaidIntoPensionPY.partner = Partner
-whoPaidIntoPensionPY.both = Both
-whoPaidIntoPensionPY.error.notCompleted = Select who paid into a pension
-whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
-
 otherIncomeAmountCY.title = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.heading = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.parentOtherIncome = Your other income
@@ -809,21 +784,6 @@ youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits 
 youAnyTheseBenefitsPY.error.notCompleted = Select yes if you had any of these benefits in the previous year
 
 
-bothAnyTheseBenefitsPY.title = Did you, your partner, or both of you get any of these benefits in the previous year?
-bothAnyTheseBenefitsPY.heading = Did you, your partner, or both of you get any of these benefits in the previous year?
-bothAnyTheseBenefitsPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-
-
-bothAnyTheseBenefitsPY.li.income_support = State Pension
-bothAnyTheseBenefitsPY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
-bothAnyTheseBenefitsPY.li.employment_support = Employment and Support Allowance (contribution-based)
-bothAnyTheseBenefitsPY.li.pensions = Incapacity Benefit
-bothAnyTheseBenefitsPY.li.disability = Widowed Parent’s Allowance
-bothAnyTheseBenefitsPY.li.carers = Carer’s Allowance
-bothAnyTheseBenefitsPY.li.scottishCarersAllowance = Carer’s Allowance or Carer Support Payment
-
-bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
-bothAnyTheseBenefitsPY.error.notCompleted = Select yes if you or your partner had any of these benefits in the previous year
 parentBenefitsIncomePY.error.required = Enter how much your benefits income was in the previous year
 parentBenefitsIncomePY.error.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
 
@@ -831,28 +791,6 @@ registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
 registeredBlind.error.notCompleted = Select yes if any of your children are registered blind
 registeredBlind.checkYourAnswersLabel = registeredBlind
-
-howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
-howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?
-howMuchBothPayPensionPY.yourPension = Your pension
-howMuchBothPayPensionPY.partnerPension = Partner’s pension
-howMuchBothPayPensionPY.checkYourAnswersLabel = How much did you and your partner pay into your pensions a month?
-
-howMuchYouPayPensionPY.title = How much did you pay into your pension a month?
-howMuchYouPayPensionPY.heading = How much did you pay into your pension a month?
-howMuchYouPayPensionPY.info = Your pension
-howMuchYouPayPensionPY.checkYourAnswersLabel = How much did you pay into your pension a month?
-howMuchYouPayPensionPY.yourPension = You
-howMuchYouPayPensionPY.error.required = Enter how much you paid into your pension a month
-howMuchYouPayPensionPY.error.invalid = Enter numbers from 1 to 9999.99 for how much you paid into your pension a month
-
-howMuchPartnerPayPensionPY.title = How much did your partner pay into their pension a month?
-howMuchPartnerPayPensionPY.heading = How much did your partner pay into their pension a month?
-howMuchPartnerPayPensionPY.info = Partner’s pension
-howMuchPartnerPayPensionPY.checkYourAnswersLabel = How much did your partner pay into their pension a month?
-howMuchPartnerPayPensionPY.partnerPension = Partner
-howMuchPartnerPayPensionPY.error.required = Enter how much your partner paid into their pension a month
-howMuchPartnerPayPensionPY.error.invalid = Enter numbers from 1 to 9999.99 for how much your partner paid into their pension a month
 
 childDisabilityBenefits.title = Does your child get any of these disability benefits?
 childDisabilityBenefits.heading = Does {0} get any of these disability benefits?

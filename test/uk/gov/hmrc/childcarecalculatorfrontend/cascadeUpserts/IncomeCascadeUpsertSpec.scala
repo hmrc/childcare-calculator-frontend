@@ -243,20 +243,12 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
     "Save bothPaidWorkPY data" must {
       "remove whoWasInPaidWorkPY, employmentIncomePY, parentEmploymentIncomePY, partnerEmploymentIncomePY," +
-        "youPaidPensionPY, partnerPaidPensionPY, bothPaidPensionPY, whoPaidIntoPensionPY," +
-        "howMuchYouPayPensionPY, howMuchPartnerPayPensionPY, howMuchBothPayPensionPY pages data when user selects no option " in {
+        "pages data when user selects no option " in {
         val originalCacheMap = new CacheMap("id", Map(
           WhoWasInPaidWorkPYId.toString -> JsString(both),
           EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25)),
           ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          PartnerPaidPensionPYId.toString -> JsBoolean(true),
-          BothPaidPensionPYId.toString -> JsBoolean(true),
-          WhoPaidIntoPensionPYId.toString -> JsString(both),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20, 20))
+          PartnerEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20))
         ))
 
         val result = cascadeUpsert(BothPaidWorkPYId.toString, false, originalCacheMap)
@@ -267,111 +259,75 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       "return original cache map when user selects yes option" in {
         val originalCacheMap = new CacheMap("id", Map(
           WhoWasInPaidWorkPYId.toString -> JsString(you),
-          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20))
+          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20))
         ))
 
         val result = cascadeUpsert(BothPaidWorkPYId.toString, true, originalCacheMap)
 
         result.data mustBe Map(BothPaidWorkPYId.toString -> JsBoolean(true),
           WhoWasInPaidWorkPYId.toString -> JsString(you),
-          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
+          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)))
       }
     }
 
     "Save WhoWasInPaidWorkPY data " must {
-      "remove PartnerEmploymentIncomePY, PartnerPaidPensionPY, HowMuchPartnerPayPensionPY, EmploymentIncomePY" +
-        "WhoPaidIntoPensionPY, BothPaidPensionPY, HowMuchBothPayPensionPY page data  and keep the parent data " +
+      "remove PartnerEmploymentIncomePY, EmploymentIncomePY" +
+        "page data  and keep the parent data " +
         "when user selects you option" in {
 
         val originalCacheMap = new CacheMap("id", Map(
           ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           PartnerEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25)),
-          WhoPaidIntoPensionPYId.toString -> JsString(both),
-          BothPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20, 20))
+          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25))
         ))
 
         val result = cascadeUpsert(WhoWasInPaidWorkPYId.toString, you, originalCacheMap)
 
         result.data mustBe Map(WhoWasInPaidWorkPYId.toString -> JsString(you),
-          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
+          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)))
       }
 
-      "remove ParentEmploymentIncomePY, YouPaidPensionPY, HowMuchYouPayPensionPY, EmploymentIncomePY" +
-        "WhoPaidIntoPensionPY, BothPaidPensionPY, HowMuchBothPayPensionPY page data  and keep the partner data " +
+      "remove ParentEmploymentIncomePY, EmploymentIncomePY" +
+        "page data  and keep the partner data " +
         "when user selects partner option" in {
 
         val originalCacheMap = new CacheMap("id", Map(
           ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           PartnerEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25)),
-          WhoPaidIntoPensionPYId.toString -> JsString(both),
-          BothPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20, 20))
+          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25))
         ))
 
         val result = cascadeUpsert(WhoWasInPaidWorkPYId.toString, partner, originalCacheMap)
 
         result.data mustBe Map(WhoWasInPaidWorkPYId.toString -> JsString(partner),
-          PartnerEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
+          PartnerEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)))
       }
 
-      "remove ParentEmploymentIncomePY, YouPaidPensionPY, HowMuchYouPayPensionPY," +
-        "PartnerEmploymentIncomePY, PartnerPaidPensionPY, HowMuchPartnerPayPensionPY page data and keep both data " +
+      "remove ParentEmploymentIncomePY" +
+        "PartnerEmploymentIncomePY page data and keep both data " +
         "when user selects both option" in {
 
         val originalCacheMap = new CacheMap("id", Map(
           ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
           PartnerEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          PartnerPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25)),
-          WhoPaidIntoPensionPYId.toString -> JsString(both),
-          BothPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20, 20))
+          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25))
         ))
 
         val result = cascadeUpsert(WhoWasInPaidWorkPYId.toString, both, originalCacheMap)
 
         result.data mustBe Map(WhoWasInPaidWorkPYId.toString -> JsString(both),
-          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25)),
-          WhoPaidIntoPensionPYId.toString -> JsString(both),
-          BothPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20, 20)))
+          EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomePY(20, 25)))
       }
 
       "return original cache map when there is any invalid value for the input" in {
         val originalCacheMap = new CacheMap("id", Map(
-          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20))
-        ))
+          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)))
+        )
 
         val result = cascadeUpsert(WhoWasInPaidWorkPYId.toString, "invalidvalue", originalCacheMap)
 
         result.data mustBe Map(WhoWasInPaidWorkPYId.toString -> JsString("invalidvalue"),
-          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)),
-          YouPaidPensionPYId.toString -> JsBoolean(true),
-          HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)))
+          ParentEmploymentIncomePYId.toString -> JsNumber(BigDecimal(20)))
       }
     }
 
