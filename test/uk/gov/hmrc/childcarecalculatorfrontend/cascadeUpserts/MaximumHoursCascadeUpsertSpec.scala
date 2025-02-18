@@ -126,8 +126,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         PartnerPaidWorkPYId .toString -> JsBoolean(true),
         ParentEmploymentIncomePYId.toString -> JsBoolean(true),
-        YouPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         YourOtherIncomeLYId.toString -> JsBoolean(true),
         YouAnyTheseBenefitsPYId.toString ->JsBoolean(true)
 
@@ -170,11 +168,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString ->Json.toJson(BenefitsIncomeCY(20, 20)),
 
-        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-        BothPaidPensionPYId.toString -> JsBoolean(true),
-        WhoPaidIntoPensionPYId.toString -> JsString(both),
-        HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
+        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
 
       // Partner In Paid Employment
       val originalCacheMap2 = new CacheMap("id", Map(
@@ -197,10 +191,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
 
         ParentPaidWorkPYId.toString -> JsBoolean(true),
-        PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
-        PartnerPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
+        PartnerEmploymentIncomePYId.toString -> JsBoolean(true)))
 
       // You In Paid Employment
       val originalCacheMap3 = new CacheMap("id", Map(
@@ -225,8 +216,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         PartnerPaidWorkPYId .toString -> JsBoolean(true),
         ParentEmploymentIncomePYId.toString -> JsBoolean(true),
-        YouPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         YourOtherIncomeLYId.toString -> JsBoolean(true),
         YouAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
 
@@ -259,9 +248,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
 
         ParentPaidWorkPYId.toString -> JsBoolean(true),
-        PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
-        PartnerPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)))) //TODO Add in Statutory Data
+        PartnerEmploymentIncomePYId.toString -> JsBoolean(true))) //TODO Add in Statutory Data
 
       val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap)
       result.data mustBe Map(
@@ -294,11 +281,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString ->Json.toJson(BenefitsIncomeCY(20, 20)),
 
-        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-        BothPaidPensionPYId.toString -> JsBoolean(true),
-        WhoPaidIntoPensionPYId.toString -> JsString(both),
-        HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
+        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
 
       // Parent and Partner earning more than minimum earnings
       val originalCacheMap2 = new CacheMap("id", Map(
@@ -320,11 +303,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString ->Json.toJson(BenefitsIncomeCY(20, 20)),
 
-        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-        BothPaidPensionPYId.toString -> JsBoolean(true),
-        WhoPaidIntoPensionPYId.toString -> JsString(both),
-        HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
+        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
 
       // Partner earning more than minimum earnings and Parent earning less than minimum earnings
       val originalCacheMap3 = new CacheMap("id", Map(
@@ -347,11 +326,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString ->Json.toJson(BenefitsIncomeCY(20, 20)),
 
-        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-        BothPaidPensionPYId.toString -> JsBoolean(true),
-        WhoPaidIntoPensionPYId.toString -> JsString(both),
-        HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
+        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
 
 
       val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap1)
@@ -401,8 +376,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         PartnerPaidWorkPYId .toString -> JsBoolean(true),
         ParentEmploymentIncomePYId.toString -> JsBoolean(true),
-        YouPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         YourOtherIncomeLYId.toString -> JsBoolean(true),
         YouAnyTheseBenefitsPYId.toString ->JsBoolean(true))) //TODO Add in Statutory Data
 
@@ -440,11 +413,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(20, 20)),
 
-        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-        BothPaidPensionPYId.toString -> JsBoolean(true),
-        WhoPaidIntoPensionPYId.toString -> JsString(both),
-        HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
+        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
 
       // Partner and Parent earning more than minimum earnings
       val originalCacheMap2 = new CacheMap("id", Map(
@@ -472,11 +441,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(20, 20)),
 
-        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-        BothPaidPensionPYId.toString -> JsBoolean(true),
-        WhoPaidIntoPensionPYId.toString -> JsString(both),
-        HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
+        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
 
       // Partner earning more than minimum earnings and Parent earning less than minimum earnings
       val originalCacheMap3 = new CacheMap("id", Map(
@@ -504,11 +469,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhosHadBenefitsId.toString -> JsString(both),
         BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(20, 20)),
 
-        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
-        BothPaidPensionPYId.toString -> JsBoolean(true),
-        WhoPaidIntoPensionPYId.toString -> JsString(both),
-        HowMuchBothPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        BothAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
+        EmploymentIncomePYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20))))
 
 
       val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, partner, originalCacheMap1)
@@ -558,8 +519,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         PartnerPaidWorkPYId .toString -> JsBoolean(true),
         ParentEmploymentIncomePYId.toString -> JsBoolean(true),
-        YouPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchYouPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
         YourOtherIncomeLYId.toString -> JsBoolean(true),
         YouAnyTheseBenefitsPYId.toString ->JsBoolean(true)))
 
@@ -579,9 +538,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerBenefitsIncomeCYId.toString ->JsNumber(BigDecimal(20)),
 
         ParentPaidWorkPYId.toString -> JsBoolean(true),
-        PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
-        PartnerPaidPensionPYId.toString -> JsBoolean(true),
-        HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20))))
+        PartnerEmploymentIncomePYId.toString -> JsBoolean(true)))
 
       val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, both, originalCacheMap)
       result.data mustBe Map(WhoIsInPaidEmploymentId.toString -> JsString(both)) //TODO Add in Statutory Data

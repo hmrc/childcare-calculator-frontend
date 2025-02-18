@@ -28,7 +28,6 @@ class BenefitsCascadeUpsert @Inject()() extends SubCascadeUpsert {
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
     Map(
       YouAnyTheseBenefitsPYId.toString -> ((v, cm) => storeYouAnyTheseBenefitsPY(v, cm)),
-      BothAnyTheseBenefitsPYId.toString -> ((v, cm) => storeBothAnyTheseBenefitsPY(v, cm)),
       WhosHadBenefitsId.toString->((v,cm) => storeWhosHadBenefits(v,cm)),
       YouAnyTheseBenefitsIdCY.toString ->((v,cm) => storeYouAnyTheseBenefits(v,cm)),
       BothAnyTheseBenefitsCYId.toString ->((v,cm) => storeBothAnyTheseBenefitsCY(v,cm))
@@ -43,15 +42,6 @@ class BenefitsCascadeUpsert @Inject()() extends SubCascadeUpsert {
     store(YouAnyTheseBenefitsPYId.toString, value, mapToStore)
   }
 
-
-  private def storeBothAnyTheseBenefitsPY(value: JsValue, cacheMap: CacheMap): CacheMap ={
-    val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data)
-      case _ => cacheMap
-    }
-
-    store(BothAnyTheseBenefitsPYId.toString, value, mapToStore)
-  }
 
   private def storeWhosHadBenefits(value: JsValue, cacheMap: CacheMap): CacheMap ={
     val mapToStore = value match {

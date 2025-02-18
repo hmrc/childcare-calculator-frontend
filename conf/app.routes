@@ -149,15 +149,6 @@ POST        /both-any-these-benefits-current-year              uk.gov.hmrc.child
 GET         /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /you-paid-pension-previous-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /you-paid-pension-previous-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /partner-paid-pension-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-paid-pension-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /both-paid-pension-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-paid-pension-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionPYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /your-paid-work-previous-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-paid-work-previous-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
 
@@ -192,12 +183,6 @@ POST        /how-much-both-pay-pension-current-year            uk.gov.hmrc.child
 GET         /you-any-these-benefits-previous-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /you-any-these-benefits-previous-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsPYController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /both-any-these-benefits-previous-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-any-these-benefits-previous-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /who-paid-into-pension-previous-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /who-paid-into-pension-previous-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onSubmit(mode: Mode ?= NormalMode)
 
@@ -212,15 +197,6 @@ POST        /employment-income-current-year                    uk.gov.hmrc.child
 
 GET         /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /how-much-both-pay-pension-previous-year           uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /how-much-both-pay-pension-previous-year           uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /how-much-you-pay-pension-previous-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /how-much-you-pay-pension-previous-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionPYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /how-much-partner-pay-pension-previous-year        uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /how-much-partner-pay-pension-previous-year        uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionPYController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /childcare-pay-frequency                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
 GET         /childcare-pay-frequency/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
