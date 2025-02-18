@@ -151,7 +151,6 @@ object ChildcareConstants {
   val partnerAnyTheseBenefitsPYErrorKey = "partnerAnyTheseBenefitsPY.error.notCompleted"
   val bothAnyTheseBenefitsPYErrorKey = "bothAnyTheseBenefitsPY.error.notCompleted"
   val whosHadBenefitsErrorKey = "whosHadBenefits.error.notCompleted"
-  val whosHadBenefitsPYErrorKey = "whosHadBenefitsPY.error.notCompleted"
 
   val parentPaidWorkPYErrorKey = "parentPaidWorkPY.error.notCompleted"
   val partnerPaidWorkPYErrorKey = "partnerPaidWorkPY.error.notCompleted"
