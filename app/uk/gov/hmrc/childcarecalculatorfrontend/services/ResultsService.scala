@@ -40,6 +40,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
                                taxFreeChildcare: TaxFreeChildcare,
                                firstParagraphBuilder: FirstParagraphBuilder,
                                utils: Utils)(implicit ec: ExecutionContext) {
+
   def getResultsViewModel(answers: UserAnswers, location: Location)
                          (implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 
@@ -56,14 +57,6 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val livingWithPartner = answers.doYouLiveWithPartner.fold(false)(identity)
 
     val paidEmployment = checkIfInEmployment(answers)
-
-    def getEarnings(moreThanMinimum: Option[Boolean], moreThanMaximum: Option[Boolean]): Option[EarningsEnum] =
-      (moreThanMinimum, moreThanMaximum) match {
-        case (Some(true), Some(true)) => Some(EarningsEnum.GreaterThanMaximum)
-        case (Some(true), _) => Some(EarningsEnum.BetweenMinimumAndMaximum)
-        case (Some(false), _) => Some(EarningsEnum.LessThanMinimum)
-        case _ => None
-      }
 
     val yourEarnings = getEarnings(answers.yourMinimumEarnings, answers.yourMaximumEarnings)
     val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
@@ -106,6 +99,14 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       }
     })
   }
+
+  private def getEarnings(moreThanMinimum: Option[Boolean], moreThanMaximum: Option[Boolean]): Option[EarningsEnum] =
+    (moreThanMinimum, moreThanMaximum) match {
+      case (Some(true), Some(true)) => Some(EarningsEnum.GreaterThanMaximum)
+      case (Some(true), _) => Some(EarningsEnum.BetweenMinimumAndMaximum)
+      case (Some(false), _) => Some(EarningsEnum.LessThanMinimum)
+      case _ => None
+    }
 
   private def getFreeChildcareWorkingParentsEligibility(userAnswers: UserAnswers): Boolean = {
     freeChildcareWorkingParents.eligibility(userAnswers) match {
