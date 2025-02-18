@@ -91,10 +91,7 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeBothPaidWorkPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsBoolean(false) => cacheMap copy (data = cacheMap.data - WhoWasInPaidWorkPYId.toString -
-        EmploymentIncomePYId.toString - ParentEmploymentIncomePYId.toString - PartnerEmploymentIncomePYId.toString -
-        YouPaidPensionPYId.toString - PartnerPaidPensionPYId.toString - BothPaidPensionPYId.toString -
-        WhoPaidIntoPensionPYId.toString - HowMuchYouPayPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString -
-        HowMuchBothPayPensionPYId.toString)
+        EmploymentIncomePYId.toString - ParentEmploymentIncomePYId.toString - PartnerEmploymentIncomePYId.toString)
 
       case _ => cacheMap
     }
@@ -105,16 +102,13 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
   private def storeWhoWasInPaidWork(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsString(`you`) => cacheMap copy (data = cacheMap.data - PartnerEmploymentIncomePYId.toString -
-        PartnerPaidPensionPYId.toString  - HowMuchPartnerPayPensionPYId.toString - EmploymentIncomePYId.toString -
-        WhoPaidIntoPensionPYId.toString -  BothPaidPensionPYId.toString - HowMuchBothPayPensionPYId.toString)
+        EmploymentIncomePYId.toString)
 
       case JsString(`partner`) => cacheMap copy (data = cacheMap.data - ParentEmploymentIncomePYId.toString -
-        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - EmploymentIncomePYId.toString -
-        WhoPaidIntoPensionPYId.toString - BothPaidPensionPYId.toString - HowMuchBothPayPensionPYId.toString)
+        EmploymentIncomePYId.toString)
 
       case JsString(`both`) => cacheMap copy (data = cacheMap.data  - ParentEmploymentIncomePYId.toString -
-        YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString  - PartnerEmploymentIncomePYId.toString -
-        PartnerPaidPensionPYId.toString  - HowMuchPartnerPayPensionPYId.toString)
+        PartnerEmploymentIncomePYId.toString)
 
       case _ => cacheMap
     }

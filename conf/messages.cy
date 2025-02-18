@@ -675,7 +675,6 @@ bothPaidPensionCY.heading=A ydych chi, eich partner, neu’r ddau ohonoch yn tal
 bothPaidPensionCY.checkYourAnswersLabel=A ydych chi, eich partner, neu’r ddau ohonoch wedi talu i mewn i bensiwn gwaith y flwyddyn hon?
 bothPaidPensionCY.error.notCompleted=Dewiswch ‘Iawn’ os ydych chi, eich partner, neu’r ddau ohonoch yn talu i mewn i bensiwn gwaith y flwyddyn hon
 bothPaidPensionCY.tax.year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothPaidPensionPY.tax.year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 
 whosHadBenefits.title=Pwy gafodd fudd-daliadau?
 whosHadBenefits.heading=Pwy gafodd fudd-daliadau?
@@ -684,23 +683,6 @@ whosHadBenefits.partner=Partner
 whosHadBenefits.both=Y ddau
 whosHadBenefits.checkYourAnswersLabel=Pwy sydd wedi cael budd-daliadau?
 whosHadBenefits.error.notCompleted=Dewiswch pwy sydd wedi cael budd-daliadau
-
-youPaidPensionPY.title=A wnaethoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-youPaidPensionPY.heading=A wnaethoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-youPaidPensionPY.checkYourAnswersLabel=A wnaethoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-youPaidPensionPY.error.notCompleted=Dewiswch ‘Iawn’ os gwnaethoch dalu i mewn i’ch pensiwn gwaith yn y flwyddyn flaenorol
-youPaidPensionPY.tax.year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-partnerPaidPensionPY.title=A wnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-partnerPaidPensionPY.heading=A wnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-partnerPaidPensionPY.checkYourAnswersLabel=A wnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-partnerPaidPensionPY.error.notCompleted=Dewiswch ‘Iawn’ os gwnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol
-partnerPaidPensionPY.tax.year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-bothPaidPensionPY.title=A wnaethoch chi, eich partner, neu’r ddau ohonoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-bothPaidPensionPY.heading=A wnaethoch chi, eich partner, neu’r ddau ohonoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-bothPaidPensionPY.checkYourAnswersLabel=A wnaethoch chi, eich partner, neu’r ddau ohonoch chi dalu i mewn i’ch pensiwn gwaith yn y flwyddyn flaenorol?
-bothPaidPensionPY.error.notCompleted=Dewiswch ‘Iawn’ os gwnaethoch chi, eich partner, neu’r ddau ohonoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol
 
 parentPaidWorkPY.title=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
 parentPaidWorkPY.heading=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
@@ -802,14 +784,6 @@ bothIncomeInfoPY.li.benefits_income=incwm o fudd-daliadau
 bothIncomeInfoPY.checkYourAnswersLabel=Incwm eich partner y llynedd
 bothIncomeInfoPY.li.birth_or_adoption=wythnosau a thâl a gymerwyd tra roeddech ar absenoldeb oherwydd genedigaeth neu fabwysiadu
 
-whoPaidIntoPensionPY.title=Pwy dalodd i mewn i bensiwn?
-whoPaidIntoPensionPY.heading=Pwy dalodd i mewn i bensiwn?
-whoPaidIntoPensionPY.you=Chi
-whoPaidIntoPensionPY.partner=Partner
-whoPaidIntoPensionPY.both=Y ddau
-whoPaidIntoPensionPY.error.notCompleted=Dewiswch pwy dalodd i mewn i bensiwn
-whoPaidIntoPensionPY.checkYourAnswersLabel=Pwy dalodd i mewn i bensiwn?
-
 otherIncomeAmountCY.title=Faint y bydd eich incwm arall chi a’ch partner y flwyddyn hon?
 otherIncomeAmountCY.heading=Faint y bydd eich incwm arall chi a’ch partner y flwyddyn hon?
 otherIncomeAmountCY.parentOtherIncome=Eich incwm arall
@@ -869,19 +843,6 @@ partnerAnyTheseBenefitsPY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad C
 partnerAnyTheseBenefitsPY.checkYourAnswersLabel=A gafodd eich partner unrhyw un o’r budd-daliadau hyn y llynedd?
 partnerAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cafodd eich partner unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
 
-bothAnyTheseBenefitsPY.title=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-bothAnyTheseBenefitsPY.heading=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-bothAnyTheseBenefitsPY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothAnyTheseBenefitsPY.li.income_support=Pensiwn y Wladwriaeth
-bothAnyTheseBenefitsPY.li.jobseekers_allowance=Lwfans Ceisio Gwaith (ar sail cyfraniadau)
-bothAnyTheseBenefitsPY.li.employment_support=Lwfans Cyflogaeth a Chymorth (ar sail cyfraniadau)
-bothAnyTheseBenefitsPY.li.pensions=Budd-dal Analluogrwydd
-bothAnyTheseBenefitsPY.li.disability=Lwfans Rhiant Gweddw
-bothAnyTheseBenefitsPY.li.carers=Lwfans Gofalwr
-bothAnyTheseBenefitsPY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-bothAnyTheseBenefitsPY.checkYourAnswersLabel=A gawsoch chi neu eich partner unrhyw un o’r budd-daliadau hyn y flwyddyn ddiwethaf?
-bothAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch chi neu’ch partner unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
-
 parentBenefitsIncomePY.error.required=Nodwch faint oedd eich incwm o fudd-daliadau yn y flwyddyn flaenorol
 parentBenefitsIncomePY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 ar gyfer eich incwm o fudd-daliadau yn y flwyddyn flaenorol
 
@@ -889,28 +850,6 @@ registeredBlind.title=A oes unrhyw un o’ch plant wedi’u cofrestru’n ddall?
 registeredBlind.heading=A oes unrhyw un o’ch plant wedi’u cofrestru’n ddall?
 registeredBlind.error.notCompleted=Dewiswch ‘Iawn’ os yw unrhyw un o’ch plant wedi’i gofrestru’n ddall
 registeredBlind.checkYourAnswersLabel=registeredBlind
-
-howMuchBothPayPensionPY.title=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
-howMuchBothPayPensionPY.heading=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
-howMuchBothPayPensionPY.yourPension=Eich pensiwn
-howMuchBothPayPensionPY.partnerPension=Pensiwn eich partner
-howMuchBothPayPensionPY.checkYourAnswersLabel=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
-
-howMuchYouPayPensionPY.title=Faint y gwnaethoch ei dalu i mewn i’ch pensiwn bob mis?
-howMuchYouPayPensionPY.heading=Faint y gwnaethoch ei dalu i mewn i’ch pensiwn bob mis?
-howMuchYouPayPensionPY.info=Eich pensiwn
-howMuchYouPayPensionPY.checkYourAnswersLabel=Faint y gwnaethoch ei dalu i mewn i’ch pensiwn bob mis?
-howMuchYouPayPensionPY.yourPension=Chi
-howMuchYouPayPensionPY.error.required=Nodwch faint wnaethoch chi ei dalu i mewn i’ch pensiwn bob mis
-howMuchYouPayPensionPY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint wnaethoch chi ei dalu i mewn i’ch pensiwn bob mis
-
-howMuchPartnerPayPensionPY.title=Faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis?
-howMuchPartnerPayPensionPY.heading=Faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis?
-howMuchPartnerPayPensionPY.info=Pensiwn partner
-howMuchPartnerPayPensionPY.checkYourAnswersLabel=Faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis?
-howMuchPartnerPayPensionPY.partnerPension=Partner
-howMuchPartnerPayPensionPY.error.required=Nodwch faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis
-howMuchPartnerPayPensionPY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis
 
 childDisabilityBenefits.title=A yw’ch plentyn yn cael unrhyw un o’r budd-daliadau anabledd hyn?
 childDisabilityBenefits.heading=A yw {0} yn cael unrhyw un o’r budd-daliadau anabledd hyn?

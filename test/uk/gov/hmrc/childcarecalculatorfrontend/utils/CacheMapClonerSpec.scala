@@ -124,14 +124,6 @@ class CacheMapClonerSpec extends SpecBase {
       result.getEntry[BigDecimal](ParentEmploymentIncomePYId.toString) mustBe Some(52)
     }
 
-    "be able to identify if it is a both parent route" in {
-      val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true), BothAnyTheseBenefitsCYId.toString -> JsBoolean(true)))
-
-      val result = CacheMapCloner.cloneCYIncomeIntoPYIncome(data)
-
-      result.getEntry[Boolean](BothAnyTheseBenefitsPYId.toString) mustBe Some(true)
-    }
-
     "On single journey, map YourPaidWorkPreviousYear" in {
       val data = new CacheMap("id", Map(DoYouLiveWithPartnerId.toString -> JsBoolean(false), AreYouInPaidWorkId.toString -> JsBoolean(true)))
 
