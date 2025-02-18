@@ -42,7 +42,6 @@ class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
      isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefits).nonEmpty) ||
       isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefits).nonEmpty)
 
-
     if (eligibleViaBenefits)
       Eligible
     else
