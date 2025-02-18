@@ -753,31 +753,13 @@ bothAnyTheseBenefitsPY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymo
 bothAnyTheseBenefitsPY.checkYourAnswersLabel=A gawsoch chi neu eich partner unrhyw un o’r budd-daliadau hyn y flwyddyn ddiwethaf?
 bothAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch chi neu’ch partner unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
 
-bothBenefitsIncomePY.title=Beth oedd eich incwm chi a’ch partner o fudd-daliadau yn y flwyddyn flaenorol?
-bothBenefitsIncomePY.heading=Beth oedd eich incwm chi a’ch partner o fudd-daliadau yn y flwyddyn flaenorol?
-bothBenefitsIncomePY.parentBenefitsIncomePY=Eich incwm o fudd-daliadau
-bothBenefitsIncomePY.partnerBenefitsIncomePY=Incwm eich partner o fudd-daliadau
-bothBenefitsIncomePY.checkYourAnswersLabel=Faint y cawsoch chi a’ch partner mewn budd-daliadau y flwyddyn ddiwethaf?
-
 parentBenefitsIncomePY.error.required=Nodwch faint oedd eich incwm o fudd-daliadau yn y flwyddyn flaenorol
 parentBenefitsIncomePY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 ar gyfer eich incwm o fudd-daliadau yn y flwyddyn flaenorol
-partnerBenefitsIncomePY.error.required=Nodwch faint oedd incwm eich partner o fudd-daliadau yn y flwyddyn flaenorol
-partnerBenefitsIncomePY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 ar gyfer incwm eich partner o fudd-daliadau y flwyddyn hon
 
 registeredBlind.title=A oes unrhyw un o’ch plant wedi’u cofrestru’n ddall?
 registeredBlind.heading=A oes unrhyw un o’ch plant wedi’u cofrestru’n ddall?
 registeredBlind.error.notCompleted=Dewiswch ‘Iawn’ os yw unrhyw un o’ch plant wedi’i gofrestru’n ddall
 registeredBlind.checkYourAnswersLabel=registeredBlind
-
-partnerBenefitsIncomePY.title=Beth yw incwm eich partner o fudd-daliadau?
-partnerBenefitsIncomePY.heading=Beth yw incwm eich partner o fudd-daliadau?
-partnerBenefitsIncomePY.info=Incwm partner o fudd-daliadau
-partnerBenefitsIncomePY.checkYourAnswersLabel=Faint y cawsoch eich partner mewn budd-daliadau?
-
-youBenefitsIncomePY.title=Beth oedd eich incwm o fudd-daliadau?
-youBenefitsIncomePY.heading=Beth oedd eich incwm o fudd-daliadau?
-youBenefitsIncomePY.info=Eich incwm o fudd-daliadau
-youBenefitsIncomePY.checkYourAnswersLabel=Faint y cawsoch chi mewn budd-daliadau y flwyddyn ddiwethaf?
 
 howMuchBothPayPensionPY.title=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
 howMuchBothPayPensionPY.heading=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
