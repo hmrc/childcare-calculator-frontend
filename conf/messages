@@ -710,14 +710,6 @@ whoPaidIntoPensionPY.both = Both
 whoPaidIntoPensionPY.error.notCompleted = Select who paid into a pension
 whoPaidIntoPensionPY.checkYourAnswersLabel = Who paid into a pension?
 
-whosHadBenefitsPY.title = Who got benefits income?
-whosHadBenefitsPY.heading = Who got benefits income?
-whosHadBenefitsPY.you = You
-whosHadBenefitsPY.partner = Partner
-whosHadBenefitsPY.both = Both
-whosHadBenefitsPY.checkYourAnswersLabel = Who’s had benefits last year?
-whosHadBenefitsPY.error.notCompleted = Select who got benefits
-
 otherIncomeAmountCY.title = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.heading = How much will you and your partner’s other income be this year?
 otherIncomeAmountCY.parentOtherIncome = Your other income
