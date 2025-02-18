@@ -46,6 +46,7 @@ case class ResultsViewModel(firstParagraph: List[String] = List.empty,
   def hasIneligibleMessages: Boolean = (freeChildcareWorkingParentsEligibilityMsg.nonEmpty && !freeChildcareWorkingParents) ||
     (taxFreeChildcareEligibilityMsg.nonEmpty && tfc.isEmpty)
   def isEligibleToAllSchemes: Boolean = noOfEligibleSchemes == 4
+
   def showTwoYearOldInfo: Boolean = {
     if (childrenAgeGroups.contains(TwoYears)) {
       location match {
