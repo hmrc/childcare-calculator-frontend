@@ -53,21 +53,17 @@ object CacheMapCloner {
     YouPaidPensionCYId.toString -> YouPaidPensionPYId.toString,
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
     YouAnyTheseBenefitsIdCY.toString -> YouAnyTheseBenefitsPYId.toString,
-    YouBenefitsIncomeCYId.toString -> YouBenefitsIncomePYId.toString,
     YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString)
 
   private val bothIncomeCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
     EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString,
-    YouBenefitsIncomeCYId.toString -> YouBenefitsIncomePYId.toString,
-    PartnerBenefitsIncomeCYId.toString -> PartnerBenefitsIncomePYId.toString,
     WhoPaysIntoPensionId.toString -> WhoPaidIntoPensionPYId.toString,
     HowMuchBothPayPensionId.toString -> HowMuchBothPayPensionPYId.toString,
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
     HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
     BothAnyTheseBenefitsCYId.toString -> BothAnyTheseBenefitsPYId.toString,
     WhosHadBenefitsId.toString -> WhosHadBenefitsPYId.toString,
-    BenefitsIncomeCYId.toString -> BothBenefitsIncomePYId.toString,
     BothPaidPensionCYId.toString -> BothPaidPensionPYId.toString,
     PartnerPaidPensionCYId.toString -> PartnerPaidPensionPYId.toString)
 
@@ -76,15 +72,13 @@ object CacheMapCloner {
     HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
     HowMuchBothPayPensionPYId.toString -> Seq(HowMuchYouPayPensionPYId.toString, HowMuchPartnerPayPensionPYId.toString),
     BenefitsIncomeCYId.toString -> Seq(ParentBenefitsIncomeId.toString, PartnerBenefitsIncomeId.toString),
-    BothBenefitsIncomePYId.toString -> Seq(ParentBenefitsIncomePYId.toString, PartnerBenefitsIncomePYId.toString),
     OtherIncomeAmountCYId.toString -> Seq(ParentOtherIncomeId.toString, PartnerOtherIncomeId.toString))
 
   private val jsonObjectsMapper: Map[String, String] = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
     HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
-    ParentBenefitsIncomeId.toString -> ParentBenefitsIncomePYId.toString,
-    PartnerBenefitsIncomeId.toString -> PartnerBenefitsIncomePYId.toString)
+    ParentBenefitsIncomeId.toString -> ParentBenefitsIncomePYId.toString)
 
 
   private def removeClonedData(data: CacheMap, sectionToClone: Map[String, String]) = {

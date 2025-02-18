@@ -37,7 +37,7 @@ class BenefitsIncomeNavigator @Inject()(utils: Utils) extends SubNavigator {
     WhosHadBenefitsId -> whosHadBenefitsRouteCY,
     YouBenefitsIncomeCYId -> yourBenefitsIncomeRouteCY,
     PartnerBenefitsIncomeCYId -> partnerBenefitsIncomeRouteCY,
-    BenefitsIncomeCYId -> bothBenefitsIncomeRouteCY,
+    BenefitsIncomeCYId -> bothBenefitsIncomeRouteCY
   )
 
   private def yourBenefitsRouteCY(answers: UserAnswers): Call =
@@ -73,4 +73,5 @@ class BenefitsIncomeNavigator @Inject()(utils: Utils) extends SubNavigator {
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.benefitsIncomeCY) { case _ => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
+
 }
