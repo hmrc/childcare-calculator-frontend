@@ -22,7 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BothBenefitsIncomePY, BenefitsIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -224,35 +224,6 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           navigator.nextPage(BenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
-    }
-  }
-
-  "Previous Year Benefits Route Navigation" when {
-    "in Normal mode" must {
-
-      "Partner Benefits PY Route" must {
-        "redirects to partnerBenefitsIncomePY page when user selects yes" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsPY) thenReturn Some(true)
-
-          navigator.nextPage(PartnerAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe routes.PartnerBenefitsIncomePYController.onPageLoad(NormalMode)
-        }
-
-        "redirects to PartnerAnyOtherIncomeLY page when user selects no" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsPY) thenReturn Some(false)
-
-          navigator.nextPage(PartnerAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe routes.PartnerAnyOtherIncomeLYController.onPageLoad(NormalMode)
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyTheseBenefitsPY) thenReturn None
-
-          navigator.nextPage(PartnerAnyTheseBenefitsPYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
-        }
-      }
-
     }
   }
 }

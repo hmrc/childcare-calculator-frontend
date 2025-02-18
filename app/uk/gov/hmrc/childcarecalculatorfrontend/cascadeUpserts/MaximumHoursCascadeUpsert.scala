@@ -74,7 +74,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
         HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
         YouBenefitsIncomeCYId.toString - PartnerPaidWorkPYId.toString - ParentEmploymentIncomePYId.toString -
         YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
-        YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString)
+        YouAnyTheseBenefitsPYId.toString)
     } else cacheMap copy (data = cacheMap.data - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString)
 
     store(AreYouInPaidWorkId.toString, value, mapToStore)
@@ -90,12 +90,12 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
             PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString - PartnerAnyTheseBenefitsCYId.toString -
             PartnerBenefitsIncomeCYId.toString - ParentPaidWorkPYId.toString - PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString -
-            HowMuchPartnerPayPensionPYId.toString - PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString -
+            HowMuchPartnerPayPensionPYId.toString - PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString -
             EmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
             BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString - BothAnyTheseBenefitsCYId.toString -
             WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString - BothPaidPensionPYId.toString -
             WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString -
-            BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString - BothBenefitsIncomePYId.toString)
+            BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString)
         case JsString(`partner`) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - HasYourTaxCodeBeenAdjustedId.toString -
             DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - YourChildcareVouchersId.toString - WhoGetsVouchersId.toString -
@@ -103,23 +103,22 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             EitherOfYouMaximumEarningsId.toString - PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
             HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString - YouBenefitsIncomeCYId.toString -
             PartnerPaidWorkPYId .toString - ParentEmploymentIncomePYId.toString - YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString -
-            YourOtherIncomeLYId.toString - YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString - EmploymentIncomeCYId.toString -
+            YourOtherIncomeLYId.toString - YouAnyTheseBenefitsPYId.toString - EmploymentIncomeCYId.toString -
             BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString -
             HowMuchBothPayPensionId.toString - BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
             BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString - EmploymentIncomePYId.toString -
             BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString - HowMuchBothPayPensionPYId.toString -
-            BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
-            BothBenefitsIncomePYId.toString )
+            BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString)
 
         case JsString(`both`) =>
           cacheMap copy (data = cacheMap.data - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
           PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString - HowMuchYouPayPensionId.toString -
           YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString - YouBenefitsIncomeCYId.toString - PartnerPaidWorkPYId .toString -
           ParentEmploymentIncomePYId.toString - YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
-          YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
+          YouAnyTheseBenefitsPYId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
           PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString - PartnerAnyTheseBenefitsCYId.toString -
           PartnerBenefitsIncomeCYId.toString - ParentPaidWorkPYId.toString - PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString -
-          HowMuchPartnerPayPensionPYId.toString - PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString )
+          HowMuchPartnerPayPensionPYId.toString - PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString)
 
         case JsString(`neither`) =>
           cacheMap copy (data = cacheMap.data - ParentWorkHoursId.toString - PartnerWorkHoursId.toString -
@@ -141,13 +140,12 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             //Previous Year
             PartnerPaidWorkPYId.toString - ParentEmploymentIncomePYId.toString -
             YouPaidPensionPYId.toString - HowMuchYouPayPensionPYId.toString - YourOtherIncomeLYId.toString -
-            YouAnyTheseBenefitsPYId.toString - YouBenefitsIncomePYId.toString - ParentPaidWorkPYId.toString -
+            YouAnyTheseBenefitsPYId.toString - ParentPaidWorkPYId.toString -
             PartnerEmploymentIncomePYId.toString - PartnerPaidPensionPYId.toString - HowMuchPartnerPayPensionPYId.toString -
-            PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString - PartnerBenefitsIncomePYId.toString -
+            PartnerAnyOtherIncomeLYId.toString - PartnerAnyTheseBenefitsPYId.toString -
             EmploymentIncomePYId.toString - BothPaidPensionPYId.toString - WhoPaidIntoPensionPYId.toString -
             HowMuchBothPayPensionPYId.toString -
-            BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString -
-            BothBenefitsIncomePYId.toString)
+            BothAnyTheseBenefitsPYId.toString - WhosHadBenefitsPYId.toString)
 
         case _ => cacheMap
       }

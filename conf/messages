@@ -915,32 +915,13 @@ bothAnyTheseBenefitsPY.li.scottishCarersAllowance = Carer’s Allowance or Carer
 
 bothAnyTheseBenefitsPY.checkYourAnswersLabel = Did you or your partner have any of these benefits last year?
 bothAnyTheseBenefitsPY.error.notCompleted = Select yes if you or your partner had any of these benefits in the previous year
-
-bothBenefitsIncomePY.title = What was you and your partner’s benefits income in the previous year?
-bothBenefitsIncomePY.heading = What was you and your partner’s benefits income in the previous year?
-bothBenefitsIncomePY.parentBenefitsIncomePY = Your benefits income
-bothBenefitsIncomePY.partnerBenefitsIncomePY = Partner’s benefits income
-bothBenefitsIncomePY.checkYourAnswersLabel = How much did you and your partner get in benefits last year?
-
 parentBenefitsIncomePY.error.required = Enter how much your benefits income was in the previous year
-partnerBenefitsIncomePY.error.required = Enter how much your partner’s benefits income was in the previous year
 parentBenefitsIncomePY.error.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
-partnerBenefitsIncomePY.error.invalid = Enter numbers from 1 to 9999.99 for your partner’s benefits income in the previous year
 
 registeredBlind.title = Are any of your children registered blind?
 registeredBlind.heading = Are any of your children registered blind?
 registeredBlind.error.notCompleted = Select yes if any of your children are registered blind
 registeredBlind.checkYourAnswersLabel = registeredBlind
-
-partnerBenefitsIncomePY.title = What was your partner’s benefits income?
-partnerBenefitsIncomePY.heading = What was your partner’s benefits income?
-partnerBenefitsIncomePY.info = Partner’s benefits income
-partnerBenefitsIncomePY.checkYourAnswersLabel = How much did your partner get in benefits?
-
-youBenefitsIncomePY.title = What was your benefits income?
-youBenefitsIncomePY.heading = What was your benefits income?
-youBenefitsIncomePY.info = Your benefits income
-youBenefitsIncomePY.checkYourAnswersLabel = How much did you get in benefits last year?
 
 howMuchBothPayPensionPY.title = How much did you and your partner pay into your pensions a month?
 howMuchBothPayPensionPY.heading = How much did you and your partner pay into your pensions a month?

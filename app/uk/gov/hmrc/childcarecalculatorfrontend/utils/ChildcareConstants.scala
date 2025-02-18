@@ -192,9 +192,7 @@ object ChildcareConstants {
   val partnerBenefitsIncomeCYRequiredErrorKey = "partnerBenefitsIncome.error.required"
   val partnerBenefitsIncomeCYInvalidErrorKey = "partnerBenefitsIncome.error.invalid"
   val parentBenefitsIncomePYRequiredErrorKey = "parentBenefitsIncomePY.error.required"
-  val partnerBenefitsIncomePYRequiredErrorKey = "partnerBenefitsIncomePY.error.required"
   val parentBenefitsIncomePYInvalidErrorKey = "parentBenefitsIncomePY.error.invalid"
-  val partnerBenefitsIncomePYInvalidErrorKey = "partnerBenefitsIncomePY.error.invalid"
   val parentBenefitsIncomeInvalidErrorKey = "parentBenefitsIncome.error.invalid"
   val partnerBenefitsIncomeInvalidErrorKey = "partnerBenefitsIncome.error.invalid"
 

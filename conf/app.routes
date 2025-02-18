@@ -239,15 +239,6 @@ POST        /partner-other-income-amount-current-year          uk.gov.hmrc.child
 GET         /employment-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /employment-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /both-benefits-income-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothBenefitsIncomePYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-benefits-income-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothBenefitsIncomePYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /partner-benefits-income-previous-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomePYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-benefits-income-previous-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomePYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /you-benefits-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomePYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /you-benefits-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomePYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode ?= NormalMode)
 
