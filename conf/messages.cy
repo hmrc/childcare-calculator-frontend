@@ -810,14 +810,6 @@ whoPaidIntoPensionPY.both=Y ddau
 whoPaidIntoPensionPY.error.notCompleted=Dewiswch pwy dalodd i mewn i bensiwn
 whoPaidIntoPensionPY.checkYourAnswersLabel=Pwy dalodd i mewn i bensiwn?
 
-whosHadBenefitsPY.title=Pwy gafodd incwm o fudd-daliadau?
-whosHadBenefitsPY.heading=Pwy gafodd incwm o fudd-daliadau?
-whosHadBenefitsPY.you=Chi
-whosHadBenefitsPY.partner=Partner
-whosHadBenefitsPY.both=Y ddau
-whosHadBenefitsPY.checkYourAnswersLabel=Pwy sydd wedi cael budd-daliadau y flwyddyn ddiwethaf?
-whosHadBenefitsPY.error.notCompleted=Dewiswch pwy gafodd fudd-daliadau
-
 otherIncomeAmountCY.title=Faint y bydd eich incwm arall chi a’ch partner y flwyddyn hon?
 otherIncomeAmountCY.heading=Faint y bydd eich incwm arall chi a’ch partner y flwyddyn hon?
 otherIncomeAmountCY.parentOtherIncome=Eich incwm arall
