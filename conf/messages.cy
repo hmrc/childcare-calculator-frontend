@@ -455,7 +455,7 @@ taxOrUniversalCreditsPartner.heading = A ydych chi a’ch partner yn cael Credyd
 taxOrUniversalCredits.uc=Credyd Cynhwysol
 taxOrUniversalCredits.none=Dim un o’r rhain
 taxOrUniversalCredits.error.notCompleted=Dewiswch a ydych yn cael Credyd Cynhwysol
-taxOrUniversalCreditsPartner.error.notCompleted = Select whether you and your partner get Universal Credit
+taxOrUniversalCreditsPartner.error.notCompleted = Dewiswch a ydych chi a’ch partner yn cael Credyd Cynhwysol
 taxOrUniversalCredits.checkYourAnswersLabel=taxOrUniversalCredits
 
 noOfChildren.title=Faint o blant sydd gennych o dan 18 oed?
