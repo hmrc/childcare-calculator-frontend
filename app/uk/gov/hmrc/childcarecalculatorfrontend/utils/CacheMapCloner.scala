@@ -63,7 +63,6 @@ object CacheMapCloner {
     HowMuchYouPayPensionId.toString -> HowMuchYouPayPensionPYId.toString,
     HowMuchPartnerPayPensionId.toString -> HowMuchPartnerPayPensionPYId.toString,
     BothAnyTheseBenefitsCYId.toString -> BothAnyTheseBenefitsPYId.toString,
-    WhosHadBenefitsId.toString -> WhosHadBenefitsPYId.toString,
     BothPaidPensionCYId.toString -> BothPaidPensionPYId.toString,
     PartnerPaidPensionCYId.toString -> PartnerPaidPensionPYId.toString)
 

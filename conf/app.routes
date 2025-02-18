@@ -207,9 +207,6 @@ POST        /both-any-these-benefits-previous-year             uk.gov.hmrc.child
 GET         /who-paid-into-pension-previous-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /who-paid-into-pension-previous-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaidIntoPensionPYController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /whos-had-benefits-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /whos-had-benefits-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsPYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onSubmit(mode: Mode ?= NormalMode)
 

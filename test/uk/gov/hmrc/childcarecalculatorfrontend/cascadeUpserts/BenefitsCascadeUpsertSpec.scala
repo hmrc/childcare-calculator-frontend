@@ -25,33 +25,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class BenefitsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
 
-  "Benefits PY" when {
-
-    "Save BothAnyTheseBenefitsPY data " must {
-      "remove whosHadBenefitsPY page data" +
-        " when user selects no option" in {
-        val originalCacheMap = new CacheMap("id", Map(
-          WhosHadBenefitsPYId.toString -> JsString(you)))
-
-        val result = cascadeUpsert(BothAnyTheseBenefitsPYId.toString, false, originalCacheMap)
-
-        result.data mustBe Map(BothAnyTheseBenefitsPYId.toString -> JsBoolean(false))
-      }
-
-      "return original cache map when user selects yes option" in {
-        val originalCacheMap = new CacheMap("id", Map(
-          WhosHadBenefitsPYId.toString -> JsString(you)))
-
-        val result = cascadeUpsert(BothAnyTheseBenefitsPYId.toString, true, originalCacheMap)
-
-        result.data mustBe Map(BothAnyTheseBenefitsPYId.toString.toString -> JsBoolean(true),
-          WhosHadBenefitsPYId.toString -> JsString(you))
-      }
-
-    }
-
-  }
-
   "Benefits CY" when {
     "Save YouAnyTheseBenefitsCY data " must {
       "remove YouBenefitsIncomeCY page data when user selects no option" in {
