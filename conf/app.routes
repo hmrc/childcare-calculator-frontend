@@ -40,12 +40,6 @@ POST        /are-you-in-paid-work                              uk.gov.hmrc.child
 GET         /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /parent-work-hours                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /parent-work-hours                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentWorkHoursController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /partner-work-hours                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-work-hours                                uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerWorkHoursController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit(mode: Mode ?= NormalMode)
 

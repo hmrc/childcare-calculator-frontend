@@ -266,20 +266,6 @@ whoIsInPaidEmployment.both=Y ddau
 whoIsInPaidEmployment.checkYourAnswersLabel=Pwy sydd mewn gwaith taledig?
 whoIsInPaidEmployment.error.notCompleted=Dewiswch pwy sydd mewn gwaith taledig
 
-parentWorkHours.error.blank=Nodwch sawl awr yr wythnos ydych yn ei gweithio fel arfer
-parentWorkHours.error.invalid=Mae’n rhaid i sawl awr yr wythnos ydych yn ei gweithio fel arfer fod rhwng 1 a 99.9
-parentWorkHours.title=Sawl awr yr wythnos ydych yn ei gweithio fel arfer?
-parentWorkHours.heading=Sawl awr yr wythnos ydych yn ei gweithio fel arfer?
-parentWorkHours.checkYourAnswersLabel=Sawl awr yr wythnos ydych yn ei gweithio fel arfer?
-parentWorkHours.para1=Dyma’r oriau rydych yn eu gweithio yn eich holl swyddi taledig, contractau dim oriau a hunangyflogaeth. Er enghraifft, 37
-
-partnerWorkHours.error.blank=Nodwch sawl awr yr wythnos mae’ch partner yn ei gweithio fel arfer
-partnerWorkHours.error.invalid=Mae’n rhaid i nifer yr oriau’r wythnos y mae eich partner yn eu gweithio fel arfer fod yn rhif rhwng 1 a 99.9
-partnerWorkHours.title=Sawl awr yr wythnos mae’ch partner yn gweithio fel arfer?
-partnerWorkHours.heading=Sawl awr yr wythnos mae’ch partner yn gweithio fel arfer?
-partnerWorkHours.checkYourAnswersLabel=Sawl awr yr wythnos mae’ch partner yn gweithio fel arfer?
-partnerWorkHours.para1=Dyma’r oriau y mae’n gweithio yn ei holl swyddi taledig, contractau dim oriau a hunangyflogaeth. Er enghraifft, 37
-
 yourChildcareVouchers.title=A ydych yn cael talebau gofal plant gan eich cyflogwr?
 yourChildcareVouchers.heading=A ydych yn cael talebau gofal plant gan eich cyflogwr?
 yourChildcareVouchers.YES=Iawn

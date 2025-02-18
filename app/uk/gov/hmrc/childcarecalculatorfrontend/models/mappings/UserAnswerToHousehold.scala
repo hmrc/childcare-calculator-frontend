@@ -27,10 +27,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils, DateTimeUtils}
 
-class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits)
+class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils)
   extends OverallIncome {
 
   private def stringToCreditsEnum(x: Option[String]): Option[CreditsEnum] = x match {
@@ -177,7 +176,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createParentClaimant(answers: UserAnswers): Claimant = {
-    val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
@@ -199,7 +197,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,
@@ -211,7 +208,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createPartnerClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
-    val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
@@ -233,7 +229,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,

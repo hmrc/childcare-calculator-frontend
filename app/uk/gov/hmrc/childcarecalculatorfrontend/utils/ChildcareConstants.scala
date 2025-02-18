@@ -98,11 +98,6 @@ object ChildcareConstants {
   val whoIsInPaidEmploymentErrorKey = "whoIsInPaidEmployment.error.notCompleted"
   val paidEmploymentErrorKey = "paidEmployment.error.notCompleted"
 
-  val parentWorkHoursBlankErrorKey = "parentWorkHours.error.blank"
-  val parentWorkHoursInvalidErrorKey = "parentWorkHours.error.invalid"
-  val partnerWorkHoursBlankErrorKey = "partnerWorkHours.error.blank"
-  val partnerWorkHoursInvalidErrorKey = "partnerWorkHours.error.invalid"
-
   val doYouGetAnyBenefitsErrorKey = "doYouGetAnyBenefits.error.notCompleted"
   val doYouOrYourPartnerGetAnyBenefitsErrorKey = "doYouOrYourPartnerGetAnyBenefits.error.notCompleted"
 

@@ -283,20 +283,6 @@ whoIsInPaidEmployment.both = Both
 whoIsInPaidEmployment.checkYourAnswersLabel = Who’s in paid work?
 whoIsInPaidEmployment.error.notCompleted = Select who’s in paid work
 
-parentWorkHours.error.blank = Enter how many hours a week you usually work
-parentWorkHours.error.invalid = How many hours a week you usually work must be a number from 1 to 99.9
-parentWorkHours.title = How many hours a week do you usually work?
-parentWorkHours.heading = How many hours a week do you usually work?
-parentWorkHours.checkYourAnswersLabel = How many hours a week do you usually work?
-parentWorkHours.para1 = This is the hours worked in all your paid jobs, zero hours contracts and self-employment. For example, 37
-
-partnerWorkHours.error.blank = Enter how many hours a week your partner usually works
-partnerWorkHours.error.invalid = How many hours a week your partner usually works must be a number from 1 to 99.9
-partnerWorkHours.title = How many hours a week does your partner usually work?
-partnerWorkHours.heading = How many hours a week does your partner usually work?
-partnerWorkHours.checkYourAnswersLabel = How many hours a week does your partner usually work?
-partnerWorkHours.para1 = This is the hours worked in all their paid jobs, zero hours contracts and self-employment. For example, 37
-
 yourChildcareVouchers.title = Do you get childcare vouchers from your employer?
 yourChildcareVouchers.heading = Do you get childcare vouchers from your employer?
 yourChildcareVouchers.YES = Yes
