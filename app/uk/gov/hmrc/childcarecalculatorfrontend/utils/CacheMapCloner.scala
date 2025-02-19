@@ -49,22 +49,15 @@ object CacheMapCloner {
   private val mappingError = "mapping not found"
 
   private val singleParentCurrentYearToPreviousYear = Map(AreYouInPaidWorkId.toString -> ParentPaidWorkPYId.toString,
-    ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     YouAnyTheseBenefitsIdCY.toString -> YouAnyTheseBenefitsPYId.toString,
     YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString)
 
-  private val bothIncomeCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
-    PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
-    EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString)
-
   private val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
-    EmploymentIncomePYId.toString -> Seq(ParentEmploymentIncomePYId.toString, PartnerEmploymentIncomePYId.toString),
     HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
     BenefitsIncomeCYId.toString -> Seq(ParentBenefitsIncomeId.toString, PartnerBenefitsIncomeId.toString),
     OtherIncomeAmountCYId.toString -> Seq(ParentOtherIncomeId.toString, PartnerOtherIncomeId.toString))
 
-  private val jsonObjectsMapper: Map[String, String] = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
-    PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
+  private val jsonObjectsMapper: Map[String, String] = Map(
     ParentBenefitsIncomeId.toString -> ParentBenefitsIncomePYId.toString)
 
 
