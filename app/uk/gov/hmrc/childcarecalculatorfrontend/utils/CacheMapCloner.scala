@@ -45,67 +45,19 @@ object CacheMapCloner {
     })
   }
 
-  def removeClonedDataForPreviousYearIncome(data: CacheMap) = {
-    data.getEntry[Boolean](DoYouLiveWithPartnerId.toString) match {
-      case Some(livesWithPartner) => {
-        if (livesWithPartner) {
-         val mapWithNoClonedData = removeClonedData(data,bothIncomeCurrentYearToPreviousYear)
-          mapWithNoClonedData.copy(data = mapWithNoClonedData.data - BothPaidWorkPYId.toString - WhoWasInPaidWorkPYId.toString)
-        }
-        else{
-          removeClonedData(data,singleParentCurrentYearToPreviousYear)
-        }
-      }
-
-      case _ => data
-    }
-  }
-
   private val mappingError = "mapping not found"
 
   private val singleParentCurrentYearToPreviousYear = Map(AreYouInPaidWorkId.toString -> ParentPaidWorkPYId.toString,
-    ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
     YouAnyTheseBenefitsIdCY.toString -> YouAnyTheseBenefitsPYId.toString,
     YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString)
 
-  private val bothIncomeCurrentYearToPreviousYear = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
-    PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
-    EmploymentIncomeCYId.toString -> EmploymentIncomePYId.toString)
-
   private val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
-    EmploymentIncomePYId.toString -> Seq(ParentEmploymentIncomePYId.toString, PartnerEmploymentIncomePYId.toString),
     HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
     BenefitsIncomeCYId.toString -> Seq(ParentBenefitsIncomeId.toString, PartnerBenefitsIncomeId.toString),
     OtherIncomeAmountCYId.toString -> Seq(ParentOtherIncomeId.toString, PartnerOtherIncomeId.toString))
 
-  private val jsonObjectsMapper: Map[String, String] = Map(ParentEmploymentIncomeCYId.toString -> ParentEmploymentIncomePYId.toString,
-    PartnerEmploymentIncomeCYId.toString -> PartnerEmploymentIncomePYId.toString,
+  private val jsonObjectsMapper: Map[String, String] = Map(
     ParentBenefitsIncomeId.toString -> ParentBenefitsIncomePYId.toString)
-
-  def cloneCYIncomeIntoPYIncome(userAnswers: CacheMap) = {
-    userAnswers.getEntry[Boolean](DoYouLiveWithPartnerId.toString) match {
-      case Some(livesWithPartner) => {
-        if (livesWithPartner) {
-          val anyoneInPaidEmployment = userAnswers.getEntry[String](WhoIsInPaidEmploymentId.toString).fold(false)(c => c != ChildcareConstants.neither)
-          val whoInPaidEmployment = userAnswers.getEntry[String](WhoIsInPaidEmploymentId.toString) match {
-            case Some(ChildcareConstants.You) => {
-              checkIfWorkedAtAnyPointThisYear(userAnswers,PartnerPaidWorkCYId.toString,ChildcareConstants.You)
-            }
-            case Some(ChildcareConstants.Partner) => {
-              checkIfWorkedAtAnyPointThisYear(userAnswers,ParentPaidWorkCYId.toString,ChildcareConstants.Partner)
-            }
-            case Some(ChildcareConstants.Both) => ChildcareConstants.Both
-            case _ => ChildcareConstants.neither
-          }
-          cloneSection(userAnswers, bothIncomeCurrentYearToPreviousYear, Some(Map(BothPaidWorkPYId.toString -> JsBoolean(anyoneInPaidEmployment),WhoWasInPaidWorkPYId.toString -> JsString(whoInPaidEmployment))))
-        }
-        else {
-          cloneSection(userAnswers, singleParentCurrentYearToPreviousYear)
-        }
-      }
-      case _ => userAnswers
-    }
-  }
 
   private def checkIfWorkedAtAnyPointThisYear(userAnswers: CacheMap, memberWorkingAtSomePointCurrentYear: String, memberWorkingAllYear: String) = {
     val workedThisYear = userAnswers.getEntry[Boolean](memberWorkingAtSomePointCurrentYear).fold(false)(c => c)

@@ -173,9 +173,6 @@ POST        /your-paid-work-previous-year                      uk.gov.hmrc.child
 GET         /partner-paid-work-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /partner-paid-work-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /both-paid-work-previous-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-paid-work-previous-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /partner-any-other-income-previous-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeLYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /partner-any-other-income-previous-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeLYController.onSubmit(mode: Mode ?= NormalMode)
 
@@ -235,15 +232,6 @@ GET         /about-your-child                                  uk.gov.hmrc.child
 GET         /about-your-child/:id                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
 POST        /about-your-child/:id                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode ?= NormalMode, id: Int)
 
-GET         /your-employment-income-previous-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-employment-income-previous-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomePYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /partner-employment-income-previous-year           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomePYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-employment-income-previous-year           uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomePYController.onSubmit(mode: Mode ?= NormalMode)
-
-GET         /employment-income-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /employment-income-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /child-approved-education                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
 GET         /child-approved-education/:id                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
 POST        /child-approved-education/:id                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildApprovedEducationController.onSubmit(mode: Mode ?= NormalMode, id: Int)
@@ -272,13 +260,8 @@ POST        /expected-childcare-costs/:id                      uk.gov.hmrc.child
 GET         /you-statutory-pay                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouStatutoryPayController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /you-statutory-pay                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouStatutoryPayController.onSubmit(mode: Mode ?= NormalMode)
 
-
 GET         /partner-statutory-pay                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /partner-statutory-pay                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerStatutoryPayController.onSubmit(mode: Mode ?= NormalMode)
-
-
-GET         /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /who-was-in-paid-work-previous-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoWasInPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onPageLoad()
 POST        /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onSubmit()
@@ -287,9 +270,3 @@ GET         /survey/do-not-understand                          uk.gov.hmrc.child
 POST        /survey/do-not-understand                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyDoNotUnderstandController.onSubmit()
 
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
-
-GET        /you-get-same-income-previous-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
-POST       /you-get-same-income-previous-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)
-
-GET        /both-get-same-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onPageLoad(mode: Mode ?= NormalMode)
-POST       /both-get-same-income-previous-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothGetSameIncomePreviousYearController.onSubmit(mode: Mode ?= NormalMode)

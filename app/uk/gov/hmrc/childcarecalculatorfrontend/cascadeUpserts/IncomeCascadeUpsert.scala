@@ -31,8 +31,6 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
       BothOtherIncomeThisYearId.toString -> ((v, cm) => storeBothOtherIncomeThisYear(v, cm)),
       WhoGetsOtherIncomeCYId.toString -> ((v, cm) => storeWhoGetsOtherIncomeCY(v, cm)),
       PartnerAnyOtherIncomeLYId.toString -> ((v, cm) => storePartnerAnyOtherIncomePY(v, cm)),
-      BothPaidWorkPYId.toString -> ((v, cm) => storeBothPaidWorkPY(v, cm)),
-      WhoWasInPaidWorkPYId.toString -> ((v, cm) => storeWhoWasInPaidWork(v, cm)),
       ParentPaidWorkCYId.toString -> ((v, cm) => storeParentPaidWorkCY(v, cm)),
       PartnerPaidWorkCYId.toString -> ((v, cm) => storePartnerPaidWorkCY(v, cm))
     )
@@ -86,34 +84,6 @@ class IncomeCascadeUpsert @Inject()() extends SubCascadeUpsert {
     }
 
     store(PartnerAnyOtherIncomeLYId.toString, value, mapToStore)
-  }
-
-  private def storeBothPaidWorkPY(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - WhoWasInPaidWorkPYId.toString -
-        EmploymentIncomePYId.toString - ParentEmploymentIncomePYId.toString - PartnerEmploymentIncomePYId.toString)
-
-      case _ => cacheMap
-    }
-
-    store(BothPaidWorkPYId.toString, value, mapToStore)
-  }
-
-  private def storeWhoWasInPaidWork(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = value match {
-      case JsString(`you`) => cacheMap copy (data = cacheMap.data - PartnerEmploymentIncomePYId.toString -
-        EmploymentIncomePYId.toString)
-
-      case JsString(`partner`) => cacheMap copy (data = cacheMap.data - ParentEmploymentIncomePYId.toString -
-        EmploymentIncomePYId.toString)
-
-      case JsString(`both`) => cacheMap copy (data = cacheMap.data  - ParentEmploymentIncomePYId.toString -
-        PartnerEmploymentIncomePYId.toString)
-
-      case _ => cacheMap
-    }
-
-    store(WhoWasInPaidWorkPYId.toString, value, mapToStore)
   }
   
   private def storePartnerPaidWorkCY(value: JsValue, cacheMap: CacheMap): CacheMap  = {

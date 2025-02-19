@@ -205,13 +205,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val taxCode = answers.whatIsYourTaxCode
 
     val currentYearIncome = getParentCurrentYearIncome(answers, taxCode)
-    val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
       hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
-      lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,
       ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
@@ -239,13 +237,11 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val taxCode = answers.whatIsYourPartnersTaxCode
 
     val currentYearIncome = getPartnerCurrentYearIncome(answers, taxCode)
-    val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
       hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
-      lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,
       ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
@@ -257,35 +253,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 }
 
 sealed trait OverallIncome extends StatutoryPay {
-
-  def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
-    val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
-
-    incomeValue match {
-      case Some(x) if x > 0 =>
-        Some(Income(
-          employmentIncome = incomeValue,
-          taxCode = taxCode)
-        )
-      case _ => None
-    }
-
-  }
-
-  def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
-    val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
-
-    incomeValue match {
-      case Some(x) if x > 0 =>
-        Some(Income(
-          employmentIncome = incomeValue,
-          taxCode = taxCode)
-        )
-      case _ =>
-        None
-    }
-
-  }
 
   def getParentCurrentYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomeCY, answers.employmentIncomeCY, parentEmploymentIncomeCY)
@@ -359,20 +326,12 @@ sealed trait OverallIncome extends StatutoryPay {
     x.howMuchYouPayPension
   }
 
-  private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    x.parentEmploymentIncomePY
-  }
-
   private def parentEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
     x.parentEmploymentIncomeCY
   }
 
   private def partnerEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
     x.partnerEmploymentIncomeCY
-  }
-
-  private def partnerEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    x.partnerEmploymentIncomePY
   }
 
   private def determineIncomeValue[A](s: Option[BigDecimal], multipleIncome: Option[A], f: A => BigDecimal): Option[BigDecimal] = s match {
