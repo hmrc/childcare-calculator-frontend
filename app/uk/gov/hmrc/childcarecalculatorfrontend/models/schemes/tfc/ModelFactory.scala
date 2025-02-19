@@ -53,7 +53,7 @@ class ModelFactory @Inject() {
       areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice.map(SelfEmployedOrApprenticeOrNeitherEnum.withName)
 
       parentApprentice = isApprenticeAndNotEarningTheMinimum(parentMinEarnings, areYouSelfEmployedOrApprentice)
-      parentSelfEmployed = isSelfEmployedAndNotEarningTheMinimum(parentMinEarnings, areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false))
+      parentSelfEmployed = isRecentlySelfEmployedAndNotEarningTheMinimum(parentMinEarnings, areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false))
 
       parentMaxEarnings <- if (parentMinEarnings) {
         answers.eitherOfYouMaximumEarnings.fold(answers.yourMaximumEarnings)(x => Some(x))
@@ -63,7 +63,7 @@ class ModelFactory @Inject() {
 
       parentBenefits = answers.doYouGetAnyBenefits.getOrElse(Set.empty)
 
-  } yield Parent(parentMinEarnings, !parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits)
+  } yield Parent(parentMinEarnings, parentMaxEarnings, parentSelfEmployed, parentApprentice, parentBenefits)
 
   private def buildPartner(answers: UserAnswers): Option[Parent] =
     for {
@@ -76,7 +76,7 @@ class ModelFactory @Inject() {
       partnerSelfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice.map(SelfEmployedOrApprenticeOrNeitherEnum.withName)
 
       partnerApprentice = isApprenticeAndNotEarningTheMinimum(partnerMinEarnings, partnerSelfEmployedOrApprentice)
-      partnerSelfEmployed = isSelfEmployedAndNotEarningTheMinimum(partnerMinEarnings, partnerSelfEmployedOrApprentice, answers.partnerSelfEmployed.getOrElse(false))
+      partnerSelfEmployed = isRecentlySelfEmployedAndNotEarningTheMinimum(partnerMinEarnings, partnerSelfEmployedOrApprentice, answers.partnerSelfEmployed.getOrElse(false))
 
       partnerMaxEarnings <- if (partnerMinEarnings) {
         answers.eitherOfYouMaximumEarnings.fold(answers.partnerMaximumEarnings)(x => Some(x))
@@ -85,7 +85,7 @@ class ModelFactory @Inject() {
       }
 
       partnerBenefits = answers.doesYourPartnerGetAnyBenefits.getOrElse(Set.empty)
-    } yield Parent(partnerMinEarnings, !partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits)
+    } yield Parent(partnerMinEarnings, partnerMaxEarnings, partnerSelfEmployed, partnerApprentice, partnerBenefits)
 
   private def createSingleHousehold(answers: UserAnswers): Option[SingleHousehold] =
     for {
@@ -99,7 +99,7 @@ class ModelFactory @Inject() {
       areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice.map(SelfEmployedOrApprenticeOrNeitherEnum.withName)
 
       apprentice = isApprenticeAndNotEarningTheMinimum(minEarnings, areYouSelfEmployedOrApprentice)
-      selfEmployed = isSelfEmployedAndNotEarningTheMinimum(minEarnings, areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false))
+      selfEmployed = isRecentlySelfEmployedAndNotEarningTheMinimum(minEarnings, areYouSelfEmployedOrApprentice, answers.yourSelfEmployed.getOrElse(false))
 
       maxEarnings <- if (minEarnings) {
         answers.yourMaximumEarnings
@@ -113,7 +113,7 @@ class ModelFactory @Inject() {
       } else {
         answers.doYouGetAnyBenefits
       }
-    } yield SingleHousehold(Parent(minEarnings, !maxEarnings, selfEmployed, apprentice, benefits))
+    } yield SingleHousehold(Parent(minEarnings, maxEarnings, selfEmployed, apprentice, benefits))
 
   private def isApprenticeAndNotEarningTheMinimum(
     minEarnings: Boolean,
@@ -124,7 +124,7 @@ class ModelFactory @Inject() {
       case _                         => false
     }
 
-  private def isSelfEmployedAndNotEarningTheMinimum(
+  private def isRecentlySelfEmployedAndNotEarningTheMinimum(
     minEarnings: Boolean,
     areYouSelfEmployedOrApprentice: Option[SelfEmployedOrApprenticeOrNeitherEnum],
     isEmployedForLessThan12Months: Boolean

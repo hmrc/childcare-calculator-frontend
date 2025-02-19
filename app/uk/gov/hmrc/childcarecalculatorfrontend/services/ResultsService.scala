@@ -112,7 +112,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     }
   }
 
-  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[Boolean]) = {
+  private def setSchemeInViewModel(scheme: SingleSchemeResult, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[Boolean]) = {
     if (scheme.amount > 0) {
       scheme.name match {
         case TCELIGIBILITY => resultViewModel
