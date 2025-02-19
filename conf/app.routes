@@ -286,9 +286,6 @@ POST        /partner-employment-income-previous-year           uk.gov.hmrc.child
 GET         /employment-income-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /employment-income-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomePYController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /child-start-education                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
-GET         /child-start-education/:id                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
-POST        /child-start-education/:id                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildStartEducationController.onSubmit(mode: Mode ?= NormalMode, id: Int)
 
 GET         /which-children-disability                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /which-children-disability                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onSubmit(mode: Mode ?= NormalMode)

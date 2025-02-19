@@ -82,7 +82,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.noOfChildren) thenReturn Some(1)
-        when(answers.childStartEducation(0)) thenReturn Some(todaysDate.minusMonths(6))
         when(answers.expectedChildcareCosts(0)) thenReturn Some(BigDecimal(200.0))
         when(answers.childcarePayFrequency(0)) thenReturn Some(ChildcarePayFrequency.MONTHLY)
         when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("Patrick", todaysDate.minusYears(7)))

@@ -80,12 +80,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def whichChildrenDisability: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenDisabilityId.toString)
 
-  def childStartEducation(index: Int): Option[LocalDate] = {
-    childStartEducation.flatMap(_.get(index))
-  }
-
-  def childStartEducation: Option[Map[Int, LocalDate]] = cacheMap.getEntry[Map[Int, LocalDate]](ChildStartEducationId.toString)
-
   def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](ChildRegisteredBlindId.toString)
 
   def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)

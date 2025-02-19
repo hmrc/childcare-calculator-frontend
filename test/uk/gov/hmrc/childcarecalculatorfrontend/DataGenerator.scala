@@ -55,8 +55,6 @@ object DataGenerator {
   val ageExactly15Relative: LocalDate => LocalDate = (date : LocalDate) =>
     LocalDate.of(date.minusYears(15).getYear, 6, 1)
 
-  private val childStartEducationDate = LocalDate.of(2017, 2, 1)
-
   lazy val disabilityBenefits: String = DisabilityBenefits.DISABILITY_BENEFITS.toString
   lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString
 
@@ -74,9 +72,7 @@ object DataGenerator {
       "3" -> Json.toJson(AboutYourChild("Baz", sampleDate)),
       "4" -> Json.toJson(AboutYourChild("Raz", sampleDate))
     ),
-    ChildStartEducationId.toString -> Json.obj(
-      "0" -> childStartEducationDate
-    ),
+
     ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
     WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
     WhichDisabilityBenefitsId.toString -> Json.obj(
