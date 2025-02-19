@@ -604,13 +604,6 @@ partnerPaidWorkPY.checkYourAnswersLabel=Dydy eich partner ddim yn gweithio nawr,
 partnerPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oedd gan eich partner unrhyw waith taledig yn y flwyddyn flaenorol
 partnerPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 
-bothPaidWorkPY.title=A oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol?
-bothPaidWorkPY.heading=A oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol?
-bothPaidWorkPY.checkYourAnswersLabel=A oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol?
-bothPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol
-bothPaidWorkPY.currentYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
 yourOtherIncomeLY.title=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
 yourOtherIncomeLY.heading=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
 yourOtherIncomeLY.year.start.end.date=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
@@ -734,32 +727,6 @@ childrenDisabilityBenefits.disabilities.living.allowance=Lwfans Byw i’r Anabl
 childrenDisabilityBenefits.personal.independence.payment=Taliad Annibyniaeth Personol
 childrenDisabilityBenefits.checkYourAnswersLabel=childDisabilityBenefits
 childrenDisabilityBenefits.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch plant yn cael unrhyw un o’r budd-daliadau anabledd hyn
-
-parentEmploymentIncomePY.title=Faint y cawsoch eich talu yn y flwyddyn flaenorol?
-parentEmploymentIncomePY.heading=Faint y cawsoch eich talu yn y flwyddyn flaenorol?
-parentEmploymentIncomePY.info=Eich cyflog
-parentEmploymentIncomePY.checkYourAnswersLabel=Faint y cawsoch eich talu y flwyddyn ddiwethaf?
-parentEmploymentIncomePY.error.required=Nodwch faint y cawsoch chi eich talu yn y flwyddyn flaenorol
-parentEmploymentIncomePY.error.invalid=Nodwch rifau rhwng 1 a 999999.99 am faint y cawsoch chi eich talu yn y flwyddyn flaenorol
-parentEmploymentIncomePY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-parentEmploymentIncomePY.hint=Dyma oedd cyfanswm y cyflog o’ch holl swyddi, neu’r elw os oeddech yn hunangyflogedig, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
-
-partnerEmploymentIncomePY.title=Faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol?
-partnerEmploymentIncomePY.heading=Faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol?
-partnerEmploymentIncomePY.info=Cyflog partner
-partnerEmploymentIncomePY.checkYourAnswersLabel=Faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol?
-partnerEmploymentIncomePY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-partnerEmploymentIncomePY.hint=Dyma oedd cyfanswm enillion eich partner o bob swydd neu elw os ydych yn hunangyflogedig cyn i chi dynnu treth ac Yswiriant Gwladol. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth neu salwch statudol.
-partnerEmploymentIncomePY.error.required=Nodwch faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol
-partnerEmploymentIncomePY.error.invalid=Nodwch rifau rhwng 1 a 999999.99 am faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol
-
-employmentIncomePY.title=Faint y cawsoch chi a’ch partner eich talu yn y flwyddyn flaenorol?
-employmentIncomePY.heading=Faint y cawsoch chi a’ch partner eich talu yn y flwyddyn flaenorol?
-employmentIncomePY.parentEmploymentIncomePY=Eich cyflog
-employmentIncomePY.partnerEmploymentIncomePY=Cyflog eich partner
-employmentIncomePY.checkYourAnswersLabel=Faint y cawsoch eich talu y flwyddyn ddiwethaf?
-employmentIncomePY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-employmentIncomePY.hint=Dyma oedd cyfanswm y cyflog o’ch holl swyddi, neu’r elw os oeddech yn hunangyflogedig, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
 
 aboutYourChild.title=Gwybodaeth am eich plentyn
 aboutYourChild.title.nth=Gwybodaeth am eich plentyn a ddaeth yn {0}
@@ -963,14 +930,6 @@ result.not.eligible.title=Nid ydych yn gymwys ar gyfer:
 result.not.eligible.title.ga=Nid ydych yn gymwys ar gyfer
 result.eligible.subheading=Gallwch gael
 result.not.eligible.subheading=Ni allwch gael y canlynol
-
-whoWasInPaidWorkPY.title=Pwy oedd mewn gwaith taledig?
-whoWasInPaidWorkPY.heading=Pwy oedd mewn gwaith taledig?
-whoWasInPaidWorkPY.you=Chi
-whoWasInPaidWorkPY.partner=Partner
-whoWasInPaidWorkPY.both=Y ddau
-whoWasInPaidWorkPY.checkYourAnswersLabel=Pwy oedd mewn gwaith taledig?
-whoWasInPaidWorkPY.error.notCompleted=Dewiswch pwy oedd mewn gwaith taledig
 
 aboutYourResults.title=Sut y gallai’r opsiynau hyn weithio i chi
 aboutYourResults.heading=Sut y gallai’r opsiynau hyn weithio i chi

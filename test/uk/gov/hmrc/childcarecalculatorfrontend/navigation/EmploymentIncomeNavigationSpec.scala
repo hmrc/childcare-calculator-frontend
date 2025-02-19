@@ -23,7 +23,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, EmploymentIncomePY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY,NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
@@ -142,24 +142,6 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
           when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(12, 20))
 
           navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.BothPaidPensionCYController.onPageLoad(NormalMode)
-        }
-      }
-
-    }
-  }
-
-  "Previous Year Income Route Navigation" when {
-
-    "in Normal mode" must {
-
-      "Partner Paid Work PY Route" must {
-        "redirects to parent employment income PY when user selects yes or no" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerPaidWorkPY) thenReturn Some(true) thenReturn Some(false)
-
-          navigator.nextPage(PartnerPaidWorkPYId, NormalMode).value(answers) mustBe routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
-
-          navigator.nextPage(PartnerPaidWorkPYId, NormalMode).value(answers) mustBe routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
         }
       }
 
