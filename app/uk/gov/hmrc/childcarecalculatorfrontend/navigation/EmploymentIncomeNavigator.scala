@@ -36,8 +36,7 @@ class EmploymentIncomeNavigator @Inject()(utils: Utils) extends SubNavigator {
     ParentPaidWorkCYId -> parentPaidWorkCYRoute,
     ParentEmploymentIncomeCYId -> parentEmploymentIncomeCYRoute,
     PartnerEmploymentIncomeCYId -> partnerEmploymentIncomeCYRoute,
-    EmploymentIncomeCYId -> employmentIncomeCYRoute,
-    PartnerPaidWorkPYId -> partnerPaidWorkPYRoute
+    EmploymentIncomeCYId -> employmentIncomeCYRoute
   )
 
   private def partnerPaidWorkCYRoute(answers: UserAnswers) =
@@ -69,7 +68,5 @@ class EmploymentIncomeNavigator @Inject()(utils: Utils) extends SubNavigator {
   }
 
   private def employmentIncomeCYRoute(answers: UserAnswers) = routes.BothPaidPensionCYController.onPageLoad(NormalMode)
-
-  private def partnerPaidWorkPYRoute(answers: UserAnswers) = routes.ParentEmploymentIncomePYController.onPageLoad(NormalMode)
 
 }

@@ -626,13 +626,6 @@ partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but 
 partnerPaidWorkPY.error.notCompleted = Select yes if your partner had any paid work in the previous year
 partnerPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
-bothPaidWorkPY.title = Were you, your partner, or both of you in paid work in the previous year?
-bothPaidWorkPY.heading = Were you, your partner, or both of you in paid work in the previous year?
-bothPaidWorkPY.checkYourAnswersLabel = Were you, your partner, or both of you in paid work in the previous year?
-bothPaidWorkPY.error.notCompleted = Select yes if you, your partner, or both of you were in paid work in the previous year
-bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
-bothPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
-
 yourOtherIncomeLY.title = Did you get any other income in the previous year?
 yourOtherIncomeLY.heading = Did you get any other income in the previous year?
 yourOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
@@ -760,32 +753,6 @@ childrenDisabilityBenefits.child.disability.payment = Disability Payment (Scotla
 childrenDisabilityBenefits.personal.independence.payment = Personal Independence Payment
 childrenDisabilityBenefits.checkYourAnswersLabel = childDisabilityBenefits
 childrenDisabilityBenefits.error.notCompleted = Select yes if any of your children get any of these disability benefits
-
-parentEmploymentIncomePY.title = How much did you get paid in the previous year?
-parentEmploymentIncomePY.heading = How much did you get paid in the previous year?
-parentEmploymentIncomePY.info = Your pay
-parentEmploymentIncomePY.checkYourAnswersLabel = How much did you get paid last year?
-parentEmploymentIncomePY.error.required = Enter how much you got paid in the previous year
-parentEmploymentIncomePY.error.invalid = Enter numbers between 1 and 999999.99 for how much you got paid in the previous year
-parentEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-parentEmploymentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
-
-partnerEmploymentIncomePY.title = How much did your partner get paid in the previous year?
-partnerEmploymentIncomePY.heading = How much did your partner get paid in the previous year?
-partnerEmploymentIncomePY.info = Partner’s pay
-partnerEmploymentIncomePY.checkYourAnswersLabel = How much did your partner get paid in the previous year?
-partnerEmploymentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-partnerEmploymentIncomePY.hint = This was your partner’s total earnings from all jobs or profit if you’re self‑employed before you remove tax and National Insurance. Include any statutory maternity, paternity or sick pay.
-partnerEmploymentIncomePY.error.required = Enter how much your partner got paid in the previous year
-partnerEmploymentIncomePY.error.invalid = Enter numbers from 1 to 999999.99 for how much your partner got paid in the previous year
-
-employmentIncomePY.title = How much did you and your partner get paid in the previous year?
-employmentIncomePY.heading = How much did you and your partner get paid in the previous year?
-employmentIncomePY.parentEmploymentIncomePY = Your pay
-employmentIncomePY.partnerEmploymentIncomePY = Partner’s pay
-employmentIncomePY.checkYourAnswersLabel = How much did you and your partner get paid last year?
-employmentIncomePY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-employmentIncomePY.hint = This was the total pay from all your jobs, or profit if you were self‑employed, before tax and National Insurance was taken off. Include any statutory maternity, paternity, shared parental, adoption or sick pay you had.
 
 aboutYourChild.title = About your child
 aboutYourChild.title.nth = About your {0} child
@@ -1000,14 +967,6 @@ result.not.eligible.title.ga = You are not eligible for
 
 result.eligible.subheading = You can get
 result.not.eligible.subheading = You cannot get
-
-whoWasInPaidWorkPY.title = Who was in paid work?
-whoWasInPaidWorkPY.heading = Who was in paid work?
-whoWasInPaidWorkPY.you = You
-whoWasInPaidWorkPY.partner = Partner
-whoWasInPaidWorkPY.both = Both
-whoWasInPaidWorkPY.checkYourAnswersLabel = Who was in paid work?
-whoWasInPaidWorkPY.error.notCompleted = Select who was in paid work
 
 aboutYourResults.title = How these options could work for you
 aboutYourResults.heading = How these options could work for you
