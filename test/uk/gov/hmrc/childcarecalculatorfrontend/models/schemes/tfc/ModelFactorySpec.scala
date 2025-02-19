@@ -50,7 +50,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
 
         factory(answers).value mustBe SingleHousehold(
-          Parent(minEarnings = false, maxEarnings = true, selfEmployed = true, apprentice = false, Set.empty)
+          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, Set.empty)
         )
       }
 
@@ -65,7 +65,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
 
         factory(answers).value mustBe SingleHousehold(
-          Parent(minEarnings = false, maxEarnings = true, selfEmployed = false, apprentice = false, Set.empty)
+          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, Set.empty)
         )
       }
 
@@ -78,7 +78,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.yourMaximumEarnings) thenReturn Some(false)
 
         factory(answers).value mustBe SingleHousehold(
-          Parent(minEarnings = true, maxEarnings = true, selfEmployed = false, apprentice = false, Set.empty)
+          Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, Set.empty)
         )
       }
 
@@ -108,8 +108,8 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
 
         factory(answers).value mustBe JointHousehold(
-          Parent(minEarnings = false, maxEarnings = true, selfEmployed = true, apprentice = false, Set.empty),
-          Parent(minEarnings = false, maxEarnings = true, selfEmployed = true, apprentice = false, Set.empty)
+          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, Set.empty),
+          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, Set.empty)
         )
       }
 
@@ -127,8 +127,8 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(APPRENTICE.toString)
 
         factory(answers).value mustBe JointHousehold(
-          Parent(minEarnings = false, maxEarnings = true, selfEmployed = false, apprentice = true, Set.empty),
-          Parent(minEarnings = true, maxEarnings = true, selfEmployed = false, apprentice = false, Set.empty)
+          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, Set.empty),
+          Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, Set.empty)
         )
       }
 
