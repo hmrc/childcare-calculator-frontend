@@ -242,7 +242,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
 }
 
-sealed trait OverallIncome extends StatutoryPay {
+sealed trait OverallIncome {
 
   def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
@@ -415,56 +415,3 @@ sealed trait OverallIncome extends StatutoryPay {
 
 }
 
-sealed trait StatutoryPay extends TaxYearInfo {
-
-  trait Year
-  object CurrentYear extends Year
-  object PreviousYear extends Year
-
-  private val defaultStatutoryPay: Int = 100
-
-  private def isInvalidStatutoryStartDare(x: LocalDate): Boolean = x.isBefore(previousTaxYearEndDate.minusYears(1))
-
-  private def getWeeksForSingleTaxYear(weeks: Option[Int], startDate: LocalDate, endDate: LocalDate): Option[Int] = {
-    weeks.map {
-      statutoryWeeks =>
-        val value = statutoryWeeks - DateTimeUtils.getWeeksBetween(startDate, endDate)
-        Math.max(0,value)
-    }
-  }
-
-  private def determineWeeksWithinSingleYear(totalWeeksTaken: Option[Int], statutoryStartDate: LocalDate, year: Year): Option[Int] = year match {
-
-    case CurrentYear => {
-
-      if (isInvalidStatutoryStartDare(statutoryStartDate)) {
-        None
-      }
-      else if (statutoryStartDate.isBefore(previousTaxYearEndDate)) {
-        getWeeksForSingleTaxYear(totalWeeksTaken, statutoryStartDate, previousTaxYearEndDate)
-      }
-      else {
-        totalWeeksTaken
-      }
-    }
-    case PreviousYear => {
-
-      if (isInvalidStatutoryStartDare(statutoryStartDate)) {
-        getWeeksForSingleTaxYear(totalWeeksTaken, statutoryStartDate, previousTaxYearEndDate.minusYears(1))
-      }
-      else {
-        val interval = DateTimeUtils.getWeeksBetween(statutoryStartDate, previousTaxYearEndDate)
-
-        totalWeeksTaken.map {
-          statutoryWeeks =>
-            if (interval < statutoryWeeks) {
-              interval
-            } else {
-              statutoryWeeks
-            }
-        }
-      }
-    }
-  }
-
-}
