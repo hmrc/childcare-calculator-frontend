@@ -1285,9 +1285,6 @@ timeout.message = For your security, we will clear what you have entered in
 timeout.continue = Continue what you were doing
 timeout.exit = Clear what you entered now
 
-
-
-
 yourAverageWeeklyEarnings.title = Your average weekly earnings
 yourAverageWeeklyEarnings.heading = Your average weekly earnings
 yourAverageWeeklyEarnings.para1 = We need to know your total weekly pay or profit from self-employment for the next 3 months, before tax and National Insurance are taken off.
