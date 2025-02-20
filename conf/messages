@@ -614,24 +614,11 @@ whosHadBenefits.both = Both
 whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
 whosHadBenefits.error.notCompleted = Select who’s had benefits
 
-parentPaidWorkPY.title = Were you in paid work in the previous year?
-parentPaidWorkPY.heading = Were you in paid work in the previous year?
-parentPaidWorkPY.checkYourAnswersLabel = Were you in paid work in the previous year?
-parentPaidWorkPY.error.notCompleted = Select yes if you had any paid work in the previous year
-parentPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
-
 partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work in the previous year?
 partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work in the previous year?
 partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work last year?
 partnerPaidWorkPY.error.notCompleted = Select yes if your partner had any paid work in the previous year
 partnerPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
-
-yourOtherIncomeLY.title = Did you get any other income in the previous year?
-yourOtherIncomeLY.heading = Did you get any other income in the previous year?
-yourOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
-yourOtherIncomeLY.hint.text = This could have been from a State Pension, investments, interest on savings, rental income or foreign income – not from maintenance, student grants or loans.
-yourOtherIncomeLY.checkYourAnswersLabel = yourOtherIncomeLY
-yourOtherIncomeLY.error.notCompleted = Select yes if you got any other income in the previous year
 
 partnerBenefitsIncomeCY.title = How much will your partner get in benefits this year?
 partnerBenefitsIncomeCY.heading = How much will your partner get in benefits this year?
@@ -705,23 +692,6 @@ employmentIncomeCY.partnerEmploymentIncome = Partner’s pay
 employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
 employmentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 employmentIncomeCY.hint = This is the total pay from all your jobs,or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
-
-
-youAnyTheseBenefitsPY.title = Did you get any of these benefits in the previous year?
-youAnyTheseBenefitsPY.heading = Did you get any of these benefits in the previous year?
-youAnyTheseBenefitsPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-
-youAnyTheseBenefitsPY.li.income_support = State Pension
-youAnyTheseBenefitsPY.li.jobseekers_allowance = Jobseeker’s Allowance (contribution-based)
-youAnyTheseBenefitsPY.li.carers = Carer’s Allowance
-youAnyTheseBenefitsPY.li.scottishCarersAllowance = Carer’s Allowance or Carer Support Payment
-youAnyTheseBenefitsPY.li.employment_support = Employment and Support Allowance (contribution-based)
-youAnyTheseBenefitsPY.li.pensions = Incapacity Benefit
-youAnyTheseBenefitsPY.li.disability = Widowed Parent’s Allowance
-
-youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits in the previous year?
-youAnyTheseBenefitsPY.error.notCompleted = Select yes if you had any of these benefits in the previous year
-
 
 parentBenefitsIncomePY.error.required = Enter how much your benefits income was in the previous year
 parentBenefitsIncomePY.error.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
@@ -860,7 +830,6 @@ expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare 
 expectedChildcareCosts.error.notCompleted = Enter your {0} childcare costs for {1}
 expectedChildcareCosts.error.invalid = Your expected {0} childcare costs for {1} must be a number from 1 to 9999.99
 
-
 statutoryPayType.maternity = Maternity
 statutoryPayType.paternity = Paternity
 statutoryPayType.adoption = Adoption
@@ -870,7 +839,6 @@ statutoryPayTypeLower.maternity = maternity
 statutoryPayTypeLower.paternity = paternity
 statutoryPayTypeLower.adoption = adoption
 statutoryPayTypeLower.shared-parental = shared parental
-
 
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs
