@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
-class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
+class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
   "Parent Paid Work CY" when {
     "save the data" must {
@@ -256,25 +256,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
 
         result.data mustBe Map(YourOtherIncomeLYId.toString.toString -> JsBoolean(true),
           YourOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)))
-      }
-    }
-
-    "Save PartnerAnyOtherIncomeLY data " must {
-      "remove partnerOtherIncomeAmountPY page data when user selects no option" in {
-        val originalCacheMap = new CacheMap("id", Map(PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20))))
-
-        val result = cascadeUpsert(PartnerAnyOtherIncomeLYId.toString, false, originalCacheMap)
-
-        result.data mustBe Map(PartnerAnyOtherIncomeLYId.toString -> JsBoolean(false))
-      }
-
-      "return original cache map when user selects yes option" in {
-        val originalCacheMap = new CacheMap("id", Map(PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20))))
-
-        val result = cascadeUpsert(PartnerAnyOtherIncomeLYId.toString, true, originalCacheMap)
-
-        result.data mustBe Map(PartnerAnyOtherIncomeLYId.toString.toString -> JsBoolean(true),
-          PartnerOtherIncomeAmountPYId.toString -> JsNumber(BigDecimal(20)))
       }
     }
 

@@ -32,7 +32,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
     "return `None` when `doYouLiveWithPartner` is undefined" in {
       val answers = spy(helper())
       when(answers.areYouInPaidWork) thenReturn Some(true)
-      when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
       when(answers.doYouGetAnyBenefits) thenReturn Some(true)
       when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
       factory(answers) mustNot be(defined)
@@ -57,7 +56,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.doYouGetAnyBenefits) thenReturn Some(false)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.yourMaximumEarnings) thenReturn Some(false)
@@ -68,7 +66,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
       "return `None` when `areYouInPaidWork` is undefined" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.parentWorkHours) thenReturn Some(BigDecimal(110))
         when(answers.doYouGetAnyBenefits) thenReturn Some(true)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
         factory(answers) mustNot be(defined)

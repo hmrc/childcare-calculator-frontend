@@ -85,7 +85,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "this is the last child" when {
 
-      "redirect to `Approved education or training` when there is at least one child over 16" in {
+      "redirect to `Do any children get disability benefits` when child is over 16" in {
         val answers: UserAnswers = userAnswersOverride(
           NoOfChildrenId.toString -> JsNumber(2),
           aboutYourChildren(
@@ -94,10 +94,10 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           )
         )(testDate)
         val result = navigator.nextPage(AboutYourChildId(1), NormalMode).value(answers)
-        result mustEqual routes.ChildApprovedEducationController.onPageLoad(NormalMode, 0)
+        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
       }
 
-      "redirect to `Do any children get disability benefits` when there are no children over 16" in {
+      "redirect to `Do any children get disability benefits` for all the child below 18" in {
         val answers: UserAnswers = userAnswersOverride(
           NoOfChildrenId.toString -> JsNumber(2),
           aboutYourChildren(
@@ -130,130 +130,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
   }
 
-  "Approved education or training" must {
 
-    "user answers `Yes`" when {
-
-      "redirect to `Child start education` if child is over 19" in {
-        val answers: UserAnswers = userAnswers(
-          defaultAboutYourChildren,
-          ChildApprovedEducationId.toString -> Json.obj(
-            "0" -> true
-          )
-        )
-        val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
-        result mustEqual routes.ChildStartEducationController.onPageLoad(NormalMode, 0)
-      }
-
-      "redirect to `Approved education or training` if child is under 19 and this is not the last child" in {
-        val answers: UserAnswers = userAnswersOverride(
-          aboutYourChildren(
-            foo -> ageOfOver16,
-            "Spoon" -> dob,
-            bar -> ageOfOver16,
-            "Baz" -> dob
-          ),
-          ChildApprovedEducationId.toString -> Json.obj(
-            "0" -> true
-          )
-        )(testDate)
-        val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
-        result mustEqual routes.ChildApprovedEducationController.onPageLoad(NormalMode, 2)
-      }
-
-      "redirect to `Do your children get disability benefits` if child is under 19 and this is the last child" in {
-        val answers: UserAnswers = userAnswersOverride(
-          defaultAboutYourChildren,
-          ChildApprovedEducationId.toString -> Json.obj(
-            "0" -> true,
-            "2" -> true
-          )
-        )(testDate)
-        val result = navigator.nextPage(ChildApprovedEducationId(2), NormalMode).value(answers)
-        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
-      }
-    }
-
-    "user answers `No`" when {
-
-      "redirect to `Approved education or training` for the next child if this is not the last child" in {
-        val answers: UserAnswers = userAnswers(
-          defaultAboutYourChildren,
-          ChildApprovedEducationId.toString -> Json.obj(
-            "0" -> false
-          )
-        )
-        val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
-        result mustEqual routes.ChildApprovedEducationController.onPageLoad(NormalMode, 2)
-      }
-
-      "redirect to `Do your children get disability benefits` if this is the last child" in {
-        val answers: UserAnswers = userAnswers(
-          defaultAboutYourChildren,
-          ChildApprovedEducationId.toString -> Json.obj(
-            "0" -> false,
-            "2" -> false
-          )
-        )
-        val result = navigator.nextPage(ChildApprovedEducationId(2), NormalMode).value(answers)
-        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
-      }
-    }
-
-    "redirect to `SessionExpired` if there is no answer for `ChildApprovedEducation`" in {
-      val answers: UserAnswers = userAnswers(
-        defaultAboutYourChildren
-      )
-      val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
-      result mustEqual routes.SessionExpiredController.onPageLoad
-    }
-
-    "redirect to `SessionExpired` if there is no answer for `AboutYourChild`" in {
-      val answers: UserAnswers = userAnswers(
-        ChildApprovedEducationId.toString -> Json.obj(
-          "0" -> false,
-          "1" -> false
-        )
-      )
-      val result = navigator.nextPage(ChildApprovedEducationId(0), NormalMode).value(answers)
-      result mustEqual routes.SessionExpiredController.onPageLoad
-    }
-
-    def defaultAboutYourChildren: (String, JsValue) =
-      aboutYourChildren(
-        foo -> ageOf19,
-        "Spoon" -> dob,
-        bar -> ageOfOver16,
-        "Baz" -> dob
-      )
-  }
-
-  "Approved education start date" must {
-
-    "redirect to `Approved education or training` when this is not the last applicable child" in {
-      val result = navigator.nextPage(ChildStartEducationId(0), NormalMode).value(answers)
-      result mustEqual routes.ChildApprovedEducationController.onPageLoad(NormalMode, 2)
-    }
-
-    "redirect to `Do your children get disability benefits` when this is the last applicable child" in {
-      val result = navigator.nextPage(ChildStartEducationId(2), NormalMode).value(answers)
-      result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
-    }
-
-    lazy val answers: UserAnswers = userAnswers(
-      aboutYourChildren(
-        foo -> ageOf19,
-        "Spoon" -> dob,
-        bar -> ageOfOver16,
-        "Baz" -> dob
-      )
-    )
-
-    "redirect to `SessionExpired` if the user has no answer for `About your child`" in {
-      val result = navigator.nextPage(ChildStartEducationId(0), NormalMode).value(userAnswers())
-      result mustEqual routes.SessionExpiredController.onPageLoad
-    }
-  }
 
   "Do any of your children get disability benefits" must {
 
