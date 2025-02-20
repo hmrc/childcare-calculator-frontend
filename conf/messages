@@ -704,13 +704,6 @@ bothPaidWorkPY.error.notCompleted = Select yes if you, your partner, or both of 
 bothPaidWorkPY.currentYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 bothPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
 
-partnerAnyOtherIncomeLY.title = Did your partner get any other income in the previous year?
-partnerAnyOtherIncomeLY.heading = Did your partner get any other income in the previous year?
-partnerAnyOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
-partnerAnyOtherIncomeLY.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
-partnerAnyOtherIncomeLY.checkYourAnswersLabel = partnerAnyOtherIncomeLY
-partnerAnyOtherIncomeLY.error.notCompleted = Select yes if your partner got any other income in the previous year
-
 yourOtherIncomeLY.title = Did you get any other income in the previous year?
 yourOtherIncomeLY.heading = Did you get any other income in the previous year?
 yourOtherIncomeLY.year.start.end.date = The previous year is 6 April {0} to 5 April {1}.
@@ -762,27 +755,6 @@ partnerBenefitsIncome.error.required = Enter how much your partner will get in b
 parentBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how much you will get in benefits this year
 partnerBenefitsIncome.error.invalid = Enter numbers from 1 to 9999.99 for how much your partner will get in benefits this year
 
-yourIncomeInfoPY.title = Your income for the previous year
-yourIncomeInfoPY.heading = Your income for the previous year
-yourIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-yourIncomeInfoPY.guidance = You will now be asked about your income for the previous year.
-yourIncomeInfoPY.li.income_paid_work = income from paid work
-yourIncomeInfoPY.li.pensions = pension contributions
-yourIncomeInfoPY.li.other_income = other income
-yourIncomeInfoPY.li.benefits_income = income from benefits
-yourIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
-yourIncomeInfoPY.checkYourAnswersLabel = Your income last year
-
-bothIncomeInfoPY.title = You and your partner’s income for the previous year
-bothIncomeInfoPY.heading = You and your partner’s income for the previous year
-bothIncomeInfoPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-bothIncomeInfoPY.guidance = You will now be asked about you and your partner’s income for the previous year.
-bothIncomeInfoPY.li.income_paid_work = income from paid work
-bothIncomeInfoPY.li.pensions = pension contributions
-bothIncomeInfoPY.li.other_income = other income
-bothIncomeInfoPY.li.benefits_income = income from benefits
-bothIncomeInfoPY.checkYourAnswersLabel = Your partner’s income last year
-bothIncomeInfoPY.li.birth_or_adoption = weeks and pay taken while on leave for a birth or an adoption
 
 bothOtherIncomeLY.title = Did you, your partner, or both of you get any other income in the previous year?
 bothOtherIncomeLY.heading = Did you, your partner, or both of you get any other income in the previous year?
@@ -859,21 +831,6 @@ youAnyTheseBenefitsPY.li.disability = Widowed Parent’s Allowance
 youAnyTheseBenefitsPY.checkYourAnswersLabel = Did you get any of these benefits in the previous year?
 youAnyTheseBenefitsPY.error.notCompleted = Select yes if you had any of these benefits in the previous year
 
-partnerAnyTheseBenefitsPY.title = Did your partner have any of these benefits in the previous year?
-partnerAnyTheseBenefitsPY.heading = Did your partner have any of these benefits in the previous year?
-partnerAnyTheseBenefitsPY.tax_year = The previous year is 6 April {0} to 5 April {1}.
-partnerAnyTheseBenefitsPY.li.income_support = Income Support
-partnerAnyTheseBenefitsPY.li.jobseekers_allowance = Income based Jobseeker’s Allowance
-partnerAnyTheseBenefitsPY.li.employment_support = Income-related Employment and Support Allowance
-partnerAnyTheseBenefitsPY.li.pensions = Pension Credit
-partnerAnyTheseBenefitsPY.li.disability = Disability Living Allowance
-partnerAnyTheseBenefitsPY.li.adultDisability = Disability Payment (Scotland only)
-partnerAnyTheseBenefitsPY.li.attendance = Attendance Allowance
-partnerAnyTheseBenefitsPY.li.independance = Personal Independence Payment
-partnerAnyTheseBenefitsPY.li.carers = Carer’s Allowance
-partnerAnyTheseBenefitsPY.li.scottishCarersAllowance = Carer’s Allowance or Carer Support Payment
-partnerAnyTheseBenefitsPY.checkYourAnswersLabel = Did your partner have any of these benefits last year?
-partnerAnyTheseBenefitsPY.error.notCompleted = Select yes if your partner had any of these benefits in the previous year
 
 bothAnyTheseBenefitsPY.title = Did you, your partner, or both of you get any of these benefits in the previous year?
 bothAnyTheseBenefitsPY.heading = Did you, your partner, or both of you get any of these benefits in the previous year?
@@ -1114,45 +1071,6 @@ expectedChildcareCosts.checkYourAnswersLabel = What are your expected childcare 
 expectedChildcareCosts.error.notCompleted = Enter your {0} childcare costs for {1}
 expectedChildcareCosts.error.invalid = Your expected {0} childcare costs for {1} must be a number from 1 to 9999.99
 
-whoGotStatutoryPay.title = Who got statutory pay?
-whoGotStatutoryPay.heading = Who got statutory pay?
-whoGotStatutoryPay.you = You
-whoGotStatutoryPay.partner = Partner
-whoGotStatutoryPay.both = Both
-whoGotStatutoryPay.error.notCompleted = Select who got statutory pay
-
-youStatutoryPay.title = Have you had statutory pay since 6 April {0}?
-youStatutoryPay.heading = Have you had statutory pay since 6 April {0}?
-youStatutoryPay.checkYourAnswersLabel = Have you had statutory pay since 6 April {0}?
-youStatutoryPay.error.required = Select yes if you have had statutory pay since 6 April {0}
-
-statutoryPay.guidance = Statutory pay is:
-statutoryPay.li.maternity = maternity
-statutoryPay.li.paternity = paternity
-statutoryPay.li.adoption = adoption
-statutoryPay.li.shared_parental = shared parental
-statutoryPay.guidance_extra = It could have started before this date and overlapped past it.
-
-bothStatutoryPay.title = Have you, your partner, or both of you had statutory pay since 6 April {0}?
-bothStatutoryPay.heading = Have you, your partner, or both of you had statutory pay since 6 April {0}?
-bothStatutoryPay.checkYourAnswersLabel = Have you, your partner, or both of you had statutory pay since 6 April {0}?
-bothStatutoryPay.error.required = Select yes if you, your partner, or both of you have had statutory pay since 6th April {0}
-
-partnerStatutoryPay.title = Has your partner had statutory pay since 6 April {0}?
-partnerStatutoryPay.heading = Has your partner had statutory pay since 6 April {0}?
-partnerStatutoryPay.checkYourAnswersLabel = Has your partner had statutory pay since 6 April {0}?
-partnerStatutoryPay.guidance_extra = This could also be if they started to get the pay before 6 April {0} and continued to get it after this date.
-partnerStatutoryPay.error.required = Select yes if your partner had statutory pay since 6 April {0}
-
-partnerStatutoryPayType.title = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.heading = What kind of statutory pay did your partner get?
-partnerStatutoryPayType.error.notCompleted = Select what kind of statutory pay your partner got
-partnerStatutoryPayType.checkYourAnswersLabel = partnerStatutoryPayType
-
-yourStatutoryPayType.title = What kind of statutory pay did you get?
-yourStatutoryPayType.heading = What kind of statutory pay did you get?
-yourStatutoryPayType.error.notCompleted = Select what kind of statutory pay you got
-yourStatutoryPayType.checkYourAnswersLabel = yourStatutoryPayType
 
 statutoryPayType.maternity = Maternity
 statutoryPayType.paternity = Paternity
@@ -1164,88 +1082,6 @@ statutoryPayTypeLower.paternity = paternity
 statutoryPayTypeLower.adoption = adoption
 statutoryPayTypeLower.shared-parental = shared parental
 
-yourStatutoryWeeks.title = How many weeks of {0} pay did you take?
-yourStatutoryWeeks.heading = How many weeks of {0} pay did you take?
-yourStatutoryWeeks.error.required = Enter how many weeks of {2} pay you took
-yourStatutoryWeeks.error.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay you took
-yourStatutoryWeeks.checkYourAnswersLabel = yourStatutoryWeeks
-
-partnerStatutoryWeeks.title = How many weeks of {0} pay did your partner take?
-partnerStatutoryWeeks.heading = How many weeks of {0} pay did your partner take?
-partnerStatutoryWeeks.error.required = Enter how many weeks of {2} pay your partner took
-partnerStatutoryWeeks.error.invalid = Enter numbers between {0} and {1} for how many weeks of {2} pay your partner took
-partnerStatutoryWeeks.checkYourAnswersLabel = partnerStatutoryWeeks
-
-statutoryWeeks.maternity.guidance = This is usually taken as {0} weeks.
-statutoryWeeks.paternity.guidance = This is usually taken as {0} weeks.
-statutoryWeeks.adoption.guidance = This is usually taken as {0} weeks.
-statutoryWeeks.shared-parental.guidance = This is usually taken as {0} weeks between both parents.
-
-yourStatutoryStartDate.title = When did your {0} pay start?
-yourStatutoryStartDate.heading = When did your {0} pay start?
-yourStatutoryStartDate.hint = For example, 31 1 2017
-yourStatutoryStartDate.checkYourAnswersLabel = yourStatutoryStartDate
-yourStatutoryStartDate.error.required = Enter the date your {0} pay started
-yourStatutoryStartDate.error.required.day = The date your {0} pay started must include a day
-yourStatutoryStartDate.error.required.month = The date your {0} pay started must include a month
-yourStatutoryStartDate.error.required.year = The date your {0} pay started must include a year
-yourStatutoryStartDate.error.required.dayMonth = The date your {0} pay started must include a day and month
-yourStatutoryStartDate.error.required.dayYear = The date your {0} pay started must include a day and year
-yourStatutoryStartDate.error.required.monthYear = The date your {0} pay started must include a month and year
-yourStatutoryStartDate.error.invalid = Enter a valid date in numbers
-yourStatutoryStartDate.error.invalid.day = The day your {0} pay started must be a number
-yourStatutoryStartDate.error.invalid.month = The month your {0} pay started must be a number
-yourStatutoryStartDate.error.invalid.year = The year your {0} pay started must be a number
-yourStatutoryStartDate.error.invalid.dayMonth = The day and month your {0} pay started must be a number
-yourStatutoryStartDate.error.invalid.dayYear = The day and year your {0} pay started must be a number
-yourStatutoryStartDate.error.invalid.monthYear = The month and year your {0} pay started must be a number
-yourStatutoryStartDate.error.notReal = The date your {0} pay started must be a real date
-yourStatutoryStartDate.error.notReal.day = The day your {0} pay started must be a valid number
-yourStatutoryStartDate.error.notReal.month = The month your {0} pay started must be a valid number
-yourStatutoryStartDate.error.notReal.year = Year must include 4 numbers
-yourStatutoryStartDate.error.range.min = The date your {0} pay started cannot be before 6 April {1}
-yourStatutoryStartDate.error.range.max = The date your {0} pay started cannot be in the future
-
-partnerStatutoryStartDate.title = When did your partner’s {0} pay start?
-partnerStatutoryStartDate.heading = When did your partner’s {0} pay start?
-partnerStatutoryStartDate.hint = For example, 31 1 2017
-partnerStatutoryStartDate.checkYourAnswersLabel = partnerStatutoryStartDate
-partnerStatutoryStartDate.error.required = Enter the date your partner’s {0} pay started
-partnerStatutoryStartDate.error.required.day = The date your partner’s {0} pay started must include a day
-partnerStatutoryStartDate.error.required.month = The date your partner’s {0} pay started must include a month
-partnerStatutoryStartDate.error.required.year = The date your partner’s {0} pay started must include a year
-partnerStatutoryStartDate.error.required.dayMonth = The date your partner’s {0} pay started must include a day and month
-partnerStatutoryStartDate.error.required.dayYear = The date your partner’s {0} pay started must include a day and year
-partnerStatutoryStartDate.error.required.monthYear = The date your partner’s {0} pay started must include a month and year
-partnerStatutoryStartDate.error.invalid = Enter a valid date in numbers
-partnerStatutoryStartDate.error.invalid.day = The day your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.month = The month your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.year = The year your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.dayMonth = The day and month your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.dayYear = The day and year your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.invalid.monthYear = The month and year your partner’s {0} pay started must be a number
-partnerStatutoryStartDate.error.notReal = The date your partner’s {0} pay started must be a real date
-partnerStatutoryStartDate.error.notReal.day = The day your partner’s {0} pay started must be a valid number
-partnerStatutoryStartDate.error.notReal.month = The month your partner’s {0} pay started must be a valid number
-partnerStatutoryStartDate.error.notReal.year = Year must include 4 numbers
-partnerStatutoryStartDate.error.range.min = The date your partner’s {0} pay started cannot be before 6 April {1}
-partnerStatutoryStartDate.error.range.max = The date your partner’s {0} pay started cannot be in the future
-
-yourStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
-yourStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
-
-partnerStatutoryPayBeforeTax.title = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.heading = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.checkYourAnswersLabel = Was this {0} pay less than £100 a week before tax?
-partnerStatutoryPayBeforeTax.error.notCompleted = Select yes if this {0} pay was less than £100 before tax
-
-yourStatutoryPayPerWeek.title = How much {0} pay did you get a week before tax?
-yourStatutoryPayPerWeek.heading = How much {0} pay did you get a week before tax?
-yourStatutoryPayPerWeek.checkYourAnswersLabel = How much {0} pay did you get a week before tax?
-yourStatutoryPayPerWeek.error.required = Enter how much {0} pay you got a week
-yourStatutoryPayPerWeek.error.invalid = Enter numbers from 1 to 99.99 for your {0} pay
 
 result.title = Help you could get with your childcare costs
 result.heading = Help you could get with your childcare costs
@@ -1451,31 +1287,6 @@ timeout.message = For your security, we will clear what you have entered in
 timeout.continue = Continue what you were doing
 timeout.exit = Clear what you entered now
 
-youGetSameIncomePreviousYear.title = Did you get the same income for the previous year?
-youGetSameIncomePreviousYear.heading = Did you get the same income for the previous year?
-youGetSameIncomePreviousYear.checkYourAnswersLabel = youGetSameIncomePreviousYear
-youGetSameIncomePreviousYear.error.notCompleted = Select yes if you got the same income for the previous year
-youGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
-youGetSameIncomePreviousYear.info.summary = What you answered about your income for the current year:
-
-bothGetSameIncomePreviousYear.title = Did you and your partner get the same income for the previous year?
-bothGetSameIncomePreviousYear.heading = Did you and your partner get the same income for the previous year?
-bothGetSameIncomePreviousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
-bothGetSameIncomePreviousYear.info.summary = What you answered about you and your partner’s income for the current year:
-bothGetSameIncomePreviousYear.checkYourAnswersLabel = bothGetSameIncomePreviousYear
-bothGetSameIncomePreviousYear.error.notCompleted = Select yes if you and your partner got the same income for the previous year
-
-incomeSummary.yourIncome = Your income
-incomeSummary.partnersIncome = Partner’s income
-incomeSummary.paidIntoPension = Paid into a pension
-incomeSummary.pensionPaymentsAmonth = Your pension payments a month
-incomeSummary.partnerPensionPaymentsAmonth = Partner’s pension payments a month
-incomeSummary.yourOtherIncome = Your other income
-incomeSummary.partnerOtherIncome = Partner’s other income
-incomeSummary.partnerBenefitsIncome = Partner’s benefits income
-incomeSummary.yourBenefitsIncome = Your benefits income
-incomeSummary.otherIncome = Other income
-incomeSummary.incomeFromBenefits = Income from benefits
 
 yourAverageWeeklyEarnings.title = Your average weekly earnings
 yourAverageWeeklyEarnings.heading = Your average weekly earnings
