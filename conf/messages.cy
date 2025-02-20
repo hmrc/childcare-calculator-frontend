@@ -592,24 +592,11 @@ whosHadBenefits.both=Y ddau
 whosHadBenefits.checkYourAnswersLabel=Pwy sydd wedi cael budd-daliadau?
 whosHadBenefits.error.notCompleted=Dewiswch pwy sydd wedi cael budd-daliadau
 
-parentPaidWorkPY.title=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
-parentPaidWorkPY.heading=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
-parentPaidWorkPY.checkYourAnswersLabel=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
-parentPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oedd gennych unrhyw waith taledig yn y flwyddyn flaenorol
-parentPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
 partnerPaidWorkPY.title=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig yn y flwyddyn flaenorol?
 partnerPaidWorkPY.heading=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig yn y flwyddyn flaenorol?
 partnerPaidWorkPY.checkYourAnswersLabel=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig y flwyddyn ddiwethaf?
 partnerPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oedd gan eich partner unrhyw waith taledig yn y flwyddyn flaenorol
 partnerPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-yourOtherIncomeLY.title=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
-yourOtherIncomeLY.heading=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
-yourOtherIncomeLY.year.start.end.date=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-yourOtherIncomeLY.hint.text=Gallai hyn fod wedi bod o Bensiwn y Wladwriaeth, buddsoddiadau, llog ar gynilion, incwm rhent neu incwm tramor - nid o gynhaliaeth, grantiau myfyrwyr na benthyciadau.
-yourOtherIncomeLY.checkYourAnswersLabel=yourOtherIncomeLY
-yourOtherIncomeLY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch unrhyw incwm arall yn y flwyddyn flaenorol
 
 partnerBenefitsIncomeCY.title=Faint y bydd eich partner yn ei gael mewn budd-daliadau y flwyddyn hon?
 partnerBenefitsIncomeCY.heading=Faint y bydd eich partner yn ei gael mewn budd-daliadau y flwyddyn hon?
@@ -685,19 +672,6 @@ employmentIncomeCY.partnerEmploymentIncome=Cyflog eich partner
 employmentIncomeCY.checkYourAnswersLabel=Faint y byddwch chi a’ch partner yn cael eich talu y flwyddyn hon?
 employmentIncomeCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 employmentIncomeCY.hint=Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
-
-youAnyTheseBenefitsPY.title=A gawsoch chi unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-youAnyTheseBenefitsPY.heading=A gawsoch chi unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-youAnyTheseBenefitsPY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-youAnyTheseBenefitsPY.li.income_support=Pensiwn y Wladwriaeth
-youAnyTheseBenefitsPY.li.jobseekers_allowance=Lwfans Ceisio Gwaith (ar sail cyfraniadau)
-youAnyTheseBenefitsPY.li.carers=Lwfans Gofalwr
-youAnyTheseBenefitsPY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-youAnyTheseBenefitsPY.li.employment_support=Lwfans Cyflogaeth a Chymorth (ar sail cyfraniadau)
-youAnyTheseBenefitsPY.li.pensions=Budd-dal Analluogrwydd
-youAnyTheseBenefitsPY.li.disability=Lwfans Rhiant Gweddw
-youAnyTheseBenefitsPY.checkYourAnswersLabel=A gawsoch chi unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-youAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
 
 parentBenefitsIncomePY.error.required=Nodwch faint oedd eich incwm o fudd-daliadau yn y flwyddyn flaenorol
 parentBenefitsIncomePY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 ar gyfer eich incwm o fudd-daliadau yn y flwyddyn flaenorol
