@@ -18,7 +18,7 @@ error.integer=Rhowch ateb mewn rhifau cyfain
 error.non_numeric=Rhowch werth gan ddefnyddio rhifau yn unig
 error.number=Nodwch rif dilys
 error.required=Nodwch werth
-error.summary.title=Mae problem wedi codi
+error.summary.title=Mae yna problem
 error.summary.text=Gwiriwch eich bod wedi ateb y cwestiwn yn gywir
 
 nth.0=cyntaf
@@ -100,10 +100,9 @@ whatToTellTheCalculator.li.costs=eich costau gofal plant cymeradwy wythnosol neu
 whatToTellTheCalculator.li.benefits=unrhyw fudd-daliadau anabledd y maen nhw’n eu cael
 whatToTellTheCalculator.time=Dylai gymryd tua 5 munud i’w llenwi.
 whatToTellTheCalculator.indent=Gallwch newid eich atebion gynifer o weithiau ag y dymunwch i ailgyfrifo a chymharu eich canlyniadau.
-whatToTellTheCalculator.tcUc=Credydau treth a Chredyd Cynhwysol
-whatToTellTheCalculator.p1.a=Os ydych eisoes yn cael credydau treth, gallwch ddefnyddio’r gyfrifiannell i weld faint y gallech ei hawlio am ofal plant.
-whatToTellTheCalculator.p2.a=Os nad ydych yn gymwys i barhau i hawlio credydau treth, efallai y bydd angen i chi wirio ar wahân a ydych yn gymwys
-whatToTellTheCalculator.p2.link=i gael help gyda chostau gofal plant gan ddefnyddio Credyd Cynhwysol
+whatToTellTheCalculator.uc=Credyd Cynhwysol
+whatToTellTheCalculator.p1.a=Os ydych yn gymwys i gael Credyd Cynhwysol, mae angen i chi wirio yma a allwch
+whatToTellTheCalculator.p2.link=gael help gyda chostau gofal plant (yn agor tab newydd).
 
 location.title=Ble’r ydych yn byw?
 location.heading=Ble’r ydych yn byw?
@@ -179,7 +178,6 @@ freeHoursInfo.guidance.isNotEligibleForOnlyOneScheme = Drwy roi rhagor o wybodae
 freeHoursInfo.li.workingParents = Gofal Plant sy’n Rhad ac am Ddim i Rieni sy’n Gweithio
 freeHoursInfo.li.vouchers=talebau gofal plant (defnyddwyr presennol yn unig)
 freeHoursInfo.li.tfc=Gofal Plant sy’n Rhydd o Dreth
-freeHoursInfo.li.tax_credits=credydau treth (defnyddwyr presennol yn unig)
 freeHoursInfo.no.childcare.para=Mae angen i chi gael costau gofal plant ar gyfer y cynlluniau eraill sydd ar gael. Felly, os ydych yma i weld pa gymorth y gallwch chi ei gael ganddyn nhw, dylech chi ddewis
 freeHoursInfo.no.childcare.link=disgwyl cael costau gofal plant yn y dyfodol
 freeHoursInfo.no.childcare.para.end=Bydd angen i chi roi amcangyfrif o faint rydych yn credu y gallech ei dalu fel rhan o’r cyfrifiad.
@@ -267,20 +265,6 @@ whoIsInPaidEmployment.neither=Dim un
 whoIsInPaidEmployment.both=Y ddau
 whoIsInPaidEmployment.checkYourAnswersLabel=Pwy sydd mewn gwaith taledig?
 whoIsInPaidEmployment.error.notCompleted=Dewiswch pwy sydd mewn gwaith taledig
-
-parentWorkHours.error.blank=Nodwch sawl awr yr wythnos ydych yn ei gweithio fel arfer
-parentWorkHours.error.invalid=Mae’n rhaid i sawl awr yr wythnos ydych yn ei gweithio fel arfer fod rhwng 1 a 99.9
-parentWorkHours.title=Sawl awr yr wythnos ydych yn ei gweithio fel arfer?
-parentWorkHours.heading=Sawl awr yr wythnos ydych yn ei gweithio fel arfer?
-parentWorkHours.checkYourAnswersLabel=Sawl awr yr wythnos ydych yn ei gweithio fel arfer?
-parentWorkHours.para1=Dyma’r oriau rydych yn eu gweithio yn eich holl swyddi taledig, contractau dim oriau a hunangyflogaeth. Er enghraifft, 37
-
-partnerWorkHours.error.blank=Nodwch sawl awr yr wythnos mae’ch partner yn ei gweithio fel arfer
-partnerWorkHours.error.invalid=Mae’n rhaid i nifer yr oriau’r wythnos y mae eich partner yn eu gweithio fel arfer fod yn rhif rhwng 1 a 99.9
-partnerWorkHours.title=Sawl awr yr wythnos mae’ch partner yn gweithio fel arfer?
-partnerWorkHours.heading=Sawl awr yr wythnos mae’ch partner yn gweithio fel arfer?
-partnerWorkHours.checkYourAnswersLabel=Sawl awr yr wythnos mae’ch partner yn gweithio fel arfer?
-partnerWorkHours.para1=Dyma’r oriau y mae’n gweithio yn ei holl swyddi taledig, contractau dim oriau a hunangyflogaeth. Er enghraifft, 37
 
 yourChildcareVouchers.title=A ydych yn cael talebau gofal plant gan eich cyflogwr?
 yourChildcareVouchers.heading=A ydych yn cael talebau gofal plant gan eich cyflogwr?
@@ -410,18 +394,12 @@ yourAge.TWENTYONEOROVER=21 neu’n hŷn
 yourAge.error.notCompleted=Dewiswch eich oedran
 yourAge.checkYourAnswersLabel=Beth yw’ch oedran chi?
 
-yourMinimumEarnings.title = Eich enillion wythnosol cyfartalog
-yourMinimumEarnings.heading = Eich enillion wythnosol cyfartalog
-yourMinimumEarnings.para1 = Mae angen i ni wybod cyfanswm eich cyflog wythnosol neu elw o hunangyflogaeth am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-yourMinimumEarnings.para2 = Os ydych chi ar absenoldeb mamolaeth, tadolaeth, mabwysiadu, neu salwch, faint wnaethoch chi ei ennill cyn i chi fynd ar wyliau.
-yourMinimumEarnings.form = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
+yourMinimumEarnings.title = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
+yourMinimumEarnings.heading = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
 yourMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os ydych yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
-partnerMinimumEarnings.title = Enillion wythnosol cyfartalog eich partner
-partnerMinimumEarnings.heading = Enillion wythnosol cyfartalog eich partner
-partnerMinimumEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth eich partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-partnerMinimumEarnings.para2 = Os yw’ch partner ar absenoldeb mamolaeth, absenoldeb tadolaeth, absenoldeb mabwysiadu, neu absenoldeb oherwydd salwch, dyma faint y gwnaeth ei ennill cyn iddo fynd ar gyfnod o absenoldeb.
-partnerMinimumEarnings.form = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
+partnerMinimumEarnings.title = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
+partnerMinimumEarnings.heading = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
 partnerMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch partner yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
 areYouSelfEmployedOrApprentice.title=A ydych yn hunangyflogedig neu’n brentis?
@@ -478,9 +456,9 @@ taxOrUniversalCredits.none=Dim un o’r rhain
 taxOrUniversalCredits.error.notCompleted=Dewiswch a ydych yn cael Credydau Treth neu Gredyd Cynhwysol
 taxOrUniversalCredits.checkYourAnswersLabel=taxOrUniversalCredits
 
-noOfChildren.title=Sawl plentyn sydd gennych?
-noOfChildren.heading=Sawl plentyn sydd gennych?
-noOfChildren.hint.text=Dim ond plant o dan 20 oed rydych yn gyfrifol amdanyn nhw y dylech eu cynnwys. Er enghraifft, 2
+noOfChildren.title=Faint o blant sydd gennych o dan 18 oed?
+noOfChildren.heading=Faint o blant sydd gennych o dan 18 oed?
+noOfChildren.hint.text=Nodwch nifer y plant o dan 18 oed yr ydych yn gyfrifol amdanynt yn unig. Er enghraifft, 2.
 noOfChildren.error.notCompleted=Mae’n rhaid i sawl plentyn sydd gennych fod yn rhif rhwng 1 a 19
 noOfChildren.error.required=Nodwch sawl plentyn sydd gennych
 noOfChildren.error.non_numeric=Rhowch werth gan ddefnyddio rhifau yn unig
@@ -526,7 +504,6 @@ yourIncomeInfo.li.income_paid_work=gwaith am dâl
 yourIncomeInfo.li.pensions=cyfraniadau pensiwn
 yourIncomeInfo.li.other_income=incwm arall
 yourIncomeInfo.li.benefits_income=incwm o fudd-daliadau
-yourIncomeInfo.li.birth_or_adoption=wythnosau a gymerwyd i ffwrdd o’r gwaith ar dâl mamolaeth, tadolaeth, ar y cyd i rieni neu fabwysiadu statudol
 yourIncomeInfo.checkYourAnswersLabel=Eich incwm y flwyddyn hon
 
 partnerIncomeInfo.title=Eich incwm chi ac incwm eich partner y flwyddyn hon
@@ -538,7 +515,7 @@ partnerIncomeInfo.li.pensions=cyfraniadau pensiwn
 partnerIncomeInfo.li.other_income=incwm arall
 partnerIncomeInfo.li.benefits_income=incwm o fudd-daliadau
 partnerIncomeInfo.checkYourAnswersLabel=Incwm eich partner y flwyddyn hon
-partnerIncomeInfo.li.birth_or_adoption=wythnosau a gymerwyd i ffwrdd o’r gwaith ar dâl mamolaeth, tadolaeth, ar y cyd i rieni neu fabwysiadu statudol
+
 
 parentEmploymentIncomeCY.title=Faint y cewch eich talu y flwyddyn hon?
 parentEmploymentIncomeCY.heading=Faint fyddwch chi’n cael eich talu eleni mewn punnoedd?
@@ -611,24 +588,6 @@ youAnyTheseBenefitsCY.checkYourAnswersLabel=A ydych wedi cael unrhyw un o’r bu
 youAnyTheseBenefitsCY.error.notCompleted=Dewiswch ‘Iawn’ os ydych wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon
 youAnyTheseBenefitsCY.error.carers.allowance=Dewiswch ‘Iawn’ gan eich bod chi eisoes wedi dewis eich bod yn cael Lwfans Gofalwr
 youAnyTheseBenefitsCY.error.scottishCarers.allowance=Dewiswch ‘Iawn’ gan eich bod eisoes wedi nodi eich bod yn cael naill ai Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-
-partnerAnyTheseBenefitsCY.title=A yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
-partnerAnyTheseBenefitsCY.heading=A yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
-partnerAnyTheseBenefitsCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-partnerAnyTheseBenefitsCY.li.income_support=Cymhorthdal Incwm
-partnerAnyTheseBenefitsCY.li.jobseekers_allowance=Lwfans Ceisio Gwaith ar sail Incwm
-partnerAnyTheseBenefitsCY.li.employment_support=Lwfans Cyflogaeth a Chymorth yn ymwneud ag incwm
-partnerAnyTheseBenefitsCY.li.pensions=Credyd Pensiwn
-partnerAnyTheseBenefitsCY.li.disability=Lwfans Byw i’r Anabl
-partnerAnyTheseBenefitsCY.li.adultDisability=Taliad Anabledd (Yr Alban yn unig)
-partnerAnyTheseBenefitsCY.li.attendance=Lwfans Gweini
-partnerAnyTheseBenefitsCY.li.independance=Taliad Annibyniaeth Personol
-partnerAnyTheseBenefitsCY.li.carers=Lwfans Gofalwr
-partnerAnyTheseBenefitsCY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-partnerAnyTheseBenefitsCY.checkYourAnswersLabel=A yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
-partnerAnyTheseBenefitsCY.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon
-partnerAnyTheseBenefitsCY.error.carers.allowance=Dewiswch ‘Iawn’ gan eich bod chi eisoes wedi dewis bod eich partner yn cael Lwfans Gofalwr
-partnerAnyTheseBenefitsCY.error.scottishCarers.allowance=Dewiswch ‘Iawn’ gan eich bod eisoes wedi nodi bod eich partner yn cael naill ai Lwfans Gofalwr neu Daliad Cymorth Gofalwr
 
 bothAnyTheseBenefitsCY.title=A ydych chi, eich partner, neu’r ddau ohonoch wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
 bothAnyTheseBenefitsCY.heading=A ydych chi, eich partner, neu’r ddau ohonoch wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon?
@@ -721,13 +680,6 @@ bothPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oeddech chi, eich partn
 bothPaidWorkPY.currentYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 bothPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 
-partnerAnyOtherIncomeLY.title=A gafodd eich partner unrhyw incwm arall yn y flwyddyn flaenorol?
-partnerAnyOtherIncomeLY.heading=A gafodd eich partner unrhyw incwm arall yn y flwyddyn flaenorol?
-partnerAnyOtherIncomeLY.year.start.end.date=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-partnerAnyOtherIncomeLY.hint.text=Gallai incwm arall fod o fuddsoddiadau, incwm rhent, llog ar gynilion neu incwm tramor – nid o Bensiwn y Wladwriaeth, cynhaliaeth, grantiau myfyrwyr neu fenthyciadau.
-partnerAnyOtherIncomeLY.checkYourAnswersLabel=partnerAnyOtherIncomeLY
-partnerAnyOtherIncomeLY.error.notCompleted=Dewiswch ‘Iawn’ os cafodd eich partner unrhyw incwm arall yn y flwyddyn flaenorol
-
 yourOtherIncomeLY.title=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
 yourOtherIncomeLY.heading=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
 yourOtherIncomeLY.year.start.end.date=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
@@ -779,28 +731,6 @@ partnerBenefitsIncome.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint y by
 
 parentBenefitsIncome.error.required=Nodwch faint y byddwch yn ei gael mewn budd-daliadau y flwyddyn hon
 parentBenefitsIncome.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint y byddwch yn ei gael mewn budd-daliadau y flwyddyn hon
-
-yourIncomeInfoPY.title=Eich incwm am y flwyddyn flaenorol
-yourIncomeInfoPY.heading=Eich incwm am y flwyddyn flaenorol
-yourIncomeInfoPY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-yourIncomeInfoPY.guidance=Gofynnir i chi nawr am eich incwm am y flwyddyn flaenorol.
-yourIncomeInfoPY.li.income_paid_work=Incwm o waith taledig
-yourIncomeInfoPY.li.pensions=cyfraniadau pensiwn
-yourIncomeInfoPY.li.other_income=incwm arall
-yourIncomeInfoPY.li.benefits_income=incwm o fudd-daliadau
-yourIncomeInfoPY.li.birth_or_adoption=wythnosau a thâl a gymerwyd tra roeddech ar absenoldeb oherwydd genedigaeth neu fabwysiadu
-yourIncomeInfoPY.checkYourAnswersLabel=Eich incwm y flwyddyn ddiwethaf
-
-bothIncomeInfoPY.title=Eich incwm chi a’ch partner am y flwyddyn dreth flaenorol
-bothIncomeInfoPY.heading=Eich incwm chi a’ch partner am y flwyddyn flaenorol
-bothIncomeInfoPY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothIncomeInfoPY.guidance=Gofynnir i chi nawr am eich incwm chi ac incwm eich partner am y flwyddyn flaenorol.
-bothIncomeInfoPY.li.income_paid_work=Incwm o waith taledig
-bothIncomeInfoPY.li.pensions=cyfraniadau pensiwn
-bothIncomeInfoPY.li.other_income=incwm arall
-bothIncomeInfoPY.li.benefits_income=incwm o fudd-daliadau
-bothIncomeInfoPY.checkYourAnswersLabel=Incwm eich partner y llynedd
-bothIncomeInfoPY.li.birth_or_adoption=wythnosau a thâl a gymerwyd tra roeddech ar absenoldeb oherwydd genedigaeth neu fabwysiadu
 
 bothOtherIncomeLY.title=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol?
 bothOtherIncomeLY.heading=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol?
@@ -875,22 +805,6 @@ youAnyTheseBenefitsPY.li.pensions=Budd-dal Analluogrwydd
 youAnyTheseBenefitsPY.li.disability=Lwfans Rhiant Gweddw
 youAnyTheseBenefitsPY.checkYourAnswersLabel=A gawsoch chi unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
 youAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
-
-partnerAnyTheseBenefitsPY.title=A gafodd eich partner unrhyw un o’r budd-daliadau hyn yn flwyddyn flaenorol?
-partnerAnyTheseBenefitsPY.heading=A gafodd eich partner unrhyw un o’r budd-daliadau hyn yn flwyddyn flaenorol?
-partnerAnyTheseBenefitsPY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-partnerAnyTheseBenefitsPY.li.income_support=Cymhorthdal Incwm
-partnerAnyTheseBenefitsPY.li.jobseekers_allowance=Lwfans Ceisio Gwaith ar sail Incwm
-partnerAnyTheseBenefitsPY.li.employment_support=Lwfans Cyflogaeth a Chymorth yn ymwneud ag incwm
-partnerAnyTheseBenefitsPY.li.pensions=Credyd Pensiwn
-partnerAnyTheseBenefitsPY.li.disability=Lwfans Byw i’r Anabl
-partnerAnyTheseBenefitsPY.li.adultDisability=Taliad Anabledd (Yr Alban yn unig)
-partnerAnyTheseBenefitsPY.li.attendance=Lwfans Gweini
-partnerAnyTheseBenefitsPY.li.independance=Taliad Annibyniaeth Personol
-partnerAnyTheseBenefitsPY.li.carers=Lwfans Gofalwr
-partnerAnyTheseBenefitsPY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-partnerAnyTheseBenefitsPY.checkYourAnswersLabel=A gafodd eich partner unrhyw un o’r budd-daliadau hyn y llynedd?
-partnerAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cafodd eich partner unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
 
 bothAnyTheseBenefitsPY.title=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
 bothAnyTheseBenefitsPY.heading=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
@@ -1025,7 +939,8 @@ aboutYourChild.title=Gwybodaeth am eich plentyn
 aboutYourChild.title.nth=Gwybodaeth am eich plentyn a ddaeth yn {0}
 aboutYourChild.heading=Gwybodaeth am eich plentyn
 aboutYourChild.heading.nth=Gwybodaeth am eich plentyn a ddaeth yn {0}
-aboutYourChild.lede=Mae croeso i chi ddefnyddio llysenw. Dim ond i wneud eich cwestiynau a’ch canlyniadau’n glir y bydd enwau’n cael eu defnyddio - fyddan nhw ddim yn cael eu storio na’u rhannu â neb.
+aboutYourChild.lede=Mae croeso i chi ddefnyddio llysenw. Mae’n gwneud y canlyniadau’n glir ac ni fyddant yn cael eu storio na’u rhannu.
+aboutYourChild.insetTextSub=Mae plant ond yn gymwys i gael help gyda chostau gofal plant hyd at 17 oed.
 aboutYourChild.name=Beth yw enw cyntaf eich plentyn?
 aboutYourChild.dob=Beth yw dyddiad geni eich plentyn?
 aboutYourChild.hint=Er enghraifft, 31 3 2015
@@ -1055,7 +970,7 @@ aboutYourChild.dob.error.notReal = Mae’n rhaid i ddyddiad geni eich plentyn fo
 aboutYourChild.dob.error.notReal.day = Mae’n rhaid i’r diwrnod ar gyfer dyddiad geni’ch plentyn fod yn rhif dilys
 aboutYourChild.dob.error.notReal.month = Mae’n rhaid i’r mis ar gyfer dyddiad geni’ch plentyn fod yn rhif dilys
 aboutYourChild.dob.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys 4 rhif
-aboutYourChild.dob.error.range.min = Ni all y dyddiad ar gyfer dyddiad geni’ch plentyn fod yn fwy nag 20 mlynedd yn y gorffennol
+aboutYourChild.dob.error.range.min = Mae’r dyddiad geni a nodwyd gennych yn dangos bod eich plentyn yn rhy hen i fod yn gymwys i gael help gyda chostau gofal plant.
 aboutYourChild.dob.error.range.max = Ni all dyddiad geni’ch plentyn fod yn y dyfodol
 aboutYourChild.dob.nth.error.required = Nodwch ddyddiad geni eich plentyn {0}
 aboutYourChild.dob.nth.error.required.day = Mae’n rhaid i ddyddiad geni eich plentyn {0} gynnwys diwrnod
@@ -1075,43 +990,13 @@ aboutYourChild.dob.nth.error.notReal = Mae’n rhaid i ddyddiad geni eich plenty
 aboutYourChild.dob.nth.error.notReal.day = Mae’n rhaid i’r diwrnod ar gyfer dyddiad geni’ch plentyn {0} fod yn rhif dilys
 aboutYourChild.dob.nth.error.notReal.month = Mae’n rhaid i’r mis ar gyfer dyddiad geni’ch plentyn {0} fod yn rhif dilys
 aboutYourChild.dob.nth.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys 4 rhif
-aboutYourChild.dob.nth.error.range.min = Ni all y dyddiad ar gyfer dyddiad geni’ch plentyn {0} fod yn fwy nag 20 mlynedd yn y gorffennol
+aboutYourChild.dob.nth.error.range.min = Mae’r dyddiad geni a nodwyd gennych yn dangos bod eich plentyn yn rhy hen i fod yn gymwys i gael help gyda chostau gofal plant.
 aboutYourChild.dob.nth.error.range.max = Ni all dyddiad geni’ch plentyn {0} fod yn y dyfodol
-
-childApprovedEducation.title=A yw eich plentyn mewn addysg neu hyfforddiant sydd wedi’i gymeradwyo?
-childApprovedEducation.heading=A yw eich plentyn {0} mewn addysg neu hyfforddiant wedi’i gymeradwyo?
-childApprovedEducation.checkYourAnswersLabel=A yw eich plentyn mewn addysg neu hyfforddiant sydd wedi’i gymeradwyo?
-childApprovedEducation.error.notCompleted=Dewiswch ‘Iawn’ os yw {0} mewn addysg neu hyfforddiant wedi’i gymeradwyo
 
 childRegisteredBlind.title=A yw eich plentyn wedi’i gofrestru’n ddall?
 childRegisteredBlind.heading=A yw dy blentyn {0} wedi’i gofrestru’n ddall?
 childRegisteredBlind.error.notCompleted=Dewiswch ‘Iawn’ os yw {0} wedi’i gofrestru’n ddall
 childRegisteredBlind.checkYourAnswersLabel=childRegisteredBlind
-
-childStartEducation.title=Pryd y dechreuodd eich plentyn eu haddysg neu ei hyfforddiant?
-childStartEducation.heading=Pryd y dechreuodd {0} yn eu haddysg neu hyfforddiant?
-childStartEducation.hint=Er enghraifft, 31 3 2015
-childStartEducation.checkYourAnswersLabel=Pryd y dechreuodd eich plentyn eu haddysg neu ei hyfforddiant?
-childStartEducation.error.required = Nodwch y dyddiad y dechreuodd {0} yn eu haddysg neu eu hyfforddiant
-childStartEducation.error.required.day = Mae’n rhaid i’r dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant gynnwys diwrnod
-childStartEducation.error.required.month = Mae’n rhaid i’r dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant gynnwys mis
-childStartEducation.error.required.year = Mae’n rhaid i’r dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant gynnwys blwyddyn
-childStartEducation.error.required.dayMonth = Mae’n rhaid i’r dyddiad y dechreuodd {0} eu haddysg neu eu  hyfforddiant gynnwys diwrnod a mis
-childStartEducation.error.required.dayYear = Mae’n rhaid i’r dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant gynnwys diwrnod a blwyddyn
-childStartEducation.error.required.monthYear = Mae’n rhaid i’r dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant gynnwys mis a blwyddyn
-childStartEducation.error.invalid = Nodwch ddyddiad dilys gan ddefnyddio rhifau
-childStartEducation.error.invalid.day = Mae’n rhaid i’r diwrnod y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif
-childStartEducation.error.invalid.month = Mae’n rhaid i’r mis y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif
-childStartEducation.error.invalid.year = Mae’n rhaid i’r flwyddyn y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif
-childStartEducation.error.invalid.dayMonth = Mae’n rhaid i’r diwrnod a’r mis y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif
-childStartEducation.error.invalid.dayYear = Mae’n rhaid i’r diwrnod a’r flwyddyn y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif
-childStartEducation.error.invalid.monthYear = Mae’n rhaid i’r mis a’r flwyddyn y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif
-childStartEducation.error.notReal = Mae’n rhaid i’r dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn ddyddiad go iawn
-childStartEducation.error.notReal.day = Mae’n rhaid i’r diwrnod y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif dilys
-childStartEducation.error.notReal.month = Mae’n rhaid i’r mis y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn rhif dilys
-childStartEducation.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys 4 rhif
-childStartEducation.error.range.min = Ni all y dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant fod cyn eu pen-blwydd yn 16 mlwydd oed
-childStartEducation.error.range.max = Ni all y dyddiad y dechreuodd {0} eu haddysg neu eu hyfforddiant fod yn y dyfodol
 
 whichChildrenDisability.title=Pwy sy’n cael budd-daliadau anabledd?
 whichChildrenDisability.heading=Pwy sy’n cael budd-daliadau anabledd?
@@ -1154,45 +1039,6 @@ expectedChildcareCosts.checkYourAnswersLabel=Beth yw eich costau gofal plant dis
 expectedChildcareCosts.error.notCompleted=Nodwch eich costau gofal plant {0} ar gyfer {1}
 expectedChildcareCosts.error.invalid=Mae’n rhaid i’ch costau gofal plant {0} disgwyliedig ar gyfer {1} fod yn rhif rhwng 1 a 9999.99
 
-whoGotStatutoryPay.title=Pwy gafodd dâl statudol?
-whoGotStatutoryPay.heading=Pwy gafodd dâl statudol?
-whoGotStatutoryPay.you=Chi
-whoGotStatutoryPay.partner=Partner
-whoGotStatutoryPay.both=Y ddau
-whoGotStatutoryPay.error.notCompleted=Dewiswch bwy gafodd dâl statudol
-
-youStatutoryPay.title=A ydych wedi cael tâl statudol ers 6 Ebrill {0}?
-youStatutoryPay.heading=A ydych wedi cael tâl statudol ers 6 Ebrill {0}?
-youStatutoryPay.checkYourAnswersLabel=A ydych wedi cael tâl statudol ers 6 Ebrill {0}?
-youStatutoryPay.error.required=Dewiswch ‘Iawn’ os ydych wedi cael tâl statudol ers 6 Ebrill {0}
-
-statutoryPay.guidance=Tâl statudol yw:
-statutoryPay.li.maternity=mamolaeth
-statutoryPay.li.paternity=tadolaeth
-statutoryPay.li.adoption=mabwysiadu
-statutoryPay.li.shared_parental=ar y cyd i rieni
-statutoryPay.guidance_extra=Gallai fod wedi dechrau cyn y dyddiad hwn ac wedi gorgyffwrdd heibio’r dyddiad.
-
-bothStatutoryPay.title=A ydych chi, eich partner, neu’r ddau ohonoch, wedi cael tâl statudol ers 6 Ebrill {0}?
-bothStatutoryPay.heading=A ydych chi, eich partner, neu’r ddau ohonoch, wedi cael tâl statudol ers 6 Ebrill {0}?
-bothStatutoryPay.checkYourAnswersLabel=A ydych chi, eich partner, neu’r ddau ohonoch, wedi cael tâl statudol ers 6 Ebrill {0}?
-bothStatutoryPay.error.required=Dewiswch ‘Iawn’ os ydych chi, eich partner, neu’r ddau ohonoch wedi cael tâl statudol ers 6ed Ebrill {0}
-
-partnerStatutoryPay.title=A yw’ch partner wedi cael tâl statudol ers 6 Ebrill {0}?
-partnerStatutoryPay.heading=A yw’ch partner wedi cael tâl statudol ers 6 Ebrill {0}?
-partnerStatutoryPay.checkYourAnswersLabel=A yw’ch partner wedi cael tâl statudol ers 6 Ebrill {0}?
-partnerStatutoryPay.guidance_extra=Gallai hyn fod hefyd os gwnaeth ddechrau cael y tâl cyn 6 Ebrill {0} a pharhau i’w gael ar ôl y dyddiad hwn.
-partnerStatutoryPay.error.required=Dewiswch ‘Iawn’ os cafodd eich partner dâl statudol ers 6 Ebrill {0}
-
-partnerStatutoryPayType.title=Pa fath o dâl statudol oedd eich partner yn ei gael?
-partnerStatutoryPayType.heading=Pa fath o dâl statudol oedd eich partner yn ei gael?
-partnerStatutoryPayType.error.notCompleted=Dewiswch pa fath o dâl statudol a gafodd eich partner
-partnerStatutoryPayType.checkYourAnswersLabel=partnerStatutoryPayType
-
-yourStatutoryPayType.title=Pa fath o dâl statudol a gawsoch?
-yourStatutoryPayType.heading=Pa fath o dâl statudol a gawsoch?
-yourStatutoryPayType.error.notCompleted=Dewiswch pa fath o dâl statudol a gawsoch
-yourStatutoryPayType.checkYourAnswersLabel=yourStatutoryPayType
 
 statutoryPayType.maternity=Mamolaeth
 statutoryPayType.paternity=Tadolaeth
@@ -1204,88 +1050,6 @@ statutoryPayTypeLower.paternity=tadolaeth
 statutoryPayTypeLower.adoption=mabwysiadu
 statutoryPayTypeLower.shared-parental=ar y cyd i rieni
 
-yourStatutoryWeeks.title=Sawl wythnos o dâl {0} a gymeroch?
-yourStatutoryWeeks.heading=Sawl wythnos o dâl {0} a gymeroch?
-yourStatutoryWeeks.error.required=Nodwch sawl wythnos o dâl {2} a gymeroch
-yourStatutoryWeeks.error.invalid=Nodwch rifau rhwng {0} a {1} i nodi sawl wythnos o dâl {2} a gymeroch
-yourStatutoryWeeks.checkYourAnswersLabel=yourStatutoryWeeks
-
-partnerStatutoryWeeks.title=Sawl wythnos o dâl {0} a gymerodd eich partner?
-partnerStatutoryWeeks.heading=Sawl wythnos o dâl {0} a gymerodd eich partner?
-partnerStatutoryWeeks.error.required=Nodwch sawl wythnos o dâl {2} a gymerodd eich partner
-partnerStatutoryWeeks.error.invalid=Nodwch y rhifau rhwng {0} a {1} i nodi sawl wythnos o dâl {2} a gymerodd eich partner
-partnerStatutoryWeeks.checkYourAnswersLabel=partnerStatutoryWeeks
-
-statutoryWeeks.maternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
-statutoryWeeks.paternity.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
-statutoryWeeks.adoption.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau.
-statutoryWeeks.shared-parental.guidance=Fel arfer, bydd hyn yn cael ei gymryd fel {0} o wythnosau rhwng y ddau riant.
-
-yourStatutoryStartDate.title=Ar ba ddyddiad y dechreuodd eich dâl {0}?
-yourStatutoryStartDate.heading=Ar ba ddyddiad y dechreuodd eich dâl {0}?
-yourStatutoryStartDate.hint=Er enghraifft, 31 1 2017
-yourStatutoryStartDate.checkYourAnswersLabel=yourStatutoryStartDate
-yourStatutoryStartDate.error.required = Nodwch y dyddiad y dechreuodd eich dâl {0}
-yourStatutoryStartDate.error.required.day = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys diwrnod
-yourStatutoryStartDate.error.required.month = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys mis
-yourStatutoryStartDate.error.required.year = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys blwyddyn
-yourStatutoryStartDate.error.required.dayMonth = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys diwrnod a mis
-yourStatutoryStartDate.error.required.monthYear = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys mis a blwyddyn
-yourStatutoryStartDate.error.required.dayYear = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} gynnwys diwrnod a blwyddyn
-yourStatutoryStartDate.error.invalid = Nodwch ddyddiad dilys gan ddefnyddio rhifau
-yourStatutoryStartDate.error.invalid.day = Mae’n rhaid i’r diwrnod y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.month = Mae’n rhaid i’r mis y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.year = Mae’n rhaid i’r flwyddyn y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.dayMonth = Mae’n rhaid i’r diwrnod a’r mis y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.dayYear = Mae’n rhaid i’r diwrnod a’r flwyddyn y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.invalid.monthYear = Mae’n rhaid i’r mis a’r flwyddyn y dechreuodd eich dâl {0} fod yn rhif
-yourStatutoryStartDate.error.notReal = Mae’n rhaid i’r dyddiad y dechreuodd eich dâl {0} fod yn ddyddiad go iawn
-yourStatutoryStartDate.error.notReal.day = Mae’n rhaid i’r diwrnod y dechreuodd eich dâl {0} fod yn rhif dilys
-yourStatutoryStartDate.error.notReal.month = Mae’n rhaid i’r mis y dechreuodd eich dâl {0} fod yn rhif dilys
-yourStatutoryStartDate.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys 4 rhif
-yourStatutoryStartDate.error.range.min = Ni all dyddiad dechrau eich dâl {0} fod cyn 6 Ebrill {1}
-yourStatutoryStartDate.error.range.max = Ni all dyddiad y dechreuodd eich dâl {0} fod yn y dyfodol
-
-partnerStatutoryStartDate.title=Pryd y dechreuodd tâl {0} eich partner?
-partnerStatutoryStartDate.heading=Pryd y dechreuodd tâl {0} eich partner?
-partnerStatutoryStartDate.hint=Er enghraifft, 31 1 2017
-partnerStatutoryStartDate.checkYourAnswersLabel=partnerStatutoryStartDate
-partnerStatutoryStartDate.error.required = Nodwch y dyddiad y dechreuod tâl {0} eich partner
-partnerStatutoryStartDate.error.required.day = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys diwrnod
-partnerStatutoryStartDate.error.required.month = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys mis
-partnerStatutoryStartDate.error.required.year = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys blwyddyn
-partnerStatutoryStartDate.error.required.dayMonth = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys diwrnod a mis
-partnerStatutoryStartDate.error.required.dayYear = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys mis a blwyddyn
-partnerStatutoryStartDate.error.required.monthYear = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner gynnwys diwrnod a blwyddyn
-partnerStatutoryStartDate.error.invalid = Nodwch ddyddiad dilys gan ddefnyddio rhifau
-partnerStatutoryStartDate.error.invalid.day = Mae’n rhaid i’r diwrnod y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.month = Mae’n rhaid i’r mis y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.year = Mae’n rhaid i’r flwyddyn y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.dayMonth = Mae’n rhaid i’r diwrnod a’r mis y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.dayYear = Mae’n rhaid i’r diwrnod a’r flwyddyn y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.invalid.monthYear = Mae’n rhaid i’r mis a’r flwyddyn y dechreuodd tâl {0} eich partner fod yn rhif
-partnerStatutoryStartDate.error.notReal = Mae’n rhaid i’r dyddiad y dechreuodd tâl {0} eich partner fod yn ddyddiad go iawn
-partnerStatutoryStartDate.error.notReal.day = Mae’n rhaid i’r diwrnod y dechreuodd tâl {0} eich partner fod yn rhif dilys
-partnerStatutoryStartDate.error.notReal.month = Mae’n rhaid i’r mis y dechreuodd tâl {0} eich partner fod yn rhif dilys
-partnerStatutoryStartDate.error.notReal.year = Mae’n rhaid i’r flwyddyn gynnwys 4 rhif
-partnerStatutoryStartDate.error.range.min = Ni all dyddiad dechrau eich tâl {0} eich partner fod cyn 6 Ebrill {1}
-partnerStatutoryStartDate.error.range.max = Ni all dyddiad y dechreuodd tâl {0} eich partner fod yn y dyfodol
-
-yourStatutoryPayBeforeTax.title=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-yourStatutoryPayBeforeTax.heading=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-yourStatutoryPayBeforeTax.checkYourAnswersLabel=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-yourStatutoryPayBeforeTax.error.notCompleted=Dewiswch ‘Iawn’ os oedd y tâl {0} hwn yn llai na £100 cyn treth
-
-partnerStatutoryPayBeforeTax.title=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-partnerStatutoryPayBeforeTax.heading=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-partnerStatutoryPayBeforeTax.checkYourAnswersLabel=A oedd y tâl {0} hwn yn llai na £100 yr wythnos cyn treth?
-partnerStatutoryPayBeforeTax.error.notCompleted=Dewiswch ‘Iawn’ os oedd y tâl {0} hwn yn llai na £100 cyn treth
-
-yourStatutoryPayPerWeek.title=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
-yourStatutoryPayPerWeek.heading=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
-yourStatutoryPayPerWeek.checkYourAnswersLabel=Faint o dâl {0} a gawsoch yr wythnos cyn treth?
-yourStatutoryPayPerWeek.error.required=Nodwch faint o dâl {0} a gawsoch yr wythnos
-yourStatutoryPayPerWeek.error.invalid=Nodwch rifau rhwng 1 a 99.99 ar gyfer eich tâl {0}
 
 result.title=Help y gallech ei gael gyda’ch costau gofal plant
 result.heading=Help y gallech ei gael gyda’ch costau gofal plant
@@ -1482,31 +1246,48 @@ timeout.message=Er eich diogelwch, byddwn yn clirio’r hyn rydych wedi’i nodi
 timeout.continue=Parhau â’r hyn yr oeddech yn ei wneud
 timeout.exit=Clirio’r hyn rydych wedi’i nodi nawr
 
-youGetSameIncomePreviousYear.title=A gawsoch yr un incwm yn y flwyddyn flaenorol?
-youGetSameIncomePreviousYear.heading=A gawsoch yr un incwm yn y flwyddyn flaenorol?
-youGetSameIncomePreviousYear.checkYourAnswersLabel=youGetSameIncomePreviousYear
-youGetSameIncomePreviousYear.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch yr un incwm yn y flwyddyn flaenorol
-youGetSameIncomePreviousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-youGetSameIncomePreviousYear.info.summary=Yr hyn y gwnaethoch ei ateb am eich incwm ar gyfer y flwyddyn bresennol:
 
-bothGetSameIncomePreviousYear.title=A gawsoch chi a’ch partner yr un incwm yn y flwyddyn flaenorol?
-bothGetSameIncomePreviousYear.heading=A gawsoch chi a’ch partner yr un incwm yn y flwyddyn flaenorol?
-bothGetSameIncomePreviousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothGetSameIncomePreviousYear.info.summary=Yr hyn y gwnaethoch ei ateb am eich incwm chi ac incwm eich partner ar gyfer y flwyddyn bresennol:
-bothGetSameIncomePreviousYear.checkYourAnswersLabel=bothGetSameIncomePreviousYear
-bothGetSameIncomePreviousYear.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch chi a’ch partner yr un incwm ar gyfer y flwyddyn flaenorol
+yourAverageWeeklyEarnings.title = Eich enillion wythnosol cyfartalog
+yourAverageWeeklyEarnings.heading = Eich enillion wythnosol cyfartalog
+yourAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm eich cyflog wythnosol neu elw o hunangyflogaeth am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
+yourAverageWeeklyEarnings.heading2 = Os byddwch ar absenoldeb
+yourAverageWeeklyEarnings.para2 = Rydym ond eisiau gwybod faint a enilloch cyn i chi fynd ar unrhyw un o’r mathau hyn o absenoldeb:
+yourAverageWeeklyEarnings.li.maternity = mamolaeth
+yourAverageWeeklyEarnings.li.paternity = tadolaeth
+yourAverageWeeklyEarnings.li.adoption = mabwysiadu
+yourAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
+yourAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
+yourAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
+yourAverageWeeklyEarnings.para3 = Mae’n bosibl y byddwch yn dal yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch yn gweithio o leiaf 16 awr yr wythnos ar gyfartaledd dros y 3 mis nesaf.
+yourAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol i chi, dewiswch iawn.
 
-incomeSummary.yourIncome=Eich incwm
-incomeSummary.partnersIncome=Incwm eich partner
-incomeSummary.paidIntoPension=Wedi talu i mewn i bensiwn
-incomeSummary.pensionPaymentsAmonth=Eich taliadau pensiwn bob mis
-incomeSummary.partnerPensionPaymentsAmonth=Taliadau pensiwn eich partner bob mis
-incomeSummary.yourOtherIncome=Eich incwm arall
-incomeSummary.partnerOtherIncome=Incwm arall eich partner
-incomeSummary.partnerBenefitsIncome=Incwm eich partner o fudd-daliadau
-incomeSummary.yourBenefitsIncome=Eich incwm o fudd-daliadau
-incomeSummary.otherIncome=Incwm arall
-incomeSummary.incomeFromBenefits=Incwm o fudd-daliadau
+partnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog eich partner
+partnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog eich partner
+partnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth eich partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
+partnerAverageWeeklyEarnings.heading2 = Os aeth eich partner ar absenoldeb
+partnerAverageWeeklyEarnings.para2 = Does ond angen i ni wybod faint roedden nhw’n ei ennill cyn iddyn nhw fynd ar unrhyw un o’r mathau hyn o absenoldeb:
+partnerAverageWeeklyEarnings.li.maternity = mamolaeth
+partnerAverageWeeklyEarnings.li.paternity = tadolaeth
+partnerAverageWeeklyEarnings.li.adoption = mabwysiadu
+partnerAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
+partnerAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
+partnerAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
+partnerAverageWeeklyEarnings.para3 = Mae’n bosibl y bydd eich partner yn dal yn gymwys ar gyfer y cynllun os yw ei incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddant yn gweithio o leiaf 16 awr yr wythnos, ar gyfartaledd, dros y 3 mis nesaf.
+partnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol iddynt, dewiswch iawn.
+
+yourAndPartnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog chi a’ch partner
+yourAndPartnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog chi a’ch partner
+yourAndPartnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth chi a’ch partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
+yourAndPartnerAverageWeeklyEarnings.heading2 = If either of you went on leave
+yourAndPartnerAverageWeeklyEarnings.para2 = We only need to know how much you or your partner earned before going on any of these types of leave:
+yourAndPartnerAverageWeeklyEarnings.li.maternity = maternity
+yourAndPartnerAverageWeeklyEarnings.li.paternity = paternity
+yourAndPartnerAverageWeeklyEarnings.li.adoption = adoption
+yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
+yourAndPartnerAverageWeeklyEarnings.li.sickLeave = sick leave
+yourAndPartnerAverageWeeklyEarnings.heading3 = Part year workers
+yourAndPartnerAverageWeeklyEarnings.para3 = You or your partner may still qualify for the scheme if your income is below the minimum threshold. This applies only if you or your partner will work at least 16 hours a week, on average, over the next 3 months.
+yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select yes.
 
 urBanner.title=Helpwch i wella GOV.UK
 urBanner.message=Gallwch fod yn rhan o wneud gwasanaethau’r llywodraeth yn well

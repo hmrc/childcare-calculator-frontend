@@ -22,7 +22,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId, BothIncomeInfoPYId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerIncomeInfoId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}

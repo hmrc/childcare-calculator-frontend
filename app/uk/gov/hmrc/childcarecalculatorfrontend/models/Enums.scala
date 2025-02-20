@@ -235,20 +235,6 @@ object PeriodEnum extends Enumeration {
   implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
 }
 
-object StatutoryPayTypeEnum extends Enumeration {
-  type StatutoryPayTypeEnum = Value
-  val MATERNITY = Value("maternity")
-  val PATERNITY = Value("paternity")
-  val ADOPTION = Value("adoption")
-  val SHARED_PARENTAL = Value("shared-parental")
-
-  val enumReads: Reads[StatutoryPayTypeEnum] = EnumUtils.enumReads(StatutoryPayTypeEnum)
-
-  val enumWrites: Writes[StatutoryPayTypeEnum] = EnumUtils.enumWrites
-
-  implicit def enumFormats: Format[StatutoryPayTypeEnum] = EnumUtils.enumFormat(StatutoryPayTypeEnum)
-}
-
 object TaxOrUniversalCreditsEnum extends Enumeration {
   type TaxOrUniversalCreditsEnum = Value
 

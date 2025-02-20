@@ -26,7 +26,7 @@ import play.api.mvc.Request
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{SchemeSpec, TaxCredits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
@@ -39,13 +39,12 @@ class EligibilityServiceSpec extends SchemeSpec with MockitoSugar with ScalaFutu
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
   val utils: Utils = mock[Utils]
-  val taxCredits: TaxCredits = mock[TaxCredits]
   val connector: EligibilityConnector = mock[EligibilityConnector]
   implicit val hc = HeaderCarrier()
   implicit val ec: ExecutionContext = ExecutionContext.global
   implicit val req: Request[_] = mock[Request[_]]
 
-  def eligibilityService: EligibilityService = new EligibilityService(frontendAppConfig, utils, taxCredits, connector)
+  def eligibilityService: EligibilityService = new EligibilityService(frontendAppConfig, utils, connector)
   val todaysDate: LocalDate = LocalDate.now()
 
   "EligibilityService" should {

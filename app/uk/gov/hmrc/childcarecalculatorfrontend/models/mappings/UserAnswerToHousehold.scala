@@ -27,10 +27,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils, DateTimeUtils}
 
-class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits)
+class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils)
   extends OverallIncome {
 
   private def stringToCreditsEnum(x: Option[String]): Option[CreditsEnum] = x match {
@@ -85,14 +84,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
           None
         }
 
-        val childInEducation = answers.childApprovedEducation(i).getOrElse(false)
-        val childStartDate = answers.childStartEducation(i)
-        val childEducation = if (childInEducation) {
-          Some(Education(childInEducation, childStartDate))
-        } else {
-          None
-        }
-
         val childIsBlindValue = childIsBlind(answers, totalChildren, i)
 
         val child = Child(
@@ -100,8 +91,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
           name = childDOB.get._1,
           dob = childDOB.get._2,
           disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childIsBlindValue),
-          childcareCost = childcareCost,
-          education = childEducation
+          childcareCost = childcareCost
         )
 
         childList ::= child
@@ -186,7 +176,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createParentClaimant(answers: UserAnswers): Claimant = {
-    val hours = answers.parentWorkHours
     val benefits = answers.whichBenefitsYouGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
@@ -208,7 +197,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,
@@ -220,7 +208,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createPartnerClaimant(answers: UserAnswers, isParent: Boolean = true): Claimant = {
-    val hours = answers.partnerWorkHours
     val benefits = answers.whichBenefitsPartnerGet
     val getBenefits = Benefits.populateFromRawData(benefits)
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
@@ -242,7 +229,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
-      hours = hours,
       benefits = getBenefits,
       escVouchers = vouchers,
       lastYearlyIncome = previousYearIncome,
@@ -267,11 +253,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits = determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
 
-    /*val statutoryPay = answers.yourStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks, startDate, PreviousYear)
-    } */
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
@@ -279,7 +260,6 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          //statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ => None
@@ -296,11 +276,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits =  determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
 
-   /* val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.partnerStatutoryPayPerWeek, answers.partnerStatutoryWeeks, startDate, PreviousYear)
-    }*/
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
@@ -308,7 +283,6 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-        //  statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ =>
@@ -326,11 +300,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits =  determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
 
-   /* val statutoryPay = answers.yourStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks, startDate, CurrentYear)
-    }*/
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
@@ -338,7 +307,6 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-        //  statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ =>

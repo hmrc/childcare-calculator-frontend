@@ -24,41 +24,12 @@ import java.time.LocalDate
 // scalastyle:off number.of.methods
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils {
-  def bothGetSameIncomePreviousYear: Option[Boolean] = cacheMap.getEntry[Boolean](BothGetSameIncomePreviousYearId.toString)
-
-  def youGetSameIncomePreviousYear: Option[Boolean] = cacheMap.getEntry[Boolean](YouGetSameIncomePreviousYearId.toString)
 
   def surveyDoNotUnderstand: Option[String] = cacheMap.getEntry[String](SurveyDoNotUnderstandId.toString)
 
   def surveyChildcareSupport: Option[Boolean] = cacheMap.getEntry[Boolean](SurveyChildcareSupportId.toString)
 
   def whoWasInPaidWorkPY: Option[String] = cacheMap.getEntry[String](WhoWasInPaidWorkPYId.toString)
-
-  def partnerStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](PartnerStatutoryStartDateId.toString)
-
-  def yourStatutoryStartDate: Option[LocalDate] = cacheMap.getEntry[LocalDate](YourStatutoryStartDateId.toString)
-
-  def yourStatutoryPayPerWeek: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourStatutoryPayPerWeekId.toString)
-
-  def partnerStatutoryPayBeforeTax: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayBeforeTaxId.toString)
-
-  def yourStatutoryPayBeforeTax: Option[Boolean] = cacheMap.getEntry[Boolean](YourStatutoryPayBeforeTaxId.toString)
-
-  def partnerStatutoryWeeks: Option[Int] = cacheMap.getEntry[Int](PartnerStatutoryWeeksId.toString)
-
-  def yourStatutoryWeeks: Option[Int] = cacheMap.getEntry[Int](YourStatutoryWeeksId.toString)
-
-  def yourStatutoryPayType: Option[StatutoryPayTypeEnum.Value] = cacheMap.getEntry[StatutoryPayTypeEnum.Value](YourStatutoryPayTypeId.toString)
-
-  def partnerStatutoryPayType: Option[StatutoryPayTypeEnum.Value] = cacheMap.getEntry[StatutoryPayTypeEnum.Value](PartnerStatutoryPayTypeId.toString)
-
-  def whoGotStatutoryPay: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhoGotStatutoryPayId.toString)
-
-  def partnerStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerStatutoryPayId.toString)
-
-  def bothStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](BothStatutoryPayId.toString)
-
-  def youStatutoryPay: Option[Boolean] = cacheMap.getEntry[Boolean](YouStatutoryPayId.toString)
 
   def expectedChildcareCosts(index: Int): Option[BigDecimal] =
     expectedChildcareCosts.flatMap(_.get(index))
@@ -78,21 +49,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def whichChildrenDisability: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenDisabilityId.toString)
 
-  def childStartEducation(index: Int): Option[LocalDate] = {
-    childStartEducation.flatMap(_.get(index))
-  }
-
-  def childStartEducation: Option[Map[Int, LocalDate]] = cacheMap.getEntry[Map[Int, LocalDate]](ChildStartEducationId.toString)
-
   def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](ChildRegisteredBlindId.toString)
 
   def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)
-
-  def childApprovedEducation: Option[Map[Int, Boolean]] = cacheMap.getEntry[Map[Int, Boolean]](ChildApprovedEducationId.toString)
-
-  def childApprovedEducation(childIndex: Int): Option[Boolean] = {
-    childApprovedEducation.flatMap(_.get(childIndex))
-  }
 
   def childcarePayFrequency: Option[Map[Int, ChildcarePayFrequency.Value]] =
     cacheMap.getEntry[Map[Int, ChildcarePayFrequency.Value]](ChildcarePayFrequencyId.toString)
@@ -148,11 +107,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def whosHadBenefitsPY: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsPYId.toString)
 
-  def partnerAnyOtherIncomeLY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeLYId.toString)
-
   def bothAnyTheseBenefitsPY: Option[Boolean] = cacheMap.getEntry[Boolean](BothAnyTheseBenefitsPYId.toString)
-
-  def partnerAnyTheseBenefitsPY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyTheseBenefitsPYId.toString)
 
   def youAnyTheseBenefitsPY: Option[Boolean] = cacheMap.getEntry[Boolean](YouAnyTheseBenefitsPYId.toString)
 
@@ -193,8 +148,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
   def whosHadBenefits: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
 
   def bothAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothAnyTheseBenefitsCYId.toString)
-
-  def partnerAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyTheseBenefitsCYId.toString)
 
   def youAnyTheseBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](YouAnyTheseBenefitsIdCY.toString)
 
@@ -261,10 +214,6 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
   def whatIsYourTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourTaxCodeId.toString)
 
   def whatIsYourPartnersTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourPartnersTaxCodeId.toString)
-
-  def partnerWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerWorkHoursId.toString)
-
-  def parentWorkHours: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentWorkHoursId.toString)
 
   def whoIsInPaidEmployment: Option[String] = cacheMap.getEntry[String](WhoIsInPaidEmploymentId.toString)
 
