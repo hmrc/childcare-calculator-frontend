@@ -128,36 +128,36 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
-      "has location and tax credits for non-scottish users" in {
+      "has location and universal credit for non-scottish users" in {
         val parent = Claimant(
           benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
 
-        val household = Household(credits = Some(CreditsEnum.TAXCREDITS), location = Location.ENGLAND, parent = parent)
+        val household = Household(credits = Some(CreditsEnum.UNIVERSALCREDIT), location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
 
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, CARERSALLOWANCE.toString))
-        when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+        when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
         userAnswerToHousehold.convert(answers) mustEqual household
       }
 
-      "has location and tax credits for scottish users" in {
+      "has location and UNIVERSAL CREDIT for scottish users" in {
         val parent = Claimant(
           benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
 
-        val household = Household(credits = Some(CreditsEnum.TAXCREDITS), location = Location.SCOTLAND, parent = parent)
+        val household = Household(credits = Some(CreditsEnum.UNIVERSALCREDIT), location = Location.SCOTLAND, parent = parent)
         val answers = spy(userAnswers())
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, SCOTTISHCARERSALLOWANCE.toString))
-        when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+        when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
         userAnswerToHousehold.convert(answers) mustEqual household
       }
