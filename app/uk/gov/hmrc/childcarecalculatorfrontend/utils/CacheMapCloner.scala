@@ -47,10 +47,6 @@ object CacheMapCloner {
 
   private val mappingError = "mapping not found"
 
-  private val singleParentCurrentYearToPreviousYear = Map(AreYouInPaidWorkId.toString -> ParentPaidWorkPYId.toString,
-    YouAnyTheseBenefitsIdCY.toString -> YouAnyTheseBenefitsPYId.toString,
-    YourOtherIncomeThisYearId.toString -> YourOtherIncomeLYId.toString)
-
   private val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
     HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
     BenefitsIncomeCYId.toString -> Seq(ParentBenefitsIncomeId.toString, PartnerBenefitsIncomeId.toString),
