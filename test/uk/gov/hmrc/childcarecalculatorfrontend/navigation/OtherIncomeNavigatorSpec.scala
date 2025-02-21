@@ -54,7 +54,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
-          when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+          when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -67,7 +67,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
-          when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+          when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -79,7 +79,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
-          when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+          when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -92,7 +92,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
-          when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+          when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -149,7 +149,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               val answers = spy(userAnswers())
               when(answers.doYouLiveWithPartner) thenReturn Some(true)
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
-              when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+              when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
               when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -162,7 +162,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               val answers = spy(userAnswers())
               when(answers.doYouLiveWithPartner) thenReturn Some(true)
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
-              when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+              when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
               when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -175,7 +175,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               val answers = spy(userAnswers())
               when(answers.doYouLiveWithPartner) thenReturn Some(true)
               when(answers.bothOtherIncomeThisYear) thenReturn Some(true)
-              when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+              when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
               when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -238,7 +238,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.doYouLiveWithPartner) thenReturn Some(false)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+            when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -251,7 +251,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.doYouLiveWithPartner) thenReturn Some(false)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+            when(answers.taxOrUniversalCredits) thenReturn Some(false)
 
             when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -268,7 +268,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+            when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -281,7 +281,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+            when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -314,7 +314,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.whoIsInPaidEmployment) thenReturn Some(both)
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
-            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+            when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -334,7 +334,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(true)
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(universalCredits)
+            when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -347,7 +347,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(true)
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some("tc")
+            when(answers.taxOrUniversalCredits) thenReturn Some(false)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 

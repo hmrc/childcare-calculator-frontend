@@ -9,11 +9,9 @@ window.onload = function() {
 
 
     function getCheckedGAValue value {
-        if(value === "tc") {
-            return "Tax credits (includes Working and Child Tax Credit)"
-        } else if (value === "uc") {
-            return "Universal Credit"
-        } else if (value === "none") {
+        if(value === true) {
+            return "Universal Credit)"
+        else (value === false) {
             return "None of these"
         }
     }

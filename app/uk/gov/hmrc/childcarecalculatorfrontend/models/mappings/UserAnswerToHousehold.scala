@@ -32,11 +32,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYea
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils)
   extends OverallIncome {
 
-  private def stringToCreditsEnum(x: Option[String]): Option[CreditsEnum] = x match {
+  private def stringToCreditsEnum(x: Option[Boolean]): Option[CreditsEnum] = x match {
     case Some(x) =>
-      x.toUpperCase match {
-        case "TC" => Some(CreditsEnum.TAXCREDITS)
-        case "UC" => Some(CreditsEnum.UNIVERSALCREDIT)
+      x match {
+        case true => Some(CreditsEnum.UNIVERSALCREDIT)
         case _ => Some(CreditsEnum.NONE)
       }
 

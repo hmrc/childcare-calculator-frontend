@@ -24,9 +24,10 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.TaxOrUniversalCreditsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.TaxOrUniversalCreditsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{universalCreditErrorKey, universalCreditPartnerErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
 
@@ -44,20 +45,28 @@ class TaxOrUniversalCreditsController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
+      val havePartner = request.userAnswers.doYouLiveWithPartner
       val preparedForm = request.userAnswers.taxOrUniversalCredits match {
-        case None => TaxOrUniversalCreditsForm()
-        case Some(value) => TaxOrUniversalCreditsForm().fill(value)
+        case None => BooleanForm()
+        case Some(value) => BooleanForm().fill(value)
       }
-      Ok(taxOrUniversalCredits(appConfig, preparedForm, mode))
+      Ok(taxOrUniversalCredits(appConfig, preparedForm, mode, havePartner))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
+
     implicit request =>
-      TaxOrUniversalCreditsForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(taxOrUniversalCredits(appConfig, formWithErrors, mode))),
+      val havePartner = request.userAnswers.doYouLiveWithPartner
+      val errorMsgKey = havePartner match {
+        case Some(true) => universalCreditPartnerErrorKey
+        case _ => universalCreditErrorKey
+      }
+
+      BooleanForm(errorMsgKey).bindFromRequest().fold(
+        (formWithErrors: Form[Boolean]) =>
+          Future.successful(BadRequest(taxOrUniversalCredits(appConfig, formWithErrors, mode, havePartner))),
         value =>
-          dataCacheConnector.save[String](request.sessionId, TaxOrUniversalCreditsId.toString, value).map(cacheMap =>
+          dataCacheConnector.save[Boolean](request.sessionId, TaxOrUniversalCreditsId.toString, value).map(cacheMap =>
             Redirect(navigator.nextPage(TaxOrUniversalCreditsId, mode)(new UserAnswers(cacheMap))))
       )
   }

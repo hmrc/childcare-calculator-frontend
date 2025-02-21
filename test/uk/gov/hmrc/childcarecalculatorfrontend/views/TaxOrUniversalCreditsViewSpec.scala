@@ -17,49 +17,41 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.TaxOrUniversalCreditsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewViewBehaviours, NewYesNoViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
 
-class TaxOrUniversalCreditsViewSpec extends NewViewBehaviours {
+class TaxOrUniversalCreditsViewSpec extends NewYesNoViewBehaviours {
 
   val view = application.injector.instanceOf[taxOrUniversalCredits]
 
+  override val form =  BooleanForm()
+
   val messageKeyPrefix = "taxOrUniversalCredits"
+  val messageKeyPartnerPrefix = "taxOrUniversalCreditsPartner"
 
-  def createView = () => view(frontendAppConfig, TaxOrUniversalCreditsForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView(isPartner : Option[Boolean]) = () => view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
 
-  "TaxOrUniversalCredits view" must {
+  def createViewUsingForm( isPartner : Option[Boolean]) = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode,  isPartner)(fakeRequest, messages)
 
-    behave like normalPage(createView, messageKeyPrefix)
+  "TaxOrUniversalCredits view when there is partner" must {
 
-    behave like pageWithBackLink(createView)
+    behave like normalPage(createView(Some(true)), messageKeyPartnerPrefix)
+
+    behave like pageWithBackLink(createView(Some(true)))
+
+    behave like yesNoPage(createViewUsingForm(Some(true)), messageKeyPartnerPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
   }
 
-  "TaxOrUniversalCredits view" when {
-    "rendered" must {
-      "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(TaxOrUniversalCreditsForm()))
-        for (option <- TaxOrUniversalCreditsForm.options) {
-          assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
-      }
-    }
+  "TaxOrUniversalCredits view when there is no partner" must {
 
-    for(option <- TaxOrUniversalCreditsForm.options) {
-      s"rendered with a value of '${option.value}'" must {
-        s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(TaxOrUniversalCreditsForm().bind(Map("value" -> s"${option.value}"))))
-          assertContainsRadioButton(doc, option.id, "value", option.value, true)
+    behave like normalPage(createView(Some(false)), messageKeyPrefix)
 
-          for(unselectedOption <- TaxOrUniversalCreditsForm.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
-        }
-      }
-    }
+    behave like pageWithBackLink(createView(Some(false)))
+
+    behave like yesNoPage(createViewUsingForm(Some(false)), messageKeyPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
   }
 }
