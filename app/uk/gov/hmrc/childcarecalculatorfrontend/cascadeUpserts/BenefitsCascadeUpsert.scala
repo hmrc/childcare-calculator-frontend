@@ -33,7 +33,6 @@ class BenefitsCascadeUpsert @Inject()() extends SubCascadeUpsert {
       BothAnyTheseBenefitsPYId.toString -> ((v, cm) => storeBothAnyTheseBenefitsPY(v, cm)),
       WhosHadBenefitsId.toString->((v,cm) => storeWhosHadBenefits(v,cm)),
       YouAnyTheseBenefitsIdCY.toString ->((v,cm) => storeYouAnyTheseBenefits(v,cm)),
-      PartnerAnyTheseBenefitsCYId.toString ->((v,cm) => storePartnerAnyTheseBenefitsCY(v,cm)),
       BothAnyTheseBenefitsCYId.toString ->((v,cm) => storeBothAnyTheseBenefitsCY(v,cm))
     )
 
@@ -101,16 +100,6 @@ class BenefitsCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
     store(YouAnyTheseBenefitsIdCY.toString, value, mapToStore)
   }
-
-  private def storePartnerAnyTheseBenefitsCY(value: JsValue, cacheMap: CacheMap): CacheMap ={
-    val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - PartnerBenefitsIncomeCYId.toString)
-      case _ => cacheMap
-    }
-
-    store(PartnerAnyTheseBenefitsCYId.toString, value, mapToStore)
-  }
-
 
   private def storeBothAnyTheseBenefitsCY(value: JsValue, cacheMap: CacheMap): CacheMap ={
     val mapToStore = value match {

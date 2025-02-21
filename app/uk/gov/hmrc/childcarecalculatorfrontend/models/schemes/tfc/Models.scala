@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 
 sealed trait Household
 case class SingleHousehold(parent: Parent) extends Household
 case class JointHousehold(parent: Parent, partner: Parent) extends Household
 
 case class Parent(
-                    minEarnings: Boolean,
-                    maxEarnings: Boolean,
-                    selfEmployed: Boolean,
-                    apprentice: Boolean,
-                    benefits: Set[WhichBenefitsEnum.Value]
-                  )
+  earnsAboveMinEarnings: Boolean,
+  earnsAboveMaxEarnings: Boolean,
+  selfEmployed: Boolean,
+  apprentice: Boolean,
+  benefits: Set[ParentsBenefits]
+)

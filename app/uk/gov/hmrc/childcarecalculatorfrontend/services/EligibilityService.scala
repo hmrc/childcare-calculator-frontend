@@ -21,7 +21,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.mappings.UserAnswerToHousehold
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxCredits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -31,14 +30,13 @@ trait SubmissionService {
   def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults]
 }
 
-class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, tc: TaxCredits, connector: EligibilityConnector)(implicit ec: ExecutionContext)
+class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, connector: EligibilityConnector)(implicit ec: ExecutionContext)
   extends SubmissionService {
 
-  def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(appConfig, utils, tc)
-
   def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
-
     val household = userAnswerToHousehold.convert(answers)
     connector.getEligibility(household)
   }
+
+  private def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(appConfig, utils)
 }

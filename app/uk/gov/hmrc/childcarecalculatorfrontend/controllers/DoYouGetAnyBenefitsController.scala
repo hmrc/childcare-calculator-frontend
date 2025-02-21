@@ -16,59 +16,47 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
-import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouGetAnyBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.doYouGetAnyBenefitsErrorKey
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DoYouGetAnyBenefitsController @Inject()(appConfig: FrontendAppConfig,
-                                              mcc: MessagesControllerComponents,
-                                              dataCacheConnector: DataCacheConnector,
-                                              navigator: Navigator,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              doYouGetAnyBenefits: doYouGetAnyBenefits)(implicit ec: ExecutionContext)
+class DoYouGetAnyBenefitsController @Inject()(
+  appConfig: FrontendAppConfig,
+  mcc: MessagesControllerComponents,
+  dataCacheConnector: DataCacheConnector,
+  navigator: Navigator,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  doYouGetAnyBenefits: doYouGetAnyBenefits
+)(implicit ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      request.userAnswers.location match {
-        case None =>
-          Redirect(routes.LocationController.onPageLoad(mode))
-
-        case Some(location) =>
-          val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
-            case None => BooleanForm()
-            case Some(value) => BooleanForm().fill(value)
-          }
-          Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode, location))
-      }
+  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
+      case None => DoYouGetAnyBenefitsForm()
+      case Some(value) => DoYouGetAnyBenefitsForm().fill(value)
+    }
+    Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      if (request.userAnswers.location.isEmpty) {
-        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
-      } else {
-      BooleanForm(doYouGetAnyBenefitsErrorKey).bindFromRequest().fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
-        value =>
-          dataCacheConnector.save[Boolean](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
-      )
-    }
+  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
+    DoYouGetAnyBenefitsForm().bindFromRequest().fold(
+      formWithErrors =>
+        Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode))),
+      value =>
+        dataCacheConnector.save[Set[ParentsBenefits]](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
+          Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
+    )
   }
 }

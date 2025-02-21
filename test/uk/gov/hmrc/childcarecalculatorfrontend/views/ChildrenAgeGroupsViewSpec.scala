@@ -32,7 +32,7 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
   val fieldKey: String = ChildrenAgeGroupsForm.formId
   val errorMessage = s"$messageKeyPrefix.error.select"
 
-  val values: Seq[(String, String)] =
+  override val values: Seq[(String, String)] =
     Seq(
       (s"$messageKeyPrefix.$nineTo23Months", nineTo23Months),
       (s"$messageKeyPrefix.$twoYears", twoYears),
@@ -42,7 +42,7 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
       (s"$messageKeyPrefix.$noneOfThese", noneOfThese)
     )
 
-  def createView(form: Form[Set[ChildAgeGroup]] = form): Html =
+  override def createView(form: Form[Set[ChildAgeGroup]] = form): Html =
     mockView(form, NormalMode)(fakeRequest, messages)
 
   "ChildrenAgeGroupsView" must {

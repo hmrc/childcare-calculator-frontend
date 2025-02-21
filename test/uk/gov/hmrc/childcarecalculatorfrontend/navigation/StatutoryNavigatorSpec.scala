@@ -25,14 +25,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, StatutoryPayTypeEnum, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tc.ModelFactory
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 
 class StatutoryNavigatorSpec extends SpecBase with MockitoSugar {
 
-  val navigator = new StatutoryNavigator(new Utils, new TaxCredits(new ModelFactory))
+  val navigator = new StatutoryNavigator(new Utils)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))

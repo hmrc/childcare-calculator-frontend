@@ -16,23 +16,38 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import javax.inject.Inject
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.ENGLAND
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
-class FreeChildcareWorkingParents @Inject() (tfc: TaxFreeChildcare, appConfig: FrontendAppConfig) extends Scheme {
+import javax.inject.Inject
 
-  override def eligibility(answers: UserAnswers): Eligibility = {
-    val hasChildrenInAgeGroups = answers.isChildAgedNineTo23Months.getOrElse(false) || answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedThreeOrFour.getOrElse(false)
+class FreeChildcareWorkingParents @Inject()(freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator) extends Scheme {
 
-    val tfcEligibility = tfc.eligibility(answers)
-    answers.location.map {
-      case ENGLAND if hasChildrenInAgeGroups && tfcEligibility == Eligible =>
-        Eligible
-      case _ =>
-        NotEligible
-    }.getOrElse(NotDetermined)
-  }
+  private val eligibleBenefits: Set[ParentsBenefits] = Set(
+    CarersAllowance,
+    IncapacityBenefit,
+    SevereDisablementAllowance,
+    ContributionBasedEmploymentAndSupportAllowance,
+    NICreditsForIncapacityOrLimitedCapabilityForWork,
+    CarersCredit
+  )
+
+  override def eligibility(answers: UserAnswers): Eligibility =
+    answers.location match {
+      case Some(ENGLAND) =>
+        if (hasChildrenInAgeGroups(answers))
+          freeChildcareEligibilityCalculator.calculateEligibility(answers, eligibleBenefits)
+        else
+          NotEligible
+
+      case Some(_) => NotEligible
+      case _       => NotDetermined
+    }
+
+  private def hasChildrenInAgeGroups(answers: UserAnswers): Boolean =
+    answers.isChildAgedNineTo23Months.getOrElse(false) ||
+      answers.isChildAgedTwo.getOrElse(false) ||
+      answers.isChildAgedThreeOrFour.getOrElse(false)
 }

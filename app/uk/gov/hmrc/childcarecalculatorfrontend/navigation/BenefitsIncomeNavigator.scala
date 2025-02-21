@@ -33,7 +33,6 @@ class BenefitsIncomeNavigator @Inject()(utils: Utils) extends SubNavigator {
 
   override protected def routeMap = Map(
     YouAnyTheseBenefitsIdCY -> yourBenefitsRouteCY,
-    PartnerAnyTheseBenefitsCYId -> partnerBenefitsRouteCY,
     BothAnyTheseBenefitsCYId -> bothBenefitsRouteCY,
     WhosHadBenefitsId -> whosHadBenefitsRouteCY,
     YouBenefitsIncomeCYId -> yourBenefitsIncomeRouteCY,
@@ -55,12 +54,6 @@ class BenefitsIncomeNavigator @Inject()(utils: Utils) extends SubNavigator {
         case true => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
       }
-    }
-
-  private def partnerBenefitsRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.partnerAnyTheseBenefitsCY) {
-      case true => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case false => routes.PartnerAnyOtherIncomeThisYearController.onPageLoad(NormalMode)
     }
 
   private def bothBenefitsRouteCY(answers: UserAnswers): Call =

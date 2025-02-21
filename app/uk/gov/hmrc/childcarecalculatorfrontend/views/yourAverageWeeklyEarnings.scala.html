@@ -1,0 +1,70 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+
+@this(
+layout: Layout,
+formWithCSRF: FormWithCSRF,
+errorSummary: playComponents.error_summary,
+heading: playComponents.heading,
+inputYesNo: playComponents.input_yes_no,
+submitButton: playComponents.submit_button,
+buttonLink: playComponents.button_link,
+p: playComponents.p,
+appConfig: FrontendAppConfig
+)
+
+@()(implicit request: Request[_], messages: Messages)
+
+
+
+@layout(
+pageTitle = messages("yourAverageWeeklyEarnings.title")
+) {
+
+
+@heading(messages("yourAverageWeeklyEarnings.heading"))
+
+@p() { @messages("yourAverageWeeklyEarnings.para1") }
+
+<h2 class="govuk-heading-m">@messages("yourAverageWeeklyEarnings.heading2")</h2>
+
+@p() { @messages("yourAverageWeeklyEarnings.para2") }
+
+<ul class="govuk-list govuk-list--bullet">
+		<li>@messages("yourAverageWeeklyEarnings.li.maternity")</li>
+		<li>@messages("yourAverageWeeklyEarnings.li.paternity")</li>
+		<li>@messages("yourAverageWeeklyEarnings.li.adoption")</li>
+		<li>@messages("yourAverageWeeklyEarnings.li.neonatalCare")</li>
+		<li>@messages("yourAverageWeeklyEarnings.li.sickLeave")</li>
+</ul>
+<h2 class="govuk-heading-m">@messages("yourAverageWeeklyEarnings.heading3")</h2>
+@p() { @messages("yourAverageWeeklyEarnings.para3") }
+@p() { @messages("yourAverageWeeklyEarnings.para4") }
+
+
+@buttonLink(
+messageKey = "site.save_and_continue",
+href= routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+)
+
+
+}
+

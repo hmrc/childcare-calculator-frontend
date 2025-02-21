@@ -81,7 +81,10 @@
 
     @if(index == 0) {
         <div class="panel-indent panel-border-wide panel-info">
-            <p class="govuk-inset-text">@messages("aboutYourChild.lede")</p>
+            <div class="govuk-inset-text">
+                <p>@messages("aboutYourChild.lede")</p>
+                <p>@messages("aboutYourChild.insetTextSub")</p>
+            </div>
         </div>
     }
 

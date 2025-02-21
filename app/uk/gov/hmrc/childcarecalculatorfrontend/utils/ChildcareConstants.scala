@@ -46,13 +46,6 @@ object ChildcareConstants {
   val yes = YesNoNotYetEnum.YES.toString
   val notYet = YesNoNotYetEnum.NOTYET.toString
 
-  val incomeBenefits: String = WhichBenefitsEnum.INCOMEBENEFITS.toString
-  val disabilityBenefits: String = WhichBenefitsEnum.DISABILITYBENEFITS.toString
-  val highRatedDisabilityBenefits: String = WhichBenefitsEnum.HIGHRATEDISABILITYBENEFITS.toString
-  val severelyDisabledPremium: String = WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
-  val carersAllowanceBenefits: String = WhichBenefitsEnum.CARERSALLOWANCE.toString
-  val scottishCarersAllowanceBenefits: String = WhichBenefitsEnum.SCOTTISHCARERSALLOWANCE.toString
-
   val firstMonthOfTaxYear = 4
   val startDayOfTaxYear = 6
 
@@ -74,8 +67,8 @@ object ChildcareConstants {
   val nineteen = 19
   val sixteen = 16
 
-  val tcSchemeGuidanceLinkUrl = "https://www.gov.uk/topic/benefits-credits/tax-credits"
-  val ucSchemeGuidanceLinkUrl = "https://www.gov.uk/help-with-childcare-costs/universal-credit"
+
+  val ucSchemeGuidanceLinkUrl = "https://www.gov.uk/guidance/universal-credit-childcare-costs"
 
   val extraHelpTFCLink = "https://www.gov.uk/apply-for-tax-free-childcare"
 
@@ -98,15 +91,6 @@ object ChildcareConstants {
   val whoIsInPaidEmploymentErrorKey = "whoIsInPaidEmployment.error.notCompleted"
   val paidEmploymentErrorKey = "paidEmployment.error.notCompleted"
 
-  val parentWorkHoursBlankErrorKey = "parentWorkHours.error.blank"
-  val parentWorkHoursInvalidErrorKey = "parentWorkHours.error.invalid"
-  val partnerWorkHoursBlankErrorKey = "partnerWorkHours.error.blank"
-  val partnerWorkHoursInvalidErrorKey = "partnerWorkHours.error.invalid"
-
-  val doYouGetAnyBenefitsErrorKey = "doYouGetAnyBenefits.error.notCompleted"
-  val doYouOrYourPartnerGetAnyBenefitsErrorKey = "doYouOrYourPartnerGetAnyBenefits.error.notCompleted"
-
-  val whoGetsBenefitsErrorKey = "whoGetsBenefits.error.notCompleted"
   val whichBenefitsYouGetErrorKey = "whichBenefitsYouGet.error.notCompleted"
   val whichBenefitsPartnerGetErrorKey = "whichBenefitsPartnerGet.error.notCompleted"
 
@@ -159,9 +143,6 @@ object ChildcareConstants {
   val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error.notCompleted"
   val youAnyTheseBenefitsCYCarerAllowanceErrorKey = "youAnyTheseBenefitsCY.error.carers.allowance"
   val youAnyTheseBenefitsCYScottishCarerAllowanceErrorKey = "youAnyTheseBenefitsCY.error.scottishCarers.allowance"
-  val partnerAnyTheseBenefitsCYErrorKey = "partnerAnyTheseBenefitsCY.error.notCompleted"
-  val partnerAnyTheseBenefitsCYCarerAllowanceErrorKey = "partnerAnyTheseBenefitsCY.error.carers.allowance"
-  val partnerAnyTheseBenefitsCYScottishCarerAllowanceErrorKey = "partnerAnyTheseBenefitsCY.error.scottishCarers.allowance"
   val bothAnyTheseBenefitsCYErrorKey = "bothAnyTheseBenefitsCY.error.notCompleted"
   val bothAnyTheseBenefitsCYCarerAllowanceErrorKey = "bothAnyTheseBenefitsCY.error.carers.allowance"
   val bothAnyTheseBenefitsCYScottishCarerAllowanceErrorKey = "bothAnyTheseBenefitsCY.error.scottishCarers.allowance"
