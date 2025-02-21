@@ -135,15 +135,15 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
         AreYouInPaidWorkId.toString -> JsBoolean(true),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
-        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(true),
-        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
+      )
       val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)
 
       status(result) mustBe OK
     }
 
-    "return OK when joint claim and parent works less than 10hrs a week, partner is working 20hrs a week " +
+    "return OK when joint claim and parent works less than 10hrs a week, partner is working 20hrs a week" +
       " show tax credits and the correct view for a GET " in {
       when(tfc.eligibility(any())) thenReturn NotEligible
       when(esc.eligibility(any())) thenReturn NotEligible
@@ -152,8 +152,8 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         DoYouLiveWithPartnerId.toString -> JsBoolean(true),
         AreYouInPaidWorkId.toString -> JsBoolean(true),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false),
-        DoYouOrYourPartnerGetAnyBenefitsId.toString -> JsBoolean(false),
-        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
+        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
+      )
 
       val taxCreditsInfo = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result = controller(taxCreditsInfo).onPageLoad(fakeRequest)

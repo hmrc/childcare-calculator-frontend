@@ -76,6 +76,7 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     }
 
     "saving childcareCosts with an england location" must {
+
       "save the page data when user access the page first time and selects no" in {
         val originalCacheMap = new CacheMap("id", Map(
           LocationId.toString -> JsString("england"),
@@ -98,9 +99,11 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ApprovedProviderId.toString -> JsString(yes),
           DoYouLiveWithPartnerId.toString -> JsBoolean(false),
           WhoIsInPaidEmploymentId.toString -> JsString(partner),
-          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
-          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), PartnerChildcareVouchersId.toString -> JsString("yes"),
-          WhoGetsBenefitsId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"),
+          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes),
+          DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"),
+          PartnerChildcareVouchersId.toString -> JsString("yes"),
+          YourPartnersAgeId.toString -> JsString("under18"),
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
@@ -110,13 +113,15 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
+          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
+        ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
         result.data mustBe Map(
           LocationId.toString -> JsString("england"),
           ChildrenAgeGroupsId.toString -> JsArray(Seq(JsString("threeYears"))),
-          ChildcareCostsId.toString -> JsString(no))
+          ChildcareCostsId.toString -> JsString(no)
+        )
       }
     }
 
@@ -131,7 +136,8 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ChildcareCostsId.toString -> JsString(no),
           LocationId.toString -> JsString("scotland"),
           ChildAgedTwoId.toString -> JsBoolean(false),
-          ChildAgedThreeOrFourId.toString -> JsBoolean(true))
+          ChildAgedThreeOrFourId.toString -> JsBoolean(true)
+        )
       }
 
       "remove all the data for subsequent pages when user changes the selection from yes to no" in {
@@ -143,9 +149,11 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ApprovedProviderId.toString -> JsString(yes),
           DoYouLiveWithPartnerId.toString -> JsBoolean(false),
           WhoIsInPaidEmploymentId.toString -> JsString(partner),
-          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
-          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), PartnerChildcareVouchersId.toString -> JsString("yes"),
-          WhoGetsBenefitsId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"),
+          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes),
+          DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"),
+          PartnerChildcareVouchersId.toString -> JsString("yes"),
+          YourPartnersAgeId.toString -> JsString("under18"),
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
@@ -155,29 +163,34 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
+          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
+        ))
 
         val result = cascadeUpsert(ChildcareCostsId.toString, no, originalCacheMap)
         result.data mustBe Map(
           LocationId.toString -> JsString("scotland"),
           ChildAgedTwoId.toString -> JsBoolean(false),
           ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-          ChildcareCostsId.toString -> JsString(no))
+          ChildcareCostsId.toString -> JsString(no)
+        )
       }
     }
 
     "saving ApprovedProvider with an england location" must {
       "save the page data when user access the page first time and selects no" in {
-        val originalCacheMap = new CacheMap("id", Map(LocationId.toString -> JsString("england"),
+        val originalCacheMap = new CacheMap("id", Map(
+          LocationId.toString -> JsString("england"),
           ChildrenAgeGroupsId.toString -> JsArray(Seq(JsString("threeYears"))),
-          ChildcareCostsId.toString -> JsString(yes)))
+          ChildcareCostsId.toString -> JsString(yes)
+        ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
         result.data mustBe Map(
           ApprovedProviderId.toString -> JsString(No),
           LocationId.toString -> JsString("england"),
           ChildrenAgeGroupsId.toString -> JsArray(Seq(JsString("threeYears"))),
-          ChildcareCostsId.toString -> JsString(yes))
+          ChildcareCostsId.toString -> JsString(yes)
+        )
       }
 
       "remove all the data for subsequent pages when user changes the selection from yes to no" in {
@@ -188,9 +201,11 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.YES.toString),
           DoYouLiveWithPartnerId.toString -> JsBoolean(false),
           WhoIsInPaidEmploymentId.toString -> JsString(partner),
-          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
-          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), PartnerChildcareVouchersId.toString -> JsString("yes"),
-          WhoGetsBenefitsId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"),
+          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes),
+          DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"),
+          PartnerChildcareVouchersId.toString -> JsString("yes"),
+          YourPartnersAgeId.toString -> JsString("under18"),
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
@@ -200,23 +215,28 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
+          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
+        ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
         result.data mustBe Map(
           LocationId.toString -> JsString("england"),
           ChildrenAgeGroupsId.toString -> JsArray(Seq(JsString("threeYears"))),
           ApprovedProviderId.toString -> JsString(No),
-          ChildcareCostsId.toString -> JsString(yes))
+          ChildcareCostsId.toString -> JsString(yes)
+        )
       }
     }
 
     "saving ApprovedProvider with a non england location" must {
+
       "save the page data when user access the page first time and selects no" in {
-        val originalCacheMap = new CacheMap("id", Map(LocationId.toString -> JsString("scotland"),
+        val originalCacheMap = new CacheMap("id", Map(
+          LocationId.toString -> JsString("scotland"),
           ChildAgedTwoId.toString -> JsBoolean(false),
           ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-          ChildcareCostsId.toString -> JsString(yes)))
+          ChildcareCostsId.toString -> JsString(yes)
+        ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
         result.data mustBe Map(
@@ -224,7 +244,8 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           LocationId.toString -> JsString("scotland"),
           ChildAgedTwoId.toString -> JsBoolean(false),
           ChildAgedThreeOrFourId.toString -> JsBoolean(true),
-          ChildcareCostsId.toString -> JsString(yes))
+          ChildcareCostsId.toString -> JsString(yes)
+        )
       }
 
       "remove all the data for subsequent pages when user changes the selection from yes to no" in {
@@ -236,9 +257,11 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.YES.toString),
           DoYouLiveWithPartnerId.toString -> JsBoolean(false),
           WhoIsInPaidEmploymentId.toString -> JsString(partner),
-          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes), DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
-          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"), PartnerChildcareVouchersId.toString -> JsString("yes"),
-          WhoGetsBenefitsId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"),
+          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes),
+          DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
+          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"),
+          PartnerChildcareVouchersId.toString -> JsString("yes"),
+          YourPartnersAgeId.toString -> JsString("under18"),
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
@@ -248,7 +271,8 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
           PartnerStatutoryWeeksId.toString -> JsNumber(200),
           PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
+          PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))
+        ))
 
         val result = cascadeUpsert(ApprovedProviderId.toString, No, originalCacheMap)
         result.data mustBe Map(
@@ -256,7 +280,8 @@ class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           ChildAgedTwoId.toString -> JsBoolean(false),
           ChildAgedThreeOrFourId.toString -> JsBoolean(true),
           ApprovedProviderId.toString -> JsString(No),
-          ChildcareCostsId.toString -> JsString(yes))
+          ChildcareCostsId.toString -> JsString(yes)
+        )
       }
     }
   }
