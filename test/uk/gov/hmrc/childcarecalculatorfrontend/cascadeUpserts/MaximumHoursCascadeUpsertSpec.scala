@@ -49,14 +49,8 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhoGetsBenefitsId.toString -> JsString("you"), YourPartnersAgeId.toString -> JsString("under18"),
         PartnerMinimumEarningsId.toString -> JsBoolean(true),
         PartnerSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-        PartnerMaximumEarningsId.toString -> JsBoolean(true),
-        BothStatutoryPayId.toString -> JsBoolean(true),
-        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
-        PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-        PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-        PartnerStatutoryWeeksId.toString -> JsNumber(200),
-        PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-        PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
+        PartnerMaximumEarningsId.toString -> JsBoolean(true)
+        ))
 
       val originalCacheMap2 = new CacheMap("id", Map(
         WhoIsInPaidEmploymentId.toString -> JsString(both),
@@ -70,14 +64,8 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YourPartnersAgeId.toString -> JsString("under18"), YourAgeId.toString -> JsString("under18"), PartnerMinimumEarningsId.toString -> JsBoolean(true),
         YourMinimumEarningsId.toString -> JsBoolean(false),
         AreYouSelfEmployedOrApprenticeId.toString -> JsString(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-        PartnerMaximumEarningsId.toString -> JsBoolean(true),
-        BothStatutoryPayId.toString -> JsBoolean(true),
-        WhoGotStatutoryPayId.toString -> JsString(YouPartnerBothEnum.PARTNER.toString),
-        PartnerStatutoryPayTypeId.toString -> JsString("maternity"),
-        PartnerStatutoryStartDateId.toString -> Json.toJson(LocalDate.of(2017, 2, 1)),
-        PartnerStatutoryWeeksId.toString -> JsNumber(200),
-        PartnerStatutoryPayBeforeTaxId.toString -> JsString("true"),
-        PartnerStatutoryPayPerWeekId.toString -> JsNumber(BigDecimal(200))))
+        PartnerMaximumEarningsId.toString -> JsBoolean(true)
+        ))
 
 
       val result1 = cascadeUpsert(DoYouLiveWithPartnerId.toString, false, originalCacheMap1)
@@ -188,8 +176,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
         PartnerPaidPensionPYId.toString -> JsBoolean(true),
         HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        PartnerAnyOtherIncomeLYId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
         PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
 
       // You In Paid Employment
@@ -250,8 +236,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
         PartnerPaidPensionPYId.toString -> JsBoolean(true),
         HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        PartnerAnyOtherIncomeLYId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
        PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20)))) //TODO Add in Statutory Data
 
       val result1 = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap)
@@ -555,8 +539,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         PartnerEmploymentIncomePYId.toString -> JsBoolean(true),
         PartnerPaidPensionPYId.toString -> JsBoolean(true),
         HowMuchPartnerPayPensionPYId.toString -> JsNumber(BigDecimal(20)),
-        PartnerAnyOtherIncomeLYId.toString -> JsBoolean(true),
-        PartnerAnyTheseBenefitsPYId.toString -> JsBoolean(true),
         PartnerBenefitsIncomePYId.toString ->JsNumber(BigDecimal(20))))
 
       val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, both, originalCacheMap)
