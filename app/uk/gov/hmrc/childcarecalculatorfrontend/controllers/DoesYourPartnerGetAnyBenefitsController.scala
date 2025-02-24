@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,43 +20,43 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouGetAnyBenefitsId
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoesYourPartnerGetAnyBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoesYourPartnerGetAnyBenefitsId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doesYourPartnerGetAnyBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DoYouGetAnyBenefitsController @Inject()(
+class DoesYourPartnerGetAnyBenefitsController @Inject()(
   appConfig: FrontendAppConfig,
   mcc: MessagesControllerComponents,
   dataCacheConnector: DataCacheConnector,
   navigator: Navigator,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  doYouGetAnyBenefits: doYouGetAnyBenefits
+  doesYourPartnerGetAnyBenefits: doesYourPartnerGetAnyBenefits
 )(implicit ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
-      case None => DoYouGetAnyBenefitsForm()
-      case Some(value) => DoYouGetAnyBenefitsForm().fill(value)
+    val preparedForm = request.userAnswers.doesYourPartnerGetAnyBenefits match {
+      case None => DoesYourPartnerGetAnyBenefitsForm()
+      case Some(value) => DoesYourPartnerGetAnyBenefitsForm().fill(value)
     }
-    Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode))
+    Ok(doesYourPartnerGetAnyBenefits(appConfig, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
-    DoYouGetAnyBenefitsForm().bindFromRequest().fold(
+    DoesYourPartnerGetAnyBenefitsForm().bindFromRequest().fold(
       formWithErrors =>
-        Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode))),
+        Future.successful(BadRequest(doesYourPartnerGetAnyBenefits(appConfig, formWithErrors, mode))),
       value =>
-        dataCacheConnector.save[Set[ParentsBenefits]](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
-          Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
+        dataCacheConnector.save[Set[ParentsBenefits]](request.sessionId, DoesYourPartnerGetAnyBenefitsId.toString, value).map(cacheMap =>
+          Redirect(navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
     )
   }
 }

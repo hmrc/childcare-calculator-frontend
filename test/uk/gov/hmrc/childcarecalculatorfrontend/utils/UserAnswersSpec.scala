@@ -21,6 +21,7 @@ import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{CarersAllowance, IncapacityBenefit, SevereDisablementAllowance}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 import java.time.LocalDate
@@ -721,27 +722,29 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   }
 
   "isOnSevereDisabilityPremium" must {
+
     "return true" when {
-      "'you' are on severe disability premium" in {
+
+      "'you' get SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
+          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual true
       }
 
-      "'partner' is on severe disability premium" in {
+      "'partner' gets SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
+          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual true
       }
 
-      "'both' are on severe disability premium" in {
+      "'both' get SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString))),
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
+          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString))),
+          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual true
@@ -749,26 +752,27 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
 
     "return false" when {
-      "'you' are NOT on severe disability premium" in {
+
+      "'you' don't get SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString)))
+          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(CarersAllowance.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual false
       }
 
-      "'partner' is NOT on severe disability premium" in {
+      "'partner' doesn't get SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
+          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(IncapacityBenefit.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual false
       }
 
-      "'both' are NOT on severe disability premium" in {
+      "'both' don't get SevereDisablement benefits" in {
         val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString))),
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
+          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(CarersAllowance.toString))),
+          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(IncapacityBenefit.toString)))
         ))
 
         answers.isOnSevereDisabilityPremium mustEqual false

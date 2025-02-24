@@ -18,13 +18,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
 import org.mockito.Mockito._
 import org.scalatest.OptionValues
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SelfEmployedOrApprenticeOrNeitherEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, SelfEmployedOrApprenticeOrNeitherEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 class ModelFactorySpec extends SchemeSpec with OptionValues {
-  
+
   val factory = new ModelFactory
 
   ".apply" must {
@@ -32,8 +31,8 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
     "return `None` when `doYouLiveWithPartner` is undefined" in {
       val answers = spy(helper())
       when(answers.areYouInPaidWork) thenReturn Some(true)
-      when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-      when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+      when(answers.doYouGetAnyBenefits) thenReturn Some(Set(ParentsBenefits.IncapacityBenefit))
+      when(answers.doesYourPartnerGetAnyBenefits) thenReturn Some(Set.empty)
       factory(answers) mustNot be(defined)
     }
 
@@ -43,7 +42,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         when(answers.yourSelfEmployed) thenReturn Some(true)
@@ -56,7 +55,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
         when(answers.yourMinimumEarnings) thenReturn Some(true)
         when(answers.yourMaximumEarnings) thenReturn Some(false)
         factory(answers).value mustEqual SingleHousehold(Parent(minEarnings = true, maxEarnings = true,
@@ -66,8 +65,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
       "return `None` when `areYouInPaidWork` is undefined" in {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(true)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(DISABILITYBENEFITS.toString))
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set(ParentsBenefits.IncapacityBenefit))
         factory(answers) mustNot be(defined)
       }
 
@@ -79,7 +77,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
         when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
@@ -88,8 +86,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
 
         when(answers.partnerSelfEmployed) thenReturn Some(true)
         when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
-
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
 
         factory(answers).value mustEqual JointHousehold(
           Parent(minEarnings = false, maxEarnings = true, selfEmployed = true, apprentice = false, Set.empty),
@@ -101,7 +97,7 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         val answers = spy(helper())
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
         when(answers.partnerMinimumEarnings) thenReturn Some(false)
 
@@ -111,8 +107,6 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
         when(answers.partnerSelfEmployed) thenReturn Some(true)
         when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString)
 
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
-
         factory(answers) mustNot be(defined)
       }
 
@@ -121,15 +115,13 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
 
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(false)
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
         when(answers.yourMinimumEarnings) thenReturn Some(false)
         when(answers.partnerMinimumEarnings) thenReturn Some(true)
         when(answers.partnerMaximumEarnings) thenReturn Some(false)
 
         when(answers.yourSelfEmployed) thenReturn Some(true)
         when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
-
-        when(answers.doYouOrYourPartnerGetAnyBenefits) thenReturn Some(false)
 
         factory(answers).value mustEqual JointHousehold(
           Parent(minEarnings = false, maxEarnings = true, selfEmployed = false, apprentice = true, Set.empty),

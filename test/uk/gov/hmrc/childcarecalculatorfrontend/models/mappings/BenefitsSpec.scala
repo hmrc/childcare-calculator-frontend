@@ -17,87 +17,84 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
 import org.scalatestplus.play.PlaySpec
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.Benefits
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum._
 
 class BenefitsSpec extends PlaySpec {
-  "Benefits" must {
-    "Return all benefits as false" when {
-      "We have no income benefits" in {
-        val mappedBenefits = Benefits.populateFromRawData(None)
 
-        mappedBenefits mustBe None
+  "Benefits" must {
+
+    "return empty Option" when {
+      "provided with empty Option" in {
+        Benefits.from(None) mustBe None
       }
     }
 
-    "Populate correctly from a Set of Strings" when {
-      "We have income benefits" in {
-        val rawBenefits = Some(Set(INCOMEBENEFITS.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+    "return all benefits as false" when {
 
-        mappedBenefits.get.incomeBenefits mustBe true
+      "income benefits Set is empty" in {
+        val inputBenefits = Some(Set.empty[ParentsBenefits])
+
+        Benefits.from(inputBenefits) mustBe Some(Benefits())
       }
 
-      "We have disability benefits" in {
-        val rawBenefits = Some(Set(DISABILITYBENEFITS.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+      "income benefits Set contains NICreditsForIncapacity" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(NICreditsForIncapacityOrLimitedCapabilityForWork))
 
-        mappedBenefits.get.disabilityBenefits mustBe true
+        Benefits.from(inputBenefits) mustBe Some(Benefits())}
+
+      "income benefits Set contains CarersCredit" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(CarersCredit))
+
+        Benefits.from(inputBenefits) mustBe Some(Benefits())}
+
+      "income benefits Set contains NoneOfThese" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(NoneOfThese))
+
+        Benefits.from(inputBenefits) mustBe Some(Benefits())}
+    }
+
+    "return benefits with only carersAllowance set to true" when {
+
+      "income benefits Set contains CarersAllowance" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(CarersAllowance))
+
+        Benefits.from(inputBenefits) mustBe Some(Benefits(carersAllowance = true))
       }
 
-      "We have high rate disability benefits" in {
-        val rawBenefits = Some(Set(HIGHRATEDISABILITYBENEFITS.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+      "income benefits Set contains IncapacityBenefit" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(IncapacityBenefit))
 
-        mappedBenefits.get.highRateDisabilityBenefits mustBe true
+        Benefits.from(inputBenefits) mustBe Some(Benefits(carersAllowance = true))
       }
 
-      "We have carers allowance benefits for non scottish users" in {
-        val rawBenefits = Some(Set(CARERSALLOWANCE.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+      "income benefits Set contains SevereDisablement" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(SevereDisablementAllowance))
 
-        mappedBenefits.get.carersAllowance mustBe true
+        Benefits.from(inputBenefits) mustBe Some(Benefits(carersAllowance = true))
       }
 
-      "We have Carer’s Allowance or Carer Support Payment benefits for scottish users" in {
-        val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+      "income benefits Set contains EmploymentAndSupportAllowance" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] = Some(Set(ContributionBasedEmploymentAndSupportAllowance))
 
-        mappedBenefits.get.carersAllowance mustBe true
+        Benefits.from(inputBenefits) mustBe Some(Benefits(carersAllowance = true))
       }
 
-      "We have a known benefit and an unkonwn benefit for non scottish users" in {
-        val rawBenefits = Some(Set(CARERSALLOWANCE.toString,"unknown benefit"))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
+      "income benefits Set contains all types of benefits" in {
+        val inputBenefits: Option[Set[ParentsBenefits]] =
+          Some(
+            Set(
+              CarersAllowance,
+              IncapacityBenefit,
+              SevereDisablementAllowance,
+              ContributionBasedEmploymentAndSupportAllowance,
+              NICreditsForIncapacityOrLimitedCapabilityForWork,
+              CarersCredit,
+            )
+          )
 
-        mappedBenefits.get.carersAllowance mustBe true
-      }
-
-      "We have a known benefit and an unkonwn benefit for scottish users" in {
-        val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString,"unknown benefit"))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits)
-
-        mappedBenefits.get.carersAllowance mustBe true
-      }
-
-      "We have all benefits for non scottish users" in {
-        val rawBenefits = Some(Set(CARERSALLOWANCE.toString, HIGHRATEDISABILITYBENEFITS.toString, DISABILITYBENEFITS.toString, INCOMEBENEFITS.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits).get
-
-        mappedBenefits.carersAllowance mustBe true
-        mappedBenefits.highRateDisabilityBenefits mustBe true
-        mappedBenefits.disabilityBenefits mustBe true
-        mappedBenefits.incomeBenefits mustBe true
-      }
-
-      "We have all benefits for scottish users" in {
-        val rawBenefits = Some(Set(SCOTTISHCARERSALLOWANCE.toString, HIGHRATEDISABILITYBENEFITS.toString, DISABILITYBENEFITS.toString, INCOMEBENEFITS.toString))
-        val mappedBenefits = Benefits.populateFromRawData(rawBenefits).get
-
-        mappedBenefits.carersAllowance mustBe true
-        mappedBenefits.highRateDisabilityBenefits mustBe true
-        mappedBenefits.disabilityBenefits mustBe true
-        mappedBenefits.incomeBenefits mustBe true
+        Benefits.from(inputBenefits) mustBe Some(Benefits(carersAllowance = true))
       }
     }
   }

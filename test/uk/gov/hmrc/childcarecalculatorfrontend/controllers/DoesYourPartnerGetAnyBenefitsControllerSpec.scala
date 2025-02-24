@@ -17,35 +17,41 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.{JsArray, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichBenefitsYouGetForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, WhichBenefitsYouGetId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoesYourPartnerGetAnyBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoesYourPartnerGetAnyBenefitsId, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichBenefitsYouGet
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{doYouGetAnyBenefits, doesYourPartnerGetAnyBenefits}
 
+class DoesYourPartnerGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
+  val view = application.injector.instanceOf[doesYourPartnerGetAnyBenefits]
+  def onwardRoute = routes.YourAgeController.onPageLoad(NormalMode)
 
-class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
+  val cacheMapWithPreviousAnswers = new CacheMap("id", Map.empty)
 
-  val view = application.injector.instanceOf[whichBenefitsYouGet]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def retrievalActionWithPreviousAnswers = new FakeDataRetrievalAction(Some(cacheMapWithPreviousAnswers))
 
-  val location = Location.SCOTLAND
-  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
-  def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
+  def controller(dataRetrievalAction: DataRetrievalAction = retrievalActionWithPreviousAnswers) =
+    new DoesYourPartnerGetAnyBenefitsController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
-    new WhichBenefitsYouGetController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+  def viewAsString(form: Form[Set[ParentsBenefits]] = DoesYourPartnerGetAnyBenefitsForm()) =
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
-  def viewAsString(form: Form[Set[String]] = WhichBenefitsYouGetForm(location)) = view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages).toString
-
-  "WhichBenefitsYouGet Controller" must {
+  "DoesYourPartnerGetAnyBenefits Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -56,20 +62,20 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        LocationId.toString -> JsString(location.toString),
-        WhichBenefitsYouGetId.toString -> Json.toJson(Seq(WhichBenefitsYouGetForm.options.head._2))
+        DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(ParentsBenefits.CarersCredit.toString)))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhichBenefitsYouGetForm(location).fill(Set(WhichBenefitsYouGetForm.options.head._2)))
+      contentAsString(result) mustBe viewAsString(DoesYourPartnerGetAnyBenefitsForm().fill(Set(ParentsBenefits.CarersCredit)))
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", WhichBenefitsYouGetForm.options.toSeq.head._2)).withMethod("POST")
-      print(location)
-      print("location")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody((s"${DoesYourPartnerGetAnyBenefitsForm.formId}[0]", ParentsBenefits.CarersAllowance.toString))
+        .withMethod("POST")
+
       val result = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -77,8 +83,10 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value")).withMethod("POST")
-      val boundForm = WhichBenefitsYouGetForm(location).bind(Map("value[0]" -> "invalid value"))
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody((s"${DoesYourPartnerGetAnyBenefitsForm.formId}[0]", "invalid value"))
+        .withMethod("POST")
+      val boundForm = DoesYourPartnerGetAnyBenefitsForm().bind(Map(s"${DoesYourPartnerGetAnyBenefitsForm.formId}[0]" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -94,7 +102,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhichBenefitsYouGetForm.options.toSeq.head._1)).withMethod("POST")
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -102,3 +110,7 @@ class WhichBenefitsYouGetControllerSpec extends ControllerSpecBase {
     }
   }
 }
+
+
+
+

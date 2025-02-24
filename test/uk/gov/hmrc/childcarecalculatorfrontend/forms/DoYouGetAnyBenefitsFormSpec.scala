@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,27 +18,27 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 
-class ChildrenAgeGroupsFormSpec extends CheckboxBehaviours[ChildAgeGroup] {
+class DoYouGetAnyBenefitsFormSpec extends CheckboxBehaviours[ParentsBenefits] {
 
-  override val form: Form[Set[ChildAgeGroup]] = ChildrenAgeGroupsForm()
+  override val form: Form[Set[ParentsBenefits]] = DoYouGetAnyBenefitsForm()
 
-  override val validOptions: Set[ChildAgeGroup] = ChildAgeGroup.inverseMappping.keySet
+  override val validOptions: Set[ParentsBenefits] = ParentsBenefits.inverseMappping.keySet
 
-  override val fieldName = "childrenAgeGroups"
+  override val fieldName = "doYouGetAnyBenefits"
 
-  "ChildrenAgeGroupsForm form" must {
-    behave like aCheckboxForm(invalid = "childrenAgeGroups.error.select")
+  "DoYouGetAnyBenefitsForm form" must {
+    behave like aCheckboxForm(invalid = "doYouGetAnyBenefits.error.select")
 
-    behave like aMandatoryCheckboxForm(required = "childrenAgeGroups.error.select")
+    behave like aMandatoryCheckboxForm(required = "doYouGetAnyBenefits.error.select")
 
     "fail to bind when multiple options are selected along with 'No'" in {
       val data = Map(
-        s"$fieldName[0]" -> ChildAgeGroup.noneOfThese,
-        s"$fieldName[1]" -> ChildAgeGroup.twoYears
+        s"$fieldName[0]" -> ParentsBenefits.NoneOfThese.toString,
+        s"$fieldName[1]" -> ParentsBenefits.CarersAllowance.toString
       )
-      form.bind(data).errors mustBe Seq(FormError(fieldName, "childrenAgeGroups.error.exclusive"))
+      form.bind(data).errors mustBe Seq(FormError(fieldName, "doYouGetAnyBenefits.error.select"))
     }
   }
 }
