@@ -838,20 +838,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to the 'PartnerIncomeInfoController' page" when {
 
-      "taxOrUniversal is 'tc', hasVouchers is false and the user has a partner" in {
-        val answers = mock[UserAnswers]
-        when(answers.hasVouchers).thenReturn(false)
-        when(answers.doYouGetAnyBenefits).thenReturn(None)
-        when(answers.doesYourPartnerGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.IncapacityBenefit)))
-        when(answers.taxOrUniversalCredits).thenReturn(Some("tc"))
-
-        when(answers.isOnSevereDisabilityPremium).thenCallRealMethod()
-
-        val result = navigator.isEligibleForTaxCredits(answers, hasPartner = true)
-        result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
-      }
-
-      "taxOrUniversal is not 'tc', hasVouchers is false and the user has a partner that is severely disabled" in {
+      "hasVouchers is false and the user has a partner that is severely disabled" in {
         val answers = mock[UserAnswers]
         when(answers.hasVouchers).thenReturn(false)
         when(answers.doYouGetAnyBenefits).thenReturn(None)
