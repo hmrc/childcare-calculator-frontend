@@ -40,7 +40,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
   val mockTaxYearInfo: TaxYearInfo = mock[TaxYearInfo]
 
-  val currentTaxYear: Int =  TaxYear.current.startYear
+  val currentTaxYear: Int = TaxYear.current.startYear
 
   val previousTaxYear: Int = currentTaxYear - 1
 
@@ -292,9 +292,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           minimumEarnings = Some(MinimumEarnings(120.0)),
           maximumEarnings = Some(false),
           lastYearlyIncome = Some(Income(
-            employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200)))))
+            employmentIncome = Some(BigDecimal(32000.0)))
           )
         )
         val household = Household(location = Location.ENGLAND, parent = parent)
@@ -302,9 +300,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
-        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
-        when(answers.yourStatutoryWeeks) thenReturn Some(4)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -325,8 +320,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 5.0, statutoryAmount = Some(BigDecimal(300)))))
+            )
           )
         )
         val household = Household(location = Location.ENGLAND, parent = parent)
@@ -334,9 +328,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(currentTaxYear, 5, 1)
 
-        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -357,13 +348,11 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))
+           )
           ),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))
+            )
           )
         )
         val household = Household(location = Location.ENGLAND, parent = parent)
@@ -372,9 +361,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
 
 
-        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -396,11 +382,10 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = None)),
+            )),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))
+            )
           )
         )
         val household = Household(location = Location.ENGLAND, parent = parent)
@@ -408,9 +393,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 3, 21)
 
-        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -441,18 +423,12 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+           )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -477,7 +453,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           escVouchers = Some(YesNoUnsureEnum.NOTSURE),
           ageRange = Some(AgeEnum.TWENTYONEOROVER),
           minimumEarnings = Some(MinimumEarnings(employmentStatus = Some(EmploymentStatusEnum.APPRENTICE),
-                                                 amount = BigDecimal(112))),
+            amount = BigDecimal(112))),
           maximumEarnings = Some(true),
           lastYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(21000.0)))),
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
@@ -491,18 +467,12 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+           )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -540,18 +510,12 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+           )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -588,18 +552,12 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+           )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -636,18 +594,12 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200.0)))))))
+           )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200.0))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -681,8 +633,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200)))))),
+           )),
                 lastYearlyIncome = Some(Income(
                 employmentIncome = Some(BigDecimal(21000.0))
             )))
@@ -691,11 +642,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(currentTaxYear, 5, 1)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -729,21 +675,15 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))),
+            )),
             lastYearlyIncome = Some(Income(
               employmentIncome = Some(BigDecimal(21000.0)),
-              statutoryIncome = Some( StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))))
+             )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(5)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -770,8 +710,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(true),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(250)))))),
+            )),
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(72000.0))))
         )
         val partner = Claimant(
@@ -782,23 +721,12 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           currentYearlyIncome = Some(Income(employmentIncome = Some(BigDecimal(32000.0)))),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 4.0, statutoryAmount = Some(BigDecimal(200)))))))
+           )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(200))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(4)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
-
-        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(250))
-        when(answers.yourStatutoryWeeks) thenReturn Some(2)
-        when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -824,11 +752,10 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(true),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))),
+           )),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some( StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))))
+            )))
         val partner = Claimant(
           escVouchers = Some(YesNoUnsureEnum.NOTSURE),
           ageRange = Some(AgeEnum.EIGHTEENTOTWENTY),
@@ -836,26 +763,15 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
           maximumEarnings = Some(false),
           currentYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(32000.0)),
-            statutoryIncome = Some(
-              StatutoryIncome(statutoryWeeks = 3.0, statutoryAmount = Some(BigDecimal(300)))))),
+            )),
           lastYearlyIncome = Some(Income(
             employmentIncome = Some(BigDecimal(21000.0)),
-            statutoryIncome = Some( StatutoryIncome(statutoryWeeks = 2.0, statutoryAmount = Some(BigDecimal(300)))))))
+          )))
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
         val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
-
-        when(answers.partnerStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.partnerStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
-        when(answers.partnerStatutoryWeeks) thenReturn Some(5)
-        when(answers.partnerStatutoryPayBeforeTax) thenReturn Some(false)
-
-        when(answers.yourStatutoryStartDate) thenReturn Some(statutoryStartDate)
-        when(answers.yourStatutoryPayPerWeek) thenReturn Some(BigDecimal(300))
-        when(answers.yourStatutoryWeeks) thenReturn Some(5)
-        when(answers.yourStatutoryPayBeforeTax) thenReturn Some(false)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
