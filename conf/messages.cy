@@ -309,7 +309,7 @@ doYouGetAnyBenefits.CarersCredit = Credyd Gofalwyr
 doYouGetAnyBenefits.NoneOfThese = Na, nid wyf yn cael unrhyw un o’r budd-daliadau hyn
 doYouGetAnyBenefits.or = neu
 doYouGetAnyBenefits.checkYourAnswersLabel = A ydych yn cael unrhyw un o’r budd-daliadau hyn?
-doYouGetAnyBenefits.error.select = Select if you get any of these benefits
+doYouGetAnyBenefits.error.select = Dewiswch a ydych yn cael unrhyw un o’r budd-daliadau hyn
 
 doesYourPartnerGetAnyBenefits.title = A yw’ch partner yn cael unrhyw un o’r budd-daliadau hyn?
 doesYourPartnerGetAnyBenefits.heading = A yw’ch partner yn cael unrhyw un o’r budd-daliadau hyn?
@@ -323,7 +323,7 @@ doesYourPartnerGetAnyBenefits.CarersCredit = Credyd Gofalwyr
 doesYourPartnerGetAnyBenefits.NoneOfThese = Na, nid wyf yn cael unrhyw un o’r budd-daliadau hyn
 doesYourPartnerGetAnyBenefits.or = neu
 doesYourPartnerGetAnyBenefits.checkYourAnswersLabel = A yw’ch partner yn cael unrhyw un o’r budd-daliadau hyn?
-doesYourPartnerGetAnyBenefits.error.select = Select if your partner gets any of these benefits
+doesYourPartnerGetAnyBenefits.error.select = Dewiswch a yw’ch partner yn cael unrhyw un o’r budd-daliadau hyn
 
 yourPartnersAge.title=Beth yw oedran eich partner?
 yourPartnersAge.heading=Beth yw oedran eich partner?
