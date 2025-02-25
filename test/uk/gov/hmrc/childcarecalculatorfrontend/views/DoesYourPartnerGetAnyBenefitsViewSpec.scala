@@ -18,18 +18,18 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import play.twirl.api.Html
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.{DoYouGetAnyBenefitsForm, DoesYourPartnerGetAnyBenefitsForm}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{doYouGetAnyBenefits, doesYourPartnerGetAnyBenefits}
 
-class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ParentsBenefits] {
+class DoesYourPartnerGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ParentsBenefits] {
 
-  override val form = DoYouGetAnyBenefitsForm()
-  val testView = application.injector.instanceOf[doYouGetAnyBenefits]
-  val messageKeyPrefix = "doYouGetAnyBenefits"
-  val fieldKey: String = DoYouGetAnyBenefitsForm.formId
+  override val form = DoesYourPartnerGetAnyBenefitsForm()
+  val testView = application.injector.instanceOf[doesYourPartnerGetAnyBenefits]
+  val messageKeyPrefix = "doesYourPartnerGetAnyBenefits"
+  val fieldKey: String = DoesYourPartnerGetAnyBenefitsForm.formId
   val errorMessage = s"$messageKeyPrefix.error.select"
 
   override val values: Seq[(String, String)] =

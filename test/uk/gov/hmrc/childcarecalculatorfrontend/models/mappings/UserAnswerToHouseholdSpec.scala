@@ -16,20 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
-import java.time.LocalDate
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.WhichBenefitsEnum.{CARERSALLOWANCE, HIGHRATEDISABILITYBENEFITS, SCOTTISHCARERSALLOWANCE}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{CarersAllowance, IncapacityBenefit}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo, UserAnswers, Utils}
 import uk.gov.hmrc.time.TaxYear
+
+import java.time.LocalDate
 
 class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with BeforeAndAfterEach {
 
@@ -130,7 +130,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
       "has location and universal credit for non-scottish users" in {
         val parent = Claimant(
-          benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
+          benefits = Some(Benefits(carersAllowance = true)),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
@@ -139,7 +139,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val answers = spy(userAnswers())
 
         when(answers.location) thenReturn Some(Location.ENGLAND)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, CARERSALLOWANCE.toString))
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set(IncapacityBenefit, CarersAllowance))
         when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
         userAnswerToHousehold.convert(answers) mustEqual household
@@ -147,7 +147,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
       "has location and UNIVERSAL CREDIT for scottish users" in {
         val parent = Claimant(
-          benefits = Some(Benefits(highRateDisabilityBenefits = true, carersAllowance = true)),
+          benefits = Some(Benefits(carersAllowance = true)),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
@@ -156,7 +156,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val answers = spy(userAnswers())
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
-        when(answers.whichBenefitsYouGet) thenReturn Some(Set(HIGHRATEDISABILITYBENEFITS.toString, SCOTTISHCARERSALLOWANCE.toString))
+        when(answers.doYouGetAnyBenefits) thenReturn Some(Set(IncapacityBenefit, CarersAllowance))
         when(answers.taxOrUniversalCredits) thenReturn Some(true)
 
         userAnswerToHousehold.convert(answers) mustEqual household

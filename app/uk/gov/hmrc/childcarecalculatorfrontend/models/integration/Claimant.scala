@@ -19,8 +19,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.integration
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 case class Income(
                    employmentIncome: Option[BigDecimal] = None,
@@ -45,18 +46,20 @@ case class Benefits(
 object Benefits {
   implicit val formatBenefits: OFormat[Benefits] = Json.format[Benefits]
 
-  def populateFromRawData(data: Option[Set[String]]): Option[Benefits] = {
-    data.map(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
-      currentBenefit match {
-        case `incomeBenefits` => benefits.copy(incomeBenefits = true)
-        case `disabilityBenefits` => benefits.copy(disabilityBenefits = true)
-        case `highRatedDisabilityBenefits` => benefits.copy(highRateDisabilityBenefits = true)
-        case `carersAllowanceBenefits` => benefits.copy(carersAllowance = true)
-        case `scottishCarersAllowanceBenefits` => benefits.copy(carersAllowance = true)
-        case _ => benefits
-      }
-    }))
-  }
+  val TfcOrFreeChildcareQualifyingBenefits: Set[ParentsBenefits] = Set(
+    CarersAllowance,
+    IncapacityBenefit,
+    SevereDisablementAllowance,
+    ContributionBasedEmploymentAndSupportAllowance
+  )
+
+  def from(data: Option[Set[ParentsBenefits]]): Option[Benefits] =
+    data.map { parentsBenefits =>
+      if (parentsBenefits.intersect(TfcOrFreeChildcareQualifyingBenefits).nonEmpty)
+        Benefits(carersAllowance = true)
+      else
+        Benefits()
+    }
 }
 
 case class MinimumEarnings(

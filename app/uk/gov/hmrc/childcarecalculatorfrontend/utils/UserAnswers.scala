@@ -195,15 +195,9 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def yourPartnersAge: Option[String] = cacheMap.getEntry[String](YourPartnersAgeId.toString)
 
-  def whichBenefitsYouGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsYouGetId.toString)
+  def doYouGetAnyBenefits: Option[Set[ParentsBenefits]] = cacheMap.getEntry[Set[ParentsBenefits]](DoYouGetAnyBenefitsId.toString)
 
-  def whichBenefitsPartnerGet: Option[Set[String]] = cacheMap.getEntry[Set[String]](WhichBenefitsPartnerGetId.toString)
-
-  def whoGetsBenefits: Option[String] = cacheMap.getEntry[String](WhoGetsBenefitsId.toString)
-
-  def doYouOrYourPartnerGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouOrYourPartnerGetAnyBenefitsId.toString)
-
-  def doYouGetAnyBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouGetAnyBenefitsId.toString)
+  def doesYourPartnerGetAnyBenefits: Option[Set[ParentsBenefits]] = cacheMap.getEntry[Set[ParentsBenefits]](DoesYourPartnerGetAnyBenefitsId.toString)
 
   def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
 
@@ -411,7 +405,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
   }
 
   def isOnSevereDisabilityPremium: Boolean =
-    whichBenefitsYouGet.getOrElse(Set()) ++ whichBenefitsPartnerGet.getOrElse(Set()) contains WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString
+    (doYouGetAnyBenefits.getOrElse(Set.empty) ++ doesYourPartnerGetAnyBenefits.getOrElse(Set.empty))
+      .contains(ParentsBenefits.SevereDisablementAllowance)
 
   def isAlreadyReceivingTaxCredits: Boolean =
     taxOrUniversalCredits match {
