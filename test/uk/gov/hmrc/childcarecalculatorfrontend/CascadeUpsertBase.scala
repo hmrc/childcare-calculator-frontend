@@ -25,6 +25,5 @@ trait CascadeUpsertBase {
     new BenefitsCascadeUpsert,
     new MaximumHoursCascadeUpsert,
     new MinimumHoursCascadeUpsert,
-    new ChildrenCascadeUpsert,
-    new StatutoryCascadeUpsert)
+    new ChildrenCascadeUpsert)
 }
