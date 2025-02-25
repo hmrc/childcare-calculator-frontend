@@ -27,8 +27,8 @@ class EmploymentSupportedChildcare extends Scheme {
 
     val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
     val childcareCostsNotYet: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.NOTYET.toString)
-    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.fold(false)(x => x == true)
-    val hasParentChildcareVouchers = answers.yourChildcareVouchers.fold(false)(x => x == true)
+    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.getOrElse(false)
+    val hasParentChildcareVouchers = answers.yourChildcareVouchers.getOrElse(false)
 
     val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
     val whoInPaidEmployment = answers.whoIsInPaidEmployment

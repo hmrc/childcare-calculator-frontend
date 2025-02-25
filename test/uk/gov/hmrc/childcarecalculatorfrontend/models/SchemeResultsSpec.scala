@@ -25,7 +25,7 @@ class SchemeResultsSpec extends PlaySpec {
       "trying to build a scheme object and ESC claimant is missing" in {
 
         intercept[Exception] {
-          Scheme(name = SchemeEnum.ESCELIGIBILITY,
+          SingleSchemeResult(name = SchemeEnum.ESCELIGIBILITY,
             amount = BigDecimal(0.00),
             escClaimantEligibility = None,
             taxCreditsEligibility = None
@@ -35,7 +35,7 @@ class SchemeResultsSpec extends PlaySpec {
       "trying to build a scheme object and tax credits claimant is missing" in {
 
         intercept[Exception] {
-          Scheme(name = SchemeEnum.TCELIGIBILITY,
+          SingleSchemeResult(name = SchemeEnum.TCELIGIBILITY,
             amount = BigDecimal(0.00),
             escClaimantEligibility = None,
             taxCreditsEligibility = None
