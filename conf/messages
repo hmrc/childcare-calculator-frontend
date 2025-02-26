@@ -614,12 +614,6 @@ whosHadBenefits.both = Both
 whosHadBenefits.checkYourAnswersLabel = Who’s had benefits?
 whosHadBenefits.error.notCompleted = Select who’s had benefits
 
-partnerPaidWorkPY.title = Your partner isn’t working now, but have they had any paid work in the previous year?
-partnerPaidWorkPY.heading = Your partner isn’t working now, but have they had any paid work in the previous year?
-partnerPaidWorkPY.checkYourAnswersLabel = Your partner isn’t working now, but have they had any paid work last year?
-partnerPaidWorkPY.error.notCompleted = Select yes if your partner had any paid work in the previous year
-partnerPaidWorkPY.previousYear.startEndDate = The previous year is 6 April {0} to 5 April {1}.
-
 partnerBenefitsIncomeCY.title = How much will your partner get in benefits this year?
 partnerBenefitsIncomeCY.heading = How much will your partner get in benefits this year?
 partnerBenefitsIncomeCY.info = Partner’s benefits income
