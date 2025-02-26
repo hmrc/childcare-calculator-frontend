@@ -149,9 +149,6 @@ POST        /both-any-these-benefits-current-year              uk.gov.hmrc.child
 GET         /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /partner-paid-work-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkPYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-paid-work-previous-year                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkPYController.onSubmit(mode: Mode ?= NormalMode)
-
 GET         /partner-benefits-income-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /partner-benefits-income-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
 

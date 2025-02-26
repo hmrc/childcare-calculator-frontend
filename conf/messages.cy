@@ -592,12 +592,6 @@ whosHadBenefits.both=Y ddau
 whosHadBenefits.checkYourAnswersLabel=Pwy sydd wedi cael budd-daliadau?
 whosHadBenefits.error.notCompleted=Dewiswch pwy sydd wedi cael budd-daliadau
 
-partnerPaidWorkPY.title=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig yn y flwyddyn flaenorol?
-partnerPaidWorkPY.heading=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig yn y flwyddyn flaenorol?
-partnerPaidWorkPY.checkYourAnswersLabel=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig y flwyddyn ddiwethaf?
-partnerPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oedd gan eich partner unrhyw waith taledig yn y flwyddyn flaenorol
-partnerPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
 partnerBenefitsIncomeCY.title=Faint y bydd eich partner yn ei gael mewn budd-daliadau y flwyddyn hon?
 partnerBenefitsIncomeCY.heading=Faint y bydd eich partner yn ei gael mewn budd-daliadau y flwyddyn hon?
 partnerBenefitsIncomeCY.info=Incwm partner o fudd-daliadau
