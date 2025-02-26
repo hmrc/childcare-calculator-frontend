@@ -361,7 +361,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "partner in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.whoIsInPaidEmployment) thenReturn Some(you)
-          when(answers.partnerOtherIncomeAmountPY) thenReturn Some(BigDecimal(23))
 
           navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
             routes.ResultController.onPageLoad

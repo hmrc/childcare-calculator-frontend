@@ -192,12 +192,10 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val taxCode = answers.whatIsYourTaxCode
 
     val currentYearIncome = getParentCurrentYearIncome(answers, taxCode)
-    val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
       benefits = benefits,
       escVouchers = vouchers,
-      lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,
       ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
@@ -223,12 +221,10 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val taxCode = answers.whatIsYourPartnersTaxCode
 
     val currentYearIncome = getPartnerCurrentYearIncome(answers, taxCode)
-    val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
       benefits = benefits,
       escVouchers = vouchers,
-      lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,
       ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
@@ -241,65 +237,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 
 sealed trait OverallIncome extends StatutoryPay {
 
-  def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
-    val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
-
-    val pensionValue = determineIncomeValue(answers.howMuchYouPayPensionPY, answers.howMuchBothPayPensionPY, parentPensionPY)
-
-    val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountPY, answers.otherIncomeAmountPY, parentOtherIncomePY)
-
-    val benefits = determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
-
-    val statutoryPay = answers.yourStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks, startDate, PreviousYear)
-    }
-
-    incomeValue match {
-      case Some(x) if x > 0 =>
-        Some(Income(
-          employmentIncome = incomeValue,
-          pension = pensionValue,
-          otherIncome = otherIncome,
-          benefits = benefits,
-          statutoryIncome = statutoryPay,
-          taxCode = taxCode)
-        )
-      case _ => None
-    }
-
-  }
-
-  def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
-    val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
-
-    val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPensionPY, answers.howMuchBothPayPensionPY, partnerPensionPY)
-
-    val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountPY, answers.otherIncomeAmountPY, partnerOtherIncomePY)
-
-    val benefits =  determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
-
-    val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.partnerStatutoryPayPerWeek, answers.partnerStatutoryWeeks, startDate, PreviousYear)
-    }
-
-    incomeValue match {
-      case Some(x) if x > 0 =>
-        Some(Income(
-          employmentIncome = incomeValue,
-          pension = pensionValue,
-          otherIncome = otherIncome,
-          benefits = benefits,
-          statutoryIncome = statutoryPay,
-          taxCode = taxCode)
-        )
-      case _ =>
-        None
-    }
-
-  }
-
   def getParentCurrentYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomeCY, answers.employmentIncomeCY, parentEmploymentIncomeCY)
 
@@ -309,11 +246,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits =  determineIncomeValue(answers.youBenefitsIncomeCY, answers.benefitsIncomeCY, parentBenefitsCY)
 
-    val statutoryPay = answers.yourStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.yourStatutoryPayPerWeek, answers.yourStatutoryWeeks, startDate, CurrentYear)
-    }
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
@@ -321,7 +253,6 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ =>
@@ -339,11 +270,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
     val benefits = determineIncomeValue(answers.partnerBenefitsIncomeCY, answers.benefitsIncomeCY, partnerBenefitsCY)
 
-    val statutoryPay = answers.partnerStatutoryStartDate.flatMap {
-      startDate =>
-        buildStatutoryPay(answers.partnerStatutoryPayPerWeek, answers.partnerStatutoryWeeks, startDate, CurrentYear)
-    }
-
     incomeValue match {
       case Some(x) if x > 0 =>
         Some(Income(
@@ -351,7 +277,6 @@ sealed trait OverallIncome extends StatutoryPay {
           pension = pensionValue,
           otherIncome = otherIncome,
           benefits = benefits,
-          statutoryIncome = statutoryPay,
           taxCode = taxCode)
         )
       case _ =>
@@ -360,28 +285,12 @@ sealed trait OverallIncome extends StatutoryPay {
 
   }
 
-  private def parentBenefitsPY(x: BothBenefitsIncomePY) : BigDecimal = {
-    x.parentBenefitsIncomePY
-  }
-
-  private def partnerBenefitsPY(x: BothBenefitsIncomePY) : BigDecimal = {
-    x.partnerBenefitsIncomePY
-  }
-
   private def parentBenefitsCY(x: BenefitsIncomeCY) : BigDecimal = {
     x.parentBenefitsIncome
   }
 
   private def partnerBenefitsCY(x: BenefitsIncomeCY) : BigDecimal = {
     x.partnerBenefitsIncome
-  }
-
-  private def parentOtherIncomePY(x: OtherIncomeAmountPY) : BigDecimal = {
-    x.parentOtherIncomeAmountPY
-  }
-
-  private def partnerOtherIncomePY(x: OtherIncomeAmountPY) : BigDecimal = {
-    x.partnerOtherIncomeAmountPY
   }
 
   private def parentOtherIncomeCY(x: OtherIncomeAmountCY) : BigDecimal = {
@@ -396,20 +305,8 @@ sealed trait OverallIncome extends StatutoryPay {
     x.howMuchPartnerPayPension
   }
 
-  private def partnerPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
-    x.howMuchPartnerPayPensionPY
-  }
-
-  private def parentPensionPY(x: HowMuchBothPayPensionPY) : BigDecimal = {
-    x.howMuchYouPayPensionPY
-  }
-
   private def parentPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
     x.howMuchYouPayPension
-  }
-
-  private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    x.parentEmploymentIncomePY
   }
 
   private def parentEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
@@ -418,10 +315,6 @@ sealed trait OverallIncome extends StatutoryPay {
 
   private def partnerEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
     x.partnerEmploymentIncomeCY
-  }
-
-  private def partnerEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    x.partnerEmploymentIncomePY
   }
 
   private def determineIncomeValue[A](s: Option[BigDecimal], multipleIncome: Option[A], f: A => BigDecimal): Option[BigDecimal] = s match {
@@ -486,27 +379,6 @@ sealed trait StatutoryPay extends TaxYearInfo {
         }
       }
     }
-  }
-
-  def buildStatutoryPay(value: Option[BigDecimal], totalWeeksTaken: Option[Int], statutoryStartDate: LocalDate, year: Year): Option[StatutoryIncome] = {
-
-    val totalWeeksForTaxYear: Option[Int] = determineWeeksWithinSingleYear(totalWeeksTaken, statutoryStartDate, year)
-
-    (value, totalWeeksForTaxYear) match {
-      case (Some(v), Some(w)) if w > 0 =>
-        Some(StatutoryIncome(
-          statutoryWeeks = w.toDouble,
-          statutoryAmount = Some(v)
-        ))
-      case (None, Some(w)) if w > 0 =>
-        Some(StatutoryIncome(
-          statutoryWeeks = w.toDouble,
-          statutoryAmount = Some(BigDecimal(defaultStatutoryPay))
-        ))
-      case _ =>
-        None
-    }
-
   }
 
 }
