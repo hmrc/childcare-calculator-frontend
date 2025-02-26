@@ -44,14 +44,14 @@ object ParentsBenefits {
       benefit.toString -> benefit
     }.toMap
 
-  val inverseMappping: Map[ParentsBenefits, String] = mapping.map(_.swap)
+  val inverseMapping: Map[ParentsBenefits, String] = mapping.map(_.swap)
 
   private val reads: Reads[ParentsBenefits] = Reads { json =>
     json.validate[String].map(mapping)
   }
 
   private val writes: Writes[ParentsBenefits] = Writes { benefits =>
-    JsString(inverseMappping(benefits))
+    JsString(inverseMapping(benefits))
   }
 
   implicit val format: Format[ParentsBenefits] = Format(reads, writes)

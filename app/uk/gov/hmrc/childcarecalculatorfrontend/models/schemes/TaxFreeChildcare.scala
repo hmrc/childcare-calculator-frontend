@@ -16,42 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import javax.inject.Inject
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible, ParentsBenefits}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class TaxFreeChildcare @Inject() (household: ModelFactory) extends Scheme {
+import javax.inject.Inject
 
-  override def eligibility(answers: UserAnswers): Eligibility = {
-    household(answers).map {
-      case SingleHousehold(parent)         => singleEligibility(parent)
-      case JointHousehold(parent, partner) => jointEligibility(parent, partner)
-    }
-  }.getOrElse(NotDetermined)
+class TaxFreeChildcare @Inject()(freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator) extends Scheme {
 
-  private def singleEligibility(parent: Parent): Eligibility = {
-    if (isEligible(parent))
-      Eligible
-    else
-      NotEligible
-  }
+  private val eligibleBenefits: Set[ParentsBenefits] = Set(
+    CarersAllowance,
+    IncapacityBenefit,
+    SevereDisablementAllowance,
+    ContributionBasedEmploymentAndSupportAllowance
+  )
 
-  private def jointEligibility(parent: Parent, partner: Parent): Eligibility = {
-    def eligibleViaBenefits: Boolean =
-     isEligible(parent) && (isEligible(partner) || partner.benefits.intersect(applicableBenefits).nonEmpty) ||
-      isEligible(partner) && (isEligible(parent) || parent.benefits.intersect(applicableBenefits).nonEmpty)
-
-
-    if (eligibleViaBenefits)
-      Eligible
-    else
-      NotEligible
-  }
-
-  private def isEligible(parent: Parent): Boolean =
-    (parent.minEarnings && parent.maxEarnings) || (!parent.minEarnings && (parent.apprentice || parent.selfEmployed))
-
-  private val applicableBenefits: Set[ParentsBenefits] = Set(ParentsBenefits.CarersAllowance)
+  override def eligibility(answers: UserAnswers): Eligibility =
+    freeChildcareEligibilityCalculator.calculateEligibility(answers, eligibleBenefits)
 
 }
