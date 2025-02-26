@@ -23,8 +23,7 @@ object SessionExpiredRouter extends Logging {
 
   def route[A](area: String, message: String, answers: Option[UserAnswers] = None, uri : String = "N/A", session: String = "N/A") = {
 
-    val isCacheMapAvailable = answers.fold("No")(c=>if (c.cacheMap == null) "No" else "")
-
+    val isCacheMapAvailable = answers.fold("No")(c => if (c.cacheMap == null) "No" else "")
 
     logger.warn(s"ChildcareCalculatorSessionExpired - ${area} - ${uri} - ${message} - ${isCacheMapAvailable} cachemap available - ${session}")
     routes.SessionExpiredController.onPageLoad

@@ -197,14 +197,6 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
     }
   }
 
-  private def routeBasedIfPartnerOrNot(hasPartner: Boolean) = {
-    if (hasPartner) {
-      routes.PartnerIncomeInfoController.onPageLoad()
-    } else {
-      routes.YourIncomeInfoController.onPageLoad()
-    }
-  }
-
   private[navigation] def isEligibleForTaxCredits(answers: UserAnswers, hasPartner: Boolean): Call = {
     if (answers.hasVouchers){
       routeBasedIfPartnerOrNot(hasPartner)
@@ -215,5 +207,14 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
       }
     }
   }
+
+  private def routeBasedIfPartnerOrNot(hasPartner: Boolean) = {
+    if (hasPartner) {
+      routes.PartnerIncomeInfoController.onPageLoad()
+    } else {
+      routes.YourIncomeInfoController.onPageLoad()
+    }
+  }
+
 }
 

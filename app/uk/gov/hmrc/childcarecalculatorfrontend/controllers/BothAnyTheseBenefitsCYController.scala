@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,13 +23,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothAnyTheseBenefitsCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, WhichBenefitsEnum, Location}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{bothAnyTheseBenefitsCYCarerAllowanceErrorKey, bothAnyTheseBenefitsCYErrorKey, bothAnyTheseBenefitsCYScottishCarerAllowanceErrorKey}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.CarersAllowance
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothAnyTheseBenefitsCY
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
@@ -86,21 +87,16 @@ class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
   private def validateCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
 
     if(!boundForm.hasErrors) {
-        val parentBenefits = userAnswers.whichBenefitsYouGet.getOrElse(Seq())
-        val partnerBenefits = userAnswers.whichBenefitsPartnerGet.getOrElse(Seq())
+      val parentBenefits = userAnswers.doYouGetAnyBenefits.getOrElse(Set.empty)
+      val partnerBenefits = userAnswers.doesYourPartnerGetAnyBenefits.getOrElse(Set.empty)
+      val hasAnyOneGotCarerAllowance: Boolean = (parentBenefits ++ partnerBenefits).contains(CarersAllowance)
 
-        val hasAnyOneGotCarerAllowance: Boolean = List(parentBenefits, partnerBenefits).foldLeft(false){
-          (acc, benefits) => acc || benefits.exists(x => x == WhichBenefitsEnum.CARERSALLOWANCE.toString)
-        }
-        val hasAnyOneGotScottishCarerAllowance: Boolean = List(parentBenefits, partnerBenefits).foldLeft(false){
-          (acc, benefits) => acc || benefits.exists(x => x == WhichBenefitsEnum.SCOTTISHCARERSALLOWANCE.toString)
-        }
-        val bothAnyBenefitsValue = boundForm.value.getOrElse(true)
-        val isScotland = userAnswers.location.get.equals(Location.SCOTLAND)
+      val bothAnyBenefitsValue = boundForm.value.getOrElse(true)
+      val isScotland = userAnswers.location.get.equals(Location.SCOTLAND)
 
-      if (hasAnyOneGotScottishCarerAllowance && !bothAnyBenefitsValue && isScotland) {
+      if (hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue && isScotland) {
           boundForm.withError("value", bothAnyTheseBenefitsCYScottishCarerAllowanceErrorKey)
-        } else if(hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue && !isScotland) {
+        } else if (hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue && !isScotland) {
           boundForm.withError("value", bothAnyTheseBenefitsCYCarerAllowanceErrorKey)
         } else {
           boundForm
