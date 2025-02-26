@@ -28,7 +28,7 @@ object DoYouGetAnyBenefitsForm {
     single(
       formId -> set(text)
         .verifying("doYouGetAnyBenefits.error.select", _.forall(ParentsBenefits.mapping.keySet.contains _))
-        .transform[Set[ParentsBenefits]](_.map(ParentsBenefits.mapping), _.map(ParentsBenefits.inverseMappping))
+        .transform[Set[ParentsBenefits]](_.map(ParentsBenefits.mapping), _.map(ParentsBenefits.inverseMapping))
         .verifying("doYouGetAnyBenefits.error.select", _.nonEmpty)
         .verifying(
           "doYouGetAnyBenefits.error.select",

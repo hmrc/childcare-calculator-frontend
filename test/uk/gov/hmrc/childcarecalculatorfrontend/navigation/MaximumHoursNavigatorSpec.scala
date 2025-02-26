@@ -22,11 +22,11 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.CarersAllowance
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.{SpecBase, SubNavigator}
 
 class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
@@ -58,6 +58,15 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   lazy val no: String = YesNoUnsureEnum.NO.toString
   lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
   lazy val notYet: String = YesNoNotYetEnum.NOTYET.toString
+
+  private val AllParentsBenefits = Seq(
+    CarersAllowance,
+    IncapacityBenefit,
+    SevereDisablementAllowance,
+    ContributionBasedEmploymentAndSupportAllowance,
+    NICreditsForIncapacityOrLimitedCapabilityForWork,
+    CarersCredit
+  )
 
 
   "go to are you in paid work from do you live with partner when user selects No" in {
@@ -140,20 +149,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
   "Do you get any benefits" when {
 
-    "doYouLiveWithPartner is None" must {
-      "go to 'Session expired'" in {
-        val answers = spy(userAnswers())
-        when(answers.doYouLiveWithPartner) thenReturn None
-
-        val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
-
-        result mustEqual routes.SessionExpiredController.onPageLoad
-      }
-    }
-
-    "NOT living with partner" must {
+    "doYouLiveWithPartner is false" must {
       "go to 'what is your age'" in {
-        val answers = spy(userAnswers())
+        val answers = mock[UserAnswers]
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
 
         val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
@@ -162,67 +160,153 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "living with partner" must {
-      "go to 'does your partner get any of these benefits'" in {
-        val answers = spy(userAnswers())
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
+    "doYouLiveWithPartner is true" must {
+
+      "go to 'Results' page" when {
+        "whoIsInPaidEmployment is partner, they don't receive childcare vouchers, and parent receives NO benefits" in {
+          val answers = mock[UserAnswers]
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+          when(answers.partnerChildcareVouchers) thenReturn Some(false)
+          when(answers.doYouGetAnyBenefits) thenReturn Some(Set(ParentsBenefits.NoneOfThese))
+
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+
+          result mustEqual routes.ResultController.onPageLoad()
+        }
+      }
+
+      "go to 'does your partner get any of these benefits'" when {
+
+        AllParentsBenefits.foreach { benefits =>
+          s"whoIsInPaidEmployment is partner, they don't receive childcare vouchers, but parent receives ${benefits.toString} benefits" in {
+            val answers = mock[UserAnswers]
+            when(answers.doYouLiveWithPartner) thenReturn Some(true)
+            when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+            when(answers.partnerChildcareVouchers) thenReturn Some(false)
+            when(answers.doYouGetAnyBenefits) thenReturn Some(Set(benefits))
+
+            val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+
+            result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+          }
+        }
+
+        "whoIsInPaidEmployment is partner and they do receive childcare vouchers" in {
+          val answers = mock[UserAnswers]
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+          when(answers.partnerChildcareVouchers) thenReturn Some(true)
+
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+
+          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+
+        "whoIsInPaidEmployment is you" in {
+          val answers = mock[UserAnswers]
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+
+          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+
+        "whoIsInPaidEmployment is both" in {
+          val answers = mock[UserAnswers]
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
+
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+
+          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        }
+      }
+    }
+
+    "doYouLiveWithPartner is None" must {
+      "go to 'Session expired'" in {
+        val answers = mock[UserAnswers]
+        when(answers.doYouLiveWithPartner) thenReturn None
 
         val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
 
-        result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+        result mustEqual routes.SessionExpiredController.onPageLoad
       }
     }
   }
 
   "Does your partner get any benefits" must {
 
-    "go to 'what is your age' when whoIsInPaidEmployment is you" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+    "go to 'what is your age'" when {
 
-      val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+      "whoIsInPaidEmployment is both" in {
+        val answers = mock[UserAnswers]
+        when(answers.whoIsInPaidEmployment) thenReturn Some(both)
 
-      result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+
+        result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+      }
+
+      "whoIsInPaidEmployment is you and you receive childcare vouchers" in {
+        val answers = mock[UserAnswers]
+        when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+        when(answers.yourChildcareVouchers) thenReturn Some(true)
+
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+
+        result mustEqual routes.YourAgeController.onPageLoad()
+      }
+
+      AllParentsBenefits.foreach { benefits =>
+        s"whoIsInPaidEmployment is you, you don't receive childcare vouchers, but partner receives ${benefits.toString} benefits" in {
+          val answers = mock[UserAnswers]
+          when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+          when(answers.yourChildcareVouchers) thenReturn Some(false)
+          when(answers.doesYourPartnerGetAnyBenefits) thenReturn Some(Set(benefits))
+
+          val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+
+          result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+        }
+      }
     }
 
-    "go to 'what is your age' when whoIsInPaidEmployment is both" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some(both)
+    "go to 'what is your partner's age'" when {
+      "whoIsInPaidEmployment is partner" in {
+        val answers = mock[UserAnswers]
+        when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
 
-      val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
 
-      result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+        result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      }
     }
 
-    "go to 'what is your partner's age' when whoIsInPaidEmployment is partner" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
+    "go to 'Results' page" when {
+      "whoIsInPaidEmployment is you, you don't receive childcare vouchers and partner receives NO benefits" in {
+        val answers = mock[UserAnswers]
+        when(answers.whoIsInPaidEmployment) thenReturn Some(you)
+        when(answers.yourChildcareVouchers) thenReturn Some(false)
+        when(answers.doesYourPartnerGetAnyBenefits) thenReturn Some(Set(ParentsBenefits.NoneOfThese))
 
-      val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
 
-      result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
     }
 
-    "go to 'Session expired' when doYouLiveWithPartner is None" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn None
+    "go to 'Session expired'" when {
+      "whoIsInPaidEmployment is None" in {
+        val answers = mock[UserAnswers]
+        when(answers.whoIsInPaidEmployment) thenReturn None
 
-      val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
 
-      result mustEqual routes.SessionExpiredController.onPageLoad
-    }
-
-    "go to 'Session expired' when whoIsInPaidEmployment is None" in {
-      val answers = spy(userAnswers())
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoIsInPaidEmployment) thenReturn None
-
-      val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
-
-      result mustEqual routes.SessionExpiredController.onPageLoad
+        result mustEqual routes.SessionExpiredController.onPageLoad
+      }
     }
   }
 

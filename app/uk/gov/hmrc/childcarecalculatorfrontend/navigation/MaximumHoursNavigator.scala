@@ -19,10 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 
 import javax.inject.Inject
 
@@ -61,7 +61,7 @@ class MaximumHoursNavigator @Inject()(
     TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes,
   )
 
-  val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
+  private val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
 
   private def doYouLiveRoute(answers: UserAnswers): Call = {
     if (answers.doYouLiveWithPartner.contains(true)) {
@@ -79,7 +79,6 @@ class MaximumHoursNavigator @Inject()(
     }
   }
 
-
   private def whoIsInPaidWorkRoute(answers: UserAnswers): Call = {
     answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
       case `you` => routes.YourChildcareVouchersController.onPageLoad(NormalMode)
@@ -90,21 +89,34 @@ class MaximumHoursNavigator @Inject()(
     }
   }
 
-  private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call =
+  private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call = {
+    def shouldRedirectToResults: Boolean =
+      answers.whoIsInPaidEmployment.contains(`partner`) &&
+        answers.partnerChildcareVouchers.contains(false) &&
+        answers.doYouGetAnyBenefits.contains(Set(ParentsBenefits.NoneOfThese))
+
     answers.doYouLiveWithPartner match {
-      case Some(true)  => routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourAgeController.onPageLoad(NormalMode)
+      case Some(true) if shouldRedirectToResults => routes.ResultController.onPageLoad()
+      case Some(true)                            => routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      case Some(false)                           => routes.YourAgeController.onPageLoad(NormalMode)
 
-      case None        => SessionExpiredRouter.route(getClass.getName, "doYouGetAnyBenefitsRoute", Some(answers))
+      case None => SessionExpiredRouter.route(getClass.getName, "doYouGetAnyBenefitsRoute", Some(answers))
     }
+  }
 
-  private def doesYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call =
+  private def doesYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
+    def shouldRedirectToResults: Boolean =
+      answers.yourChildcareVouchers.contains(false) &&
+        answers.doesYourPartnerGetAnyBenefits.contains(Set(ParentsBenefits.NoneOfThese))
+
     answers.whoIsInPaidEmployment match {
-      case Some(`you` | `both`) => routes.YourAgeController.onPageLoad(NormalMode)
-      case Some(`partner`)      => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      case Some(`you`) if shouldRedirectToResults => routes.ResultController.onPageLoad()
+      case Some(`you` | `both`)                   => routes.YourAgeController.onPageLoad(NormalMode)
+      case Some(`partner`)                        => routes.YourPartnersAgeController.onPageLoad(NormalMode)
 
-      case None => SessionExpiredRouter.route(getClass.getName, "doYouOrYourPartnerGetAnyBenefitsRoute", Some(answers))
+      case _ => SessionExpiredRouter.route(getClass.getName, "doesYourPartnerGetAnyBenefitsRoute", Some(answers))
     }
+  }
 
   private def yourAgeRoute(answers: UserAnswers): Call = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
@@ -114,9 +126,8 @@ class MaximumHoursNavigator @Inject()(
     }
   }
 
-  private def yourPartnerAgeRoute(answers: UserAnswers): Call = {
+  private def yourPartnerAgeRoute(answers: UserAnswers): Call =
       routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
-  }
 
   private def yourMinimumEarningsRoute(answers: UserAnswers): Call = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
