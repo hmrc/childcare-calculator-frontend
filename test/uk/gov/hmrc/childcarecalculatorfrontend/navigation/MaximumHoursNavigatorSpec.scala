@@ -86,7 +86,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     navigator.nextPage(DoYouLiveWithPartnerId, NormalMode).value(answers) mustBe routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
   }
 
-
   "Go to childcare vouchers" when {
     "user selects 'Yes' from are you in paid work" in {
       val answers = spy(userAnswers())
@@ -111,7 +110,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.WhoGetsVouchersController.onPageLoad(NormalMode)
     }
   }
-
 
   "Do you get childcare vouchers from your employer?" must {
     "always go to 'do you get any of these benefits'" in {
@@ -860,137 +858,274 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
 
   "Do you get tax credits or universal credit" must {
 
-    "redirect to `Results` if the user is not eligible for Tax Credits or TFC" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
-      when(tfc.eligibility(any())) thenReturn NotEligible
-      val result = navigator(schemes, freeChildcareWorkingParents,tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.ResultController.onPageLoad()
+    "redirect to `Results`" when {
+
+      "the user is NOT eligible for either TFC or ESC" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any())) thenReturn NotEligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
+
+      "the user is eligible for TFC but not for ESC, and does NOT have approved childcare costs" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn Eligible
+        when(esc.eligibility(any())) thenReturn NotEligible
+        when(answers.hasApprovedCosts) thenReturn Some(false)
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
+
+      "the user is eligible for ESC but not for TFC, and does NOT have approved childcare costs" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any())) thenReturn Eligible
+        when(answers.hasApprovedCosts) thenReturn Some(false)
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
+
+      "the user is eligible for both TFC and ESC, but does NOT have approved childcare costs" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn Eligible
+        when(esc.eligibility(any())) thenReturn Eligible
+        when(answers.hasApprovedCosts) thenReturn Some(false)
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.ResultController.onPageLoad()
+      }
     }
 
-    "redirect to `Max Hours Info` if the user is eligible for Max Free Hours and Tax Credits and TFC" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(answers.childcareCosts) thenReturn Some(yes)
-      when(answers.approvedProvider) thenReturn Some(yes)
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+    "redirect to `Max Free Hours Info`" when {
 
-      when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, freeChildcareWorkingParents,tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
+      "the user is eligible for both TFC and ESC, have approved childcare costs, and is eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn Eligible
+        when(esc.eligibility(any())) thenReturn Eligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
+      }
+
+      "the user is eligible for TFC but not for ESC, have approved childcare costs, and is eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn Eligible
+        when(esc.eligibility(any())) thenReturn NotEligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
+      }
+
+      "the user is eligible for ESC but not for TFC, have approved childcare costs, and is eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any())) thenReturn Eligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
+      }
+
+      "the user is NotDetermined for both TFC and ESC, have approved childcare costs, and is eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotDetermined
+        when(esc.eligibility(any())) thenReturn NotDetermined
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
+      }
+
+      "the user is NotDetermined for TFC and NOT eligible for ESC, have approved childcare costs, and is eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotDetermined
+        when(esc.eligibility(any())) thenReturn NotEligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
+      }
+
+      "the user is NotDetermined for ESC ant NOT eligible for TFC, have approved childcare costs, and is eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any())) thenReturn NotDetermined
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
+      }
     }
 
-    "redirect to `Max Hours result` if the user is eligible for Max Free Hours and Tax Credits, but not TFC" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+    "redirect to `How many children do you have`" when {
 
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
+      "the user is eligible for both TFC and ESC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn Eligible
+        when(esc.eligibility(any())) thenReturn Eligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
-      when(tfc.eligibility(any())) thenReturn NotEligible
-      val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.ResultController.onPageLoad()
-    }
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+      }
 
-    "redirect to `Max Hours Info` if the user is eligible for Max Free Hours and TFC, but not Tax Credits" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(answers.childcareCosts) thenReturn Some(notYet)
-      when(answers.approvedProvider) thenReturn Some(yes)
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn Eligible
-      when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, freeChildcareWorkingParents,tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
-    }
+      "the user is eligible for TFC but not for ESC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn Eligible
+        when(esc.eligibility(any())) thenReturn NotEligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
-    "redirect to `How many children do you have` if the user is not eligible for Max Free Hours or TFC, but is eligible for Tax Credits" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(answers.childcareCosts) thenReturn Some(yes)
-      when(answers.approvedProvider) thenReturn Some(notSure)
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
-      when(tfc.eligibility(any())) thenReturn NotEligible
-      val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
-    }
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+      }
 
-    "redirect to `How many children do you have` if the user is not eligible for Max Free Hours or Tax Credits, but is eligible for TFC" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(answers.childcareCosts) thenReturn Some(notYet)
-      when(answers.approvedProvider) thenReturn Some(yes)
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
-      when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, freeChildcareWorkingParents,tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
-    }
+      "the user is eligible for ESC but not for TFC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any())) thenReturn Eligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
-    "redirect to `How many children do you have` if the user is not eligible for Max Free Hours, but is eligible for TFC and Tax Credits" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(answers.childcareCosts) thenReturn Some(notYet)
-      when(answers.approvedProvider) thenReturn Some(notSure)
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
-      when(tfc.eligibility(any())) thenReturn Eligible
-      val result = navigator(schemes, freeChildcareWorkingParents,tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
-    }
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+      }
 
-    "redirect to `How many children do you have` if the user is not eligible for anything, but but partner is eligible for ESC" in {
-      val answers = spy(userAnswers())
-      val schemes = mock[Schemes]
-      val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
-      val tfc = mock[TaxFreeChildcare]
-      val esc = mock[EmploymentSupportedChildcare]
-      when(schemes.allSchemesDetermined(any())) thenReturn true
-      when(answers.childcareCosts) thenReturn Some(yes)
-      when(answers.approvedProvider) thenReturn Some(yes)
-      when(answers.doYouLiveWithPartner) thenReturn Some(true)
-      when(answers.whoGetsVouchers) thenReturn Some(YouPartnerBothEnum.PARTNER.toString)
-      when(answers.yourMinimumEarnings) thenReturn Some(false)
-      when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
-      when(tfc.eligibility(any())) thenReturn NotEligible
-      when(esc.eligibility(any())) thenReturn Eligible
+      "the user is NotDetermined for both TFC and ESC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotDetermined
+        when(esc.eligibility(any())) thenReturn NotDetermined
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
 
-      val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
-      result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+      }
+
+      "the user is NotDetermined for TFC and NOT eligible for ESC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotDetermined
+        when(esc.eligibility(any())) thenReturn NotEligible
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+      }
+
+      "the user is NotDetermined for ESC and NOT eligible for TFC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
+        val answers = mock[UserAnswers]
+        val schemes = mock[Schemes]
+        val freeChildcareWorkingParents = mock[FreeChildcareWorkingParents]
+        val tfc = mock[TaxFreeChildcare]
+        val esc = mock[EmploymentSupportedChildcare]
+        when(schemes.allSchemesDetermined(any())) thenReturn true
+        when(tfc.eligibility(any())) thenReturn NotEligible
+        when(esc.eligibility(any())) thenReturn NotDetermined
+        when(answers.hasApprovedCosts) thenReturn Some(true)
+        when(freeChildcareWorkingParents.eligibility(any())) thenReturn NotEligible
+
+        val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
+        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+      }
     }
 
     "redirect to `Session Expired` if not all schemes are determined" in {
-      val answers = spy(userAnswers())
+      val answers = mock[UserAnswers]
       val schemes = mock[Schemes]
       when(schemes.allSchemesDetermined(any())) thenReturn false
+
       val result = navigator(schemes).nextPage(TaxOrUniversalCreditsId, NormalMode).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
-
   }
+
 }

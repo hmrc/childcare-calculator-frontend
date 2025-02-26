@@ -221,27 +221,21 @@ class MaximumHoursNavigator @Inject()(
     }
   }
 
-  private def taxOrUniversalCreditsRoutes(answers: UserAnswers): Call = {
-
+  private def taxOrUniversalCreditsRoutes(answers: UserAnswers): Call =
     if (schemes.allSchemesDetermined(answers)) {
-      if (
-          tfc.eligibility(answers) == NotEligible &&
-          esc.eligibility(answers) == NotEligible) {
 
-        routes.ResultController.onPageLoad()
-      } else if(answers.hasApprovedCosts.contains(true)) {
+      val isNotEligibleForTfc = tfc.eligibility(answers) == NotEligible
+      val isNotEligibleForEsc = esc.eligibility(answers) == NotEligible
+      val isNotEligibleForBothTfcAndEsc = !(isNotEligibleForTfc && isNotEligibleForEsc)
+      val isFreeChildcareEligible = freeChildcareWorkingParents.eligibility(answers) == Eligible
 
-        if (freeChildcareWorkingParents.eligibility(answers) == Eligible) {
-          routes.MaxFreeHoursInfoController.onPageLoad()
-        } else {
-          routes.NoOfChildrenController.onPageLoad(NormalMode)
-        }
-
-      } else {
-        routes.ResultController.onPageLoad()
+      (isNotEligibleForBothTfcAndEsc, answers.hasApprovedCosts, isFreeChildcareEligible) match {
+        case (true, Some(true), true)  => routes.MaxFreeHoursInfoController.onPageLoad()
+        case (true, Some(true), false) => routes.NoOfChildrenController.onPageLoad(NormalMode)
+        case _                         => routes.ResultController.onPageLoad()
       }
+
     } else {
-      SessionExpiredRouter.route(getClass.getName,"taxOrUniversalCreditsRoutes",Some(answers))
+      SessionExpiredRouter.route(getClass.getName, "taxOrUniversalCreditsRoutes", Some(answers))
     }
-  }
 }
