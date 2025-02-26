@@ -79,33 +79,4 @@ class IncomeInfoNavigationSpec extends SpecBase with MockitoSugar with OptionVal
 
   }
 
-  "Previous Year Income Route Navigation" when {
-
-    "in Normal mode" must {
-      "NextPageUrlPY" must {
-        "return BothPaidWorkPY page when parent/partner/both in paid work and lives with partner" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(you) thenReturn Some(partner) thenReturn Some(both)
-
-          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
-          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
-          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
-        }
-
-        "return sessionExpired page when user lives with partner and value is not present" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn None
-
-          navigator.nextPage(BothIncomeInfoPYId, NormalMode).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-
-      }
-    }
-
-  }
 }

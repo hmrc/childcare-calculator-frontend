@@ -38,7 +38,7 @@ class YourIncomeInfoPYViewSpec extends NewViewBehaviours {
       val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))
-      continueLink.attr("href") mustBe routes.YouGetSameIncomePreviousYearController.onPageLoad(NormalMode).url
+      continueLink.attr("href") mustBe routes.WhatToTellTheCalculatorController.onPageLoad.url
     }
 
     "contain tax year info" in {
