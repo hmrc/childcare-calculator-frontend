@@ -24,7 +24,7 @@ class DoesYourPartnerGetAnyBenefitsFormSpec extends CheckboxBehaviours[ParentsBe
 
   override val form: Form[Set[ParentsBenefits]] = DoesYourPartnerGetAnyBenefitsForm()
 
-  override val validOptions: Set[ParentsBenefits] = ParentsBenefits.inverseMappping.keySet
+  override val validOptions: Set[ParentsBenefits] = ParentsBenefits.inverseMapping.keySet
 
   override val fieldName = "doesYourPartnerGetAnyBenefits"
 
