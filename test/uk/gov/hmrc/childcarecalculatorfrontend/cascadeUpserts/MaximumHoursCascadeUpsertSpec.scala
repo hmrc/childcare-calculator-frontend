@@ -209,7 +209,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     }
 
     "remove an existing partner work hours, partner min and max earnings, employment," +
-      " pension, benefits CY and PY when whoIsInPaidEmployment is you" in {
+      " pension, benefits CY when whoIsInPaidEmployment is you" in {
 
       // Partner earning less than minimum earnings
       val originalCacheMap = new CacheMap("id", Map(
@@ -233,7 +233,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     }
 
     "remove an existing partner work hours, partner vouchers partner and both min and max earnings, " +
-      "both employment, both pension, both benefits CY and PY when whoIsInPaidEmployment is you" in {
+      "both employment, both pension, both benefits CY when whoIsInPaidEmployment is you" in {
 
       // Parent earning more than minimum earnings and Partner earning less than minimum earnings
       val originalCacheMap1 = new CacheMap("id", Map(
@@ -323,7 +323,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     }
 
     "remove an existing your work hours, your min and max earnings, employment," +
-      " pension, benefits CY and PY when whoIsInPaidEmployment is partner" in {
+      " pension, benefits CY when whoIsInPaidEmployment is partner" in {
 
       // Parent earning less than minimum earnings
       val originalCacheMap = new CacheMap("id", Map(
@@ -348,7 +348,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     }
 
     "remove an existing your work hours,  your vouchers your and both min and max earnings, " +
-      "both employment,both pension,both benefits CY and PY when whoIsInPaidEmployment is partner" in {
+      "both employment,both pension,both benefits CY when whoIsInPaidEmployment is partner" in {
 
       // Partner earning less than minimum earnings and Parent earning more than minimum earnings
       val originalCacheMap1 = new CacheMap("id", Map(
