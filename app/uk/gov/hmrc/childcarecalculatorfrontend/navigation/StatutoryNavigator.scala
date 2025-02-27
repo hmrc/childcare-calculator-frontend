@@ -105,6 +105,7 @@ class StatutoryNavigator @Inject() (utils: Utils) extends SubNavigator {
     }
   }
 
+
   private def yourStatutoryPayPerWeekRoute(answers: UserAnswers) = {
     utils.getCall(answers.yourStatutoryPayPerWeek) { case _ => nextPageYourStatutoryPayPerWeek(answers)}
   }
