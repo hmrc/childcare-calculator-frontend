@@ -23,15 +23,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
-case class StatutoryIncome(
-                            statutoryWeeks: Double = 0.00,
-                            statutoryAmount: Option[BigDecimal] = None
-                          )
-
-object StatutoryIncome {
-  implicit val formatStatutoryIncome: OFormat[StatutoryIncome] = Json.format[StatutoryIncome]
-}
-
 case class Income(
                    employmentIncome: Option[BigDecimal] = None,
                    pension: Option[BigDecimal] = None,
