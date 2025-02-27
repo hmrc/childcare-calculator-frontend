@@ -51,7 +51,8 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerMinimumEarningsId.toString -> JsBoolean(true),
           PartnerSelfEmployedOrApprenticeId.toString -> JsString(SELFEMPLOYED.toString),
           PartnerMaximumEarningsId.toString -> JsBoolean(true),
-           ))
+        ))
+      }
 
 
       "remove data related to both parents in employment" in {
