@@ -35,7 +35,6 @@ class StatutoryNavigator @Inject() (utils: Utils) extends SubNavigator {
   )
 
 
-
   private def yourStatutoryPayRoute(answers: UserAnswers) = {
     utils.getCall(answers.youStatutoryPay) {
       case true => routes.YourStatutoryPayTypeController.onPageLoad(NormalMode)
