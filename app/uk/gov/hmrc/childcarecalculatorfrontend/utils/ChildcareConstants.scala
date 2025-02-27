@@ -188,10 +188,8 @@ object ChildcareConstants {
   val parentOtherIncomeInvalidErrorKey = "parentOtherIncome.error.invalid"
   val partnerOtherIncomeRequiredErrorKey = "partnerOtherIncome.error.required"
   val partnerOtherIncomeInvalidErrorKey = "partnerOtherIncome.error.invalid"
-  val parentOtherIncomePYRequiredErrorKey = "parentOtherIncomePY.error.required"
-  val parentOtherIncomePYInvalidErrorKey = "parentOtherIncomePY.error.invalid"
-  val partnerOtherIncomePYRequiredErrorKey = "partnerOtherIncomePY.error.required"
-  val partnerOtherIncomePYInvalidErrorKey = "partnerOtherIncomePY.error.invalid"
+
+
 
   val childcareCostsErrorKey = "childcareCosts.error.notCompleted"
 
@@ -224,11 +222,6 @@ object ChildcareConstants {
   val parentEmploymentIncomePYInvalidErrorKey = "parentEmploymentIncomePY.error.invalid"
   val partnerEmploymentIncomePYRequiredErrorKey = "partnerEmploymentIncomePY.error.required"
   val partnerEmploymentIncomePYInvalidErrorKey = "partnerEmploymentIncomePY.error.invalid"
-
-  val whoGotStatutoryPayErrorKey = "whoGotStatutoryPay.error.notCompleted"
-
-  val yourStatutoryPayTypeErrorKey = "yourStatutoryPayType.error.notCompleted"
-  val partnerStatutoryPayTypeErrorKey = "partnerStatutoryPayType.error.notCompleted"
 
   val whoWasInPaidWorkErrorKey = "whoWasInPaidWorkPY.error.notCompleted"
 

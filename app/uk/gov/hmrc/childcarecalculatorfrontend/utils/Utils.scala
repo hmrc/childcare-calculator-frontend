@@ -57,8 +57,6 @@ class Utils {
 
   }
 
-  def getStatutoryPayType(implicit request: DataRequest[AnyContent])  = request.userAnswers.yourStatutoryPayType.getOrElse("")
-
   /**
     * Gets the NMW for the given age range
     *

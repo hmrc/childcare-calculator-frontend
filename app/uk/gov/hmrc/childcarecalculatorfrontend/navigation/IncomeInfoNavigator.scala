@@ -21,7 +21,7 @@ import javax.inject.Singleton
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{BothIncomeInfoPYId, Identifier, PartnerIncomeInfoId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, PartnerIncomeInfoId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
@@ -35,8 +35,7 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] =
     Map(
-      PartnerIncomeInfoId -> nextPageUrlCY,
-      BothIncomeInfoPYId -> nextPageUrlPY
+      PartnerIncomeInfoId -> nextPageUrlCY
     )
 
   private def nextPageUrlCY(userAnswers: UserAnswers) = {
@@ -52,13 +51,4 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
     }
   }
 
-  private def nextPageUrlPY(userAnswers: UserAnswers) = {
-    val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
-
-    if(hasPartner) {
-      routes.BothGetSameIncomePreviousYearController.onPageLoad(NormalMode)
-    }else {
-      SessionExpiredRouter.route(getClass.getName,"nextPageUrlPY",Some(userAnswers))
-    }
-  }
 }

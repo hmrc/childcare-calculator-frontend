@@ -55,11 +55,6 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val maxEmploymentIncome: Double = config.getString("employmentIncome.max").toDouble
   lazy val minEmploymentIncome: Double = config.getString("employmentIncome.min").toDouble
 
-  lazy val minNoWeeksStatPay: Int = config.getInt("noWeeksStatPay.min")
-  lazy val maxNoWeeksMaternityPay: Int = config.getInt("noWeeksStatPay.maternity")
-  lazy val maxNoWeeksPaternityPay: Int = config.getInt("noWeeksStatPay.paternity")
-  lazy val maxNoWeeksAdoptionPay: Int = config.getInt("noWeeksStatPay.adoption")
-  lazy val maxNoWeeksSharedParentalPay: Int = config.getInt("noWeeksStatPay.sharedParental")
 
   lazy val maxAmountChildren: Int = config.getInt("amountChildren.max")
   lazy val minAmountChildren: Int = config.getInt("amountChildren.min")
