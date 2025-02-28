@@ -57,32 +57,31 @@
                 value = CarersAllowance.toString,
                 checked = form.data.values.toList.contains(CarersAllowance.toString)
               ),
+                CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$CarersCredit")),
+                value = CarersCredit.toString,
+                checked = form.data.values.toList.contains(CarersCredit.toString)
+                ),
+                CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$ContributionBasedEmploymentAndSupportAllowance")),
+                value = ContributionBasedEmploymentAndSupportAllowance.toString,
+                checked = form.data.values.toList.contains(ContributionBasedEmploymentAndSupportAllowance.toString)
+                ),
               CheckboxItem(
                 content = Text(messages(s"doYouGetAnyBenefits.$IncapacityBenefit")),
                 value = IncapacityBenefit.toString,
                 checked = form.data.values.toList.contains(IncapacityBenefit.toString)
               ),
-              CheckboxItem(
+                CheckboxItem(
+                content = Text(messages(s"doYouGetAnyBenefits.$NICreditsForIncapacityOrLimitedCapabilityForWork")),
+                value = NICreditsForIncapacityOrLimitedCapabilityForWork.toString,
+                checked = form.data.values.toList.contains(NICreditsForIncapacityOrLimitedCapabilityForWork.toString)
+                ),
+               CheckboxItem(
                 content = Text(messages(s"doYouGetAnyBenefits.$SevereDisablementAllowance")),
                 value = SevereDisablementAllowance.toString,
                 checked = form.data.values.toList.contains(SevereDisablementAllowance.toString)
               ),
-              CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$ContributionBasedEmploymentAndSupportAllowance")),
-                value = ContributionBasedEmploymentAndSupportAllowance.toString,
-                checked = form.data.values.toList.contains(ContributionBasedEmploymentAndSupportAllowance.toString)
-              ),
-              CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$NICreditsForIncapacityOrLimitedCapabilityForWork")),
-                value = NICreditsForIncapacityOrLimitedCapabilityForWork.toString,
-                checked = form.data.values.toList.contains(NICreditsForIncapacityOrLimitedCapabilityForWork.toString)
-              ),
-              CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$CarersCredit")),
-                value = CarersCredit.toString,
-                checked = form.data.values.toList.contains(CarersCredit.toString)
-              ),
-
               CheckboxItem(
                 divider = Some(messages("doYouGetAnyBenefits.or"))
               ),
