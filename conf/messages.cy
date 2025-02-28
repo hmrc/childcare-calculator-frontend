@@ -583,7 +583,6 @@ bothPaidPensionCY.heading=A ydych chi, eich partner, neu’r ddau ohonoch yn tal
 bothPaidPensionCY.checkYourAnswersLabel=A ydych chi, eich partner, neu’r ddau ohonoch wedi talu i mewn i bensiwn gwaith y flwyddyn hon?
 bothPaidPensionCY.error.notCompleted=Dewiswch ‘Iawn’ os ydych chi, eich partner, neu’r ddau ohonoch yn talu i mewn i bensiwn gwaith y flwyddyn hon
 bothPaidPensionCY.tax.year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothPaidPensionPY.tax.year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 
 whosHadBenefits.title=Pwy gafodd fudd-daliadau?
 whosHadBenefits.heading=Pwy gafodd fudd-daliadau?
@@ -592,49 +591,6 @@ whosHadBenefits.partner=Partner
 whosHadBenefits.both=Y ddau
 whosHadBenefits.checkYourAnswersLabel=Pwy sydd wedi cael budd-daliadau?
 whosHadBenefits.error.notCompleted=Dewiswch pwy sydd wedi cael budd-daliadau
-
-youPaidPensionPY.title=A wnaethoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-youPaidPensionPY.heading=A wnaethoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-youPaidPensionPY.checkYourAnswersLabel=A wnaethoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-youPaidPensionPY.error.notCompleted=Dewiswch ‘Iawn’ os gwnaethoch dalu i mewn i’ch pensiwn gwaith yn y flwyddyn flaenorol
-youPaidPensionPY.tax.year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-partnerPaidPensionPY.title=A wnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-partnerPaidPensionPY.heading=A wnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-partnerPaidPensionPY.checkYourAnswersLabel=A wnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-partnerPaidPensionPY.error.notCompleted=Dewiswch ‘Iawn’ os gwnaeth eich partner dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol
-partnerPaidPensionPY.tax.year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-bothPaidPensionPY.title=A wnaethoch chi, eich partner, neu’r ddau ohonoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-bothPaidPensionPY.heading=A wnaethoch chi, eich partner, neu’r ddau ohonoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol?
-bothPaidPensionPY.checkYourAnswersLabel=A wnaethoch chi, eich partner, neu’r ddau ohonoch chi dalu i mewn i’ch pensiwn gwaith yn y flwyddyn flaenorol?
-bothPaidPensionPY.error.notCompleted=Dewiswch ‘Iawn’ os gwnaethoch chi, eich partner, neu’r ddau ohonoch dalu i mewn i bensiwn gwaith yn y flwyddyn flaenorol
-
-parentPaidWorkPY.title=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
-parentPaidWorkPY.heading=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
-parentPaidWorkPY.checkYourAnswersLabel=A oeddech mewn gwaith taledig yn y flwyddyn flaenorol?
-parentPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oedd gennych unrhyw waith taledig yn y flwyddyn flaenorol
-parentPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-partnerPaidWorkPY.title=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig yn y flwyddyn flaenorol?
-partnerPaidWorkPY.heading=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig yn y flwyddyn flaenorol?
-partnerPaidWorkPY.checkYourAnswersLabel=Dydy eich partner ddim yn gweithio nawr, ond a yw wedi cael unrhyw waith taledig y flwyddyn ddiwethaf?
-partnerPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oedd gan eich partner unrhyw waith taledig yn y flwyddyn flaenorol
-partnerPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-bothPaidWorkPY.title=A oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol?
-bothPaidWorkPY.heading=A oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol?
-bothPaidWorkPY.checkYourAnswersLabel=A oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol?
-bothPaidWorkPY.error.notCompleted=Dewiswch ‘Iawn’ os oeddech chi, eich partner, neu’r ddau ohonoch mewn gwaith taledig yn y flwyddyn flaenorol
-bothPaidWorkPY.currentYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothPaidWorkPY.previousYear.startEndDate=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
-yourOtherIncomeLY.title=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
-yourOtherIncomeLY.heading=A gawsoch unrhyw incwm arall yn y flwyddyn flaenorol?
-yourOtherIncomeLY.year.start.end.date=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-yourOtherIncomeLY.hint.text=Gallai hyn fod wedi bod o Bensiwn y Wladwriaeth, buddsoddiadau, llog ar gynilion, incwm rhent neu incwm tramor - nid o gynhaliaeth, grantiau myfyrwyr na benthyciadau.
-yourOtherIncomeLY.checkYourAnswersLabel=yourOtherIncomeLY
-yourOtherIncomeLY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch unrhyw incwm arall yn y flwyddyn flaenorol
 
 partnerBenefitsIncomeCY.title=Faint y bydd eich partner yn ei gael mewn budd-daliadau y flwyddyn hon?
 partnerBenefitsIncomeCY.heading=Faint y bydd eich partner yn ei gael mewn budd-daliadau y flwyddyn hon?
@@ -681,37 +637,6 @@ partnerBenefitsIncome.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint y by
 parentBenefitsIncome.error.required=Nodwch faint y byddwch yn ei gael mewn budd-daliadau y flwyddyn hon
 parentBenefitsIncome.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint y byddwch yn ei gael mewn budd-daliadau y flwyddyn hon
 
-bothOtherIncomeLY.title=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol?
-bothOtherIncomeLY.heading=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol?
-bothOtherIncomeLY.year.start.end.date=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothOtherIncomeLY.hint.text=Gallai hyn fod wedi bod o Bensiwn y Wladwriaeth, buddsoddiadau, llog ar gynilion, incwm rhent neu incwm tramor - nid o gynhaliaeth, grantiau myfyrwyr na benthyciadau.
-bothOtherIncomeLY.checkYourAnswersLabel=bothOtherIncomeLY
-bothOtherIncomeLY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch chi, eich partner, neu’r ddau ohonoch unrhyw incwm arall yn y flwyddyn flaenorol
-
-whoOtherIncomePY.title=Pwy gafodd incwm arall?
-whoOtherIncomePY.heading=Pwy gafodd incwm arall?
-whoOtherIncomePY.you=Chi
-whoOtherIncomePY.partner=Partner
-whoOtherIncomePY.both=Y ddau
-whoOtherIncomePY.checkYourAnswersLabel=Pwy gafodd incwm arall y flwyddyn ddiwethaf?
-whoOtherIncomePY.error.notCompleted=Dewiswch pwy gafodd incwm arall
-
-whoPaidIntoPensionPY.title=Pwy dalodd i mewn i bensiwn?
-whoPaidIntoPensionPY.heading=Pwy dalodd i mewn i bensiwn?
-whoPaidIntoPensionPY.you=Chi
-whoPaidIntoPensionPY.partner=Partner
-whoPaidIntoPensionPY.both=Y ddau
-whoPaidIntoPensionPY.error.notCompleted=Dewiswch pwy dalodd i mewn i bensiwn
-whoPaidIntoPensionPY.checkYourAnswersLabel=Pwy dalodd i mewn i bensiwn?
-
-whosHadBenefitsPY.title=Pwy gafodd incwm o fudd-daliadau?
-whosHadBenefitsPY.heading=Pwy gafodd incwm o fudd-daliadau?
-whosHadBenefitsPY.you=Chi
-whosHadBenefitsPY.partner=Partner
-whosHadBenefitsPY.both=Y ddau
-whosHadBenefitsPY.checkYourAnswersLabel=Pwy sydd wedi cael budd-daliadau y flwyddyn ddiwethaf?
-whosHadBenefitsPY.error.notCompleted=Dewiswch pwy gafodd fudd-daliadau
-
 otherIncomeAmountCY.title=Faint y bydd eich incwm arall chi a’ch partner y flwyddyn hon?
 otherIncomeAmountCY.heading=Faint y bydd eich incwm arall chi a’ch partner y flwyddyn hon?
 otherIncomeAmountCY.parentOtherIncome=Eich incwm arall
@@ -742,79 +667,13 @@ employmentIncomeCY.checkYourAnswersLabel=Faint y byddwch chi a’ch partner yn c
 employmentIncomeCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 employmentIncomeCY.hint=Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
 
-youAnyTheseBenefitsPY.title=A gawsoch chi unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-youAnyTheseBenefitsPY.heading=A gawsoch chi unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-youAnyTheseBenefitsPY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-youAnyTheseBenefitsPY.li.income_support=Pensiwn y Wladwriaeth
-youAnyTheseBenefitsPY.li.jobseekers_allowance=Lwfans Ceisio Gwaith (ar sail cyfraniadau)
-youAnyTheseBenefitsPY.li.carers=Lwfans Gofalwr
-youAnyTheseBenefitsPY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-youAnyTheseBenefitsPY.li.employment_support=Lwfans Cyflogaeth a Chymorth (ar sail cyfraniadau)
-youAnyTheseBenefitsPY.li.pensions=Budd-dal Analluogrwydd
-youAnyTheseBenefitsPY.li.disability=Lwfans Rhiant Gweddw
-youAnyTheseBenefitsPY.checkYourAnswersLabel=A gawsoch chi unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-youAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
-
-bothAnyTheseBenefitsPY.title=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-bothAnyTheseBenefitsPY.heading=A gawsoch chi, eich partner, neu’r ddau ohonoch unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol?
-bothAnyTheseBenefitsPY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-bothAnyTheseBenefitsPY.li.income_support=Pensiwn y Wladwriaeth
-bothAnyTheseBenefitsPY.li.jobseekers_allowance=Lwfans Ceisio Gwaith (ar sail cyfraniadau)
-bothAnyTheseBenefitsPY.li.employment_support=Lwfans Cyflogaeth a Chymorth (ar sail cyfraniadau)
-bothAnyTheseBenefitsPY.li.pensions=Budd-dal Analluogrwydd
-bothAnyTheseBenefitsPY.li.disability=Lwfans Rhiant Gweddw
-bothAnyTheseBenefitsPY.li.carers=Lwfans Gofalwr
-bothAnyTheseBenefitsPY.li.scottishCarersAllowance=Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-bothAnyTheseBenefitsPY.checkYourAnswersLabel=A gawsoch chi neu eich partner unrhyw un o’r budd-daliadau hyn y flwyddyn ddiwethaf?
-bothAnyTheseBenefitsPY.error.notCompleted=Dewiswch ‘Iawn’ os cawsoch chi neu’ch partner unrhyw un o’r budd-daliadau hyn yn y flwyddyn flaenorol
-
-bothBenefitsIncomePY.title=Beth oedd eich incwm chi a’ch partner o fudd-daliadau yn y flwyddyn flaenorol?
-bothBenefitsIncomePY.heading=Beth oedd eich incwm chi a’ch partner o fudd-daliadau yn y flwyddyn flaenorol?
-bothBenefitsIncomePY.parentBenefitsIncomePY=Eich incwm o fudd-daliadau
-bothBenefitsIncomePY.partnerBenefitsIncomePY=Incwm eich partner o fudd-daliadau
-bothBenefitsIncomePY.checkYourAnswersLabel=Faint y cawsoch chi a’ch partner mewn budd-daliadau y flwyddyn ddiwethaf?
-
 parentBenefitsIncomePY.error.required=Nodwch faint oedd eich incwm o fudd-daliadau yn y flwyddyn flaenorol
 parentBenefitsIncomePY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 ar gyfer eich incwm o fudd-daliadau yn y flwyddyn flaenorol
-partnerBenefitsIncomePY.error.required=Nodwch faint oedd incwm eich partner o fudd-daliadau yn y flwyddyn flaenorol
-partnerBenefitsIncomePY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 ar gyfer incwm eich partner o fudd-daliadau y flwyddyn hon
 
 registeredBlind.title=A oes unrhyw un o’ch plant wedi’u cofrestru’n ddall?
 registeredBlind.heading=A oes unrhyw un o’ch plant wedi’u cofrestru’n ddall?
 registeredBlind.error.notCompleted=Dewiswch ‘Iawn’ os yw unrhyw un o’ch plant wedi’i gofrestru’n ddall
 registeredBlind.checkYourAnswersLabel=registeredBlind
-
-partnerBenefitsIncomePY.title=Beth yw incwm eich partner o fudd-daliadau?
-partnerBenefitsIncomePY.heading=Beth yw incwm eich partner o fudd-daliadau?
-partnerBenefitsIncomePY.info=Incwm partner o fudd-daliadau
-partnerBenefitsIncomePY.checkYourAnswersLabel=Faint y cawsoch eich partner mewn budd-daliadau?
-
-youBenefitsIncomePY.title=Beth oedd eich incwm o fudd-daliadau?
-youBenefitsIncomePY.heading=Beth oedd eich incwm o fudd-daliadau?
-youBenefitsIncomePY.info=Eich incwm o fudd-daliadau
-youBenefitsIncomePY.checkYourAnswersLabel=Faint y cawsoch chi mewn budd-daliadau y flwyddyn ddiwethaf?
-
-howMuchBothPayPensionPY.title=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
-howMuchBothPayPensionPY.heading=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
-howMuchBothPayPensionPY.yourPension=Eich pensiwn
-howMuchBothPayPensionPY.partnerPension=Pensiwn eich partner
-howMuchBothPayPensionPY.checkYourAnswersLabel=Faint y gwnaethoch chi a’ch partner ei dalu i mewn i’ch pensiynau bob mis?
-
-howMuchYouPayPensionPY.title=Faint y gwnaethoch ei dalu i mewn i’ch pensiwn bob mis?
-howMuchYouPayPensionPY.heading=Faint y gwnaethoch ei dalu i mewn i’ch pensiwn bob mis?
-howMuchYouPayPensionPY.info=Eich pensiwn
-howMuchYouPayPensionPY.checkYourAnswersLabel=Faint y gwnaethoch ei dalu i mewn i’ch pensiwn bob mis?
-howMuchYouPayPensionPY.yourPension=Chi
-howMuchYouPayPensionPY.error.required=Nodwch faint wnaethoch chi ei dalu i mewn i’ch pensiwn bob mis
-howMuchYouPayPensionPY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint wnaethoch chi ei dalu i mewn i’ch pensiwn bob mis
-
-howMuchPartnerPayPensionPY.title=Faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis?
-howMuchPartnerPayPensionPY.heading=Faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis?
-howMuchPartnerPayPensionPY.info=Pensiwn partner
-howMuchPartnerPayPensionPY.checkYourAnswersLabel=Faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis?
-howMuchPartnerPayPensionPY.partnerPension=Partner
-howMuchPartnerPayPensionPY.error.required=Nodwch faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis
-howMuchPartnerPayPensionPY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 am faint y gwnaeth eich partner ei dalu i mewn i’w bensiwn bob mis
 
 childDisabilityBenefits.title=A yw’ch plentyn yn cael unrhyw un o’r budd-daliadau anabledd hyn?
 childDisabilityBenefits.heading=A yw {0} yn cael unrhyw un o’r budd-daliadau anabledd hyn?
@@ -830,59 +689,12 @@ childcarePayFrequency.monthly=Bob mis
 childcarePayFrequency.checkYourAnswersLabel=Pa mor aml yr ydych yn talu neu’n disgwyl talu am ofal plant?
 childcarePayFrequency.error.notCompleted=Dewiswch pa mor aml yr ydych yn talu neu’n disgwyl talu am gostau gofal plant
 
-yourOtherIncomeAmountPY.title=Faint oedd eich incwm arall?
-yourOtherIncomeAmountPY.heading=Faint oedd eich incwm arall?
-yourOtherIncomeAmountPY.info=Eich incwm arall
-yourOtherIncomeAmountPY.checkYourAnswersLabel=Faint oedd eich incwm arall?
-
-parentOtherIncomeAmountPY.error.required=Nodwch faint oedd eich incwm arall yn y flwyddyn flaenorol
-parentOtherIncomeAmountPY.error.invalid=Nodwch rifau rhwng 1 a 99999.99 ar gyfer eich incwm arall yn y flwyddyn flaenorol
-
-partnerOtherIncomeAmountPY.error.required=Nodwch faint oedd incwm arall eich partner
-partnerOtherIncomeAmountPY.error.invalid=Nodwch rifau rhwng 1 a 99999.99 ar gyfer incwm arall eich partner
-partnerOtherIncomeAmountPY.title=Faint oedd incwm arall eich partner?
-partnerOtherIncomeAmountPY.heading=Faint oedd incwm arall eich partner?
-partnerOtherIncomeAmountPY.info=Incwm arall partner
-partnerOtherIncomeAmountPY.checkYourAnswersLabel=Faint oedd incwm arall eich partner?
-
-otherIncomeAmountPY.title=Faint oedd eich incwm arall chi a’ch partner?
-otherIncomeAmountPY.heading=Faint oedd eich incwm arall chi a’ch partner?
-otherIncomeAmountPY.parentOtherIncomeAmountPY=Eich incwm arall
-otherIncomeAmountPY.partnerOtherIncomeAmountPY=Incwm arall eich partner
-otherIncomeAmountPY.checkYourAnswersLabel=Faint oedd eich incwm arall chi a’ch partner?
-
 childrenDisabilityBenefits.title=A oes unrhyw un o’ch plant yn cael unrhyw un o’r budd-daliadau anabledd hyn?
 childrenDisabilityBenefits.heading=A oes unrhyw un o’ch plant yn cael unrhyw un o’r budd-daliadau anabledd hyn?
 childrenDisabilityBenefits.disabilities.living.allowance=Lwfans Byw i’r Anabl
 childrenDisabilityBenefits.personal.independence.payment=Taliad Annibyniaeth Personol
 childrenDisabilityBenefits.checkYourAnswersLabel=childDisabilityBenefits
 childrenDisabilityBenefits.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch plant yn cael unrhyw un o’r budd-daliadau anabledd hyn
-
-parentEmploymentIncomePY.title=Faint y cawsoch eich talu yn y flwyddyn flaenorol?
-parentEmploymentIncomePY.heading=Faint y cawsoch eich talu yn y flwyddyn flaenorol?
-parentEmploymentIncomePY.info=Eich cyflog
-parentEmploymentIncomePY.checkYourAnswersLabel=Faint y cawsoch eich talu y flwyddyn ddiwethaf?
-parentEmploymentIncomePY.error.required=Nodwch faint y cawsoch chi eich talu yn y flwyddyn flaenorol
-parentEmploymentIncomePY.error.invalid=Nodwch rifau rhwng 1 a 999999.99 am faint y cawsoch chi eich talu yn y flwyddyn flaenorol
-parentEmploymentIncomePY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-parentEmploymentIncomePY.hint=Dyma oedd cyfanswm y cyflog o’ch holl swyddi, neu’r elw os oeddech yn hunangyflogedig, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
-
-partnerEmploymentIncomePY.title=Faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol?
-partnerEmploymentIncomePY.heading=Faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol?
-partnerEmploymentIncomePY.info=Cyflog partner
-partnerEmploymentIncomePY.checkYourAnswersLabel=Faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol?
-partnerEmploymentIncomePY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-partnerEmploymentIncomePY.hint=Dyma oedd cyfanswm enillion eich partner o bob swydd neu elw os ydych yn hunangyflogedig cyn i chi dynnu treth ac Yswiriant Gwladol. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth neu salwch statudol.
-partnerEmploymentIncomePY.error.required=Nodwch faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol
-partnerEmploymentIncomePY.error.invalid=Nodwch rifau rhwng 1 a 999999.99 am faint y cafodd eich partner ei dalu yn y flwyddyn flaenorol
-
-employmentIncomePY.title=Faint y cawsoch chi a’ch partner eich talu yn y flwyddyn flaenorol?
-employmentIncomePY.heading=Faint y cawsoch chi a’ch partner eich talu yn y flwyddyn flaenorol?
-employmentIncomePY.parentEmploymentIncomePY=Eich cyflog
-employmentIncomePY.partnerEmploymentIncomePY=Cyflog eich partner
-employmentIncomePY.checkYourAnswersLabel=Faint y cawsoch eich talu y flwyddyn ddiwethaf?
-employmentIncomePY.tax_year=Mae’r flwyddyn flaenorol yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-employmentIncomePY.hint=Dyma oedd cyfanswm y cyflog o’ch holl swyddi, neu’r elw os oeddech yn hunangyflogedig, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
 
 aboutYourChild.title=Gwybodaeth am eich plentyn
 aboutYourChild.title.nth=Gwybodaeth am eich plentyn a ddaeth yn {0}
@@ -1087,14 +899,6 @@ result.not.eligible.title.ga=Nid ydych yn gymwys ar gyfer
 result.eligible.subheading=Gallwch gael
 result.not.eligible.subheading=Ni allwch gael y canlynol
 
-whoWasInPaidWorkPY.title=Pwy oedd mewn gwaith taledig?
-whoWasInPaidWorkPY.heading=Pwy oedd mewn gwaith taledig?
-whoWasInPaidWorkPY.you=Chi
-whoWasInPaidWorkPY.partner=Partner
-whoWasInPaidWorkPY.both=Y ddau
-whoWasInPaidWorkPY.checkYourAnswersLabel=Pwy oedd mewn gwaith taledig?
-whoWasInPaidWorkPY.error.notCompleted=Dewiswch pwy oedd mewn gwaith taledig
-
 aboutYourResults.title=Sut y gallai’r opsiynau hyn weithio i chi
 aboutYourResults.heading=Sut y gallai’r opsiynau hyn weithio i chi
 aboutYourResults.about.the.schemes=Ynglŷn â’r cynlluniau
@@ -1195,48 +999,6 @@ timeout.message=Er eich diogelwch, byddwn yn clirio’r hyn rydych wedi’i nodi
 timeout.continue=Parhau â’r hyn yr oeddech yn ei wneud
 timeout.exit=Clirio’r hyn rydych wedi’i nodi nawr
 
-
-yourAverageWeeklyEarnings.title = Eich enillion wythnosol cyfartalog
-yourAverageWeeklyEarnings.heading = Eich enillion wythnosol cyfartalog
-yourAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm eich cyflog wythnosol neu elw o hunangyflogaeth am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-yourAverageWeeklyEarnings.heading2 = Os byddwch ar absenoldeb
-yourAverageWeeklyEarnings.para2 = Rydym ond eisiau gwybod faint a enilloch cyn i chi fynd ar unrhyw un o’r mathau hyn o absenoldeb:
-yourAverageWeeklyEarnings.li.maternity = mamolaeth
-yourAverageWeeklyEarnings.li.paternity = tadolaeth
-yourAverageWeeklyEarnings.li.adoption = mabwysiadu
-yourAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
-yourAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
-yourAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
-yourAverageWeeklyEarnings.para3 = Mae’n bosibl y byddwch yn dal yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch yn gweithio o leiaf 16 awr yr wythnos ar gyfartaledd dros y 3 mis nesaf.
-yourAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol i chi, dewiswch iawn.
-
-partnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog eich partner
-partnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog eich partner
-partnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth eich partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-partnerAverageWeeklyEarnings.heading2 = Os aeth eich partner ar absenoldeb
-partnerAverageWeeklyEarnings.para2 = Does ond angen i ni wybod faint roedden nhw’n ei ennill cyn iddyn nhw fynd ar unrhyw un o’r mathau hyn o absenoldeb:
-partnerAverageWeeklyEarnings.li.maternity = mamolaeth
-partnerAverageWeeklyEarnings.li.paternity = tadolaeth
-partnerAverageWeeklyEarnings.li.adoption = mabwysiadu
-partnerAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
-partnerAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
-partnerAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
-partnerAverageWeeklyEarnings.para3 = Mae’n bosibl y bydd eich partner yn dal yn gymwys ar gyfer y cynllun os yw ei incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddant yn gweithio o leiaf 16 awr yr wythnos, ar gyfartaledd, dros y 3 mis nesaf.
-partnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol iddynt, dewiswch iawn.
-
-yourAndPartnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog chi a’ch partner
-yourAndPartnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog chi a’ch partner
-yourAndPartnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth chi a’ch partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-yourAndPartnerAverageWeeklyEarnings.heading2 = If either of you went on leave
-yourAndPartnerAverageWeeklyEarnings.para2 = We only need to know how much you or your partner earned before going on any of these types of leave:
-yourAndPartnerAverageWeeklyEarnings.li.maternity = maternity
-yourAndPartnerAverageWeeklyEarnings.li.paternity = paternity
-yourAndPartnerAverageWeeklyEarnings.li.adoption = adoption
-yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
-yourAndPartnerAverageWeeklyEarnings.li.sickLeave = sick leave
-yourAndPartnerAverageWeeklyEarnings.heading3 = Part year workers
-yourAndPartnerAverageWeeklyEarnings.para3 = You or your partner may still qualify for the scheme if your income is below the minimum threshold. This applies only if you or your partner will work at least 16 hours a week, on average, over the next 3 months.
-yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select yes.
 
 yourAverageWeeklyEarnings.title = Eich enillion wythnosol cyfartalog
 yourAverageWeeklyEarnings.heading = Eich enillion wythnosol cyfartalog

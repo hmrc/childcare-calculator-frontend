@@ -192,12 +192,10 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val taxCode = answers.whatIsYourTaxCode
 
     val currentYearIncome = getParentCurrentYearIncome(answers, taxCode)
-    val previousYearIncome = getParentPreviousYearIncome(answers, taxCode)
 
     Claimant(
       benefits = benefits,
       escVouchers = vouchers,
-      lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,
       ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
@@ -223,12 +221,10 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     val taxCode = answers.whatIsYourPartnersTaxCode
 
     val currentYearIncome = getPartnerCurrentYearIncome(answers, taxCode)
-    val previousYearIncome = getPartnerPreviousYearIncome(answers, taxCode)
 
     Claimant(
       benefits = benefits,
       escVouchers = vouchers,
-      lastYearlyIncome = previousYearIncome,
       currentYearlyIncome = currentYearIncome,
       ageRange = stringToAgeEnum(age),
       minimumEarnings = minEarnings,
@@ -240,53 +236,6 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
 }
 
 sealed trait OverallIncome {
-
-  def getParentPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
-    val incomeValue = determineIncomeValue(answers.parentEmploymentIncomePY, answers.employmentIncomePY, parentEmploymentIncomePY)
-
-    val pensionValue = determineIncomeValue(answers.howMuchYouPayPensionPY, answers.howMuchBothPayPensionPY, parentPensionPY)
-
-    val otherIncome = determineIncomeValue(answers.yourOtherIncomeAmountPY, answers.otherIncomeAmountPY, parentOtherIncomePY)
-
-    val benefits = determineIncomeValue(answers.youBenefitsIncomePY, answers.bothBenefitsIncomePY, parentBenefitsPY)
-
-    incomeValue match {
-      case Some(x) if x > 0 =>
-        Some(Income(
-          employmentIncome = incomeValue,
-          pension = pensionValue,
-          otherIncome = otherIncome,
-          benefits = benefits,
-          taxCode = taxCode)
-        )
-      case _ => None
-    }
-
-  }
-
-  def getPartnerPreviousYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
-    val incomeValue = determineIncomeValue(answers.partnerEmploymentIncomePY, answers.employmentIncomePY, partnerEmploymentIncomePY)
-
-    val pensionValue = determineIncomeValue(answers.howMuchPartnerPayPensionPY, answers.howMuchBothPayPensionPY, partnerPensionPY)
-
-    val otherIncome = determineIncomeValue(answers.partnerOtherIncomeAmountPY, answers.otherIncomeAmountPY, partnerOtherIncomePY)
-
-    val benefits = determineIncomeValue(answers.partnerBenefitsIncomePY, answers.bothBenefitsIncomePY, partnerBenefitsPY)
-
-    incomeValue match {
-      case Some(x) if x > 0 =>
-        Some(Income(
-          employmentIncome = incomeValue,
-          pension = pensionValue,
-          otherIncome = otherIncome,
-          benefits = benefits,
-          taxCode = taxCode)
-        )
-      case _ =>
-        None
-    }
-
-  }
 
   def getParentCurrentYearIncome(answers: UserAnswers, taxCode: Option[String]): Option[Income] = {
     val incomeValue = determineIncomeValue(answers.parentEmploymentIncomeCY, answers.employmentIncomeCY, parentEmploymentIncomeCY)
@@ -336,15 +285,7 @@ sealed trait OverallIncome {
 
   }
 
-  private def parentBenefitsPY(x: BothBenefitsIncomePY): BigDecimal = {
-    x.parentBenefitsIncomePY
-  }
-
-  private def partnerBenefitsPY(x: BothBenefitsIncomePY): BigDecimal = {
-    x.partnerBenefitsIncomePY
-  }
-
-  private def parentBenefitsCY(x: BenefitsIncomeCY): BigDecimal = {
+  private def parentBenefitsCY(x: BenefitsIncomeCY) : BigDecimal = {
     x.parentBenefitsIncome
   }
 
@@ -352,15 +293,7 @@ sealed trait OverallIncome {
     x.partnerBenefitsIncome
   }
 
-  private def parentOtherIncomePY(x: OtherIncomeAmountPY): BigDecimal = {
-    x.parentOtherIncomeAmountPY
-  }
-
-  private def partnerOtherIncomePY(x: OtherIncomeAmountPY): BigDecimal = {
-    x.partnerOtherIncomeAmountPY
-  }
-
-  private def parentOtherIncomeCY(x: OtherIncomeAmountCY): BigDecimal = {
+  private def parentOtherIncomeCY(x: OtherIncomeAmountCY) : BigDecimal = {
     x.parentOtherIncome
   }
 
@@ -372,20 +305,8 @@ sealed trait OverallIncome {
     x.howMuchPartnerPayPension
   }
 
-  private def partnerPensionPY(x: HowMuchBothPayPensionPY): BigDecimal = {
-    x.howMuchPartnerPayPensionPY
-  }
-
-  private def parentPensionPY(x: HowMuchBothPayPensionPY): BigDecimal = {
-    x.howMuchYouPayPensionPY
-  }
-
-  private def parentPensionCY(x: HowMuchBothPayPension): BigDecimal = {
+  private def parentPensionCY(x: HowMuchBothPayPension) : BigDecimal = {
     x.howMuchYouPayPension
-  }
-
-  private def parentEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    x.parentEmploymentIncomePY
   }
 
   private def parentEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
@@ -394,10 +315,6 @@ sealed trait OverallIncome {
 
   private def partnerEmploymentIncomeCY(x: EmploymentIncomeCY): BigDecimal = {
     x.partnerEmploymentIncomeCY
-  }
-
-  private def partnerEmploymentIncomePY(x: EmploymentIncomePY): BigDecimal = {
-    x.partnerEmploymentIncomePY
   }
 
   private def determineIncomeValue[A](s: Option[BigDecimal], multipleIncome: Option[A], f: A => BigDecimal): Option[BigDecimal] = s match {
