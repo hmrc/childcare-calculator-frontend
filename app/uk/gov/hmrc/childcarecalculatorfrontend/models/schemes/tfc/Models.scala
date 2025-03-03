@@ -23,8 +23,8 @@ case class SingleHousehold(parent: Parent) extends Household
 case class JointHousehold(parent: Parent, partner: Parent) extends Household
 
 case class Parent(
-  minEarnings: Boolean,
-  maxEarnings: Boolean,
+  earnsAboveMinEarnings: Boolean,
+  earnsAboveMaxEarnings: Boolean,
   selfEmployed: Boolean,
   apprentice: Boolean,
   benefits: Set[ParentsBenefits]

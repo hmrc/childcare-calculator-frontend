@@ -59,9 +59,9 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     util
   )
 
-  val tcScheme: Scheme = Scheme(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-  val tfcScheme: Scheme = Scheme(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-  val escScheme: Scheme = Scheme(name = SchemeEnum.ESCELIGIBILITY, 500, Some(EscClaimantEligibility(true, true)), None)
+  val tcScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
+  val tfcScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
+  val escScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.ESCELIGIBILITY, 500, Some(EscClaimantEligibility(true, true)), None)
   val fullSchemeResults: SchemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))

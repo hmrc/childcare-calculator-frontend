@@ -16,73 +16,204 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import org.mockito.ArgumentMatchers._
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar.mock
+import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.ModelFactory
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class FreeChildcareWorkingParentsSpec extends SchemeSpec with MockitoSugar {
+class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with BeforeAndAfterEach {
 
-  def freeChildcareWorkingParents(tfc: TaxFreeChildcare = new TaxFreeChildcare(new ModelFactory), appConfig: FrontendAppConfig) =
-    new FreeChildcareWorkingParents(tfc, appConfig)
+  private val freeChildcareEligibilityCalculator = mock[FreeChildcareEligibilityCalculator]
+  private val userAnswers: UserAnswers = mock[UserAnswers]
 
-  ".eligibility" must {
-    val answers: UserAnswers = mock[UserAnswers]
-    val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
-    val appConfig: FrontendAppConfig = mock[FrontendAppConfig]
+  private val freeChildcareWorkingParents: FreeChildcareWorkingParents =
+    new FreeChildcareWorkingParents(freeChildcareEligibilityCalculator)
 
-    "return `NotEligible`" when {
-      "user does not have a 2 year old or a 3 or 4 year old" in {
-        when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.isChildAgedNineTo23Months) thenReturn Some(false)
-        when(answers.isChildAgedTwo) thenReturn Some(false)
-        when(answers.isChildAgedThreeOrFour) thenReturn Some(false)
-        when(answers.location) thenReturn Some(ENGLAND)
-        freeChildcareWorkingParents(tfc, appConfig).eligibility(answers) mustEqual NotEligible
-      }
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    reset(freeChildcareEligibilityCalculator, userAnswers)
+  }
 
-      "user does not live in England" in {
-        when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.isChildAgedNineTo23Months) thenReturn Some(true)
-        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
-        when(answers.location) thenReturn Some(SCOTLAND)
-        freeChildcareWorkingParents(tfc, appConfig).eligibility(answers) mustEqual NotEligible
-      }
+  private val FreeChildcareEligibleBenefits: Set[ParentsBenefits] = Set(
+    CarersAllowance,
+    IncapacityBenefit,
+    SevereDisablementAllowance,
+    ContributionBasedEmploymentAndSupportAllowance,
+    NICreditsForIncapacityOrLimitedCapabilityForWork,
+    CarersCredit
+  )
 
-      "tax free childcare is not eligible" in {
-        when(tfc.eligibility(any())) thenReturn NotEligible
-        when(answers.isChildAgedTwo) thenReturn Some(true)
-        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
-        when(answers.location) thenReturn Some(ENGLAND)
-        freeChildcareWorkingParents(tfc, appConfig).eligibility(answers) mustEqual NotEligible
+  "FreeChildcareWorkingParents on eligibility" when {
+
+    "location is empty" must {
+      "return NotDetermined" in {
+        when(userAnswers.location) thenReturn None
+
+        freeChildcareWorkingParents.eligibility(userAnswers) mustBe NotDetermined
       }
     }
 
-    "return `Eligible`" when {
-      "user has a 2 year old in England" in {
-        when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.isChildAgedTwo) thenReturn Some(true)
-        when(answers.location) thenReturn Some(ENGLAND)
-        freeChildcareWorkingParents(tfc, appConfig).eligibility(answers) mustEqual Eligible
+    Seq(SCOTLAND, WALES, NORTHERN_IRELAND).foreach { location =>
+      s"location is ${location.toString}" must {
+
+        "NOT call FreeChildcareEligibilityCalculator" in {
+          when(userAnswers.location) thenReturn Some(location)
+
+          freeChildcareWorkingParents.eligibility(userAnswers)
+
+          verifyNoInteractions(freeChildcareEligibilityCalculator)
+        }
+
+        "return NotEligible" in {
+          when(userAnswers.location) thenReturn Some(location)
+
+          freeChildcareWorkingParents.eligibility(userAnswers) mustBe NotEligible
+        }
+      }
+    }
+
+    "location is England" when {
+
+      "user does NOT have children in any of the qualifying age groups" must {
+
+        def initMocks(): Unit = {
+          when(userAnswers.location) thenReturn Some(ENGLAND)
+          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(false)
+          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
+          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(false)
+        }
+
+        "NOT call FreeChildcareEligibilityCalculator" in {
+          initMocks()
+
+          freeChildcareWorkingParents.eligibility(userAnswers)
+
+          verifyNoInteractions(freeChildcareEligibilityCalculator)
+        }
+
+        "return NotEligible" in {
+          initMocks()
+
+          freeChildcareWorkingParents.eligibility(userAnswers) mustBe NotEligible
+        }
       }
 
-      "user has a 3 or 4 year old in England" in {
-        when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
-        when(answers.location) thenReturn Some(ENGLAND)
-        freeChildcareWorkingParents(tfc, appConfig).eligibility(answers) mustEqual Eligible
+      "user has a 9 to 23 months old child" must {
+
+        def initMocks(): Unit = {
+          when(userAnswers.location) thenReturn Some(ENGLAND)
+          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(true)
+          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
+          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(false)
+        }
+
+        "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
+          initMocks()
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+
+          freeChildcareWorkingParents.eligibility(userAnswers)
+
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+        }
+
+        Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
+          s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
+            initMocks()
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+
+            freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
+          }
+        }
       }
 
-      "user has a 2 year old or a 3 or 4 year old" in {
-        when(tfc.eligibility(any())) thenReturn Eligible
-        when(answers.isChildAgedTwo) thenReturn Some(true)
-        when(answers.isChildAgedThreeOrFour) thenReturn Some(true)
-        when(answers.location) thenReturn Some(ENGLAND)
-        freeChildcareWorkingParents(tfc, appConfig).eligibility(answers) mustEqual Eligible
+      "user has a 2 years old child" must {
+
+        def initMocks(): Unit = {
+          when(userAnswers.location) thenReturn Some(ENGLAND)
+          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(false)
+          when(userAnswers.isChildAgedTwo) thenReturn Some(true)
+          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(false)
+        }
+
+        "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
+          initMocks()
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+
+          freeChildcareWorkingParents.eligibility(userAnswers)
+
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+        }
+
+        Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
+          s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
+            initMocks()
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+
+            freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
+          }
+        }
+      }
+
+      "user has a 3 or 4 years old child" must {
+
+        def initMocks(): Unit = {
+          when(userAnswers.location) thenReturn Some(ENGLAND)
+          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(false)
+          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
+          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(true)
+        }
+
+        "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
+          initMocks()
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+
+          freeChildcareWorkingParents.eligibility(userAnswers)
+
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+        }
+
+        Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
+          s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
+            initMocks()
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+
+            freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
+          }
+        }
+      }
+
+      "user has children in several qualifying age groups" must {
+
+        def initMocks(): Unit = {
+          when(userAnswers.location) thenReturn Some(ENGLAND)
+          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(true)
+          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
+          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(true)
+        }
+
+        "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
+          initMocks()
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+
+          freeChildcareWorkingParents.eligibility(userAnswers)
+
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+        }
+
+        Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
+          s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
+            initMocks()
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+
+            freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
+          }
+        }
       }
     }
   }
