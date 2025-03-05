@@ -163,7 +163,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       }
     }
 
-    "return OK with childcare vouchers, tfc and tc when we have childcare costs and they are approved" in {
+    "return OK with childcare vouchers and tfcwhen we have childcare costs and they are approved" in {
       val location = ENGLAND
       val validData = Map(ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString), ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
       val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -173,7 +173,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe view(false, false, true, true, location)(fakeRequest, messages).toString
     }
 
-    "return OK with no childcare vouchers, tfc and tc when we don't have childcare costs" when {
+    "return OK with no childcare vouchers and tfc when we don't have childcare costs" when {
       "we don't have childcare costs" in {
         val location = ENGLAND
         val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NO.toString), LocationId.toString -> JsString(location.toString))

@@ -41,23 +41,5 @@ class SchemeResultViewSpec extends NewViewBehaviours {
 
         assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
     }
-
-    "contain the hyper link next to Tax Credit ineligibility message" in {
-      val view = asDocument(appSchemeResult(SchemeResultModel(
-        title = "You are eligible",
-        couldGet = Some("you could get"),
-        eligibility = Some(EligibilityModel("100", "")),
-        periodText = Some("a month"),
-        para1 = Some("some text"),
-        para2 = Some(Html("some more text")),
-        para3 = Some("some even more text"),
-        displayTCGuidanceLink = true
-      ))(messages))
-
-      assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
-      view.getElementById("tcGuidanceLink").attr("href") mustBe ucSchemeGuidanceLinkUrl
-      view.getElementById("tcGuidanceLink").text mustBe messages("result.tc.scheme.guidance.link") +
-        messages("feedback.hint.link.opens.new.tab")
-    }
   }
 }

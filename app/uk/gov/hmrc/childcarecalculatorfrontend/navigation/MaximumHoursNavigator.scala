@@ -58,7 +58,7 @@ class MaximumHoursNavigator @Inject()(
     YourMaximumEarningsId -> yourMaximumEarningsRoute,
     PartnerMaximumEarningsId ->  partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> eitherMaximumEarningsRoute,
-    TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes,
+    UniversalCreditId -> universalCreditRoutes
   )
 
   private val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
@@ -161,7 +161,7 @@ class MaximumHoursNavigator @Inject()(
     if(answers.areYouSelfEmployedOrApprentice.contains(SelfEmployed)) {
       routes.YourSelfEmployedController.onPageLoad(NormalMode)
     } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     } else if(answers.partnerMinimumEarnings.contains(false)) {
       routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
     } else {
@@ -175,13 +175,13 @@ class MaximumHoursNavigator @Inject()(
     } else if(answers.yourMinimumEarnings.contains(true)) {
       routes.YourMaximumEarningsController.onPageLoad(NormalMode)
     } else {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     }
   }
 
   private def yourSelfEmployedRoute(answers: UserAnswers): Call = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     } else if(answers.partnerMinimumEarnings.contains(true)) {
       routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
     } else {
@@ -193,7 +193,7 @@ class MaximumHoursNavigator @Inject()(
     if(answers.yourMinimumEarnings.contains(true)) {
       routes.YourMaximumEarningsController.onPageLoad(NormalMode)
     } else {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     }
   }
 
@@ -221,18 +221,18 @@ class MaximumHoursNavigator @Inject()(
       if (!voucherValue && maxEarnings) {
         routes.ResultController.onPageLoad()
       } else {
-        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        routes.UniversalCreditController.onPageLoad(NormalMode)
       }
 
     (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
       case (Some(parentVoucher), _) => getCallForVoucherValue(parentVoucher)
       case (_, Some(partnerVoucher)) => getCallForVoucherValue(partnerVoucher)
       case _ =>  answers.whoGetsVouchers.fold(
-        SessionExpiredRouter.route(getClass.getName,"maximumEarningsRedirection",Some(answers)))(_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
+        SessionExpiredRouter.route(getClass.getName,"maximumEarningsRedirection",Some(answers)))(_ => routes.UniversalCreditController.onPageLoad(NormalMode))
     }
   }
 
-  private def taxOrUniversalCreditsRoutes(answers: UserAnswers): Call =
+  private def universalCreditRoutes(answers: UserAnswers): Call =
     if (schemes.allSchemesDetermined(answers)) {
 
       val isNotEligibleForTfc = tfc.eligibility(answers) == NotEligible
@@ -247,6 +247,6 @@ class MaximumHoursNavigator @Inject()(
       }
 
     } else {
-      SessionExpiredRouter.route(getClass.getName, "taxOrUniversalCreditsRoutes", Some(answers))
+      SessionExpiredRouter.route(getClass.getName, "universalCreditRoutes", Some(answers))
     }
 }

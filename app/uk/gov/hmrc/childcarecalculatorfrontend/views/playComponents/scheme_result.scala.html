@@ -62,16 +62,6 @@
     <p class="govuk-body" @if(schemeResult.notEligibleID._1.isDefined) {id="@schemeResult.notEligibleID._1"}>@schemeResult.para1</p>
 }
 
-@if(schemeResult.displayTCGuidanceLink){
-    <p class="govuk-body" id="tcGuidance">
-        @messages("result.tc.not.eligible.tc.para1")
-        <a class="govuk-link" rel="external" target="_blank" id="tcGuidanceLink"
-           data-journey-click="link - click:@messages("result.not.eligible.title.ga") @schemeResult.title:@messages("result.tc.scheme.guidance.link")"
-        href="@ucSchemeGuidanceLinkUrl">
-        @messages("result.tc.scheme.guidance.link")<span class="govuk-visually-hidden">@messages("feedback.hint.link.opens.new.tab")</span></a>.
-    </p>
-}
-
 @if(schemeResult.para2.isDefined) {
     <p class="govuk-body" @if(schemeResult.notEligibleID._2.isDefined) { id="@schemeResult.notEligibleID._2" }>@schemeResult.para2</p>
 }

@@ -38,17 +38,6 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         assertContainsMessages(view, "15")
       }
 
-      "User is eligible for TC scheme" in {
-        val modelWithLessThan1000 = ResultsViewModel(tc = Some(500),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-        val modelWithMoreThan1000 = ResultsViewModel(tc = Some(1500),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
-
-        val viewWithLessThan1000 = asDocument(appResultEligible(modelWithLessThan1000, utils, "england")(messages))
-        val viewWithMoreThan1000 = asDocument(appResultEligible(modelWithMoreThan1000, utils, "england")(messages))
-
-        assertContainsMessages(viewWithLessThan1000, "500")
-        assertContainsMessages(viewWithMoreThan1000, "1,500")
-      }
-
      "User is eligible for TFC scheme" in {
         val modelWithLessThan1000 = ResultsViewModel(tfc = Some(600),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
         val modelWithMoreThan1000 = ResultsViewModel(tfc = Some(1600),location = Location.ENGLAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)

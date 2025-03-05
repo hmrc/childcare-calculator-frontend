@@ -66,7 +66,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
       cacheMap copy (data = cacheMap.data -
         HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
         YourChildcareVouchersId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
-        YourMinimumEarningsId.toString - YourMaximumEarningsId.toString - TaxOrUniversalCreditsId.toString -
+        YourMinimumEarningsId.toString - YourMaximumEarningsId.toString - UniversalCreditId.toString -
         PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
         HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
         YouBenefitsIncomeCYId.toString)
@@ -117,7 +117,7 @@ class MaximumHoursCascadeUpsert @Inject()() extends SubCascadeUpsert {
             YourAgeId.toString -
             YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
             PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString -
-            TaxOrUniversalCreditsId.toString -
+            UniversalCreditId.toString -
             //Current Year
             PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
             HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -

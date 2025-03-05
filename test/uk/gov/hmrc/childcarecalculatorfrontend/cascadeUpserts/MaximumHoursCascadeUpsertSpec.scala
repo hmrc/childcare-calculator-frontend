@@ -110,7 +110,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         WhatIsYourTaxCodeId.toString -> JsString("1100L"), YourChildcareVouchersId.toString -> JsString("yes"),
         DoYouGetAnyBenefitsId.toString -> JsBoolean(false), YourAgeId.toString -> JsString("under18"),
         YourMinimumEarningsId.toString -> JsBoolean(true), YourMaximumEarningsId.toString -> JsBoolean(true),
-        TaxOrUniversalCreditsId.toString -> JsString("tc"),
+        UniversalCreditId.toString -> JsString("uc"),
 
         PartnerPaidWorkCYId.toString -> JsBoolean(true),
         ParentEmploymentIncomeCYId.toString -> JsBoolean(true),
@@ -145,7 +145,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YourMinimumEarningsId.toString -> JsBoolean(true),
         PartnerMinimumEarningsId.toString -> JsBoolean(true),
         EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
-        TaxOrUniversalCreditsId.toString-> JsString("tc"),
+        UniversalCreditId.toString-> JsString("uc"),
 
         EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(20, 20)),
         BothPaidPensionCYId.toString -> JsBoolean(true),
@@ -168,7 +168,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YourPartnersAgeId.toString -> JsString("under18"),
         PartnerMinimumEarningsId.toString -> JsBoolean(false),
         PartnerSelfEmployedOrApprenticeId.toString -> JsString(SELFEMPLOYED.toString),
-        TaxOrUniversalCreditsId.toString-> JsString("tc"),
+        UniversalCreditId.toString-> JsString("uc"),
 
 
         ParentPaidWorkCYId.toString -> JsBoolean(true),
@@ -189,7 +189,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YourMinimumEarningsId.toString -> JsBoolean(false),
         AreYouSelfEmployedOrApprenticeId.toString -> JsString(SELFEMPLOYED.toString),
         YourMaximumEarningsId.toString -> JsBoolean(true),
-        TaxOrUniversalCreditsId.toString-> JsString("tc"),
+        UniversalCreditId.toString-> JsString("uc"),
 
         PartnerPaidWorkCYId.toString -> JsBoolean(true),
         ParentEmploymentIncomeCYId.toString -> JsBoolean(true),
@@ -217,7 +217,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         YourPartnersAgeId.toString -> JsString("under18"),
         PartnerMinimumEarningsId.toString -> JsBoolean(false),
         PartnerSelfEmployedOrApprenticeId.toString -> JsString(SELFEMPLOYED.toString),
-        TaxOrUniversalCreditsId.toString-> JsString("tc"),
+        UniversalCreditId.toString-> JsString("uc"),
 
         ParentPaidWorkCYId.toString -> JsBoolean(true),
         PartnerEmploymentIncomeCYId.toString -> JsBoolean(true),
@@ -229,7 +229,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       val result = cascadeUpsert(WhoIsInPaidEmploymentId.toString, you, originalCacheMap)
       result.data mustBe Map(
         WhoIsInPaidEmploymentId.toString -> JsString(you),
-        TaxOrUniversalCreditsId.toString-> JsString("tc")
+        UniversalCreditId.toString-> JsString("uc")
       )
     }
 

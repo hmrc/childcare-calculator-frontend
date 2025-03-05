@@ -140,7 +140,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouGetAnyBenefits) thenReturn Some(Set(IncapacityBenefit, CarersAllowance))
-        when(answers.taxOrUniversalCredits) thenReturn Some(true)
+        when(answers.universalCredit) thenReturn Some(true)
 
         userAnswerToHousehold.convert(answers) mustEqual household
       }
@@ -157,7 +157,7 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouGetAnyBenefits) thenReturn Some(Set(IncapacityBenefit, CarersAllowance))
-        when(answers.taxOrUniversalCredits) thenReturn Some(true)
+        when(answers.universalCredit) thenReturn Some(true)
 
         userAnswerToHousehold.convert(answers) mustEqual household
       }
