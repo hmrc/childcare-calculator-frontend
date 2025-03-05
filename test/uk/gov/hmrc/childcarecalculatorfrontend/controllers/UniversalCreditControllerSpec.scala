@@ -22,26 +22,26 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, TaxOrUniversalCreditsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, UniversalCreditId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.universalCredit
 
 
 
-class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
+class UniversalCreditControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[taxOrUniversalCredits]
+  val view = application.injector.instanceOf[universalCredit]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new TaxOrUniversalCreditsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
+    new UniversalCreditController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction, new DataRequiredAction, view)
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, Some(false))(fakeRequest, messages).toString
 
-  "TaxOrUniversalCredits Controller" must {
+  "UniversalCredit Controller" must {
 
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(NormalMode)(fakeRequest)
@@ -51,7 +51,7 @@ class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData =  Map(TaxOrUniversalCreditsId.toString -> JsBoolean(true))
+      val validData =  Map(UniversalCreditId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -70,7 +70,7 @@ class TaxOrUniversalCreditsControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = BooleanForm("taxOrUniversalCredits.error.notCompleted").bind(Map("value" -> "invalid value"))
+      val boundForm = BooleanForm("universalCredit.error.notCompleted").bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 

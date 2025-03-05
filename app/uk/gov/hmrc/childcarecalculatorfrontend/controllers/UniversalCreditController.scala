@@ -25,32 +25,32 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.TaxOrUniversalCreditsId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.UniversalCreditId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{universalCreditErrorKey, universalCreditPartnerErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.universalCredit
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TaxOrUniversalCreditsController @Inject()(
+class UniversalCreditController @Inject()(
                                         appConfig: FrontendAppConfig,
                                         mcc: MessagesControllerComponents,
                                         dataCacheConnector: DataCacheConnector,
                                         navigator: Navigator,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        taxOrUniversalCredits: taxOrUniversalCredits)(implicit ec: ExecutionContext)
+                                        universalCredit: universalCredit)(implicit ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
     implicit request =>
       val havePartner = request.userAnswers.doYouLiveWithPartner
-      val preparedForm = request.userAnswers.taxOrUniversalCredits match {
+      val preparedForm = request.userAnswers.universalCredit match {
         case None => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Ok(taxOrUniversalCredits(appConfig, preparedForm, mode, havePartner))
+      Ok(universalCredit(appConfig, preparedForm, mode, havePartner))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
@@ -64,10 +64,10 @@ class TaxOrUniversalCreditsController @Inject()(
 
       BooleanForm(errorMsgKey).bindFromRequest().fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(taxOrUniversalCredits(appConfig, formWithErrors, mode, havePartner))),
+          Future.successful(BadRequest(universalCredit(appConfig, formWithErrors, mode, havePartner))),
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, TaxOrUniversalCreditsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(TaxOrUniversalCreditsId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector.save[Boolean](request.sessionId, UniversalCreditId.toString, value).map(cacheMap =>
+            Redirect(navigator.nextPage(UniversalCreditId, mode)(new UserAnswers(cacheMap))))
       )
   }
 }
