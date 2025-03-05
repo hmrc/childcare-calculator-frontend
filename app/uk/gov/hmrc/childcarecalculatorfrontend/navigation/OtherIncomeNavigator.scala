@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotDetermined, NotEligible}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{ TaxFreeChildcare}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{you, both, partner, universalCredits}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{you, both, partner, universalCredit}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 /**

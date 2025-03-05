@@ -88,8 +88,8 @@ POST        /partner-maximum-earnings                          uk.gov.hmrc.child
 GET         /either-maximum-earnings                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /either-maximum-earnings                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode ?= NormalMode)
 
-GET         /tax-or-universal-credits                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /tax-or-universal-credits                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.TaxOrUniversalCreditsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /universal-credit                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.UniversalCreditController.onPageLoad(mode: Mode ?= NormalMode)
+POST        /universal-credit                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.UniversalCreditController.onSubmit(mode: Mode ?= NormalMode)
 
 GET         /no-of-children                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /no-of-children                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onSubmit(mode: Mode ?= NormalMode)

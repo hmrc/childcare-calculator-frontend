@@ -108,24 +108,13 @@
 
 @moreInfoBulletList = @{
     Seq(
-        if(model.freeHours.isDefined && model.tc.isDefined) {
-            Some(messages("result.schemes.free.hours.eligibility.guidance.with.tc.bullet"))
-        } else if(model.freeHours.isDefined) {
+        if(model.freeHours.isDefined) {
             Some(messages("result.schemes.free.hours.eligibility.guidance.bullet"))
         } else {
             None
         },
-        if(model.tfc.isDefined && model.tc.isDefined && model.esc.isDefined) {
-            Some(messages("result.schemes.tfc.tc.vouchers.eligibility.guidance.bullet"))
-        } else if(model.tfc.isDefined && model.tc.isDefined) {
-            Some(messages("result.schemes.tfc.ineligibility.taxCredits.guidance.bullet"))
-        } else if(model.tfc.isDefined && model.esc.isDefined) {
+        if(model.tfc.isDefined && model.esc.isDefined) {
             Some(messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet"))
-        } else {
-            None
-        },
-        if(model.tc.isDefined && model.esc.isDefined) {
-            Some(messages("result.schemes.tax.credit.eligibility.with.vouchers.guidance.bullet"))
         } else {
             None
         }
