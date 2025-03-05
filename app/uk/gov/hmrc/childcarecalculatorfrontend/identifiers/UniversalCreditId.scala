@@ -16,6 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object TaxOrUniversalCreditsId extends Identifier {
-  override def toString: String = "taxOrUniversalCredits"
+case object UniversalCreditId extends Identifier {
+  override def toString: String = "universalCredit"
 }

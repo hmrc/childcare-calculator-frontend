@@ -80,8 +80,7 @@ object ChildcareConstants {
 
   val northernIrelandExtraHelpLink = "https://www.nidirect.gov.uk/articles/pre-school-education-places"
 
-  val universalCredits = "uc"
-  val taxCredits = "tc"
+  val universalCredit = "uc"
   val unknownErrorKey = "error.unknown"
 
   val locationErrorKey = "location.error.notCompleted"
@@ -90,8 +89,8 @@ object ChildcareConstants {
   val doYouLiveWithPartnerErrorKey = "doYouLiveWithPartner.error.notCompleted"
   val whoIsInPaidEmploymentErrorKey = "whoIsInPaidEmployment.error.notCompleted"
   val paidEmploymentErrorKey = "paidEmployment.error.notCompleted"
-  val universalCreditErrorKey = "taxOrUniversalCredits.error.notCompleted"
-  val universalCreditPartnerErrorKey = "taxOrUniversalCreditsPartner.error.notCompleted"
+  val universalCreditErrorKey = "universalCredit.error.notCompleted"
+  val universalCreditPartnerErrorKey = "universalCreditPartner.error.notCompleted"
 
   val whichBenefitsYouGetErrorKey = "whichBenefitsYouGet.error.notCompleted"
   val whichBenefitsPartnerGetErrorKey = "whichBenefitsPartnerGet.error.notCompleted"

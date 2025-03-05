@@ -3,9 +3,9 @@
 The Childcare Calculator will help parents quickly self-assess the options for their childcare support, allowing them to
 make a decision on which scheme will best suit their needs. The Childcare Calculator will calculate the data input by
 the users, inform them of their eligibility and how much support that they could receive for the Tax-Free Childcare (TFC),
-Tax Credits (TC), Employer-Supported Childcare (ESC) and Free Hours (including free hours for working parents) schemes.
+Employer-Supported Childcare (ESC) and Free Hours (including free hours for working parents) schemes.
 
-TC and ESC eligibility requires the user to already be receiving them, if they answer that they do not get vouchers or TC
+ESC eligibility requires the user to already be receiving them, if they answer that they do not get vouchers
 then the income questions will be skipped. The users are not informed of being ineligible for those on the summary page.
 
 Free hours schemes is available to everyone regardless of work status or country, however England users may be able to get

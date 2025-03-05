@@ -76,16 +76,6 @@
     ))
 }
 
-@if(model.tc.isDefined) {
-    @schemeResult(SchemeResultModel(
-        title = messages("result.tc.title"),
-        id = Some("tc"),
-        couldGet = Some(messages("result.you.could.get")),
-        eligibility = Some(EligibilityModel("£" + model.tc.fold("")(value => utils.valueFormatter(value)), "taxCreditsEligibility")),
-        periodText = Some(messages("result.tc.period"))
-    ))
-}
-
 @if(model.esc.isDefined) {
     @schemeResult(SchemeResultModel(
         title = messages("result.esc.title"),

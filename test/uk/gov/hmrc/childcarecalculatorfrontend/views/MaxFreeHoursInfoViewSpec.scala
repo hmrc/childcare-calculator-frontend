@@ -53,7 +53,7 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
     }
 
 
-    "display correct message when only eligible for tax free childcare, childcare vouchers, tax credits " in {
+    "display correct message when only eligible for tax free childcare, childcare vouchers " in {
       val view1 = view(frontendAppConfig, Eligible, Eligible, answers()) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))

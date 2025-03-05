@@ -159,7 +159,7 @@ object ChildcarePayFrequency extends Enumeration {
 
 object CreditsEnum extends Enumeration {
   type CreditsEnum = Value
-  val TAXCREDITS, UNIVERSALCREDIT, NONE = Value
+  val UNIVERSALCREDIT, NONE = Value
 
   val enumReads: Reads[CreditsEnum] = EnumUtils.enumReads(CreditsEnum)
 
@@ -182,7 +182,6 @@ object EmploymentStatusEnum extends Enumeration {
 object SchemeEnum extends Enumeration {
   type SchemeEnum = Value
   val TFCELIGIBILITY = Value("tfcEligibility")
-  val TCELIGIBILITY = Value("tcEligibility")
   val ESCELIGIBILITY = Value("escEligibility")
 
   val enumReads: Reads[SchemeEnum] = EnumUtils.enumReads(SchemeEnum)
@@ -202,17 +201,15 @@ object PeriodEnum extends Enumeration {
   implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
 }
 
-object TaxOrUniversalCreditsEnum extends Enumeration {
-  type TaxOrUniversalCreditsEnum = Value
-
-  val TC = Value("tc")
+object UniversalCreditEnum extends Enumeration {
+  type UniversalCreditEnum = Value
   val UC = Value("uc")
   val NONE = Value("none")
 
-  val enumReads: Reads[TaxOrUniversalCreditsEnum]   = EnumUtils.enumReads(TaxOrUniversalCreditsEnum)
-  val enumWrites: Writes[TaxOrUniversalCreditsEnum] = EnumUtils.enumWrites
+  val enumReads: Reads[UniversalCreditEnum]   = EnumUtils.enumReads(UniversalCreditEnum)
+  val enumWrites: Writes[UniversalCreditEnum] = EnumUtils.enumWrites
 
-  implicit def enumFormats: Format[TaxOrUniversalCreditsEnum] = EnumUtils.enumFormat(TaxOrUniversalCreditsEnum)
+  implicit def enumFormats: Format[UniversalCreditEnum] = EnumUtils.enumFormat(UniversalCreditEnum)
 }
 
 object EarningsEnum extends Enumeration {

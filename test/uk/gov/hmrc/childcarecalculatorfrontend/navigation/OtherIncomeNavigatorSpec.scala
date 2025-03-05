@@ -50,11 +50,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
         }
 
-        "redirects to results page when single user selects no, is in receipt of UC, eligible for TFC and TC " in {
+        "redirects to results page when single user selects no, is in receipt of UC, eligible for TFC " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
-          when(answers.taxOrUniversalCredits) thenReturn Some(true)
+          when(answers.universalCredit) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -63,11 +63,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             routes.ResultController.onPageLoad()
         }
 
-        "redirects to Your Other Income Amount CY page when single user selects no, is not in receipt of UC, eligible for TC but not eligible for TFC " in {
+        "redirects to Your Other Income Amount CY page when single user selects no, is not in receipt of UC but not eligible for TFC " in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
-          when(answers.taxOrUniversalCredits) thenReturn Some(true)
+          when(answers.universalCredit) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -79,7 +79,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(false)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
-          when(answers.taxOrUniversalCredits) thenReturn Some(true)
+          when(answers.universalCredit) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -88,11 +88,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         }
 
 
-        "redirects to results page when user with partner selects no, is in receipt of UC, eligible for TFC and TC " in {
+        "redirects to results page when user with partner selects no, is in receipt of UC, eligible for TFC" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)
           when(answers.yourOtherIncomeThisYear) thenReturn Some(false)
-          when(answers.taxOrUniversalCredits) thenReturn Some(true)
+          when(answers.universalCredit) thenReturn Some(true)
 
           when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -145,11 +145,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           {
 
 
-            "redirects to results page when user with partner  selects no, is in receipt of UC, eligible for TFC and TC " in {
+            "redirects to results page when user with partner  selects no, is in receipt of UC, eligible for TFC" in {
               val answers = spy(userAnswers())
               when(answers.doYouLiveWithPartner) thenReturn Some(true)
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
-              when(answers.taxOrUniversalCredits) thenReturn Some(true)
+              when(answers.universalCredit) thenReturn Some(true)
 
               when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -157,12 +157,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
                 routes.ResultController.onPageLoad()
             }
 
-            "redirects to Both Income Info CY page when user with partner selects no, is not receipt of UC," +
-              " eligible for TC and but not eligible for TC " in {
+            "redirects to Both Income Info CY page when user with partner selects no, is not receipt of UC" in {
               val answers = spy(userAnswers())
               when(answers.doYouLiveWithPartner) thenReturn Some(true)
               when(answers.bothOtherIncomeThisYear) thenReturn Some(false)
-              when(answers.taxOrUniversalCredits) thenReturn Some(true)
+              when(answers.universalCredit) thenReturn Some(true)
 
               when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -170,12 +169,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
                 routes.ResultController.onPageLoad()
             }
 
-            "redirects to Who Gets Other Income CY page when user with partner selects yes, is not receipt of UC," +
-              " eligible for TC and but not eligible for TC " in {
+            "redirects to Who Gets Other Income CY page when user with partner selects yes, is not receipt of UC" in {
               val answers = spy(userAnswers())
               when(answers.doYouLiveWithPartner) thenReturn Some(true)
               when(answers.bothOtherIncomeThisYear) thenReturn Some(true)
-              when(answers.taxOrUniversalCredits) thenReturn Some(true)
+              when(answers.universalCredit) thenReturn Some(true)
 
               when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -233,12 +231,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       "How Much Your Other Income CY Route" must {
         "redirect to right page when single user" when {
 
-          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+          "redirects to results page when user is in receipt of UC, eligible for TFC" in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner) thenReturn Some(false)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(true)
+            when(answers.universalCredit) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -246,12 +244,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               routes.ResultController.onPageLoad()
           }
 
-          "redirects to YourIncomeInfoCY page when user is not in receipt of UC, eligible for TC but not eligible for TFC " in {
+          "redirects to YourIncomeInfoCY page when user is not in receipt of UC, not eligible for TFC " in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner) thenReturn Some(false)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(false)
+            when(answers.universalCredit) thenReturn Some(false)
 
             when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -263,12 +261,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirect to correct page when user has partner" when {
 
 
-          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+          "redirects to results page when user is in receipt of UC, eligible for TFC" in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(true)
+            when(answers.universalCredit) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -276,12 +274,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               routes.ResultController.onPageLoad()
           }
 
-          "redirects to BothIncomeInfoCY page when user is not in receipt of UC, eligible for TC but not eligible for TFC " in {
+          "redirects to BothIncomeInfoCY page when user is not in receipt of UC, not eligible for TFC " in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.yourOtherIncomeThisYear) thenReturn Some(true)
             when(answers.yourOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(true)
+            when(answers.universalCredit) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn NotEligible
 
@@ -300,21 +298,13 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
       "How Much Both other income CY route" must {
         "redirect to right page when user provides valid input" when {
-          "cannot determine if they can have tax credits" in {
-            val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment) thenReturn Some(both)
-            when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
 
-            navigator().nextPage(OtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-              routes.ResultController.onPageLoad()
-          }
-
-          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+          "redirects to results page when user is in receipt of UC, eligible for TFC" in {
             val answers = spy(userAnswers())
             when(answers.whoIsInPaidEmployment) thenReturn Some(both)
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.otherIncomeAmountCY) thenReturn Some(OtherIncomeAmountCY(5, 5))
-            when(answers.taxOrUniversalCredits) thenReturn Some(true)
+            when(answers.universalCredit) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -329,12 +319,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirect to right page when user provides valid input" when {
 
 
-          "redirects to results page when user is in receipt of UC, eligible for TFC and TC " in {
+          "redirects to results page when user is in receipt of UC, eligible for TFC" in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(true)
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(true)
+            when(answers.universalCredit) thenReturn Some(true)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
@@ -342,12 +332,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               routes.ResultController.onPageLoad()
           }
 
-          "redirects to BothIncomeInfoCY page when user is not in receipt of UC, eligible for TFC and TC " in {
+          "redirects to BothIncomeInfoCY page when user is not in receipt of UC, eligible for TFC" in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner) thenReturn Some(true)
             when(answers.partnerAnyOtherIncomeThisYear) thenReturn Some(true)
             when(answers.partnerOtherIncomeAmountCY) thenReturn Some(BigDecimal(23))
-            when(answers.taxOrUniversalCredits) thenReturn Some(false)
+            when(answers.universalCredit) thenReturn Some(false)
 
             when(tfc.eligibility(any())) thenReturn Eligible
 
