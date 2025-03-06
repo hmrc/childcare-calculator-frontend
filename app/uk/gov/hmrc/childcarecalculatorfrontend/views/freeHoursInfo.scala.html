@@ -26,16 +26,10 @@
     buttonLink: playComponents.button_link
 )
 
-@(
-    isChildAgedTwo: Boolean,
-    isChildAgedThreeOrFour :Boolean,
-    hasChildcareCosts : Boolean,
-    approvedProviderCosts: Boolean,
-    location: Location.Value
-)(implicit request: Request[_], messages: Messages)
+@(location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("freeHoursInfo.title"),
+    pageTitle = messages("freeHoursInfo.title")
 ) {
 
     @heading(messages("freeHoursInfo.heading"))
@@ -49,32 +43,16 @@
 
     <h2 class="govuk-heading-m">@messages("freeHoursInfo.heading2")</h2>
 
-    <p class="govuk-body">
-        @if(!(hasChildcareCosts && approvedProviderCosts)) {
-            @messages("freeHoursInfo.guidance.isEligibleForOnlyOneScheme")
-        } else {
-            @messages("freeHoursInfo.guidance.isNotEligibleForOnlyOneScheme")
+    <p class="govuk-body">@messages("freeHoursInfo.guidance")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        @if(location == Location.ENGLAND) {
+            <li>@messages("freeHoursInfo.li.workingParents")</li>
         }
-    </p>
 
-    @if(hasChildcareCosts && approvedProviderCosts) {
-        <ul class="govuk-list govuk-list--bullet">
-            @if((isChildAgedThreeOrFour || isChildAgedTwo) && location == Location.ENGLAND) {
-                <li>@messages("freeHoursInfo.li.workingParents")</li>
-            }
-
-            <li>@messages("freeHoursInfo.li.tfc")</li>
-            <li>@messages("freeHoursInfo.li.vouchers")</li>
-        </ul>
-    }
-
-    @if(!hasChildcareCosts) {
-        <p class="govuk-body">@messages("freeHoursInfo.no.childcare.para") <a href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursInfo.no.childcare.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
-    }
-
-    @if(hasChildcareCosts && !approvedProviderCosts) {
-        <p class="govuk-body">@messages("freeHoursInfo.no.approved.para") <a href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursInfo.no.approved.para.link")</a>. @messages("freeHoursInfo.no.childcare.para.end")</p>
-    }
+        <li>@messages("freeHoursInfo.li.tfc")</li>
+        <li>@messages("freeHoursInfo.li.vouchers")</li>
+    </ul>
 
     @buttonLink(
         messageKey = "site.save_and_continue",

@@ -175,18 +175,10 @@ freeHoursInfo.para1.scotland = You can get up to 1140 hours of funded early lear
 freeHoursInfo.para1.wales = You can get 10 hours of free childcare a week in term time with an approved provider - this is around 390 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.para1.northern-ireland = You can get 12 and a half hours of free pre-school education a week in term time with an approved provider – this is 475 hours a year for your 3 or 4 year old. Free childcare hours stop when your child starts in reception class.
 freeHoursInfo.heading2 = You could still get more help
-freeHoursInfo.guidance.isEligibleForOnlyOneScheme = By giving more information you can check how much help you can get from Free Childcare For Working Parents.
-freeHoursInfo.guidance.isNotEligibleForOnlyOneScheme = By giving more information you can check how much help you could get from:
-
+freeHoursInfo.guidance = By giving more information you can check how much help you could get from:
 freeHoursInfo.li.workingParents = Free Childcare For Working Parents
-freeHoursInfo.li.vouchers = childcare vouchers (existing users only)
 freeHoursInfo.li.tfc = Tax-Free Childcare
-freeHoursInfo.no.childcare.para = You need to have childcare costs for the other available schemes. So if you’re here to see what support you can get from them, you should select that you
-freeHoursInfo.no.childcare.link = expect to have childcare costs in the future
-freeHoursInfo.no.childcare.para.end = You’ll need to give an estimate of how much you think you might pay as part of the calculation.
-freeHoursInfo.no.approved.para = You need to have approved childcare costs for the other available schemes. So if you’re here to see what support you can get from them, you should select that you
-freeHoursInfo.no.approved.para.link = will have approved childcare costs or that you’re not sure
-freeHoursInfo.no.approved.para.end = . You’ll need to give an estimate of how much you think you might pay as part of the calculation.
+freeHoursInfo.li.vouchers = childcare vouchers (existing users only)
 
 freeHoursResult.title = Your eligibility for childcare support
 freeHoursResult.heading = Your eligibility for childcare support
