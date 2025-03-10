@@ -23,7 +23,7 @@ import java.time.LocalDate
 
 // scalastyle:off number.of.methods
 
-class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils {
+class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def surveyDoNotUnderstand: Option[String] = cacheMap.getEntry[String](SurveyDoNotUnderstandId.toString)
 
@@ -356,11 +356,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
     (doYouGetAnyBenefits.getOrElse(Set.empty) ++ doesYourPartnerGetAnyBenefits.getOrElse(Set.empty))
       .contains(ParentsBenefits.SevereDisablementAllowance)
 
-  def isAlreadyReceivingUniversalCredit: Boolean =
-    universalCredit match {
-      case Some(credit) if credit == UniversalCreditEnum.UC.toString => true
-      case None => false
-      case _ => false
-    }
+  def isAlreadyReceivingUniversalCredit: Boolean = {
+    universalCredit.contains(true)
+  }
 
 }

@@ -842,6 +842,17 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             routes.ResultController.onPageLoad()
 
         }
+
+        "single user redirects to universal credit page when Childcare vouchers selection is NO " +
+          "and yourMaximumEarnings is false " in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.yourChildcareVouchers) thenReturn Some(false)
+          when(answers.yourMaximumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad(NormalMode)
+        }
       }
 
       "Partner Maximum earnings" must {
