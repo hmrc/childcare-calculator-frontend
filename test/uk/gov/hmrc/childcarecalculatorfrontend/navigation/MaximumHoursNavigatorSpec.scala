@@ -806,6 +806,18 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         //TODO :NEED TO WRITE A SCENARIO WHEN BOTH NOT GETTING VOUCHERS
 
         "user with partner redirects to Do you get universal credit page " +
+          "where yourChildcareVouchers is no and partner does not satisfy NMW" in {
+          val answers = spy(userAnswers())
+          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.yourChildcareVouchers) thenReturn Some(false)
+          when(answers.partnerMinimumEarnings) thenReturn Some(false)
+          when(answers.yourMaximumEarnings) thenReturn Some(false)
+
+          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad(NormalMode)
+        }
+
+        "user with partner redirects to Do you get universal credit page " +
           "where yourChildcareVouchers is yes only parent is in paid employment" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner) thenReturn Some(true)

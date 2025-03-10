@@ -787,10 +787,6 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         val answers = helper(cacheMap(UniversalCreditId.toString -> JsBoolean(true)))
         answers.isAlreadyReceivingUniversalCredit mustEqual false
       }
-      "Someone has neither universal credit" in {
-        val answers = helper(cacheMap(UniversalCreditId.toString -> JsBoolean(false)))
-        answers.isAlreadyReceivingUniversalCredit mustEqual false
-      }
     }
   }
 

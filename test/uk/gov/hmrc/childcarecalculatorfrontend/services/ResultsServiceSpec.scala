@@ -346,7 +346,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     }
 
     "Return View Model with no TFC warning message" when {
-      "They are eligible for TFC and not ESC" in {
+      "They are eligible for TFC and not UC or ESC" in {
         val schemeResults = SchemeResults(List(tfcScheme))
         val answers = spy(userAnswers())
 
@@ -360,7 +360,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     }
 
     "Return View Model with TFC warning message" when {
-      "They are eligible for TFC and have ESC" in {
+      "They are eligible for TFC, have ESC but not UC" in {
         val schemeResults = SchemeResults(List(tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
@@ -372,7 +372,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         values.tfcWarningMessage mustBe Some(messages("result.tfc.warning.esc"))
       }
 
-      "They are eligible for TFC and have ESC too" in {
+      "They are eligible for TFC and have ESC but not UC" in {
         val schemeResults = SchemeResults(List(tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
