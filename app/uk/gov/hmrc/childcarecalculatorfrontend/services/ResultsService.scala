@@ -82,7 +82,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       val result = results.schemes.foldLeft(resultViewModel)((result, scheme) =>
         getViewModelWithFreeHours(
           answers,
-          setSchemeInViewModel(scheme, result, answers.universalCredit)
+          setSchemeInViewModel(scheme, result)
         )
       )
 
@@ -112,7 +112,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     }
   }
 
-  private def setSchemeInViewModel(scheme: SingleSchemeResult, resultViewModel: ResultsViewModel, UC: Option[Boolean]) = {
+  private def setSchemeInViewModel(scheme: SingleSchemeResult, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {
       scheme.name match {
         case TCELIGIBILITY => resultViewModel

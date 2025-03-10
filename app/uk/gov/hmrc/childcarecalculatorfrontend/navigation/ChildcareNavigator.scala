@@ -180,7 +180,7 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
   private def expectedChildcareCostsRoutes(id: Int)(answers: UserAnswers): Call = {
     answers.doYouLiveWithPartner.map(hasPartner => answers.childrenWithCosts match {
       case Some(childrenWithCosts) => checkNextChildWithCosts(id, hasPartner, childrenWithCosts, answers)
-      case _ => isEligibleForChildcareVouchers(answers, hasPartner)
+      case _ => hasVouchersOrOnSeveredDisabilityPremium(answers, hasPartner)
     })
   }.getOrElse(SessionExpiredRouter.route(getClass.getName,"expectedChildcareCostsRoutes",Some(answers)))
 
@@ -193,11 +193,11 @@ class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with Date
       nextId =>
         routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, nextId)
     }.getOrElse {
-      isEligibleForChildcareVouchers(answers, hasPartner)
+      hasVouchersOrOnSeveredDisabilityPremium(answers, hasPartner)
     }
   }
 
-  private[navigation] def isEligibleForChildcareVouchers(answers: UserAnswers, hasPartner: Boolean): Call = {
+  private[navigation] def hasVouchersOrOnSeveredDisabilityPremium(answers: UserAnswers, hasPartner: Boolean): Call = {
     if (answers.hasVouchers){
       routeBasedIfPartnerOrNot(hasPartner)
     } else {

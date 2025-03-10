@@ -206,7 +206,6 @@ object UniversalCreditEnum extends Enumeration {
   type UniversalCreditEnum = Value
 
   val TC = Value("tc")
-  val UC = Value("uc")
   val NONE = Value("none")
 
   val enumReads: Reads[UniversalCreditEnum]   = EnumUtils.enumReads(UniversalCreditEnum)

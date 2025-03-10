@@ -720,7 +720,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   "What are your expected childcare costs" must {
     def setupNavigator(value: Call): ChildcareNavigator = new ChildcareNavigator(new Utils()) {
       override def now: LocalDate = testDate
-      override def isEligibleForChildcareVouchers(answers: UserAnswers, hasPartner: Boolean): Call = value
+      override def hasVouchersOrOnSeveredDisabilityPremium(answers: UserAnswers, hasPartner: Boolean): Call = value
     }
 
     val yourIncomeNavigator = setupNavigator(routes.YourIncomeInfoController.onPageLoad())
@@ -807,7 +807,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.universalCredit).thenReturn(Some(true))
         when(answers.isOnSevereDisabilityPremium).thenCallRealMethod()
 
-        val result = navigator.isEligibleForChildcareVouchers(answers, hasPartner = true)
+        val result = navigator.hasVouchersOrOnSeveredDisabilityPremium(answers, hasPartner = true)
         result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
       }
 
@@ -815,7 +815,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         val answers = mock[UserAnswers]
         when(answers.hasVouchers).thenReturn(true)
 
-        val result = navigator.isEligibleForChildcareVouchers(answers, hasPartner = true)
+        val result = navigator.hasVouchersOrOnSeveredDisabilityPremium(answers, hasPartner = true)
         result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
       }
     }
@@ -825,7 +825,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         val answers = mock[UserAnswers]
         when(answers.hasVouchers).thenReturn(true)
 
-        val result = navigator.isEligibleForChildcareVouchers(answers, hasPartner = false)
+        val result = navigator.hasVouchersOrOnSeveredDisabilityPremium(answers, hasPartner = false)
         result mustEqual routes.YourIncomeInfoController.onPageLoad()
       }
     }
