@@ -358,7 +358,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def isAlreadyReceivingUniversalCredit: Boolean =
     universalCredit match {
-      case Some(credit) if credit == UniversalCreditEnum.TC.toString => true
+      case Some(credit) if credit == UniversalCreditEnum.UC.toString => true
       case None => false
       case _ => false
     }
