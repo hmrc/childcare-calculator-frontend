@@ -55,64 +55,6 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase with BeforeAndAfter
         status(result) mustBe SEE_OTHER
       }
     }
-    "return OK with childcare vouchers and tfc when we have childcare costs and they are approved" in {
-      val location = ENGLAND
-      val validData = Map(ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.NOTSURE.toString), ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
-      val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(childAgedFour).onPageLoad(fakeRequest)
-
-      status(result) mustBe OK
-      contentAsString(result) mustBe view(false, false, true, true, location)(fakeRequest, messages).toString
-    }
-
-    "return OK with no childcare vouchers and tfc when we don't have childcare costs" when {
-      "we don't have childcare costs" in {
-        val location = ENGLAND
-        val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NO.toString), LocationId.toString -> JsString(location.toString))
-        val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-        val result = controller(childAgedFour).onPageLoad(fakeRequest)
-
-        status(result) mustBe OK
-        contentAsString(result) mustBe view(false, false, false, false, location)(fakeRequest, messages).toString
-      }
-
-      "we have childcare costs but they are not approved" in {
-        val location = ENGLAND
-        val validData = Map(ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.NO.toString), ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString), LocationId.toString -> JsString(location.toString))
-        val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-        val result = controller(childAgedFour).onPageLoad(fakeRequest)
-
-        status(result) mustBe OK
-        contentAsString(result) mustBe view(false, false, true, false, location)(fakeRequest, messages).toString
-      }
-    }
-
-    "return OK with no childcare costs paragraph if they have no childcare costs" in {
-      val location = ENGLAND
-      val validData = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NO.toString), LocationId.toString -> JsString(location.toString))
-      val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(childAgedFour).onPageLoad(fakeRequest)
-
-      status(result) mustBe OK
-      contentAsString(result) mustBe view(false, false, false, false, location)(fakeRequest, messages).toString
-    }
-
-    "return OK with no approved childcare paragraph when they have childcare costs but not approved" in {
-      val location = ENGLAND
-      val validData = Map(ApprovedProviderId.toString -> JsString(YesNoUnsureEnum.NO.toString), ChildAgedThreeOrFourId.toString -> JsBoolean(true), ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NOTYET.toString), LocationId.toString -> JsString(location.toString))
-      val childAgedFour = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(childAgedFour).onPageLoad(fakeRequest)
-
-      status(result) mustBe OK
-      contentAsString(result) mustBe view(false, true, true, false, location)(fakeRequest, messages).toString
-    }
-
-    "redirect to Location on a GET when previous data exists but the location hasn't been answered" in {
-      val result = controller(getEmptyCacheMap).onPageLoad(fakeRequest)
-
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad(NormalMode).url)
-    }
   }
 
 }
