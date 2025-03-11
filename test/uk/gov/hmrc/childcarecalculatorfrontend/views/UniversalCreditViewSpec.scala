@@ -21,37 +21,37 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewViewBehaviours, NewYesNoViewBehaviours}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.taxOrUniversalCredits
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.universalCredit
 
-class TaxOrUniversalCreditsViewSpec extends NewYesNoViewBehaviours {
+class UniversalCreditViewSpec extends NewYesNoViewBehaviours {
 
-  val view = application.injector.instanceOf[taxOrUniversalCredits]
+  val view = application.injector.instanceOf[universalCredit]
 
   override val form =  BooleanForm()
 
-  val messageKeyPrefix = "taxOrUniversalCredits"
-  val messageKeyPartnerPrefix = "taxOrUniversalCreditsPartner"
+  val messageKeyPrefix = "universalCredit"
+  val messageKeyPartnerPrefix = "universalCreditPartner"
 
 
   def createView(isPartner : Option[Boolean]) = () => view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
 
   def createViewUsingForm( isPartner : Option[Boolean]) = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode,  isPartner)(fakeRequest, messages)
 
-  "TaxOrUniversalCredits view when there is partner" must {
+  "UniversalCredit view when there is partner" must {
 
     behave like normalPage(createView(Some(true)), messageKeyPartnerPrefix)
 
     behave like pageWithBackLink(createView(Some(true)))
 
-    behave like yesNoPage(createViewUsingForm(Some(true)), messageKeyPartnerPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm(Some(true)), messageKeyPartnerPrefix, routes.UniversalCreditController.onSubmit(NormalMode).url)
   }
 
-  "TaxOrUniversalCredits view when there is no partner" must {
+  "UniversalCredit view when there is no partner" must {
 
     behave like normalPage(createView(Some(false)), messageKeyPrefix)
 
     behave like pageWithBackLink(createView(Some(false)))
 
-    behave like yesNoPage(createViewUsingForm(Some(false)), messageKeyPrefix, routes.TaxOrUniversalCreditsController.onSubmit(NormalMode).url)
+    behave like yesNoPage(createViewUsingForm(Some(false)), messageKeyPrefix, routes.UniversalCreditController.onSubmit(NormalMode).url)
   }
 }

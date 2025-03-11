@@ -23,7 +23,7 @@ import java.time.LocalDate
 
 // scalastyle:off number.of.methods
 
-class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils {
+class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def surveyDoNotUnderstand: Option[String] = cacheMap.getEntry[String](SurveyDoNotUnderstandId.toString)
 
@@ -121,7 +121,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def noOfChildren: Option[Int] = cacheMap.getEntry[Int](NoOfChildrenId.toString)
 
-  def taxOrUniversalCredits: Option[Boolean] = cacheMap.getEntry[Boolean](TaxOrUniversalCreditsId.toString)
+  def universalCredit: Option[Boolean] = cacheMap.getEntry[Boolean](UniversalCreditId.toString)
 
   def partnerMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMaximumEarningsId.toString)
 
@@ -356,11 +356,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
     (doYouGetAnyBenefits.getOrElse(Set.empty) ++ doesYourPartnerGetAnyBenefits.getOrElse(Set.empty))
       .contains(ParentsBenefits.SevereDisablementAllowance)
 
-  def isAlreadyReceivingTaxCredits: Boolean =
-    taxOrUniversalCredits match {
-      case Some(credit) if credit == TaxOrUniversalCreditsEnum.TC.toString => true
-      case None => false
-      case _ => false
-    }
+  def isAlreadyReceivingUniversalCredit: Boolean = {
+    universalCredit.contains(true)
+  }
 
 }

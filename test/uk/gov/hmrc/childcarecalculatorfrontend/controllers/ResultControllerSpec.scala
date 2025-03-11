@@ -23,8 +23,8 @@ import play.api.i18n.Lang
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, TaxOrUniversalCreditsId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.TaxOrUniversalCreditsEnum.{NONE, TC}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, UniversalCreditId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.UniversalCreditEnum.{NONE}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, ResultsService}
@@ -46,16 +46,6 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
 
   val cacheMapWithNoLocation = new CacheMap("id", Map("test" -> JsString(location.toString)))
 
-  val cacheMapNotEligibleForTaxCredits = new CacheMap("id", Map(
-    LocationId.toString -> JsString(location.toString),
-    TaxOrUniversalCreditsId.toString -> JsString(NONE.toString)
-  ))
-
-  val cacheMapEligibleForTaxCredits = new CacheMap("id", Map(
-    LocationId.toString -> JsString(location.toString),
-    TaxOrUniversalCreditsId.toString -> JsString(TC.toString)
-  ))
-
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
                  resultService: ResultsService): ResultController =
     new ResultController(frontendAppConfig,
@@ -70,7 +60,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
       when(resultService.getResultsViewModel(any(), any())(any(), any(), any())) thenReturn Future.successful(
-        ResultsViewModel(freeHours = Some(15), tc = Some(500), tfc = Some(600), esc = Some(1000), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
+        ResultsViewModel(freeHours = Some(15), tfc = Some(600), esc = Some(1000), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
 
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
       val resultPage = controller(getRelevantData, resultService).onPageLoad(fakeRequest)

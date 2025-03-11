@@ -58,11 +58,9 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     firstParagraphBuilder,
     util
   )
-
-  val tcScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.TCELIGIBILITY, 500, None, Some(TaxCreditsEligibility(true, true)))
-  val tfcScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.TFCELIGIBILITY, 500, None, None)
-  val escScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.ESCELIGIBILITY, 500, Some(EscClaimantEligibility(true, true)), None)
-  val fullSchemeResults: SchemeResults = SchemeResults(List(tcScheme, tfcScheme, escScheme))
+  val tfcScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.TFCELIGIBILITY, 500, None)
+  val escScheme: SingleSchemeResult = SingleSchemeResult(name = SchemeEnum.ESCELIGIBILITY, 500, Some(EscClaimantEligibility(true, true)))
+  val fullSchemeResults: SchemeResults = SchemeResults(List(tfcScheme, escScheme))
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
@@ -220,42 +218,6 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     }
 
     "Return View Model with not eligible schemes" when {
-      "It is not eligible for TC scheme" when {
-        "Calculator returns NOT eligible for TC" in {
-          val schemeResults = SchemeResults(List(tfcScheme, escScheme))
-          val answers = spy(userAnswers())
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-
-          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
-
-          values.tc mustBe None
-        }
-
-        "Calculator says we are eligible but we have Universal Credits" in {
-          val schemeResults = SchemeResults(List(tfcScheme, escScheme))
-          val answers = spy(userAnswers())
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.taxOrUniversalCredits) thenReturn Some(true)
-
-          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
-
-          values.tc mustBe None
-        }
-
-        "Calculator says we are eligible but we have no TC or Universal Credits" in {
-          val schemeResults = SchemeResults(List(tfcScheme, escScheme))
-          val answers = spy(userAnswers())
-
-          when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-          when(answers.taxOrUniversalCredits) thenReturn Some(false)
-
-          val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
-
-          values.tc mustBe None
-        }
-      }
 
       "It is not eligible for TFC scheme" in {
         val schemeResults = SchemeResults(List(escScheme))
@@ -384,12 +346,12 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     }
 
     "Return View Model with no TFC warning message" when {
-      "They are eligible for TFC and not TC OR ESC" in {
+      "They are eligible for TFC and not UC or ESC" in {
         val schemeResults = SchemeResults(List(tfcScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some(false)
+        when(answers.universalCredit) thenReturn Some(false)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -398,24 +360,24 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
     }
 
     "Return View Model with TFC warning message" when {
-      "They are eligible for TFC and have ESC" in {
+      "They are eligible for TFC, have ESC but not UC" in {
         val schemeResults = SchemeResults(List(tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some(false)
+        when(answers.universalCredit) thenReturn Some(false)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
         values.tfcWarningMessage mustBe Some(messages("result.tfc.warning.esc"))
       }
 
-      "They are eligible for TFC and have ESC too" in {
+      "They are eligible for TFC and have ESC but not UC" in {
         val schemeResults = SchemeResults(List(tfcScheme, escScheme))
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some(false)
+        when(answers.universalCredit) thenReturn Some(false)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 
@@ -427,7 +389,7 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
         val answers = spy(userAnswers())
 
         when(eligibilityService.eligibility(any())(any(), any())) thenReturn Future.successful(schemeResults)
-        when(answers.taxOrUniversalCredits) thenReturn Some(true)
+        when(answers.universalCredit) thenReturn Some(true)
 
         val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 

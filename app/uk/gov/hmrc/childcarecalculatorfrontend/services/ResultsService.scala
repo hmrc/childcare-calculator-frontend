@@ -82,11 +82,11 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       val result = results.schemes.foldLeft(resultViewModel)((result, scheme) =>
         getViewModelWithFreeHours(
           answers,
-          setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)
+          setSchemeInViewModel(scheme, result)
         )
       )
 
-      if (result.tfc.isDefined && answers.taxOrUniversalCredits.contains(true)) {
+      if (result.tfc.isDefined && answers.universalCredit.contains(true)) {
         result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.uc")))
       }
       else if (result.tfc.isDefined && result.esc.isDefined) {
@@ -112,7 +112,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     }
   }
 
-  private def setSchemeInViewModel(scheme: SingleSchemeResult, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[Boolean]) = {
+  private def setSchemeInViewModel(scheme: SingleSchemeResult, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {
       scheme.name match {
         case TCELIGIBILITY => resultViewModel

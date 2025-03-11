@@ -202,17 +202,16 @@ object PeriodEnum extends Enumeration {
   implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
 }
 
-object TaxOrUniversalCreditsEnum extends Enumeration {
-  type TaxOrUniversalCreditsEnum = Value
+object UniversalCreditEnum extends Enumeration {
+  type UniversalCreditEnum = Value
 
-  val TC = Value("tc")
   val UC = Value("uc")
   val NONE = Value("none")
 
-  val enumReads: Reads[TaxOrUniversalCreditsEnum]   = EnumUtils.enumReads(TaxOrUniversalCreditsEnum)
-  val enumWrites: Writes[TaxOrUniversalCreditsEnum] = EnumUtils.enumWrites
+  val enumReads: Reads[UniversalCreditEnum]   = EnumUtils.enumReads(UniversalCreditEnum)
+  val enumWrites: Writes[UniversalCreditEnum] = EnumUtils.enumWrites
 
-  implicit def enumFormats: Format[TaxOrUniversalCreditsEnum] = EnumUtils.enumFormat(TaxOrUniversalCreditsEnum)
+  implicit def enumFormats: Format[UniversalCreditEnum] = EnumUtils.enumFormat(UniversalCreditEnum)
 }
 
 object EarningsEnum extends Enumeration {

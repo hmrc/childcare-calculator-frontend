@@ -49,7 +49,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
     } else {
       None
     }
-    Household(credits = stringToCreditsEnum(answers.taxOrUniversalCredits), location = answers.location.getOrElse(Location.ENGLAND),
+    Household(credits = stringToCreditsEnum(answers.universalCredit), location = answers.location.getOrElse(Location.ENGLAND),
       parent = createParentClaimant(answers), partner = partner, children = children)
   }
 
