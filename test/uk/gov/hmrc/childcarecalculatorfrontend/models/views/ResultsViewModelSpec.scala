@@ -54,7 +54,7 @@ class ResultsViewModelSpec extends SpecBase {
 
     "not display information about your two year old" when {
       "user does live in Northern Ireland, has a two year old and either has a three year old or is eligible to any scheme" in {
-        val model = ResultsViewModel(location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childrenAgeGroups = Set(TwoYears, ThreeYears))
+        val model = ResultsViewModel(tfc = Some(100), location = Location.NORTHERN_IRELAND, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, childrenAgeGroups = Set(TwoYears, ThreeYears))
         model.showTwoYearOldInfo mustBe false
       }
     }
