@@ -832,7 +832,7 @@ result.guidance = You answered that you have children, with childcare costs of Â
 result.more.info.title = How the schemes work together
 result.more.info.para = Of the childcare schemes available to you:
 
-result.schemes.free.hours.eligibility.guidance.bullet = free childcare hours can be used with any of the other schemes
+result.schemes.free.hours.eligibility.guidance.bullet = Free childcare hours can be used with any of the other schemes
 result.schemes.tfc.ineligibility.vouchers.guidance.bullet = Tax-Free Childcare cannot be used with childcare vouchers
 
 result.changes.to.circumstances.heading = Changes in your income

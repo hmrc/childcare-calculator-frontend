@@ -159,7 +159,7 @@ object ChildcarePayFrequency extends Enumeration {
 
 object CreditsEnum extends Enumeration {
   type CreditsEnum = Value
-  val TAXCREDITS, UNIVERSALCREDIT, NONE = Value
+  val UNIVERSALCREDIT, NONE = Value
 
   val enumReads: Reads[CreditsEnum] = EnumUtils.enumReads(CreditsEnum)
 
