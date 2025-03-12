@@ -20,7 +20,6 @@ import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
 case class Income(
@@ -35,33 +34,6 @@ object Income {
   implicit val formatIncome: OFormat[Income] = Json.format[Income]
 }
 
-case class Benefits(
-                     disabilityBenefits: Boolean = false,
-                     highRateDisabilityBenefits: Boolean = false,
-                     incomeBenefits: Boolean = false,
-                     carersAllowance: Boolean = false,
-                     scottishCarersAllowance: Boolean = false
-                   )
-
-object Benefits {
-  implicit val formatBenefits: OFormat[Benefits] = Json.format[Benefits]
-
-  val TfcOrFreeChildcareQualifyingBenefits: Set[ParentsBenefits] = Set(
-    CarersAllowance,
-    IncapacityBenefit,
-    SevereDisablementAllowance,
-    ContributionBasedEmploymentAndSupportAllowance
-  )
-
-  def from(data: Option[Set[ParentsBenefits]]): Option[Benefits] =
-    data.map { parentsBenefits =>
-      if (parentsBenefits.intersect(TfcOrFreeChildcareQualifyingBenefits).nonEmpty)
-        Benefits(carersAllowance = true)
-      else
-        Benefits()
-    }
-}
-
 case class MinimumEarnings(
                             amount: BigDecimal = 0.00,
                             employmentStatus: Option[EmploymentStatusEnum] = None,
@@ -74,7 +46,7 @@ object MinimumEarnings {
 
 case class Claimant(
                      ageRange: Option[AgeEnum] = None,
-                     benefits: Option[Benefits] = None,
+                     benefits: Set[ParentsBenefits] = Set.empty,
                      lastYearlyIncome: Option[Income] = None,
                      currentYearlyIncome: Option[Income] = None,
                      hours: Option[BigDecimal] = None,

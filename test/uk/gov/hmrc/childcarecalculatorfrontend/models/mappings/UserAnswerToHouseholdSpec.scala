@@ -130,14 +130,17 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
       "has location and universal credit for non-scottish users" in {
         val parent = Claimant(
-          benefits = Some(Benefits(carersAllowance = true)),
+          benefits = Set(CarersAllowance, IncapacityBenefit),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
+        val household = Household(
+          credits = Some(CreditsEnum.UNIVERSALCREDIT),
+          location = Location.ENGLAND,
+          parent = parent
+        )
 
-        val household = Household(credits = Some(CreditsEnum.UNIVERSALCREDIT), location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
-
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouGetAnyBenefits) thenReturn Some(Set(IncapacityBenefit, CarersAllowance))
         when(answers.universalCredit) thenReturn Some(true)
@@ -147,14 +150,17 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
       "has location and UNIVERSAL CREDIT for scottish users" in {
         val parent = Claimant(
-          benefits = Some(Benefits(carersAllowance = true)),
+          benefits = Set(CarersAllowance, IncapacityBenefit),
           escVouchers = Some(YesNoUnsureEnum.NO),
           minimumEarnings = Some(MinimumEarnings(0.0,None,None))
         )
+        val household = Household(
+          credits = Some(CreditsEnum.UNIVERSALCREDIT),
+          location = Location.SCOTLAND,
+          parent = parent
+        )
 
-        val household = Household(credits = Some(CreditsEnum.UNIVERSALCREDIT), location = Location.SCOTLAND, parent = parent)
         val answers = spy(userAnswers())
-
         when(answers.location) thenReturn Some(Location.SCOTLAND)
         when(answers.doYouGetAnyBenefits) thenReturn Some(Set(IncapacityBenefit, CarersAllowance))
         when(answers.universalCredit) thenReturn Some(true)

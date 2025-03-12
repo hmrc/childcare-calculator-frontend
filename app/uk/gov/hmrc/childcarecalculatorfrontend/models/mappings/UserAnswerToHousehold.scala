@@ -175,7 +175,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createParentClaimant(answers: UserAnswers): Claimant = {
-    val benefits = Benefits.from(answers.doYouGetAnyBenefits)
+    val benefits = answers.doYouGetAnyBenefits.getOrElse(Set.empty)
     val vouchers = if (answers.yourChildcareVouchers.isDefined) {
       answers.yourChildcareVouchers map {
         case true => YesNoUnsureEnum.YES
@@ -204,7 +204,7 @@ class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils
   }
 
   private def createPartnerClaimant(answers: UserAnswers): Claimant = {
-    val benefits = Benefits.from(answers.doesYourPartnerGetAnyBenefits)
+    val benefits = answers.doesYourPartnerGetAnyBenefits.getOrElse(Set.empty)
     val vouchers = if (answers.partnerChildcareVouchers.isDefined) {
       answers.partnerChildcareVouchers map {
         case true => YesNoUnsureEnum.YES
