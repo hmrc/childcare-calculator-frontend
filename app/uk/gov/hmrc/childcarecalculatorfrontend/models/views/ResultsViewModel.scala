@@ -22,7 +22,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{freeHoursForEngland, freeHoursForNI, freeHoursForScotland, freeHoursForWales}
 
 case class ResultsViewModel(firstParagraph: List[String] = List.empty,
-                            tc: Option[BigDecimal] = None,
                             tfc: Option[BigDecimal] = None,
                             esc: Option[BigDecimal] = None,
                             freeHours: Option[BigDecimal] = None,
@@ -39,13 +38,13 @@ case class ResultsViewModel(firstParagraph: List[String] = List.empty,
                             freeChildcareWorkingParentsEligibilityMsg: Option[String] = None,
                             taxFreeChildcareEligibilityMsg: Option[String] = None) {
 
-  def noOfEligibleSchemes: Int = List(tc, tfc, esc, freeHours).flatten.size
+  def noOfEligibleSchemes: Int = List(tfc, esc, freeHours).flatten.size
 
-  def isEligibleOnlyToMinimumFreeHours: Boolean = esc.isEmpty && tfc.isEmpty && tc.isEmpty && (freeHours.contains(BigDecimal(freeHoursForEngland)) || freeHours.contains(BigDecimal(freeHoursForWales)) || freeHours.contains(BigDecimal(freeHoursForScotland)) || freeHours.contains(BigDecimal(freeHoursForNI)))
+  def isEligibleOnlyToMinimumFreeHours: Boolean = esc.isEmpty && tfc.isEmpty && (freeHours.contains(BigDecimal(freeHoursForEngland)) || freeHours.contains(BigDecimal(freeHoursForWales)) || freeHours.contains(BigDecimal(freeHoursForScotland)) || freeHours.contains(BigDecimal(freeHoursForNI)))
   def isEligibleToMaximumFreeHours: Boolean = freeHours.contains(BigDecimal(30))
   def hasIneligibleMessages: Boolean = (freeChildcareWorkingParentsEligibilityMsg.nonEmpty && !freeChildcareWorkingParents) ||
     (taxFreeChildcareEligibilityMsg.nonEmpty && tfc.isEmpty)
-  def isEligibleToAllSchemes: Boolean = noOfEligibleSchemes == 4
+  def isEligibleToAllSchemes: Boolean = noOfEligibleSchemes == 3
 
   def showTwoYearOldInfo: Boolean = {
     if (childrenAgeGroups.contains(TwoYears)) {
