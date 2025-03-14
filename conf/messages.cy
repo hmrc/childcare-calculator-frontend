@@ -239,7 +239,7 @@ doYouLiveWithPartner.error.notCompleted=Dewiswch ‘Iawn’ os ydych yn byw gyda
 
 areYouInPaidWork.title=A ydych mewn gwaith taledig?
 areYouInPaidWork.heading=A ydych mewn gwaith taledig?
-areYouInPaidWork.para1=Mae gwaith taledig yn cynnwys absenoldeb mamolaeth, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni, absenoldeb mabwysiadu ac absenoldeb salwch.
+areYouInPaidWork.para1=Mae gwaith taledig yn cynnwys absenoldeb mabwysiadu, absenoldeb mamolaeth, gofal newydd-enedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni ac absenoldeb salwch.
 areYouInPaidWork.checkYourAnswersLabel=A ydych mewn gwaith taledig?
 areYouInPaidWork.error.notCompleted=Dewiswch ‘Iawn’ os ydych mewn gwaith taledig
 
@@ -250,7 +250,7 @@ paidEmployment.error.notCompleted=Dewiswch ‘ydw’ os ydych chi, eich partner,
 
 whoIsInPaidEmployment.title=Pwy sydd mewn gwaith taledig?
 whoIsInPaidEmployment.heading=Pwy sydd mewn gwaith taledig?
-whoIsInPaidEmployment.para1=Mae gwaith taledig yn cynnwys absenoldeb mamolaeth, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni, absenoldeb mabwysiadu ac absenoldeb salwch.
+whoIsInPaidEmployment.para1=Mae gwaith taledig yn cynnwys absenoldeb mabwysiadu, absenoldeb mamolaeth, gofal newydd-enedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni ac absenoldeb salwch.
 whoIsInPaidEmployment.you=Chi
 whoIsInPaidEmployment.partner=Partner
 whoIsInPaidEmployment.neither=Dim un
@@ -781,6 +781,7 @@ whichDisabilityBenefits.types.higher=Mathau o fudd-daliadau anabledd cyfradd uwc
 whichDisabilityBenefits.dla.higher=Lwfans Byw i’r Anabl (elfen gofal ar y gyfradd uchaf)
 whichDisabilityBenefits.pip.higher=Taliad Annibyniaeth Personol (elfen bywyd bob dydd ychwanegol)
 whichDisabilityBenefits.error.notCompleted=Dewiswch y budd-daliadau anabledd y mae {0} yn eu cael
+whichBenefits.select.all = Dewiswch bob un sy’n berthnasol.
 
 expectedChildcareCosts.title=Beth yw eich costau gofal plant {0} disgwyliedig ar gyfer eich plentyn a ddaeth yn {1}?
 expectedChildcareCosts.heading=Beth yw eich costau gofal plant {0} disgwyliedig mewn punt ar gyfer {1}?
@@ -974,7 +975,7 @@ yourAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
 yourAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
 yourAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
 yourAverageWeeklyEarnings.para3 = Mae’n bosibl y byddwch yn dal yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch yn gweithio o leiaf 16 awr yr wythnos ar gyfartaledd dros y 3 mis nesaf.
-yourAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol i chi, dewiswch iawn.
+yourAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol, dewiswch ‘Parhau’ ac yna dewiswch ‘Iawn’ ar y dudalen nesaf.
 
 partnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog eich partner
 partnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog eich partner
@@ -988,21 +989,21 @@ partnerAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
 partnerAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
 partnerAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
 partnerAverageWeeklyEarnings.para3 = Mae’n bosibl y bydd eich partner yn dal yn gymwys ar gyfer y cynllun os yw ei incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddant yn gweithio o leiaf 16 awr yr wythnos, ar gyfartaledd, dros y 3 mis nesaf.
-partnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol iddynt, dewiswch iawn.
+partnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol, dewiswch ‘Parhau’ ac yna dewiswch ‘Iawn’ ar y dudalen nesaf.
 
 yourAndPartnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog chi a’ch partner
 yourAndPartnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog chi a’ch partner
 yourAndPartnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth chi a’ch partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-yourAndPartnerAverageWeeklyEarnings.heading2 = If either of you went on leave
-yourAndPartnerAverageWeeklyEarnings.para2 = We only need to know how much you or your partner earned before going on any of these types of leave:
-yourAndPartnerAverageWeeklyEarnings.li.maternity = maternity
-yourAndPartnerAverageWeeklyEarnings.li.paternity = paternity
-yourAndPartnerAverageWeeklyEarnings.li.adoption = adoption
-yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
-yourAndPartnerAverageWeeklyEarnings.li.sickLeave = sick leave
-yourAndPartnerAverageWeeklyEarnings.heading3 = Part year workers
-yourAndPartnerAverageWeeklyEarnings.para3 = You or your partner may still qualify for the scheme if your income is below the minimum threshold. This applies only if you or your partner will work at least 16 hours a week, on average, over the next 3 months.
-yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select yes.
+yourAndPartnerAverageWeeklyEarnings.heading2 = Os oeddech chi neu’ch partner yn mynd ar absenoldeb
+yourAndPartnerAverageWeeklyEarnings.para2 = Nid oes ond angen i ni wybod faint rydych chi neu’ch partner wedi’i ennill cyn mynd ar unrhyw un o’r mathau hyn o absenoldeb:
+yourAndPartnerAverageWeeklyEarnings.li.maternity = mamolaeth
+yourAndPartnerAverageWeeklyEarnings.li.paternity = tadolaeth
+yourAndPartnerAverageWeeklyEarnings.li.adoption = mabwysiadu
+yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
+yourAndPartnerAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
+yourAndPartnerAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
+yourAndPartnerAverageWeeklyEarnings.para3 = Mae’n bosibl y byddwch chi neu’ch partner yn dal i fod yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch chi neu’ch partner yn gweithio o leiaf 16 awr yr wythnos, ar gyfartaledd, dros y 3 mis nesaf.
+yourAndPartnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol, dewiswch ‘Parhau’ ac yna dewiswch ‘Iawn’ ar y dudalen nesaf.
 
 urBanner.title=Helpwch i wella GOV.UK
 urBanner.message=Gallwch fod yn rhan o wneud gwasanaethau’r llywodraeth yn well
