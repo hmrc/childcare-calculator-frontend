@@ -627,22 +627,22 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   "checkVouchersForBoth" must {
     "return false when whoWorks is 'neither'" in {
       val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("neither")))
-      answers.checkVouchersForBoth mustEqual Some(false)
+      answers.checkVouchersForBoth mustBe Some(false)
     }
 
     "return None when whoWorks is 'None'" in {
       val answers = helper(cacheMap())
-      answers.checkVouchersForBoth mustEqual None
+      answers.checkVouchersForBoth mustBe None
     }
 
     "return true when whoWorks is 'you'" in {
       val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("you")))
-      answers.checkVouchersForBoth mustEqual Some(true)
+      answers.checkVouchersForBoth mustBe Some(true)
     }
 
     "return true when whoWorks is 'partner'" in {
       val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("partner")))
-      answers.checkVouchersForBoth mustEqual Some(true)
+      answers.checkVouchersForBoth mustBe Some(true)
     }
   }
 
@@ -699,7 +699,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         PartnerChildcareVouchersId.toString -> JsBoolean(true)
       ))
 
-      answers.max30HoursEnglandContent mustEqual Some(true)
+      answers.max30HoursEnglandContent mustBe Some(true)
     }
 
     "return Some(false) when the location is England and hasVouchers is false" in {
@@ -708,7 +708,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         PartnerChildcareVouchersId.toString -> JsBoolean(false)
       ))
 
-      answers.max30HoursEnglandContent mustEqual Some(false)
+      answers.max30HoursEnglandContent mustBe Some(false)
     }
 
     "return None when the location is not England" in {
@@ -717,82 +717,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         PartnerChildcareVouchersId.toString -> JsBoolean(true)
       ))
 
-      answers.max30HoursEnglandContent mustEqual None
-    }
-  }
-
-  "isOnSevereDisabilityPremium" must {
-
-    "return true" when {
-
-      "'you' get SevereDisablement benefits" in {
-        val answers = helper(cacheMap(
-          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual true
-      }
-
-      "'partner' gets SevereDisablement benefits" in {
-        val answers = helper(cacheMap(
-          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual true
-      }
-
-      "'both' get SevereDisablement benefits" in {
-        val answers = helper(cacheMap(
-          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString))),
-          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(SevereDisablementAllowance.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual true
-      }
-    }
-
-    "return false" when {
-
-      "'you' don't get SevereDisablement benefits" in {
-        val answers = helper(cacheMap(
-          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(CarersAllowance.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual false
-      }
-
-      "'partner' doesn't get SevereDisablement benefits" in {
-        val answers = helper(cacheMap(
-          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(IncapacityBenefit.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual false
-      }
-
-      "'both' don't get SevereDisablement benefits" in {
-        val answers = helper(cacheMap(
-          DoYouGetAnyBenefitsId.toString -> JsArray(Seq(JsString(CarersAllowance.toString))),
-          DoesYourPartnerGetAnyBenefitsId.toString -> JsArray(Seq(JsString(IncapacityBenefit.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual false
-      }
-    }
-
-  }
-// TODO what is the use of these test case
-  "isAlreadyReceivingUniversalCredits" must {
-    "return true" when {
-      "Someone has universal credit " in {
-        val answers = helper(cacheMap(UniversalCreditId.toString -> JsBoolean(true)))
-        answers.isAlreadyReceivingUniversalCredit mustEqual true
-      }
-    }
-    "return false" when {
-      "Someone does not have universal credit " in {
-        val answers = helper(cacheMap(UniversalCreditId.toString -> JsBoolean(false)))
-        answers.isAlreadyReceivingUniversalCredit mustEqual false
-      }
+      answers.max30HoursEnglandContent mustBe None
     }
   }
 
