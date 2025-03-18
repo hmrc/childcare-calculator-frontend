@@ -463,7 +463,7 @@ parentEmploymentIncomeCY.error.blank=Nodwch faint y byddwch yn cael eich talu y 
 parentEmploymentIncomeCY.error.invalid=Nodwch rifau rhwng 1 a 999999.99 am faint y byddwch yn cael eich talu y flwyddyn hon
 parentEmploymentIncomeCY.maxEarnings.error.invalid=Nodwch rifau rhwng 1 a 99999.99 am faint y byddwch yn cael eich talu y flwyddyn hon gan eich bod eisoes wedi dewis na fyddwch yn ennill mwy na £100,000 y flwyddyn
 parentEmploymentIncomeCY.both.maxEarnings.error.invalid=Nodwch rifau rhwng 1 a 99999.99 am faint y byddwch yn cael eich talu y flwyddyn hon gan eich bod eisoes wedi dewis na fydd y naill na’r llall ohonoch yn ennill mwy na £100,000 y flwyddyn
-parentEmploymentIncomeCY.hint= Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw gofal newydd-enedigol, dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
+parentEmploymentIncomeCY.hint= Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mabwysiadu, tâl gofal newydd- enedigol, tâl mamolaeth statudol, tâl ar y cyd i rieni neu dâl salwch a gawsoch.
 parentEmploymentIncomeCY.checkYourAnswersLabel=parentEmploymentIncomeCY
 parentEmploymentIncomeCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 
