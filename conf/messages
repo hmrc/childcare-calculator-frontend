@@ -481,7 +481,7 @@ parentEmploymentIncomeCY.error.blank = Enter how much you will get paid this yea
 parentEmploymentIncomeCY.error.invalid = Enter numbers between 1 and 999999.99 for how much you will get paid this year
 parentEmploymentIncomeCY.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that you will not earn more than £100,000 a year
 parentEmploymentIncomeCY.both.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that neither of you will earn more than £100,000 a year
-parentEmploymentIncomeCY.hint= This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any adoption, neonatal care, paternity, statutory maternity, shared parental or sick pay you’ve had.
+parentEmploymentIncomeCY.hint= This is the total pay from all your jobs, or profit from self-employment, before tax and National Insurance is taken off. Include any statutory adoption, maternity, neonatal care, paternity, shared parental, or sick pay you’ve had.
 parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
 parentEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 
