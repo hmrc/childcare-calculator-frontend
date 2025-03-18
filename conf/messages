@@ -255,7 +255,7 @@ doYouLiveWithPartner.error.notCompleted = Select yes if you have a partner that 
 
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
-areYouInPaidWork.para1 = Paid work includes maternity, paternity, shared parental, adoption and sick leave.
+areYouInPaidWork.para1 = Paid work includes adoption, maternity, neonatal care, paternity, shared parental and sick leave.
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
 areYouInPaidWork.error.notCompleted = Select yes if you are in paid work
 
@@ -266,7 +266,7 @@ paidEmployment.error.notCompleted = Select yes if you, your partner, or both of 
 
 whoIsInPaidEmployment.title = Who’s in paid work?
 whoIsInPaidEmployment.heading = Who’s in paid work?
-whoIsInPaidEmployment.para1 = Paid work includes maternity, paternity, shared parental, adoption and sick leave.
+whoIsInPaidEmployment.para1 = Paid work includes adoption, maternity, neonatal care, paternity, shared parental and sick leave.
 whoIsInPaidEmployment.you = You
 whoIsInPaidEmployment.partner = Partner
 whoIsInPaidEmployment.neither = Neither
@@ -481,7 +481,7 @@ parentEmploymentIncomeCY.error.blank = Enter how much you will get paid this yea
 parentEmploymentIncomeCY.error.invalid = Enter numbers between 1 and 999999.99 for how much you will get paid this year
 parentEmploymentIncomeCY.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that you will not earn more than £100,000 a year
 parentEmploymentIncomeCY.both.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much you will get paid this year as you previously selected that neither of you will earn more than £100,000 a year
-parentEmploymentIncomeCY.hint= This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
+parentEmploymentIncomeCY.hint= This is the total pay from all your jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any adoption, neonatal care, paternity, statutory maternity, shared parental or sick pay you’ve had.
 parentEmploymentIncomeCY.checkYourAnswersLabel = parentEmploymentIncomeCY
 parentEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 
@@ -804,6 +804,7 @@ whichDisabilityBenefits.dla.higher = Disability Living Allowance (highest rate c
 whichDisabilityBenefits.cdp.higher = Disability Payment (highest rate care component)
 whichDisabilityBenefits.pip.higher = Personal Independence Payment (enhanced daily living component)
 whichDisabilityBenefits.error.notCompleted = Select the disability benefits that {0} gets
+whichBenefits.select.all = Select all that apply.
 
 expectedChildcareCosts.title = What are your expected {0} childcare costs for your {1} child?
 expectedChildcareCosts.heading = What are your expected {0} childcare costs in pounds for {1}?
@@ -1003,7 +1004,7 @@ yourAverageWeeklyEarnings.li.neonatalCare = neonatal care
 yourAverageWeeklyEarnings.li.sickLeave = sick leave
 yourAverageWeeklyEarnings.heading3 = Part year workers
 yourAverageWeeklyEarnings.para3 = You may still qualify for the scheme if your income is below the minimum threshold. This applies only if you’ll work at least 16 hours a week on average over the next 3 months.
-yourAverageWeeklyEarnings.para4 = If this applies to you, select yes.
+yourAverageWeeklyEarnings.para4 = If this applies, select ‘Continue’, then select ‘Yes’ on the next page.
 
 partnerAverageWeeklyEarnings.title = Your partner’s average weekly earnings
 partnerAverageWeeklyEarnings.heading = Your partner’s average weekly earnings
@@ -1017,7 +1018,7 @@ partnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
 partnerAverageWeeklyEarnings.li.sickLeave = sick leave
 partnerAverageWeeklyEarnings.heading3 = Part year workers
 partnerAverageWeeklyEarnings.para3 = Your partner may still qualify for the scheme if their income is below the minimum threshold. This applies only if they will work at least 16 hours a week, on average, over the next 3 months.
-partnerAverageWeeklyEarnings.para4 = If this applies to them, select yes.
+partnerAverageWeeklyEarnings.para4 = If this applies, select ‘Continue’, then select ‘Yes’ on the next page.
 
 yourAndPartnerAverageWeeklyEarnings.title = You and your partner’s average weekly earnings
 yourAndPartnerAverageWeeklyEarnings.heading = You and your partner’s average weekly earnings
@@ -1031,7 +1032,7 @@ yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = neonatal care
 yourAndPartnerAverageWeeklyEarnings.li.sickLeave = sick leave
 yourAndPartnerAverageWeeklyEarnings.heading3 = Part year workers
 yourAndPartnerAverageWeeklyEarnings.para3 = You or your partner may still qualify for the scheme if your income is below the minimum threshold. This applies only if you or your partner will work at least 16 hours a week, on average, over the next 3 months.
-yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select yes.
+yourAndPartnerAverageWeeklyEarnings.para4 = If this applies, select ‘Continue’, then select ‘Yes’ on the next page.
 
 urBanner.title = Help improve GOV.UK
 urBanner.message = Get involved in making government services better
