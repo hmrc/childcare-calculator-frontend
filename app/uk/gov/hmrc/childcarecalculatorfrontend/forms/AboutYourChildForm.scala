@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 object AboutYourChildForm extends Mappings {
 
   private val dateKey = "aboutYourChild.dob"
-  private val maxYearsInPast = 20
+  private val maxYearsInPast = 18
   private val maxLength = 35
   private val minDate = LocalDate.now.minusYears(maxYearsInPast).minusDays(1)
   private val maxDate = LocalDate.now.plusDays(1)

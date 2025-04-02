@@ -130,39 +130,6 @@ object SelfEmployedOrApprenticeOrNeitherEnum extends Enumeration {
   implicit def enumFormats: Format[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumFormat(SelfEmployedOrApprenticeOrNeitherEnum)
 }
 
-object WhichBenefitsEnum extends Enumeration {
-  type WhichBenefitsEnum = Value
-
-  val INCOMEBENEFITS = Value("incomeBenefits")
-  val DISABILITYBENEFITS = Value("disabilityBenefits")
-  val HIGHRATEDISABILITYBENEFITS = Value("highRateDisabilityBenefits")
-  val SEVEREDISABILITYPREMIUM = Value("severeDisabilityPremium")
-  val CARERSALLOWANCE = Value("carersAllowance")
-  val SCOTTISHCARERSALLOWANCE = Value("scottishCarersAllowance")
-
-  val enumReads: Reads[WhichBenefitsEnum] = EnumUtils.enumReads(WhichBenefitsEnum)
-  val enumWrites: Writes[WhichBenefitsEnum] = EnumUtils.enumWrites
-
-  implicit def enumFormats: Format[WhichBenefitsEnum] = EnumUtils.enumFormat(WhichBenefitsEnum)
-
-  val sortedWhichBenefits =
-    Seq(
-      DISABILITYBENEFITS,
-      HIGHRATEDISABILITYBENEFITS,
-      SEVEREDISABILITYPREMIUM,
-      CARERSALLOWANCE,
-      INCOMEBENEFITS,
-    )
-  val sortedScottishWhichBenefits  =
-    Seq(
-      DISABILITYBENEFITS,
-      HIGHRATEDISABILITYBENEFITS,
-      SEVEREDISABILITYPREMIUM,
-      SCOTTISHCARERSALLOWANCE,
-      INCOMEBENEFITS,
-    )
-}
-
 object DisabilityBenefits extends Enumeration {
 
   val DISABILITY_BENEFITS = Value("disability-benefits")
@@ -192,7 +159,7 @@ object ChildcarePayFrequency extends Enumeration {
 
 object CreditsEnum extends Enumeration {
   type CreditsEnum = Value
-  val TAXCREDITS, UNIVERSALCREDIT, NONE = Value
+  val UNIVERSALCREDIT, NONE = Value
 
   val enumReads: Reads[CreditsEnum] = EnumUtils.enumReads(CreditsEnum)
 
@@ -235,31 +202,16 @@ object PeriodEnum extends Enumeration {
   implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
 }
 
-object StatutoryPayTypeEnum extends Enumeration {
-  type StatutoryPayTypeEnum = Value
-  val MATERNITY = Value("maternity")
-  val PATERNITY = Value("paternity")
-  val ADOPTION = Value("adoption")
-  val SHARED_PARENTAL = Value("shared-parental")
+object UniversalCreditEnum extends Enumeration {
+  type UniversalCreditEnum = Value
 
-  val enumReads: Reads[StatutoryPayTypeEnum] = EnumUtils.enumReads(StatutoryPayTypeEnum)
-
-  val enumWrites: Writes[StatutoryPayTypeEnum] = EnumUtils.enumWrites
-
-  implicit def enumFormats: Format[StatutoryPayTypeEnum] = EnumUtils.enumFormat(StatutoryPayTypeEnum)
-}
-
-object TaxOrUniversalCreditsEnum extends Enumeration {
-  type TaxOrUniversalCreditsEnum = Value
-
-  val TC = Value("tc")
   val UC = Value("uc")
   val NONE = Value("none")
 
-  val enumReads: Reads[TaxOrUniversalCreditsEnum]   = EnumUtils.enumReads(TaxOrUniversalCreditsEnum)
-  val enumWrites: Writes[TaxOrUniversalCreditsEnum] = EnumUtils.enumWrites
+  val enumReads: Reads[UniversalCreditEnum]   = EnumUtils.enumReads(UniversalCreditEnum)
+  val enumWrites: Writes[UniversalCreditEnum] = EnumUtils.enumWrites
 
-  implicit def enumFormats: Format[TaxOrUniversalCreditsEnum] = EnumUtils.enumFormat(TaxOrUniversalCreditsEnum)
+  implicit def enumFormats: Format[UniversalCreditEnum] = EnumUtils.enumFormat(UniversalCreditEnum)
 }
 
 object EarningsEnum extends Enumeration {

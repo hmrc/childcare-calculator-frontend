@@ -79,9 +79,12 @@
     @errorSummary(form.errors.distinctBy(error => error.message), key => if (key=="aboutYourChild.dob") s"$key.day" else s"$key")
     @heading(headingText)
 
-    @if(index == 0) {
+    @if(index >= 0) {
         <div class="panel-indent panel-border-wide panel-info">
-            <p class="govuk-inset-text">@messages("aboutYourChild.lede")</p>
+            <div class="govuk-inset-text">
+                <p>@messages("aboutYourChild.lede")</p>
+                <p>@messages("aboutYourChild.insetTextSub")</p>
+            </div>
         </div>
     }
 

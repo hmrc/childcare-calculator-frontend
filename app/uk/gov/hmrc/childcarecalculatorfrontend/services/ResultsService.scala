@@ -40,6 +40,7 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
                                taxFreeChildcare: TaxFreeChildcare,
                                firstParagraphBuilder: FirstParagraphBuilder,
                                utils: Utils)(implicit ec: ExecutionContext) {
+
   def getResultsViewModel(answers: UserAnswers, location: Location)
                          (implicit req: play.api.mvc.Request[_], hc: HeaderCarrier, messages: Messages): Future[ResultsViewModel] = {
 
@@ -56,14 +57,6 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     val livingWithPartner = answers.doYouLiveWithPartner.fold(false)(identity)
 
     val paidEmployment = checkIfInEmployment(answers)
-
-    def getEarnings(moreThanMinimum: Option[Boolean], moreThanMaximum: Option[Boolean]): Option[EarningsEnum] =
-      (moreThanMinimum, moreThanMaximum) match {
-        case (Some(true), Some(true)) => Some(EarningsEnum.GreaterThanMaximum)
-        case (Some(true), _) => Some(EarningsEnum.BetweenMinimumAndMaximum)
-        case (Some(false), _) => Some(EarningsEnum.LessThanMinimum)
-        case _ => None
-      }
 
     val yourEarnings = getEarnings(answers.yourMinimumEarnings, answers.yourMaximumEarnings)
     val partnerEarnings = getEarnings(answers.partnerMinimumEarnings, answers.partnerMaximumEarnings)
@@ -89,23 +82,28 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
       val result = results.schemes.foldLeft(resultViewModel)((result, scheme) =>
         getViewModelWithFreeHours(
           answers,
-          setSchemeInViewModel(scheme, result, answers.taxOrUniversalCredits)
+          setSchemeInViewModel(scheme, result)
         )
       )
 
-      if (result.tfc.isDefined && answers.taxOrUniversalCredits.contains("uc")) {
+      if (result.tfc.isDefined && answers.universalCredit.contains(true)) {
         result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.uc")))
-      } else if (result.tfc.isDefined && result.tc.isDefined && result.esc.isDefined) {
-        result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.tc.esc")))
-      } else if (result.tfc.isDefined && result.tc.isDefined) {
-        result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.tc")))
-      } else if (result.tfc.isDefined && result.esc.isDefined) {
+      }
+      else if (result.tfc.isDefined && result.esc.isDefined) {
         result.copy(tfcWarningMessage = Some(messages("result.tfc.warning.esc")))
       } else {
         result
       }
     })
   }
+
+  private def getEarnings(moreThanMinimum: Option[Boolean], moreThanMaximum: Option[Boolean]): Option[EarningsEnum] =
+    (moreThanMinimum, moreThanMaximum) match {
+      case (Some(true), Some(true)) => Some(EarningsEnum.GreaterThanMaximum)
+      case (Some(true), _) => Some(EarningsEnum.BetweenMinimumAndMaximum)
+      case (Some(false), _) => Some(EarningsEnum.LessThanMinimum)
+      case _ => None
+    }
 
   private def getFreeChildcareWorkingParentsEligibility(userAnswers: UserAnswers): Boolean = {
     freeChildcareWorkingParents.eligibility(userAnswers) match {
@@ -114,18 +112,10 @@ class ResultsService @Inject()(appConfig: FrontendAppConfig,
     }
   }
 
-  private def setSchemeInViewModel(scheme: Scheme, resultViewModel: ResultsViewModel, taxCreditsOrUC: Option[String]) = {
+  private def setSchemeInViewModel(scheme: SingleSchemeResult, resultViewModel: ResultsViewModel) = {
     if (scheme.amount > 0) {
       scheme.name match {
-        case TCELIGIBILITY =>
-          //Backend calculator returns TC calculation independently of whether user gets TC or not,
-          //since tc can longer be applied to this is hiding the scheme if user doesn't already get it.
-          //TODO: Update cc-eligibility to instead require a tc flag (similar to esc) so frontend doesn't need to undo the tc calc
-          if (taxCreditsOrUC.contains(taxCredits)) {
-            resultViewModel.copy(tc = Some(scheme.amount))
-          } else {
-            resultViewModel
-          }
+        case TCELIGIBILITY => resultViewModel
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
         case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
       }

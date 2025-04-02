@@ -45,18 +45,10 @@
 
     @errorSummary(form.errors)
 
-    @heading(messages("yourMinimumEarnings.heading"))
-
-    @p() { @messages("yourMinimumEarnings.para1") }
-    @p() { @messages("yourMinimumEarnings.para2") }
-
     @formWithCSRF(action = YourMinimumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
         @inputYesNo(
-            label = Text(messages("yourMinimumEarnings.form", amount)),
+            label = HtmlContent(heading(messages("yourMinimumEarnings.heading", amount))),
             field = form("value"),
-            isPageHeading = false,
-            labelClass = Some("govuk-fieldset__legend--l"),
-            isInline = false
         )
 
         @submitButton()

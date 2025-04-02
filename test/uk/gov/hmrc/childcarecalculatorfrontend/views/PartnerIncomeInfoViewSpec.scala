@@ -32,7 +32,7 @@ class PartnerIncomeInfoViewSpec extends NewViewBehaviours {
 
   "Partner Income Info view" must {
     behave like normalPage(createView, messageKeyPrefix, "guidance",
-      "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income", "li.birth_or_adoption")
+      "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income")
   }
 
   "contain tax year info" in {

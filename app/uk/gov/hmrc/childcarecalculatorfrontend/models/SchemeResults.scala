@@ -28,32 +28,20 @@ object EscClaimantEligibility {
   implicit val escClaimantEligibilityFormat: OFormat[EscClaimantEligibility] = Json.format[EscClaimantEligibility]
 }
 
-case class TaxCreditsEligibility(
-                                  wtcEligibility: Boolean = false,
-                                  ctcEligibility: Boolean = false
-                                 )
-
-object TaxCreditsEligibility {
-  implicit val taxCreditsEligibilityFormat: OFormat[TaxCreditsEligibility] = Json.format[TaxCreditsEligibility]
-}
-
-case class Scheme(name: SchemeEnum,
+case class SingleSchemeResult(name: SchemeEnum,
                   amount: BigDecimal ,
-                  escClaimantEligibility: Option[EscClaimantEligibility] = None,
-                  taxCreditsEligibility: Option[TaxCreditsEligibility] = None
+                  escClaimantEligibility: Option[EscClaimantEligibility] = None
                  ) {
   val missingEscClaimantEligibility: Boolean = name == SchemeEnum.ESCELIGIBILITY && escClaimantEligibility.isEmpty
-  val missingTaxCreditsEligibility: Boolean = name == SchemeEnum.TCELIGIBILITY && taxCreditsEligibility.isEmpty
   require(!missingEscClaimantEligibility,"Missing values for escClaimantEligibility")
-  require(!missingTaxCreditsEligibility,"Missing values for taxCreditsEligibility")
 }
 
-object Scheme {
-  implicit val schemeFormat: OFormat[Scheme] = Json.format[Scheme]
+object SingleSchemeResult {
+  implicit val schemeFormat: OFormat[SingleSchemeResult] = Json.format[SingleSchemeResult]
 }
 
 case class SchemeResults (
-                           schemes: List[Scheme]
+                           schemes: List[SingleSchemeResult]
                          )
 
 object SchemeResults {

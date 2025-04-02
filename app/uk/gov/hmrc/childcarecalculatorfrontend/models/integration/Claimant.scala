@@ -19,54 +19,19 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.integration
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentStatusEnum.EmploymentStatusEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-
-case class StatutoryIncome(
-                            statutoryWeeks: Double = 0.00,
-                            statutoryAmount: Option[BigDecimal] = None
-                          )
-
-object StatutoryIncome {
-  implicit val formatStatutoryIncome: OFormat[StatutoryIncome] = Json.format[StatutoryIncome]
-}
 
 case class Income(
                    employmentIncome: Option[BigDecimal] = None,
                    pension: Option[BigDecimal] = None,
                    otherIncome: Option[BigDecimal] = None,
                    benefits: Option[BigDecimal] = None,
-                   statutoryIncome: Option[StatutoryIncome] = None,
                    taxCode: Option[String] = None
                  )
 
 object Income {
   implicit val formatIncome: OFormat[Income] = Json.format[Income]
-}
-
-case class Benefits(
-                     disabilityBenefits: Boolean = false,
-                     highRateDisabilityBenefits: Boolean = false,
-                     incomeBenefits: Boolean = false,
-                     carersAllowance: Boolean = false,
-                     scottishCarersAllowance: Boolean = false
-                   )
-
-object Benefits {
-  implicit val formatBenefits: OFormat[Benefits] = Json.format[Benefits]
-
-  def populateFromRawData(data: Option[Set[String]]): Option[Benefits] = {
-    data.map(benefits => benefits.foldLeft(Benefits())((benefits, currentBenefit) => {
-      currentBenefit match {
-        case `incomeBenefits` => benefits.copy(incomeBenefits = true)
-        case `disabilityBenefits` => benefits.copy(disabilityBenefits = true)
-        case `highRatedDisabilityBenefits` => benefits.copy(highRateDisabilityBenefits = true)
-        case `carersAllowanceBenefits` => benefits.copy(carersAllowance = true)
-        case `scottishCarersAllowanceBenefits` => benefits.copy(carersAllowance = true)
-        case _ => benefits
-      }
-    }))
-  }
 }
 
 case class MinimumEarnings(
@@ -81,7 +46,7 @@ object MinimumEarnings {
 
 case class Claimant(
                      ageRange: Option[AgeEnum] = None,
-                     benefits: Option[Benefits] = None,
+                     benefits: Set[ParentsBenefits] = Set.empty,
                      lastYearlyIncome: Option[Income] = None,
                      currentYearlyIncome: Option[Income] = None,
                      hours: Option[BigDecimal] = None,

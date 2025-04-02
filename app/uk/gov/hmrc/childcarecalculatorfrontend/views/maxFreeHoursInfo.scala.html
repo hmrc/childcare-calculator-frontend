@@ -31,7 +31,6 @@
         appConfig: FrontendAppConfig,
         tfcEligibility: Eligibility,
         childcareVouchersEligibility: Eligibility,
-        taxCreditsEligibility: Eligibility,
         userAnswers: UserAnswers
 )(implicit request: Request[_], messages: Messages)
 
@@ -103,7 +102,7 @@
             @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tfc")))
         }
 
-        @if(userAnswers.taxOrUniversalCredits.getOrElse("") != universalCredits && taxCreditsEligibility.equals(Eligible)) {
+        @if(userAnswers.universalCredit.getOrElse("") != universalCredits) {
             @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tax_credits")))
         }
 

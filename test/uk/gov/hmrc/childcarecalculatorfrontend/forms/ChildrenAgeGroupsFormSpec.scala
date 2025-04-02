@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.FormError
+import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
 
 class ChildrenAgeGroupsFormSpec extends CheckboxBehaviours[ChildAgeGroup] {
 
-  val form = ChildrenAgeGroupsForm()
+  override val form: Form[Set[ChildAgeGroup]] = ChildrenAgeGroupsForm()
 
   override val validOptions: Set[ChildAgeGroup] = ChildAgeGroup.inverseMappping.keySet
 
@@ -38,7 +38,7 @@ class ChildrenAgeGroupsFormSpec extends CheckboxBehaviours[ChildAgeGroup] {
         s"$fieldName[0]" -> ChildAgeGroup.noneOfThese,
         s"$fieldName[1]" -> ChildAgeGroup.twoYears
       )
-      form.bind(data).errors must contain(FormError(fieldName, "childrenAgeGroups.error.exclusive"))
+      form.bind(data).errors mustBe Seq(FormError(fieldName, "childrenAgeGroups.error.exclusive"))
     }
   }
 }

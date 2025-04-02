@@ -33,40 +33,30 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
       override def childrenAgeGroups: Option[Set[ChildAgeGroup]] = childAgeGroupAns
     }
 
-  def createView = () => view(frontendAppConfig, Eligible, Eligible, Eligible, answers()) (fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, Eligible, Eligible, answers()) (fakeRequest, messages)
 
   "MaxFreeHoursInfo view" must {
-    val view1 = view(frontendAppConfig, Eligible, NotEligible, NotEligible, answers()) (fakeRequest, messages)
+    val view1 = view(frontendAppConfig, Eligible, NotEligible,answers()) (fakeRequest, messages)
 
     behave like normalPage(createView, messageKeyPrefix, "info", "info", "info.link", "info.link.url", "get.more.help")
 
     "display correct message when only eligible for tax free childcare" in {
-      val view1 = view(frontendAppConfig, Eligible, NotEligible, NotEligible, answers()) (fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, NotEligible,  answers()) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
 
     }
 
     "display the correct message when only eligible for childcare vouchers" in {
-      val view1 = view(frontendAppConfig, NotEligible, Eligible, NotEligible, answers()) (fakeRequest, messages)
+      val view1 = view(frontendAppConfig, NotEligible, Eligible,answers()) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))
-      assertNotContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tax_credits"))
       assertNotContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
     }
 
-    "display the correct message when only eligible for tax credits" in {
-      val view1 = view(frontendAppConfig, NotEligible, NotEligible, Eligible, answers()) (fakeRequest, messages)
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tax_credits"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.get.more.help"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.give.more.info"))
-      assertNotContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
-      assertNotContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))
-    }
 
-    "display correct message when only eligible for tax free childcare, childcare vouchers, tax credits " in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers()) (fakeRequest, messages)
+    "display correct message when only eligible for tax free childcare, childcare vouchers " in {
+      val view1 = view(frontendAppConfig, Eligible, Eligible, answers()) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))
-      assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tax_credits"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.get.more.help"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.give.more.info"))
     }
@@ -74,7 +64,7 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
     "display correct message when user selected Universal credits and only eligible for tax free childcare, " +
       "childcare vouchers " in {
 
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers()) (fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, answers()) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.tfc"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.li.vouchers"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.get.more.help"))
@@ -82,46 +72,46 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
     }
 
     "display the alternate message when max30HoursEnglandContent is true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(true), None))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible,  answers(Some(true), None))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.hasVouchers.info"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.childcare"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.otherChildren"))
     }
 
     "display the alternate message when max30HoursEnglandContent is false" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(Some(false), None)) (fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, answers(Some(false), None)) (fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.noVouchers.info"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.childcare"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.england.li.otherChildren"))
     }
 
     "display the alternate message when childAgedTwo is true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(TwoYears))))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, answers(None, Some(Set(TwoYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears", frontendAppConfig.maxFreeHoursAmount))
     }
 
     "display the alternate message when childAgedThreeOrFour is true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(ThreeYears))))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible, answers(None, Some(Set(ThreeYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.threeAndFourYears"))
     }
 
     "display the alternate message when childAgedTwo and childAgedThreeOrFour both are true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(TwoYears, ThreeYears))))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible,  answers(None, Some(Set(TwoYears, ThreeYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.with.colon"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears", frontendAppConfig.maxFreeHoursAmount))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.threeAndFourYears"))
     }
 
     "display the alternate message when nineTo23Months is selected" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(NineTo23Months))))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible,  answers(None, Some(Set(NineTo23Months))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months", frontendAppConfig.maxFreeHoursAmount))
     }
 
     "display the alternate message when nineTo23Months, childAgedTwo and childAgedThreeOrFour are all true" in {
-      val view1 = view(frontendAppConfig, Eligible, Eligible, Eligible, answers(None, Some(Set(NineTo23Months, TwoYears, ThreeYears))))(fakeRequest, messages)
+      val view1 = view(frontendAppConfig, Eligible, Eligible,  answers(None, Some(Set(NineTo23Months, TwoYears, ThreeYears))))(fakeRequest, messages)
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.with.colon"))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.nineTo23Months", frontendAppConfig.maxFreeHoursAmount))
       assertContainsText(asDocument(view1), messages(s"$messageKeyPrefix.you.can.get.twoYears", frontendAppConfig.maxFreeHoursAmount))

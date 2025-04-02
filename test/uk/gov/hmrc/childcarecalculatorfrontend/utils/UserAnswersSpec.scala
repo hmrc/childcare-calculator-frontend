@@ -21,6 +21,7 @@ import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{CarersAllowance, IncapacityBenefit, SevereDisablementAllowance}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 import java.time.LocalDate
@@ -626,22 +627,22 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   "checkVouchersForBoth" must {
     "return false when whoWorks is 'neither'" in {
       val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("neither")))
-      answers.checkVouchersForBoth mustEqual Some(false)
+      answers.checkVouchersForBoth mustBe Some(false)
     }
 
     "return None when whoWorks is 'None'" in {
       val answers = helper(cacheMap())
-      answers.checkVouchersForBoth mustEqual None
+      answers.checkVouchersForBoth mustBe None
     }
 
     "return true when whoWorks is 'you'" in {
       val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("you")))
-      answers.checkVouchersForBoth mustEqual Some(true)
+      answers.checkVouchersForBoth mustBe Some(true)
     }
 
     "return true when whoWorks is 'partner'" in {
       val answers = helper(cacheMap(WhoGetsVouchersId.toString -> JsString("partner")))
-      answers.checkVouchersForBoth mustEqual Some(true)
+      answers.checkVouchersForBoth mustBe Some(true)
     }
   }
 
@@ -698,7 +699,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         PartnerChildcareVouchersId.toString -> JsBoolean(true)
       ))
 
-      answers.max30HoursEnglandContent mustEqual Some(true)
+      answers.max30HoursEnglandContent mustBe Some(true)
     }
 
     "return Some(false) when the location is England and hasVouchers is false" in {
@@ -707,7 +708,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         PartnerChildcareVouchersId.toString -> JsBoolean(false)
       ))
 
-      answers.max30HoursEnglandContent mustEqual Some(false)
+      answers.max30HoursEnglandContent mustBe Some(false)
     }
 
     "return None when the location is not England" in {
@@ -716,83 +717,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
         PartnerChildcareVouchersId.toString -> JsBoolean(true)
       ))
 
-      answers.max30HoursEnglandContent mustEqual None
-    }
-  }
-
-  "isOnSevereDisabilityPremium" must {
-    "return true" when {
-      "'you' are on severe disability premium" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual true
-      }
-
-      "'partner' is on severe disability premium" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual true
-      }
-
-      "'both' are on severe disability premium" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString))),
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.SEVEREDISABILITYPREMIUM.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual true
-      }
-    }
-
-    "return false" when {
-      "'you' are NOT on severe disability premium" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual false
-      }
-
-      "'partner' is NOT on severe disability premium" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual false
-      }
-
-      "'both' are NOT on severe disability premium" in {
-        val answers = helper(cacheMap(
-          WhichBenefitsYouGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.CARERSALLOWANCE.toString))),
-          WhichBenefitsPartnerGetId.toString -> JsArray(Seq(JsString(WhichBenefitsEnum.DISABILITYBENEFITS.toString)))
-        ))
-
-        answers.isOnSevereDisabilityPremium mustEqual false
-      }
-    }
-
-  }
-
-  "isAlreadyReceivingTaxCredits" must {
-    "return true" when {
-      "Someone has tax credits" in {
-        val answers = helper(cacheMap(TaxOrUniversalCreditsId.toString -> JsString(TaxOrUniversalCreditsEnum.TC.toString)))
-        answers.isAlreadyReceivingTaxCredits mustEqual true
-      }
-    }
-    "return false" when {
-      "Someone has universal credits" in {
-        val answers = helper(cacheMap(TaxOrUniversalCreditsId.toString -> JsString(TaxOrUniversalCreditsEnum.UC.toString)))
-        answers.isAlreadyReceivingTaxCredits mustEqual false
-      }
-      "Someone has neither universal credits or tax credits" in {
-        val answers = helper(cacheMap())
-        answers.isAlreadyReceivingTaxCredits mustEqual false
-      }
+      answers.max30HoursEnglandContent mustBe None
     }
   }
 

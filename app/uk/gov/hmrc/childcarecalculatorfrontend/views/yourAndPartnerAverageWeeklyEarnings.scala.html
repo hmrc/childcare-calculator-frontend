@@ -1,0 +1,70 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+
+@this(
+layout: Layout,
+formWithCSRF: FormWithCSRF,
+errorSummary: playComponents.error_summary,
+heading: playComponents.heading,
+submitButton: playComponents.submit_button,
+buttonLink: playComponents.button_link,
+p: playComponents.p,
+appConfig: FrontendAppConfig
+)
+
+@()(implicit request: Request[_], messages: Messages)
+
+
+
+@layout(
+pageTitle = messages("yourAndPartnerAverageWeeklyEarnings.title")
+) {
+
+
+
+@heading(messages("yourAndPartnerAverageWeeklyEarnings.heading"))
+
+@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para1") }
+
+<h2 class="govuk-heading-m">@messages("yourAndPartnerAverageWeeklyEarnings.heading2")</h2>
+
+@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para2") }
+
+<ul class="govuk-list govuk-list--bullet">
+        <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.adoption")</li>
+		<li>@messages("yourAndPartnerAverageWeeklyEarnings.li.maternity")</li>
+        <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.neonatalCare")</li>
+		<li>@messages("yourAndPartnerAverageWeeklyEarnings.li.paternity")</li>
+		<li>@messages("yourAndPartnerAverageWeeklyEarnings.li.sickLeave")</li>
+</ul>
+<h2 class="govuk-heading-m">@messages("yourAndPartnerAverageWeeklyEarnings.heading3")</h2>
+@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para3") }
+@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para4") }
+
+
+@buttonLink(
+messageKey = "site.save_and_continue",
+href= routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+)
+
+
+}
+

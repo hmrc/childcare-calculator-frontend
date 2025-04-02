@@ -19,37 +19,34 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 
 import javax.inject.Inject
 
 // scalastyle:off number.of.methods
-class MaximumHoursNavigator @Inject()(utils: Utils,
-                                      override val schemes: Schemes,
-                                      freeChildcareWorkingParents: FreeChildcareWorkingParents,
-                                      taxCredits: TaxCredits,
-                                      tfc: TaxFreeChildcare,
-                                      esc: EmploymentSupportedChildcare)
-  extends ResultsNavigator {
+class MaximumHoursNavigator @Inject()(
+  override val schemes: Schemes,
+  freeChildcareWorkingParents: FreeChildcareWorkingParents,
+  tfc: TaxFreeChildcare,
+  esc: EmploymentSupportedChildcare
+) extends ResultsNavigator {
 
   override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
-
-
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId -> doYouLiveRoute,
     AreYouInPaidWorkId -> areYouInPaidWorkRoute,
     WhoIsInPaidEmploymentId -> whoIsInPaidWorkRoute,
-    ParentWorkHoursId -> parentWorkHoursRoute,
-    PartnerWorkHoursId -> partnerWorkHoursRoute,
-    YourChildcareVouchersId -> yourChildcareVoucherRoute,
-    PartnerChildcareVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
-    WhoGetsVouchersId -> (_ => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)),
+    YourChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+    PartnerChildcareVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+    WhoGetsVouchersId -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+
     DoYouGetAnyBenefitsId -> doYouGetAnyBenefitsRoute,
-    WhoGetsBenefitsId -> whoGetsBenefitsRoute,
+    DoesYourPartnerGetAnyBenefitsId -> doesYourPartnerGetAnyBenefitsRoute,
+
     YourAgeId -> yourAgeRoute,
     YourPartnersAgeId -> yourPartnerAgeRoute,
     YourMinimumEarningsId -> yourMinimumEarningsRoute,
@@ -61,13 +58,10 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     YourMaximumEarningsId -> yourMaximumEarningsRoute,
     PartnerMaximumEarningsId ->  partnerMaximumEarningsRoute,
     EitherOfYouMaximumEarningsId -> eitherMaximumEarningsRoute,
-    TaxOrUniversalCreditsId -> taxOrUniversalCreditsRoutes,
-    DoYouOrYourPartnerGetAnyBenefitsId -> doYouOrYourPartnerGetAnyBenefitsRoute,
-    WhichBenefitsYouGetId -> whichBenefitsYouGetRoute,
-    WhichBenefitsPartnerGetId -> whichBenefitsPartnerGetRoute,
+    UniversalCreditId -> universalCreditRoutes
   )
 
-  val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
+  private val SelfEmployed: String = SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString
 
   private def doYouLiveRoute(answers: UserAnswers): Call = {
     if (answers.doYouLiveWithPartner.contains(true)) {
@@ -79,117 +73,61 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
 
   private def areYouInPaidWorkRoute(answers: UserAnswers): Call = {
     if (answers.areYouInPaidWork.contains(true)) {
-      routes.ParentWorkHoursController.onPageLoad(NormalMode)
+      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
     } else {
       routes.ResultController.onPageLoad()
     }
   }
 
-
   private def whoIsInPaidWorkRoute(answers: UserAnswers): Call = {
     answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
-      case `you` => routes.ParentWorkHoursController.onPageLoad(NormalMode)
-      case `partner` | `both` => routes.PartnerWorkHoursController.onPageLoad(NormalMode)
+      case `you` => routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      case `partner`  => routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+      case `both`  => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
       case `neither` => routes.ResultController.onPageLoad()
       case _ => SessionExpiredRouter.route(getClass.getName,"whoIsInPaidWorkRoute", Some(answers))
     }
   }
 
-  private def partnerWorkHoursRoute(answers: UserAnswers): Call = {
-    if (answers.whoIsInPaidEmployment.contains(both)) {
-      routes.ParentWorkHoursController.onPageLoad(NormalMode)
-    } else {
-      routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
-  private def parentWorkHoursRoute(answers: UserAnswers) : Call = {
-    if (answers.whoIsInPaidEmployment.contains(both)) {
-      routes.WhoGetsVouchersController.onPageLoad(NormalMode)
-    } else {
-      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-    }
-  }
-
-
-  private def yourChildcareVoucherRoute(answers: UserAnswers): Call =
-    utils.getCall(answers.doYouLiveWithPartner) {
-      case true => routes.DoYouOrYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      case false => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
-    }
-
-
   private def doYouGetAnyBenefitsRoute(answers: UserAnswers): Call = {
-    answers.doYouGetAnyBenefits.map {
-      youGetBenefits =>
-        if (youGetBenefits) {
-          routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
-        } else {
-          routes.YourAgeController.onPageLoad(NormalMode)
-        }
-    }.getOrElse(SessionExpiredRouter.route(getClass.getName,"doYouGetAnyBenefitsRoute",Some(answers)))
-  }
+    def shouldRedirectToResults: Boolean =
+      answers.whoIsInPaidEmployment.contains(`partner`) &&
+        answers.partnerChildcareVouchers.contains(false) &&
+        answers.doYouGetAnyBenefits.contains(Set(ParentsBenefits.NoneOfThese))
 
-  private def doYouOrYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
+    answers.doYouLiveWithPartner match {
+      case Some(true) if shouldRedirectToResults => routes.ResultController.onPageLoad()
+      case Some(true)                            => routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+      case Some(false)                           => routes.YourAgeController.onPageLoad(NormalMode)
 
-    if (answers.doYouOrYourPartnerGetAnyBenefits.contains(true)) {
-      routes.WhoGetsBenefitsController.onPageLoad(NormalMode)
-    } else if(isEligibleToGoToResultPage(answers)) {
-      routes.ResultController.onPageLoad()
-    } else if(answers.whoIsInPaidEmployment.contains(partner)){
-      routes.YourPartnersAgeController.onPageLoad(NormalMode)
-    } else if(answers.whoIsInPaidEmployment.contains(you)||answers.whoIsInPaidEmployment.contains(both)){
-      routes.YourAgeController.onPageLoad(NormalMode)
-    } else SessionExpiredRouter.route(getClass.getName,"doYouOrYourPartnerGetAnyBenefitsRoute",Some(answers))
-  }
-
-  private def isEligibleToGoToResultPage(answers: UserAnswers) = answers.doYouLiveWithPartner.getOrElse(false) && (answers.whoIsInPaidEmployment.contains(you) || answers.whoIsInPaidEmployment.contains(partner)) &&
-                                         taxCredits.eligibility(answers).equals(NotEligible) && esc.eligibility(answers).equals(NotEligible)
-
-  private def whoGetsBenefitsRoute(answers: UserAnswers): Call = {
-    if (answers.isYouPartnerOrBoth(answers.whoGetsBenefits).contains(partner)) {
-      routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
-    } else {
-      routes.WhichBenefitsYouGetController.onPageLoad(NormalMode)
+      case None => SessionExpiredRouter.route(getClass.getName, "doYouGetAnyBenefitsRoute", Some(answers))
     }
   }
 
-  private def whichBenefitsYouGetRoute(answers: UserAnswers): Call = {
-    if (answers.doYouLiveWithPartner.contains(true)) {
-      if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.BOTH.toString)) {
-        routes.WhichBenefitsPartnerGetController.onPageLoad(NormalMode)
-      } else if (answers.whoGetsBenefits.contains(YouPartnerBothEnum.YOU.toString)) {
-        if (!answers.whoIsInPaidEmployment.contains(partner)) {
-          routes.YourAgeController.onPageLoad(NormalMode)
-        } else routes.YourPartnersAgeController.onPageLoad(NormalMode)
-      } else SessionExpiredRouter.route(getClass.getName,"whichBenefitsYouGetRoute",Some(answers))
-    } else if(answers.doYouLiveWithPartner.contains(false)) {
-      routes.YourAgeController.onPageLoad(NormalMode)
-    } else SessionExpiredRouter.route(getClass.getName,"whichBenefitsYouGetRoute",Some(answers))
+  private def doesYourPartnerGetAnyBenefitsRoute(answers: UserAnswers): Call = {
+    def shouldRedirectToResults: Boolean =
+      answers.yourChildcareVouchers.contains(false) &&
+        answers.doesYourPartnerGetAnyBenefits.contains(Set(ParentsBenefits.NoneOfThese))
 
+    answers.whoIsInPaidEmployment match {
+      case Some(`you`) if shouldRedirectToResults => routes.ResultController.onPageLoad()
+      case Some(`you` | `both`)                   => routes.YourAgeController.onPageLoad(NormalMode)
+      case Some(`partner`)                        => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+
+      case _ => SessionExpiredRouter.route(getClass.getName, "doesYourPartnerGetAnyBenefitsRoute", Some(answers))
+    }
   }
 
-  private def whichBenefitsPartnerGetRoute(answers: UserAnswers): Call = {
-    if(answers.whoIsInPaidEmployment.contains(partner)) {
-        routes.YourPartnersAgeController.onPageLoad(NormalMode)
-      } else routes.YourAgeController.onPageLoad(NormalMode)
-  }
-
-  private def yourAgeRoute(answers: UserAnswers) = {
+  private def yourAgeRoute(answers: UserAnswers): Call = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
+      routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
     } else {
       routes.YourPartnersAgeController.onPageLoad(NormalMode)
     }
   }
 
-  private def yourPartnerAgeRoute(answers: UserAnswers): Call = {
-    if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(partner)) {
-      routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
-    } else {
-      routes.YourMinimumEarningsController.onPageLoad(NormalMode)
-    }
-  }
+  private def yourPartnerAgeRoute(answers: UserAnswers): Call =
+      routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
 
   private def yourMinimumEarningsRoute(answers: UserAnswers): Call = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
@@ -209,8 +147,8 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
         routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
       }
     } else if(answers.yourMinimumEarnings.contains(false)) {
-        routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
-      } else {
+      routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+    } else {
       if(answers.partnerMinimumEarnings.contains(true)) {
         routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
       } else {
@@ -223,7 +161,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     if(answers.areYouSelfEmployedOrApprentice.contains(SelfEmployed)) {
       routes.YourSelfEmployedController.onPageLoad(NormalMode)
     } else if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     } else if(answers.partnerMinimumEarnings.contains(false)) {
       routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
     } else {
@@ -237,13 +175,13 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     } else if(answers.yourMinimumEarnings.contains(true)) {
       routes.YourMaximumEarningsController.onPageLoad(NormalMode)
     } else {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     }
   }
 
   private def yourSelfEmployedRoute(answers: UserAnswers): Call = {
     if(answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     } else if(answers.partnerMinimumEarnings.contains(true)) {
       routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
     } else {
@@ -255,7 +193,7 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
     if(answers.yourMinimumEarnings.contains(true)) {
       routes.YourMaximumEarningsController.onPageLoad(NormalMode)
     } else {
-      routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad(NormalMode)
     }
   }
 
@@ -283,39 +221,32 @@ class MaximumHoursNavigator @Inject()(utils: Utils,
       if (!voucherValue && maxEarnings) {
         routes.ResultController.onPageLoad()
       } else {
-        routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode)
+        routes.UniversalCreditController.onPageLoad(NormalMode)
       }
 
     (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
       case (Some(parentVoucher), _) => getCallForVoucherValue(parentVoucher)
       case (_, Some(partnerVoucher)) => getCallForVoucherValue(partnerVoucher)
       case _ =>  answers.whoGetsVouchers.fold(
-        SessionExpiredRouter.route(getClass.getName,"maximumEarningsRedirection",Some(answers)))(_ => routes.TaxOrUniversalCreditsController.onPageLoad(NormalMode))
+        SessionExpiredRouter.route(getClass.getName,"maximumEarningsRedirection",Some(answers)))(_ => routes.UniversalCreditController.onPageLoad(NormalMode))
     }
   }
 
-  private def taxOrUniversalCreditsRoutes(answers: UserAnswers): Call = {
-
+  private def universalCreditRoutes(answers: UserAnswers): Call =
     if (schemes.allSchemesDetermined(answers)) {
-      if (
-        taxCredits.eligibility(answers) == NotEligible &&
-         tfc.eligibility(answers) == NotEligible &&
-          esc.eligibility(answers) == NotEligible) {
 
-        routes.ResultController.onPageLoad()
-      } else if(answers.hasApprovedCosts.contains(true)) {
+      val isNotEligibleForTfc = tfc.eligibility(answers) == NotEligible
+      val isNotEligibleForEsc = esc.eligibility(answers) == NotEligible
+      val isNotEligibleForBothTfcAndEsc = !(isNotEligibleForTfc && isNotEligibleForEsc)
+      val isFreeChildcareEligible = freeChildcareWorkingParents.eligibility(answers) == Eligible
 
-        if (freeChildcareWorkingParents.eligibility(answers) == Eligible) {
-          routes.MaxFreeHoursInfoController.onPageLoad()
-        } else {
-          routes.NoOfChildrenController.onPageLoad(NormalMode)
-        }
-
-      } else {
-        routes.ResultController.onPageLoad()
+      (isNotEligibleForBothTfcAndEsc, answers.hasApprovedCosts, isFreeChildcareEligible) match {
+        case (true, Some(true), true)  => routes.MaxFreeHoursInfoController.onPageLoad()
+        case (true, Some(true), false) => routes.NoOfChildrenController.onPageLoad(NormalMode)
+        case _                         => routes.ResultController.onPageLoad()
       }
+
     } else {
-      SessionExpiredRouter.route(getClass.getName,"taxOrUniversalCreditsRoutes",Some(answers))
+      SessionExpiredRouter.route(getClass.getName, "universalCreditRoutes", Some(answers))
     }
-  }
 }
