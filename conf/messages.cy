@@ -474,7 +474,7 @@ partnerEmploymentIncomeCY.error.blank=Nodwch faint y bydd eich partner yn cael e
 partnerEmploymentIncomeCY.error.invalid=Nodwch rifau rhwng 1 a 999999.99 am faint y bydd eich partner yn cael ei dalu y flwyddyn hon
 partnerEmploymentIncomeCY.maxEarnings.error.invalid=Nodwch rifau rhwng 1 a 99999.99 am faint y bydd eich partner yn cael ei dalu y flwyddyn hon gan eich bod chi eisoes wedi dewis na fydd eich partner yn ennill mwy na £100,000 y flwyddyn
 partnerEmploymentIncomeCY.both.maxEarnings.error.invalid=Nodwch rifau rhwng 1 a 99999.99 am faint y bydd eich partner yn cael ei dalu y flwyddyn hon gan eich bod chi eisoes wedi dewis na fydd y naill na’r llall ohonoch yn ennill mwy na £100,000 y flwyddyn
-partnerEmploymentIncomeCY.hint=Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mabwysiadu statudol, tâl mamolaeth statudol, tâl gofal newydd-enedigol statudol, tâl tadolaeth statudol, tâl statudol ar y cyd i rieni neu dâl salwch a gawsoch.
+partnerEmploymentIncomeCY.hint=Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mabwysiadu statudol, tâl mamolaeth statudol, gofal newydd-enedigol, tâl gofal newydd-enedigol statudol, tâl tadolaeth statudol, tâl statudol ar y cyd i rieni neu dâl salwch a gawsoch.
 partnerEmploymentIncomeCY.checkYourAnswersLabel=partnerEmploymentIncomeCY
 partnerEmploymentIncomeCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 
@@ -656,7 +656,7 @@ employmentIncomeCY.parentEmploymentIncome=Eich cyflog
 employmentIncomeCY.partnerEmploymentIncome=Cyflog eich partner
 employmentIncomeCY.checkYourAnswersLabel=Faint y byddwch chi a’ch partner yn cael eich talu y flwyddyn hon?
 employmentIncomeCY.tax_year=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-employmentIncomeCY.hint=Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
+employmentIncomeCY.hint=Dyma gyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, cyn i dreth ac Yswiriant Gwladol gael eu didynnu. Dylech gynnwys unrhyw dâl mamolaeth, gofal newydd-enedigol, tadolaeth, mabwysiadu, ar y cyd i rieni neu salwch statudol a gawsoch.
 
 parentBenefitsIncomePY.error.required=Nodwch faint oedd eich incwm o fudd-daliadau yn y flwyddyn flaenorol
 parentBenefitsIncomePY.error.invalid=Nodwch rifau rhwng 1 a 9999.99 ar gyfer eich incwm o fudd-daliadau yn y flwyddyn flaenorol

@@ -492,7 +492,7 @@ partnerEmploymentIncomeCY.error.blank = Enter how much your partner will get pai
 partnerEmploymentIncomeCY.error.invalid = Enter numbers between 1 and 999999.99 for how much your partner will get paid this year
 partnerEmploymentIncomeCY.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much your partner will get paid this year as you previously selected that your partner will not earn more than £100,000 a year
 partnerEmploymentIncomeCY.both.maxEarnings.error.invalid = Enter numbers from 1 to 99999.99 for how much your partner will get paid this year as you previously selected that neither of you will earn more than £100,000 a year
-partnerEmploymentIncomeCY.hint= This is the total pay from all their jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay they’ve had.
+partnerEmploymentIncomeCY.hint= This is the total pay from all their jobs, or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, neonatal care, paternity, adoption, shared parental or sick pay they’ve had.
 partnerEmploymentIncomeCY.checkYourAnswersLabel = partnerEmploymentIncomeCY
 partnerEmploymentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
 
@@ -675,7 +675,7 @@ employmentIncomeCY.parentEmploymentIncome = Your pay
 employmentIncomeCY.partnerEmploymentIncome = Partner’s pay
 employmentIncomeCY.checkYourAnswersLabel = How much will you and your partner get paid this year?
 employmentIncomeCY.tax_year = This year is 6 April {0} to 5 April {1}.
-employmentIncomeCY.hint = This is the total pay from all your jobs,or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, paternity, adoption, shared parental or sick pay you’ve had.
+employmentIncomeCY.hint = This is the total pay from all your jobs,or profit from self‑employment, before tax and National Insurance is taken off. Include any statutory maternity, neonatal care, paternity, adoption, shared parental or sick pay you’ve had.
 
 parentBenefitsIncomePY.error.required = Enter how much your benefits income was in the previous year
 parentBenefitsIncomePY.error.invalid = Enter numbers from 1 to 9999.99 for your benefits income in the previous year
