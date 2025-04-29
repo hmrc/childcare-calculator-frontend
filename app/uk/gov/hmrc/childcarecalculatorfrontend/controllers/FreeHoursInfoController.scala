@@ -16,15 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{NOTSURE, YES}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+
+import javax.inject.Inject
 
 class FreeHoursInfoController @Inject()(
                                          mcc: MessagesControllerComponents,

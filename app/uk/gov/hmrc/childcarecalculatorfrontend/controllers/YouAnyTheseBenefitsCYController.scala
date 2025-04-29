@@ -61,15 +61,14 @@ class YouAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
 
   def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
     implicit request =>
-      val location= request.userAnswers.location
-      if (request.userAnswers.location.isEmpty) {
+      val location = request.userAnswers.location
+      if (location.isEmpty) {
         Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
       } else {
         val boundForm = BooleanForm(youAnyTheseBenefitsCYErrorKey).bindFromRequest()
-        val location = request.userAnswers.location.get
         validateCarersAllowance(boundForm, request.userAnswers).fold(
           (formWithErrors: Form[Boolean]) =>
-            Future.successful(BadRequest(youAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, request.userAnswers.location.get))),
+            Future.successful(BadRequest(youAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, location.get))),
           value =>
             dataCacheConnector.save[Boolean](request.sessionId, YouAnyTheseBenefitsIdCY.toString, value).map(cacheMap =>
               Redirect(navigator.nextPage(YouAnyTheseBenefitsIdCY, mode)(new UserAnswers(cacheMap))))

@@ -52,9 +52,9 @@ class WhichChildrenBlindViewSpec extends NewViewBehaviours with NewCheckboxViewB
 
   "WhichChildrenBlind view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave like normalPage(() => createView(), messageKeyPrefix)
 
-    behave like pageWithBackLink(createView)
+    behave like pageWithBackLink(() => createView())
 
     behave like checkboxPage()
   }

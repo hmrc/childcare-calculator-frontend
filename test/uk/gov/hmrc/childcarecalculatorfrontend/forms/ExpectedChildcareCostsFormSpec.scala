@@ -26,7 +26,7 @@ class ExpectedChildcareCostsFormSpec extends FormSpec {
   val errorKeyInvalid = "expectedChildcareCosts.error.invalid"
   val firstName = "name"
   val frequency = WEEKLY
-  implicit val messages = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
+  implicit val messages: MessagesImpl = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
   val form = ExpectedChildcareCostsForm(frequency, firstName)
   val frequencyString: String = messages(s"childcarePayFrequency.$frequency").toLowerCase
 

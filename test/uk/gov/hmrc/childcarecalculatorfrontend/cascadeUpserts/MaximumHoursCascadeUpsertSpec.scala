@@ -24,12 +24,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
-import java.time.LocalDate
 
 class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   private val yes: String = YesNoUnsureEnum.YES.toString
-  private val no: String = YesNoUnsureEnum.NO.toString
-  private val notSure: String = YesNoUnsureEnum.NOTSURE.toString
 
   private val under18: String = AgeEnum.UNDER18.toString
   private val eighteenToTwenty: String = AgeEnum.EIGHTEENTOTWENTY.toString
@@ -39,21 +36,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   "saving the doYouLiveWithPartner" when {
 
     "doYouLiveWithPartner is false" must {
-
-      "remove data related to partner in employment" in {
-        val originalCacheMap = new CacheMap("id", Map(
-          WhoIsInPaidEmploymentId.toString -> JsString(partner),
-          HasYourPartnersTaxCodeBeenAdjustedId.toString -> JsString(yes),
-          DoYouKnowYourPartnersAdjustedTaxCodeId.toString -> JsBoolean(true),
-          WhatIsYourPartnersTaxCodeId.toString -> JsString("1100L"),
-          PartnerChildcareVouchersId.toString -> JsString("yes"),
-          YourPartnersAgeId.toString -> JsString("under18"),
-          PartnerMinimumEarningsId.toString -> JsBoolean(true),
-          PartnerSelfEmployedOrApprenticeId.toString -> JsString(SELFEMPLOYED.toString),
-          PartnerMaximumEarningsId.toString -> JsBoolean(true),
-        ))
-      }
-
 
       "remove data related to both parents in employment" in {
         val originalCacheMap = new CacheMap("id", Map(

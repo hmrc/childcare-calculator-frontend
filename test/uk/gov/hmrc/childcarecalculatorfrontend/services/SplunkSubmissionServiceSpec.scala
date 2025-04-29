@@ -31,14 +31,14 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class SplunkSubmissionServiceSpec extends PlaySpec with MockitoSugar with ScalaFutures {
 
-  implicit val hc = new HeaderCarrier
+  implicit val hc: HeaderCarrier = new HeaderCarrier
   implicit val ec: ExecutionContext = ExecutionContext.global
   private val mockConnector = mock[DefaultAuditConnector]
 
   val data = Map("key 1" -> "value 1", "key 2" -> "value 2")
 
-  implicit val hcCaptor = ArgumentCaptor.forClass(classOf[HeaderCarrier])
-  implicit val ecCaptor = ArgumentCaptor.forClass(classOf[ExecutionContext])
+  implicit val hcCaptor: ArgumentCaptor[HeaderCarrier] = ArgumentCaptor.forClass(classOf[HeaderCarrier])
+  implicit val ecCaptor: ArgumentCaptor[ExecutionContext] = ArgumentCaptor.forClass(classOf[ExecutionContext])
 
   "SplunkSubmissionService" must {
 

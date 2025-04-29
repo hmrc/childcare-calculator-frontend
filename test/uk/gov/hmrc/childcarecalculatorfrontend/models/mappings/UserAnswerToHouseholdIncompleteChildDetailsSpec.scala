@@ -47,7 +47,9 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
   val currentDate: LocalDate = LocalDate.now()
 
   override def beforeEach(): Unit = {
-    reset(frontendAppConfig, utils,mockTaxYearInfo)
+    reset(frontendAppConfig)
+    reset(utils)
+    reset(mockTaxYearInfo)
     super.beforeEach()
   }
 

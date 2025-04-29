@@ -16,11 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Eligible, NineTo23Months, NotEligible, ThreeYears, TwoYears}
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
 
@@ -36,7 +35,6 @@ class MaxFreeHoursInfoViewSpec extends NewViewBehaviours {
   def createView = () => view(frontendAppConfig, Eligible, Eligible, answers()) (fakeRequest, messages)
 
   "MaxFreeHoursInfo view" must {
-    val view1 = view(frontendAppConfig, Eligible, NotEligible,answers()) (fakeRequest, messages)
 
     behave like normalPage(createView, messageKeyPrefix, "info", "info", "info.link", "info.link.url", "get.more.help")
 

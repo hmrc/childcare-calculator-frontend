@@ -17,16 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsArray, JsBoolean, JsString}
+import play.api.libs.json.{JsArray, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.{BooleanForm, ChildrenAgeGroupsForm, DoYouGetAnyBenefitsForm}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouGetAnyBenefitsId, DoYouLiveWithPartnerId, LocationId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Location, Mode, NormalMode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouGetAnyBenefitsId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 
 class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {

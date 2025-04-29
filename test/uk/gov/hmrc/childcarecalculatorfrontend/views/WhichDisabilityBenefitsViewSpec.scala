@@ -55,7 +55,7 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
 
   "WhichDisabilityBenefits view" must {
 
-    behave like pageWithBackLink(createView)
+    behave like pageWithBackLink(() => createView())
 
     behave like checkboxPage(legend = Some(messages(s"$messageKeyPrefix.heading", "Foo")))
 

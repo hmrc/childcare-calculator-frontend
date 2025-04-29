@@ -355,7 +355,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoIsInPaidEmployment) thenReturn Some(you)
 
           navigator().nextPage(PartnerOtherIncomeAmountCYId, NormalMode).value(answers) mustBe
-            routes.ResultController.onPageLoad
+            routes.ResultController.onPageLoad()
         }
       }
     }

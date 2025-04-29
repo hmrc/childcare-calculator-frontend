@@ -20,12 +20,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.data.Form
 import play.api.libs.json.JsString
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import play.api.test.Helpers._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{partnerAverageWeeklyEarnings, yourAndPartnerAverageWeeklyEarnings, yourAverageWeeklyEarnings}
 
@@ -36,8 +35,8 @@ class AverageWeeklyEarningControllerSpec extends ControllerSpecBase with Mockito
   val partnerView = application.injector.instanceOf[partnerAverageWeeklyEarnings]
   val youAndPartnerView = application.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
   val yourView = application.injector.instanceOf[yourAverageWeeklyEarnings]
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) = new AverageWeeklyEarningController( mcc, FakeDataCacheService,
-      dataRetrievalAction, new DataRequiredAction, mockUtils, yourView,partnerView, youAndPartnerView)
+  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) = new AverageWeeklyEarningController(mcc,
+      dataRetrievalAction, new DataRequiredAction, yourView,partnerView, youAndPartnerView)
   def averageWeeklyEarningRoute = routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
   def viewAsYourString(form: Form[Boolean] = BooleanForm()) = yourView()(fakeRequest, messages).toString
   def viewAsPartnerString(form: Form[Boolean] = BooleanForm()) = partnerView()(fakeRequest, messages).toString

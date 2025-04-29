@@ -23,8 +23,7 @@ import play.api.i18n.Lang
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, UniversalCreditId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.UniversalCreditEnum.{NONE}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, ResultsService}

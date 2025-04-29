@@ -16,9 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
-import javax.inject.Inject
-
-import java.time.LocalDate
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
@@ -27,7 +24,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.PeriodEnum.PeriodEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, TaxYearInfo, UserAnswers, Utils, DateTimeUtils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, UserAnswers, Utils}
+
+import java.time.LocalDate
+import javax.inject.Inject
 
 class UserAnswerToHousehold @Inject()(appConfig: FrontendAppConfig, utils: Utils)
   extends OverallIncome {

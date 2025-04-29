@@ -49,7 +49,9 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
   val todaysDate: LocalDate = LocalDate.now()
 
   override def beforeEach(): Unit = {
-    reset(frontendAppConfig, utils, mockTaxYearInfo)
+    reset(frontendAppConfig)
+    reset(utils)
+    reset(mockTaxYearInfo)
     super.beforeEach()
   }
 
@@ -301,8 +303,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -327,8 +327,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         )
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
-
-        val statutoryStartDate = LocalDate.of(currentTaxYear, 5, 1)
 
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
@@ -356,9 +354,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
-
-
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
         when(answers.yourChildcareVouchers) thenReturn Some(true)
@@ -383,8 +378,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         )
         val household = Household(location = Location.ENGLAND, parent = parent)
         val answers = spy(userAnswers())
-
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 3, 21)
 
         when(answers.location) thenReturn Some(Location.ENGLAND)
         when(answers.doYouLiveWithPartner) thenReturn Some(false)
@@ -415,8 +408,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
-
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -455,8 +446,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONEOROVER.toString)
@@ -493,8 +482,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONEOROVER.toString)
@@ -529,8 +516,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
-
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -567,8 +552,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
-
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONEOROVER.toString)
@@ -603,8 +586,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
-
-        val statutoryStartDate = LocalDate.of(currentTaxYear, 5, 1)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -641,8 +622,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
 
-        val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
-
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
         when(answers.yourAge) thenReturn Some(AgeEnum.TWENTYONEOROVER.toString)
@@ -676,8 +655,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
-
-        val statutoryStartDate = LocalDate.of(previousTaxYear, 4, 6)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)
@@ -714,8 +691,6 @@ class UserAnswerToHouseholdSpec extends SchemeSpec with MockitoSugar with Before
 
         val household = Household(location = Location.WALES, parent = parent, partner = Some(partner))
         val answers = spy(userAnswers())
-
-        val statutoryStartDate = LocalDate.of(currentTaxYear, 3, 21)
 
         when(answers.location) thenReturn Some(Location.WALES)
         when(answers.doYouLiveWithPartner) thenReturn Some(true)

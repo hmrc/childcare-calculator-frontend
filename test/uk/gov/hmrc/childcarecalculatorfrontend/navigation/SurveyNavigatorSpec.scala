@@ -38,7 +38,7 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = spy(userAnswers())
         when(answers.surveyChildcareSupport) thenReturn Some(false)
 
-        navigator.nextPage(SurveyChildcareSupportId, NormalMode).value(answers) mustBe routes.SurveyDoNotUnderstandController.onPageLoad
+        navigator.nextPage(SurveyChildcareSupportId, NormalMode).value(answers) mustBe routes.SurveyDoNotUnderstandController.onPageLoad()
       }
     }
 

@@ -16,16 +16,15 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Inject
-
-import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NormalMode, NotDetermined, NotEligible}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{ TaxFreeChildcare}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{you, both, partner, universalCredits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+
+import javax.inject.Inject
 
 /**
  * Contains the navigation for current and previous year other income pages
