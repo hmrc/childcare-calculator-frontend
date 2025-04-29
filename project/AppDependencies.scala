@@ -1,31 +1,22 @@
 import sbt._
-import play.core.PlayVersion
 import play.sbt.PlayImport.ws
 
 object AppDependencies {
 
-  val bootstrapFrontendVersion = "9.7.0"
+  val bootstrapVersion = "9.11.0"
+  val playVersion = "play-30"
 
   val compile: Seq[ModuleID] = Seq(
     ws,
-    "uk.gov.hmrc"        %% "bootstrap-frontend-play-30"         % bootstrapFrontendVersion,
-    "uk.gov.hmrc.mongo"  %% "hmrc-mongo-play-30"                 % "2.3.0",
-    "uk.gov.hmrc"        %% "play-frontend-hmrc-play-30"         % "11.8.0",
-    "uk.gov.hmrc"        %% "tax-year"                           % "5.0.0"
+    "uk.gov.hmrc"       %% s"bootstrap-frontend-$playVersion" % bootstrapVersion,
+    "uk.gov.hmrc.mongo" %% s"hmrc-mongo-$playVersion"         % "2.6.0",
+    "uk.gov.hmrc"       %% s"play-frontend-hmrc-$playVersion" % "12.0.0",
+    "uk.gov.hmrc"       %% "tax-year"                         % "6.0.0"
   )
 
-  trait TestDependencies {
-    lazy val scope: String = "test"
-    lazy val test : Seq[ModuleID] = ???
-  }
+  val test: Seq[ModuleID] = Seq(
+    "uk.gov.hmrc" %% s"bootstrap-test-$playVersion" % bootstrapVersion % "test"
+  )
 
-  object Test {
-    def apply(): Seq[ModuleID] = new TestDependencies {
-      override lazy val test = Seq(
-        "uk.gov.hmrc"                   %%  "bootstrap-test-play-30"    % bootstrapFrontendVersion,
-      ).map(_ % scope)
-    }.test
-  }
-
-  def apply(): Seq[ModuleID] = compile ++ Test()
+  def apply(): Seq[ModuleID] = compile ++ test
 }
