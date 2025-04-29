@@ -58,11 +58,11 @@ class ResultsNavigatorSpec extends PlaySpec with MockitoSugar {
 
   def navigator(s: Schemes): SubNavigator = new SubNavigator with ResultsNavigator {
 
-    override protected val schemes: Schemes = s
+    override protected val schemes: Schemes     = s
     override protected val resultLocation: Call = resultPage
 
     override protected val routeMap: PartialFunction[Identifier, UserAnswers => Call] = Map(
-      LocationId -> (_ => routes.ChildAgedTwoController.onPageLoad(NormalMode)),
+      LocationId     -> (_ => routes.ChildAgedTwoController.onPageLoad(NormalMode)),
       ChildAgedTwoId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode))
     )
 
@@ -70,4 +70,5 @@ class ResultsNavigatorSpec extends PlaySpec with MockitoSugar {
       LocationId -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode))
     )
   }
+
 }

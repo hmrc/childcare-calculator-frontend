@@ -34,76 +34,82 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class BothAnyTheseBenefitsCYController @Inject()(appConfig: FrontendAppConfig,
-                                                 mcc: MessagesControllerComponents,
-                                                 dataCacheConnector: DataCacheConnector,
-                                                 navigator: Navigator,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 taxYearInfo: TaxYearInfo,
-                                                 bothAnyTheseBenefitsCY: bothAnyTheseBenefitsCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class BothAnyTheseBenefitsCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    taxYearInfo: TaxYearInfo,
+    bothAnyTheseBenefitsCY: bothAnyTheseBenefitsCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      request.userAnswers.location match {
-        case None =>
-          Redirect(routes.LocationController.onPageLoad(mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    request.userAnswers.location match {
+      case None =>
+        Redirect(routes.LocationController.onPageLoad(mode))
 
-        case Some(location) =>
-          val preparedForm = request.userAnswers.bothAnyTheseBenefitsCY match {
-            case None => BooleanForm()
-            case Some(value) => BooleanForm().fill(value)
-          }
-      Ok(bothAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo, location))
+      case Some(location) =>
+        val preparedForm = request.userAnswers.bothAnyTheseBenefitsCY match {
+          case None        => BooleanForm()
+          case Some(value) => BooleanForm().fill(value)
+        }
+        Ok(bothAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo, location))
     }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-
-      val boundForm = BooleanForm(bothAnyTheseBenefitsCYErrorKey).bindFromRequest()
-      if (request.userAnswers.location.isEmpty) {
-        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
-      } else {
-        validateCarersAllowance(boundForm, request.userAnswers).fold(
-          (formWithErrors: Form[Boolean]) =>
-            Future.successful(BadRequest(bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, request.userAnswers.location.get))),
-          value =>
-            dataCacheConnector.save[Boolean](request.sessionId, BothAnyTheseBenefitsCYId.toString, value).map(cacheMap =>
-              Redirect(navigator.nextPage(BothAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))
-        )
-      }
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    val boundForm = BooleanForm(bothAnyTheseBenefitsCYErrorKey).bindFromRequest()
+    if (request.userAnswers.location.isEmpty) {
+      Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+    } else {
+      validateCarersAllowance(boundForm, request.userAnswers).fold(
+        (formWithErrors: Form[Boolean]) =>
+          Future.successful(
+            BadRequest(
+              bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, request.userAnswers.location.get)
+            )
+          ),
+        value =>
+          dataCacheConnector
+            .save[Boolean](request.sessionId, BothAnyTheseBenefitsCYId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(BothAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))
+      )
+    }
   }
 
-  /**
-    * Checks whether any of parent or partner has Carer Allowance benefits when user selects No for the question,
-    * if yes then populate the form with error else return the original form
+  /** Checks whether any of parent or partner has Carer Allowance benefits when user selects No for the question, if yes
+    * then populate the form with error else return the original form
     *
-    * @param boundForm is a boolean form
-    * @param userAnswers contains the user's input saved in cache
-    * @return boundForm original or modified bound form
+    * @param boundForm
+    *   is a boolean form
+    * @param userAnswers
+    *   contains the user's input saved in cache
+    * @return
+    *   boundForm original or modified bound form
     */
-  private def validateCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) = {
+  private def validateCarersAllowance(boundForm: Form[Boolean], userAnswers: UserAnswers) =
 
-    if(!boundForm.hasErrors) {
-      val parentBenefits = userAnswers.doYouGetAnyBenefits.getOrElse(Set.empty)
-      val partnerBenefits = userAnswers.doesYourPartnerGetAnyBenefits.getOrElse(Set.empty)
+    if (!boundForm.hasErrors) {
+      val parentBenefits                      = userAnswers.doYouGetAnyBenefits.getOrElse(Set.empty)
+      val partnerBenefits                     = userAnswers.doesYourPartnerGetAnyBenefits.getOrElse(Set.empty)
       val hasAnyOneGotCarerAllowance: Boolean = (parentBenefits ++ partnerBenefits).contains(CarersAllowance)
 
       val bothAnyBenefitsValue = boundForm.value.getOrElse(true)
-      val isScotland = userAnswers.location.get.equals(Location.SCOTLAND)
+      val isScotland           = userAnswers.location.get.equals(Location.SCOTLAND)
 
       if (hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue && isScotland) {
-          boundForm.withError("value", bothAnyTheseBenefitsCYScottishCarerAllowanceErrorKey)
-        } else if (hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue && !isScotland) {
-          boundForm.withError("value", bothAnyTheseBenefitsCYCarerAllowanceErrorKey)
-        } else {
-          boundForm
+        boundForm.withError("value", bothAnyTheseBenefitsCYScottishCarerAllowanceErrorKey)
+      } else if (hasAnyOneGotCarerAllowance && !bothAnyBenefitsValue && !isScotland) {
+        boundForm.withError("value", bothAnyTheseBenefitsCYCarerAllowanceErrorKey)
+      } else {
+        boundForm
       }
     } else {
       boundForm
     }
-  }
 
 }

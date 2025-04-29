@@ -21,7 +21,7 @@ import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class HowMuchYouPayPensionFormSpec extends FormSpec {
 
-  val errorKeyBlank = howMuchYouPayPensionRequiredErrorKey
+  val errorKeyBlank   = howMuchYouPayPensionRequiredErrorKey
   val errorKeyInvalid = howMuchYouPayPensionInvalidErrorKey
 
   "HowMuchYouPayPension Form" must {
@@ -53,7 +53,11 @@ class HowMuchYouPayPensionFormSpec extends FormSpec {
 
     "fail to bind non-numerics" in {
       val expectedError = error("value", errorKeyInvalid)
-      checkForError(HowMuchYouPayPensionForm(errorKeyBlank, errorKeyInvalid), Map("value" -> "not a number"), expectedError)
+      checkForError(
+        HowMuchYouPayPensionForm(errorKeyBlank, errorKeyInvalid),
+        Map("value" -> "not a number"),
+        expectedError
+      )
     }
 
     "fail to bind a blank value" in {
@@ -67,4 +71,5 @@ class HowMuchYouPayPensionFormSpec extends FormSpec {
     }
 
   }
+
 }

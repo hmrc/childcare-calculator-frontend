@@ -28,8 +28,8 @@ object ApprovedProviderForm extends FormErrorHelper {
   def ApprovedProviderFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, approvedProviderErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, approvedProviderErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
@@ -44,13 +44,12 @@ object ApprovedProviderForm extends FormErrorHelper {
     approvedProviderInputOption("value-3", YesNoUnsureEnum.NOTSURE.toString)
   )
 
-  private def approvedProviderInputOption(id: String, option: String): InputOption = {
+  private def approvedProviderInputOption(id: String, option: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"approvedProvider.$option"
     )
-  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

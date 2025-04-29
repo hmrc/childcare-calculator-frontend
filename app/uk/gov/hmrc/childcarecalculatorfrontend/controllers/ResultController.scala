@@ -35,31 +35,32 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ResultController @Inject()(val appConfig: FrontendAppConfig,
-                                 mcc: MessagesControllerComponents,
-                                 dataCacheConnector: DataCacheConnector,
-                                 getData: DataRetrievalAction,
-                                 requireData: DataRequiredAction,
-                                 resultsService: ResultsService,
-                                 utils: Utils,
-                                 result: result
-                                )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class ResultController @Inject() (
+    val appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    resultsService: ResultsService,
+    utils: Utils,
+    result: result
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      request.userAnswers.location match {
-        case Some(location) => renderResultsPage(location)
-        case None           => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
-      }
+  def onPageLoad: Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    request.userAnswers.location match {
+      case Some(location) => renderResultsPage(location)
+      case None           => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
+    }
   }
 
-  private def renderResultsPage(location: Location.Value)(implicit request: DataRequest[_], hc: HeaderCarrier): Future[Result] = {
-    resultsService.getResultsViewModel(request.userAnswers, location).map(model => {
+  private def renderResultsPage(
+      location: Location.Value
+  )(implicit request: DataRequest[_], hc: HeaderCarrier): Future[Result] =
+    resultsService.getResultsViewModel(request.userAnswers, location).map { model =>
       dataCacheConnector.save[ResultsViewModel](request.sessionId, ResultsViewModelId.toString, model)
       Ok(result(appConfig, model, utils))
-    })
-  }
-
+    }
 
 }

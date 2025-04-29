@@ -31,20 +31,19 @@ import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-
 class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutures {
-  val mockHttp = mock[HttpClientV2]
+  val mockHttp                             = mock[HttpClientV2]
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
-  implicit val request = FakeRequest()
-  implicit val hc = HeaderCarrier()
-  implicit val ec: ExecutionContext = ExecutionContext.global
+  implicit val request                     = FakeRequest()
+  implicit val hc                          = HeaderCarrier()
+  implicit val ec: ExecutionContext        = ExecutionContext.global
 
   def mockConnector: EligibilityConnector = new EligibilityConnector(frontendAppConfig, mockHttp)
 
   "Eligibility Connector" must {
 
     "get eligibility result" in {
-      val schemesResult = SchemeResults(schemes = Nil)
+      val schemesResult      = SchemeResults(schemes = Nil)
       val testRequestBuilder = mock[RequestBuilder]
 
       when(
@@ -72,12 +71,12 @@ class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutur
           children = List.empty,
           parent = Claimant(),
           partner = None
-        ))
+        )
+      )
 
-      whenReady(res) { value =>
-        value shouldBe schemesResult
-      }
+      whenReady(res)(value => value shouldBe schemesResult)
 
     }
   }
+
 }

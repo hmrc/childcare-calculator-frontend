@@ -32,33 +32,36 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhosHadBenefitsController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        whosHadBenefits: whosHadBenefits)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class WhosHadBenefitsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    whosHadBenefits: whosHadBenefits
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.whosHadBenefits match {
-        case None => WhosHadBenefitsForm()
-        case Some(value) => WhosHadBenefitsForm().fill(value)
-      }
-      Ok(whosHadBenefits(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.whosHadBenefits match {
+      case None        => WhosHadBenefitsForm()
+      case Some(value) => WhosHadBenefitsForm().fill(value)
+    }
+    Ok(whosHadBenefits(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      WhosHadBenefitsForm().bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(whosHadBenefits(appConfig, formWithErrors, mode))),
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    WhosHadBenefitsForm()
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(whosHadBenefits(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[YouPartnerBothEnum.Value](request.sessionId, WhosHadBenefitsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhosHadBenefitsId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[YouPartnerBothEnum.Value](request.sessionId, WhosHadBenefitsId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(WhosHadBenefitsId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

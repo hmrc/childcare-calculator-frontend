@@ -26,7 +26,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionFailed, SubmissionSuccessful}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{
+  SplunkSubmissionServiceInterface,
+  SubmissionFailed,
+  SubmissionSuccessful
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -34,29 +38,32 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SurveyDoNotUnderstandController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        splunkSubmissionService: SplunkSubmissionServiceInterface,
-                                        surveyDoNotUnderstand: surveyDoNotUnderstand)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with Logging {
+class SurveyDoNotUnderstandController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    splunkSubmissionService: SplunkSubmissionServiceInterface,
+    surveyDoNotUnderstand: surveyDoNotUnderstand
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with Logging {
 
-  def onPageLoad(): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.surveyDoNotUnderstand match {
-        case None => SurveyDoNotUnderstandForm()
-        case Some(value) => SurveyDoNotUnderstandForm().fill(value)
-      }
-      Ok(surveyDoNotUnderstand(appConfig, preparedForm))
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.surveyDoNotUnderstand match {
+      case None        => SurveyDoNotUnderstandForm()
+      case Some(value) => SurveyDoNotUnderstandForm().fill(value)
+    }
+    Ok(surveyDoNotUnderstand(appConfig, preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      SurveyDoNotUnderstandForm().bindFromRequest().fold(
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    SurveyDoNotUnderstandForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(surveyDoNotUnderstand(appConfig, formWithErrors))),
         value => {
@@ -65,13 +72,16 @@ class SurveyDoNotUnderstandController @Inject()(
 
           splunkSubmissionService.submit(data).map {
             case SubmissionSuccessful => logger.info("reasonForNotUnderstanding logged to Splunk")
-            case SubmissionFailed => logger.warn("reasonForNotUnderstanding failed to log to Splunk")
+            case SubmissionFailed     => logger.warn("reasonForNotUnderstanding failed to log to Splunk")
           }
 
-          dataCacheConnector.save[String](request.sessionId, SurveyDoNotUnderstandId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(SurveyDoNotUnderstandId, NormalMode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, SurveyDoNotUnderstandId.toString, value)
+            .map(cacheMap =>
+              Redirect(navigator.nextPage(SurveyDoNotUnderstandId, NormalMode)(new UserAnswers(cacheMap)))
+            )
         }
-
       )
   }
+
 }

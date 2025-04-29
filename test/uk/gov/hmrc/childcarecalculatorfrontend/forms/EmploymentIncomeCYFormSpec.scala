@@ -22,20 +22,30 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 class EmploymentIncomeCYFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "parentEmploymentIncomeCY" -> "1",
+    "parentEmploymentIncomeCY"  -> "1",
     "partnerEmploymentIncomeCY" -> "2"
   )
 
   val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
   "EmploymentIncomeCY form" must {
-    behave like questionForm(EmploymentIncomeCY(1, 2))
+    behave.like(questionForm(EmploymentIncomeCY(1, 2)))
 
-    behave like formWithMandatoryTextFieldWithErrorMsgs("parentEmploymentIncomeCY",
-      "parentEmploymentIncomeCY.error.blank", "parentEmploymentIncomeCY.error.blank")
+    behave.like(
+      formWithMandatoryTextFieldWithErrorMsgs(
+        "parentEmploymentIncomeCY",
+        "parentEmploymentIncomeCY.error.blank",
+        "parentEmploymentIncomeCY.error.blank"
+      )
+    )
 
-    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerEmploymentIncomeCY",
-      "partnerEmploymentIncomeCY.error.blank", "partnerEmploymentIncomeCY.error.blank")
+    behave.like(
+      formWithMandatoryTextFieldWithErrorMsgs(
+        "partnerEmploymentIncomeCY",
+        "partnerEmploymentIncomeCY.error.blank",
+        "partnerEmploymentIncomeCY.error.blank"
+      )
+    )
 
   }
 

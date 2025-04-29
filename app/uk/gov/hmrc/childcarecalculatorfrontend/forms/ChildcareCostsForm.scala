@@ -25,11 +25,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object ChildcareCostsForm extends FormErrorHelper {
 
-    def ChildcareCostsFormatter = new Formatter[String] {
+  def ChildcareCostsFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, childcareCostsErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, childcareCostsErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
@@ -43,13 +43,12 @@ object ChildcareCostsForm extends FormErrorHelper {
     childcareCostsInputOption("value-3", YesNoNotYetEnum.NOTYET.toString)
   )
 
-  private def childcareCostsInputOption(id: String, option: String): InputOption = {
+  private def childcareCostsInputOption(id: String, option: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"childcareCosts.$option"
     )
-  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

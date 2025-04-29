@@ -36,50 +36,51 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PartnerMinimumEarningsController @Inject()(appConfig: FrontendAppConfig,
-                                                 mcc: MessagesControllerComponents,
-                                                 dataCacheConnector: DataCacheConnector,
-                                                 navigator: Navigator,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 utils: Utils,
-                                                 partnerMinimumEarnings: partnerMinimumEarnings)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with Logging {
+class PartnerMinimumEarningsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    utils: Utils,
+    partnerMinimumEarnings: partnerMinimumEarnings
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with Logging {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    if (request.userAnswers.yourPartnersAge.isEmpty) {
+      logger.warn(
+        s"Arrived at ${request.uri} without an age value, redirecting to ${routes.YourPartnersAgeController.onPageLoad(mode).url}"
+      )
+      Redirect(routes.YourPartnersAgeController.onPageLoad(mode))
+    } else {
+      val earningsForAge =
+        utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
 
-      if (request.userAnswers.yourPartnersAge.isEmpty) {
-        logger.warn(s"Arrived at ${request.uri} without an age value, redirecting to ${routes.YourPartnersAgeController.onPageLoad(mode).url}")
-        Redirect(routes.YourPartnersAgeController.onPageLoad(mode))
-      } else {
-        val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
-
-        val preparedForm = request.userAnswers.partnerMinimumEarnings match {
-          case None => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
-          case Some(value) => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge).fill(value)
-        }
-        Ok(partnerMinimumEarnings(appConfig,
-          preparedForm,
-          mode,
-          earningsForAge))
+      val preparedForm = request.userAnswers.partnerMinimumEarnings match {
+        case None        => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
+        case Some(value) => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge).fill(value)
       }
+      Ok(partnerMinimumEarnings(appConfig, preparedForm, mode, earningsForAge))
+    }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    val earningsForAge =
+      utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
 
-      val earningsForAge = utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
-
-      BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge).bindFromRequest().fold(
+    BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(partnerMinimumEarnings(appConfig,
-            formWithErrors,
-            mode,
-            earningsForAge))),
+          Future.successful(BadRequest(partnerMinimumEarnings(appConfig, formWithErrors, mode, earningsForAge))),
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, PartnerMinimumEarningsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerMinimumEarningsId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Boolean](request.sessionId, PartnerMinimumEarningsId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(PartnerMinimumEarningsId, mode)(new UserAnswers(cacheMap))))
       )
   }
 

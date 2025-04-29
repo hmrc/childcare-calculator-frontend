@@ -19,15 +19,14 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
 
-
-class ModeSpec extends SpecBase  {
+class ModeSpec extends SpecBase {
 
   "Mode" should {
     "error if the mode is not supported" in {
-      binder.bind("mode",Map("mode" -> Seq("Test"))).get mustBe Left("error.invalidMode")
+      binder.bind("mode", Map("mode" -> Seq("Test"))).get mustBe Left("error.invalidMode")
     }
     "succeed if mode is supported" in {
-      binder.bind("mode",Map("mode" -> Seq("NormalMode"))).get mustBe Right(NormalMode)
+      binder.bind("mode", Map("mode" -> Seq("NormalMode"))).get mustBe Right(NormalMode)
     }
   }
 

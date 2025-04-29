@@ -33,32 +33,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class YourMaximumEarningsController @Inject()(appConfig: FrontendAppConfig,
-                                              mcc: MessagesControllerComponents,
-                                              dataCacheConnector: DataCacheConnector,
-                                              navigator: Navigator,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              yourMaximumEarnings: yourMaximumEarnings)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class YourMaximumEarningsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    yourMaximumEarnings: yourMaximumEarnings
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.yourMaximumEarnings match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
-      }
-      Ok(yourMaximumEarnings(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.yourMaximumEarnings match {
+      case None        => BooleanForm()
+      case Some(value) => BooleanForm().fill(value)
+    }
+    Ok(yourMaximumEarnings(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      BooleanForm(yourMaximumEarningsErrorKey).bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    BooleanForm(yourMaximumEarningsErrorKey)
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(yourMaximumEarnings(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, YourMaximumEarningsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YourMaximumEarningsId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Boolean](request.sessionId, YourMaximumEarningsId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(YourMaximumEarningsId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

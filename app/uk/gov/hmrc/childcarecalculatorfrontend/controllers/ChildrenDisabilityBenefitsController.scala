@@ -34,55 +34,64 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ChildrenDisabilityBenefitsController @Inject()(appConfig: FrontendAppConfig,
-                                                     mcc: MessagesControllerComponents,
-                                                     dataCacheConnector: DataCacheConnector,
-                                                     navigator: Navigator,
-                                                     getData: DataRetrievalAction,
-                                                     requireData: DataRequiredAction,
-                                                     childDisabilityBenefits: childDisabilityBenefits,
-                                                     childrenDisabilityBenefits: childrenDisabilityBenefits)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class ChildrenDisabilityBenefitsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    childDisabilityBenefits: childDisabilityBenefits,
+    childrenDisabilityBenefits: childrenDisabilityBenefits
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withData {
-        case (noOfChildren, name) =>
-          val preparedForm = request.userAnswers.childrenDisabilityBenefits match {
-            case None => BooleanForm()
-            case Some(value) => BooleanForm().fill(value)
-          }
-          Future.successful(Ok(view(appConfig, preparedForm, name, mode, noOfChildren)))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    withData { case (noOfChildren, name) =>
+      val preparedForm = request.userAnswers.childrenDisabilityBenefits match {
+        case None        => BooleanForm()
+        case Some(value) => BooleanForm().fill(value)
       }
+      Future.successful(Ok(view(appConfig, preparedForm, name, mode, noOfChildren)))
+    }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withData {
-        case (noOfChildren, name) =>
-          BooleanForm("childrenDisabilityBenefits.error.notCompleted").bindFromRequest().fold(
-            (formWithErrors: Form[Boolean]) =>
-              Future.successful(BadRequest(view(appConfig, formWithErrors, name, mode, noOfChildren))),
-            value =>
-              dataCacheConnector.save[Boolean](request.sessionId, ChildrenDisabilityBenefitsId.toString, value).map(cacheMap =>
-                Redirect(navigator.nextPage(ChildrenDisabilityBenefitsId, mode)(new UserAnswers(cacheMap))))
-          )
-      }
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    withData { case (noOfChildren, name) =>
+      BooleanForm("childrenDisabilityBenefits.error.notCompleted")
+        .bindFromRequest()
+        .fold(
+          (formWithErrors: Form[Boolean]) =>
+            Future.successful(BadRequest(view(appConfig, formWithErrors, name, mode, noOfChildren))),
+          value =>
+            dataCacheConnector
+              .save[Boolean](request.sessionId, ChildrenDisabilityBenefitsId.toString, value)
+              .map(cacheMap =>
+                Redirect(navigator.nextPage(ChildrenDisabilityBenefitsId, mode)(new UserAnswers(cacheMap)))
+              )
+        )
+    }
   }
 
-  private def withData[A](block: (Int, String) => Future[Result])
-                         (implicit request: DataRequest[A]): Future[Result] = {
+  private def withData[A](block: (Int, String) => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
     for {
       noOfChildren <- request.userAnswers.noOfChildren
       name         <- request.userAnswers.aboutYourChild(0).map(_.name)
     } yield block(noOfChildren, name)
-  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withData",Some(request.userAnswers),request.uri))))
+  }.getOrElse(
+    Future.successful(
+      Redirect(SessionExpiredRouter.route(getClass.getName, "withData", Some(request.userAnswers), request.uri))
+    )
+  )
 
-  private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, mode: Mode, noOfChildren: Int)
-                  (implicit request: Request[_]): Html =
+  private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, mode: Mode, noOfChildren: Int)(
+      implicit request: Request[_]
+  ): Html =
     if (noOfChildren == 1) {
       childDisabilityBenefits(appConfig, form, name, mode)
     } else {
       childrenDisabilityBenefits(appConfig, form, mode)
     }
+
 }

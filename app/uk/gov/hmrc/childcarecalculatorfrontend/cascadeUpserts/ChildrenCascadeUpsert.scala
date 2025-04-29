@@ -21,29 +21,29 @@ import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
 
-class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
+class ChildrenCascadeUpsert @Inject() () extends SubCascadeUpsert {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      NoOfChildrenId.toString -> ((v, cm) => storeNoOfChildren(v, cm)),
-      AboutYourChildId.toString -> ((v, cm) => storeAboutYourChild(v, cm)),
+      NoOfChildrenId.toString               -> ((v, cm) => storeNoOfChildren(v, cm)),
+      AboutYourChildId.toString             -> ((v, cm) => storeAboutYourChild(v, cm)),
       ChildrenDisabilityBenefitsId.toString -> ((v, cm) => storeChildrenDisabilityBenefits(v, cm)),
-      ChildDisabilityBenefitsId.toString -> ((v, cm) => storeChildDisabilityBenefits(v, cm)),
-      WhichChildrenDisabilityId.toString -> ((v, cm) => storeWhichChildrenDisability(v, cm)),
-      RegisteredBlindId.toString -> ((v, cm) => storeRegisteredBlind(v, cm)),
-      WhoHasChildcareCostsId.toString -> ((v, cm) => storeWhoHasChildcareCosts(v, cm))
-
+      ChildDisabilityBenefitsId.toString    -> ((v, cm) => storeChildDisabilityBenefits(v, cm)),
+      WhichChildrenDisabilityId.toString    -> ((v, cm) => storeWhichChildrenDisability(v, cm)),
+      RegisteredBlindId.toString            -> ((v, cm) => storeRegisteredBlind(v, cm)),
+      WhoHasChildcareCostsId.toString       -> ((v, cm) => storeWhoHasChildcareCosts(v, cm))
     )
 
   private def storeNoOfChildren(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val originalDataSet = cacheMap.data.get("noOfChildren")
     val mapToStore = value match {
-      case JsNumber(_) if !originalDataSet.contains(value) => {
-        cacheMap copy (data = cacheMap.data - AboutYourChildId.toString -
-          ChildrenDisabilityBenefitsId.toString - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString -
-          ChildRegisteredBlindId.toString - RegisteredBlindId.toString - WhichChildrenBlindId.toString -
-          WhoHasChildcareCostsId.toString - ChildcarePayFrequencyId.toString - ExpectedChildcareCostsId.toString)
-      }
+      case JsNumber(_) if !originalDataSet.contains(value) =>
+        cacheMap.copy(data =
+          cacheMap.data - AboutYourChildId.toString -
+            ChildrenDisabilityBenefitsId.toString - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString -
+            ChildRegisteredBlindId.toString - RegisteredBlindId.toString - WhichChildrenBlindId.toString -
+            WhoHasChildcareCostsId.toString - ChildcarePayFrequencyId.toString - ExpectedChildcareCostsId.toString
+        )
       case _ => cacheMap
     }
     store(NoOfChildrenId.toString, value, mapToStore)
@@ -53,7 +53,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
     val originalDataSet = cacheMap.data.get("aboutYourChild")
     val mapToStore = value match {
       case JsObject(_) if !originalDataSet.contains(value) =>
-        cacheMap copy (data = cacheMap.data)
+        cacheMap.copy(data = cacheMap.data)
 
       case _ => cacheMap
     }
@@ -64,7 +64,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
     val mapToStore = value match {
       case JsBoolean(false) =>
-        cacheMap copy (data = cacheMap.data - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString)
+        cacheMap.copy(data = cacheMap.data - WhichChildrenDisabilityId.toString - WhichDisabilityBenefitsId.toString)
       case _ => cacheMap
     }
     store(ChildrenDisabilityBenefitsId.toString, value, mapToStore)
@@ -74,7 +74,7 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
     val mapToStore = value match {
       case JsBoolean(false) =>
-        cacheMap copy (data = cacheMap.data - WhichDisabilityBenefitsId.toString)
+        cacheMap.copy(data = cacheMap.data - WhichDisabilityBenefitsId.toString)
       case _ => cacheMap
     }
     store(ChildDisabilityBenefitsId.toString, value, mapToStore)
@@ -84,37 +84,52 @@ class ChildrenCascadeUpsert @Inject()() extends SubCascadeUpsert {
 
     val mapToStore = value match {
       case JsBoolean(false) =>
-        cacheMap copy (data = cacheMap.data - WhichChildrenBlindId.toString)
+        cacheMap.copy(data = cacheMap.data - WhichChildrenBlindId.toString)
       case _ => cacheMap
     }
     store(RegisteredBlindId.toString, value, mapToStore)
   }
 
   private def storeWhichChildrenDisability(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = removeChildcareDependencies(value, cacheMap, WhichChildrenDisabilityId.toString, WhichDisabilityBenefitsId.toString)
+    val mapToStore = removeChildcareDependencies(
+      value,
+      cacheMap,
+      WhichChildrenDisabilityId.toString,
+      WhichDisabilityBenefitsId.toString
+    )
 
     store(WhichChildrenDisabilityId.toString, value, mapToStore)
   }
 
   private def storeWhoHasChildcareCosts(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val updatedChildcarePayFrequency = removeChildcareDependencies(value, cacheMap, WhoHasChildcareCostsId.toString, ChildcarePayFrequencyId.toString)
-    val updatedExpectedChildCareCosts = removeChildcareDependencies(value, updatedChildcarePayFrequency, WhoHasChildcareCostsId.toString, ExpectedChildcareCostsId.toString)
+    val updatedChildcarePayFrequency =
+      removeChildcareDependencies(value, cacheMap, WhoHasChildcareCostsId.toString, ChildcarePayFrequencyId.toString)
+    val updatedExpectedChildCareCosts = removeChildcareDependencies(
+      value,
+      updatedChildcarePayFrequency,
+      WhoHasChildcareCostsId.toString,
+      ExpectedChildcareCostsId.toString
+    )
 
     store(WhoHasChildcareCostsId.toString, value, updatedExpectedChildCareCosts)
   }
 
-  def removeChildcareDependencies(value: JsValue, cacheMap: CacheMap, parentKey: String, elementToDeleteKey: String) = {
-    value.validate[Set[Int]].fold(_ => cacheMap, newData => {
-      cacheMap.data.get(parentKey) match {
-        case Some(originalValues) => {
-          cacheMap.data.get(elementToDeleteKey).fold(cacheMap)(elementToDelete => {
-            val valuesToDelete = originalValues.as[Set[Int]].filterNot(newData)
-            val updatedValues = valuesToDelete.foldLeft(elementToDelete)((dataObject, element) => dataObject.as[JsObject] - element.toString)
-            store(elementToDeleteKey, updatedValues, cacheMap)
-          })
-        }
-        case _ => cacheMap
-      }
-    })
-  }
+  def removeChildcareDependencies(value: JsValue, cacheMap: CacheMap, parentKey: String, elementToDeleteKey: String) =
+    value
+      .validate[Set[Int]]
+      .fold(
+        _ => cacheMap,
+        newData =>
+          cacheMap.data.get(parentKey) match {
+            case Some(originalValues) =>
+              cacheMap.data.get(elementToDeleteKey).fold(cacheMap) { elementToDelete =>
+                val valuesToDelete = originalValues.as[Set[Int]].filterNot(newData)
+                val updatedValues = valuesToDelete
+                  .foldLeft(elementToDelete)((dataObject, element) => dataObject.as[JsObject] - element.toString)
+                store(elementToDeleteKey, updatedValues, cacheMap)
+              }
+            case _ => cacheMap
+          }
+      )
+
 }

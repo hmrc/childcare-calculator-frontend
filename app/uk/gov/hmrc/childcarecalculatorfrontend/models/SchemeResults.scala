@@ -20,29 +20,30 @@ import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeEnum.SchemeEnum
 
 case class EscClaimantEligibility(
-                                   parent: Boolean = false,
-                                   partner: Boolean = false
-                                 )
+    parent: Boolean = false,
+    partner: Boolean = false
+)
 
 object EscClaimantEligibility {
   implicit val escClaimantEligibilityFormat: OFormat[EscClaimantEligibility] = Json.format[EscClaimantEligibility]
 }
 
-case class SingleSchemeResult(name: SchemeEnum,
-                  amount: BigDecimal ,
-                  escClaimantEligibility: Option[EscClaimantEligibility] = None
-                 ) {
+case class SingleSchemeResult(
+    name: SchemeEnum,
+    amount: BigDecimal,
+    escClaimantEligibility: Option[EscClaimantEligibility] = None
+) {
   val missingEscClaimantEligibility: Boolean = name == SchemeEnum.ESCELIGIBILITY && escClaimantEligibility.isEmpty
-  require(!missingEscClaimantEligibility,"Missing values for escClaimantEligibility")
+  require(!missingEscClaimantEligibility, "Missing values for escClaimantEligibility")
 }
 
 object SingleSchemeResult {
   implicit val schemeFormat: OFormat[SingleSchemeResult] = Json.format[SingleSchemeResult]
 }
 
-case class SchemeResults (
-                           schemes: List[SingleSchemeResult]
-                         )
+case class SchemeResults(
+    schemes: List[SingleSchemeResult]
+)
 
 object SchemeResults {
   implicit val schemeResultsFormat: OFormat[SchemeResults] = Json.format[SchemeResults]

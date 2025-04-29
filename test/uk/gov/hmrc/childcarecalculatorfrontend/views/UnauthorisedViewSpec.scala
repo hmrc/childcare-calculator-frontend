@@ -25,8 +25,7 @@ class UnauthorisedViewSpec extends NewViewBehaviours {
 
   def createView = () => view(frontendAppConfig)(fakeRequest, messages)
 
-  "Unauthorised view" must {
+  "Unauthorised view" must
+    behave.like(normalPage(createView, "unauthorised"))
 
-    behave like normalPage(createView, "unauthorised")
-  }
 }

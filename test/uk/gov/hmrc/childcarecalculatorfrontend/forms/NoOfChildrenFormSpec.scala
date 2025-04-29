@@ -21,9 +21,9 @@ import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class NoOfChildrenFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
+  val errorKeyBlank              = "blank"
   val errorKeyNonNumeric: String = noOfChildrenNotInteger
-  val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
+  val NoOfChildrenForm           = new NoOfChildrenForm(frontendAppConfig).apply()
 
   "NoOfChildren Form" must {
 
@@ -67,4 +67,5 @@ class NoOfChildrenFormSpec extends FormSpec {
       checkForError(NoOfChildrenForm, Map("value" -> "1.234"), expectedError)
     }
   }
+
 }

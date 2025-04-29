@@ -136,11 +136,11 @@ class NavigatorSpec extends PlaySpec with OptionValues {
   }
 
   def subnavigator(
-                    routes: Map[Identifier, UserAnswers => Call] = Map.empty,
-                    editRoutes: Map[Identifier, UserAnswers => Call] = Map.empty
-                  ): SubNavigator =
+      routes: Map[Identifier, UserAnswers => Call] = Map.empty,
+      editRoutes: Map[Identifier, UserAnswers => Call] = Map.empty
+  ): SubNavigator =
     new SubNavigator {
-      override protected lazy val routeMap: Map[Identifier, UserAnswers => Call] = routes
+      override protected lazy val routeMap: Map[Identifier, UserAnswers => Call]     = routes
       override protected lazy val editRouteMap: Map[Identifier, UserAnswers => Call] = editRoutes
     }
 

@@ -28,4 +28,5 @@ class InputOptionSpec extends SpecBase {
       inputOption.messageKey mustBe "prefix.option"
     }
   }
+
 }

@@ -25,8 +25,8 @@ class SchemesSpec extends SchemeSpec {
     override def eligibility(answers: UserAnswers): Eligibility = e
   }
 
-  val eligible: Scheme = scheme(Eligible)
-  val notEligible: Scheme = scheme(NotEligible)
+  val eligible: Scheme      = scheme(Eligible)
+  val notEligible: Scheme   = scheme(NotEligible)
   val notDetermined: Scheme = scheme(NotDetermined)
 
   ".allSchemesDetermined" must {
@@ -53,4 +53,5 @@ class SchemesSpec extends SchemeSpec {
       }
     }
   }
+
 }

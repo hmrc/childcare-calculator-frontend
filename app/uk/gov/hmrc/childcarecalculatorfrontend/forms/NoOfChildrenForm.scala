@@ -23,17 +23,16 @@ import play.api.data.format.Formatter
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-
-class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
+class NoOfChildrenForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   def noOfChildrenFormatter(errorKeyBlank: String, errorKeyNonNumeric: String): Formatter[Int] = new Formatter[Int] {
-    val intRegex: String = "([0-9]{1,3})".r.toString()
+    val intRegex: String       = "([0-9]{1,3})".r.toString()
     val minAmountChildren: Int = appConfig.minAmountChildren
     val maxAmountChildren: Int = appConfig.maxAmountChildren
 
-    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] =
       data.get(key) match {
-        case None => produceError(key, errorKeyBlank)
+        case None     => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
 
         case Some(s) if s.matches(intRegex) =>
@@ -45,12 +44,14 @@ class NoOfChildrenForm @Inject()(appConfig: FrontendAppConfig) extends FormError
           }
         case _ => produceError(key, errorKeyNonNumeric)
       }
-    }
 
     def unbind(key: String, value: Int) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = noOfChildrenRequiredErrorKey,
-            errorKeyNonNumeric: String = noOfChildrenNotInteger): Form[Int] =
+  def apply(
+      errorKeyBlank: String = noOfChildrenRequiredErrorKey,
+      errorKeyNonNumeric: String = noOfChildrenNotInteger
+  ): Form[Int] =
     Form(single("value" -> of(noOfChildrenFormatter(errorKeyBlank, errorKeyNonNumeric))))
+
 }

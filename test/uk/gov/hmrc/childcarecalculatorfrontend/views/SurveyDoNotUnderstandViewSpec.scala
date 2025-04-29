@@ -34,8 +34,9 @@ class SurveyDoNotUnderstandViewSpec extends NewStringViewBehaviours {
   val form = SurveyDoNotUnderstandForm()
 
   "SurveyDoNotUnderstand view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
   }
+
 }

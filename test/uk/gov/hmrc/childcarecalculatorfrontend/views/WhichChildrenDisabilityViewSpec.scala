@@ -25,17 +25,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisabilit
 
 class WhichChildrenDisabilityViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[Int] {
 
-  val view = application.injector.instanceOf[whichChildrenDisability]
+  val view             = application.injector.instanceOf[whichChildrenDisability]
   val messageKeyPrefix = "whichChildrenDisability"
 
-  val fieldKey = "value"
+  val fieldKey     = "value"
   val errorMessage = "error.invalid"
 
   val values: Seq[(String, String)] = Seq("Foo" -> "0", "Bar" -> "1")
 
-  val strValues: Seq[(String, String)] = values.map {
-    case (k, v) => (k, v.toString)
-  }
+  val strValues: Seq[(String, String)] = values.map { case (k, v) => (k, v.toString) }
 
   def form: Form[Set[Int]] = WhichChildrenDisabilityForm(0, 1)
 
@@ -44,10 +42,11 @@ class WhichChildrenDisabilityViewSpec extends NewViewBehaviours with NewCheckbox
 
   "WhichChildrenDisability view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like checkboxPage()
+    behave.like(checkboxPage())
   }
+
 }

@@ -22,8 +22,7 @@ import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class ParentEmploymentIncomeCYFormSpec extends FormSpec {
 
-
-  val errorKeyBlank = parentEmploymentIncomeBlankErrorKey
+  val errorKeyBlank   = parentEmploymentIncomeBlankErrorKey
   val errorKeyInvalid = parentEmploymentIncomeInvalidErrorKey
 
   val parentEmpIncomeCYForm: Form[BigDecimal] = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
@@ -72,4 +71,5 @@ class ParentEmploymentIncomeCYFormSpec extends FormSpec {
     }
 
   }
+
 }

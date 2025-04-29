@@ -30,17 +30,23 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childRegisteredBlind,
 
 import java.time.LocalDate
 
-
-
 class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
-  val view1 = application.injector.instanceOf[registeredBlind]
-  val view2 = application.injector.instanceOf[childRegisteredBlind]
+  val view1       = application.injector.instanceOf[registeredBlind]
+  val view2       = application.injector.instanceOf[childRegisteredBlind]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new RegisteredBlindController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view2, view1)
+    new RegisteredBlindController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view2,
+      view1
+    )
 
   def singleViewAsString(form: Form[Boolean] = BooleanForm()) =
     view2(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString
@@ -73,38 +79,38 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET with a single child when the question has previously been answered" in {
-      val validData = requiredData(1) + (RegisteredBlindId.toString -> JsBoolean(true))
+      val validData       = requiredData(1) + (RegisteredBlindId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result          = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
       contentAsString(result) mustBe singleViewAsString(BooleanForm().fill(true))
     }
 
     "populate the view correctly on a GET with multiple children when the question has previously been answered" in {
-      val validData = requiredData(2) + (RegisteredBlindId.toString -> JsBoolean(true))
+      val validData       = requiredData(2) + (RegisteredBlindId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result          = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
       contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result = controller(getRequiredData()).onSubmit(NormalMode)(postRequest)
+      val result      = controller(getRequiredData()).onSubmit(NormalMode)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
     "return a Bad Request and errors when invalid data is submitted for a user with a single child" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = BooleanForm("registeredBlind.error.notCompleted").bind(Map("value" -> "invalid value"))
-      val result = controller(getRequiredData(1)).onSubmit(NormalMode)(postRequest)
+      val boundForm   = BooleanForm("registeredBlind.error.notCompleted").bind(Map("value" -> "invalid value"))
+      val result      = controller(getRequiredData(1)).onSubmit(NormalMode)(postRequest)
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe singleViewAsString(boundForm)
     }
 
     "return a Bad Request and errors when invalid data is submitted for a user with multiple children" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = BooleanForm("registeredBlind.error.notCompleted").bind(Map("value" -> "invalid value"))
-      val result = controller(getRequiredData(2)).onSubmit(NormalMode)(postRequest)
+      val boundForm   = BooleanForm("registeredBlind.error.notCompleted").bind(Map("value" -> "invalid value"))
+      val result      = controller(getRequiredData(2)).onSubmit(NormalMode)(postRequest)
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
@@ -117,51 +123,52 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if there is no answer for `number of children`" in {
-      val data = Map(AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
-      ))
+      val data = Map(
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
+        )
+      )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
-      val result = controller(getData).onPageLoad(NormalMode)(fakeRequest)
+      val result  = controller(getData).onPageLoad(NormalMode)(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if there is no answer for `number of children`" in {
-      val data = Map(AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
-      ))
-      val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
+      val data = Map(
+        AboutYourChildId.toString -> Json.obj(
+          "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
+        )
+      )
+      val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result = controller(getData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(getData).onSubmit(NormalMode)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if there is no answer for `about your child`" in {
-      val data = Map(NoOfChildrenId.toString -> JsNumber(1))
+      val data    = Map(NoOfChildrenId.toString -> JsNumber(1))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
-      val result = controller(getData).onPageLoad(NormalMode)(fakeRequest)
+      val result  = controller(getData).onPageLoad(NormalMode)(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if there is no answer for `about your child`" in {
-      val data = Map(NoOfChildrenId.toString -> JsNumber(1))
-      val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
+      val data        = Map(NoOfChildrenId.toString -> JsNumber(1))
+      val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result = controller(getData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(getData).onSubmit(NormalMode)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }
-
-
-
-

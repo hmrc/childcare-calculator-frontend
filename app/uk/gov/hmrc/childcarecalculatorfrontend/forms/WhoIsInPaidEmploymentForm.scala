@@ -28,8 +28,8 @@ object WhoIsInPaidEmploymentForm extends FormErrorHelper {
   def WhoIsInPaidEmploymentFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, whoIsInPaidEmploymentErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, whoIsInPaidEmploymentErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
@@ -45,13 +45,12 @@ object WhoIsInPaidEmploymentForm extends FormErrorHelper {
     whoIsInPaidEmploymentInputOption(YouPartnerBothNeitherEnum.NEITHER.toString, "value-4")
   )
 
-  def whoIsInPaidEmploymentInputOption(option: String, id: String): InputOption = {
+  def whoIsInPaidEmploymentInputOption(option: String, id: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"whoIsInPaidEmployment.$option"
     )
-  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

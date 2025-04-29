@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
 
 object BenefitsIncomeCYForm extends FormErrorHelper {
 
-  private val parentIncomeInvalidKey = "parentBenefitsIncome.error.invalid"
+  private val parentIncomeInvalidKey  = "parentBenefitsIncome.error.invalid"
   private val partnerIncomeInvalidKey = "partnerBenefitsIncome.error.invalid"
 
   def apply(): Form[BenefitsIncomeCY] = Form(
@@ -37,4 +37,5 @@ object BenefitsIncomeCYForm extends FormErrorHelper {
           .verifying(maximumValue[BigDecimal](9999.99, partnerIncomeInvalidKey))
     )(BenefitsIncomeCY.apply)(BenefitsIncomeCY.unapply)
   )
+
 }

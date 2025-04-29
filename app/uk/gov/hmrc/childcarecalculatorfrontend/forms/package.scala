@@ -34,10 +34,10 @@ package object forms {
   }
 
   def localDateMapping(
-                      dayMapping: (String, Mapping[Int]),
-                      monthMapping: (String, Mapping[Int]),
-                      yearMapping: (String, Mapping[Int])
-                      ): Mapping[LocalDate] = {
+      dayMapping: (String, Mapping[Int]),
+      monthMapping: (String, Mapping[Int]),
+      yearMapping: (String, Mapping[Int])
+  ): Mapping[LocalDate] = {
     import play.api.data.Forms.tuple
     localDateMapping(tuple(dayMapping, monthMapping, yearMapping))
   }
@@ -55,21 +55,20 @@ package object forms {
         LocalDate.of(year, month, day)
     }
 
-    def unbind(date: LocalDate): (Int, Int, Int) = {
+    def unbind(date: LocalDate): (Int, Int, Int) =
       (date.getDayOfMonth, date.getMonthValue, date.getYear)
-    }
 
     subMapping.verifying("error.invalidDate", validate _).transform(bind, unbind)
   }
 
   implicit class WithErrors[A](mapping: Mapping[A]) {
 
-    def replaceError(error: FormError, newError: FormError): Mapping[A] = {
+    def replaceError(error: FormError, newError: FormError): Mapping[A] =
       new Mapping[A] {
 
-        override val key: String = mapping.key
-        override val mappings: Seq[Mapping[_]] = mapping.mappings
-        override val constraints: Seq[Constraint[A]] = mapping.constraints
+        override val key: String                           = mapping.key
+        override val mappings: Seq[Mapping[_]]             = mapping.mappings
+        override val constraints: Seq[Constraint[A]]       = mapping.constraints
         override def unbind(value: A): Map[String, String] = mapping.unbind(value)
         override def withPrefix(prefix: String): Mapping[A] =
           mapping.withPrefix(prefix).replaceError(error.withPrefix(prefix), newError.withPrefix(prefix))
@@ -90,20 +89,22 @@ package object forms {
           (map, mapErrors(errors))
         }
 
-        override def bind(data: Map[String, String]): Either[Seq[FormError], A] = {
+        override def bind(data: Map[String, String]): Either[Seq[FormError], A] =
           mapping.bind(data).left.map(mapErrors)
-        }
       }
-    }
 
     def replaceError(error: String, message: String, args: Any*): Mapping[A] =
       replaceError(FormError(mapping.key, error), FormError(mapping.key, message, args))
+
   }
 
   implicit class WithPrefix(formError: FormError) {
+
     def withPrefix(prefix: String): FormError = {
       val key = Seq(prefix, formError.key).filter(_.nonEmpty).mkString(".")
       formError.copy(key = key)
     }
+
   }
+
 }

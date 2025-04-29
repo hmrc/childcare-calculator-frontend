@@ -30,10 +30,13 @@ trait SubmissionService {
   def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults]
 }
 
-class EligibilityService @Inject()(appConfig: FrontendAppConfig, utils: Utils, connector: EligibilityConnector)(implicit ec: ExecutionContext)
-  extends SubmissionService {
+class EligibilityService @Inject() (appConfig: FrontendAppConfig, utils: Utils, connector: EligibilityConnector)(
+    implicit ec: ExecutionContext
+) extends SubmissionService {
 
-  def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
+  def eligibility(
+      answers: UserAnswers
+  )(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
     val household = userAnswerToHousehold.convert(answers)
     connector.getEligibility(household)
   }

@@ -33,50 +33,54 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PartnerEmploymentIncomeCYController @Inject()(
-                                                     appConfig: FrontendAppConfig,
-                                                     mcc: MessagesControllerComponents,
-                                                     dataCacheConnector: DataCacheConnector,
-                                                     navigator: Navigator,
-                                                     getData: DataRetrievalAction,
-                                                     requireData: DataRequiredAction,
-                                                     taxYearInfo: TaxYearInfo,
-                                                     form: PartnerEmploymentIncomeCYForm,
-                                                     partnerEmploymentIncomeCY: partnerEmploymentIncomeCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with FormErrorHelper with I18nSupport {
+class PartnerEmploymentIncomeCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    taxYearInfo: TaxYearInfo,
+    form: PartnerEmploymentIncomeCYForm,
+    partnerEmploymentIncomeCY: partnerEmploymentIncomeCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with FormErrorHelper
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.partnerEmploymentIncomeCY match {
+      case None        => form()
+      case Some(value) => form().fill(value)
+    }
 
-      val preparedForm = request.userAnswers.partnerEmploymentIncomeCY match {
-        case None => form()
-        case Some(value) => form().fill(value)
-      }
-
-      Ok(partnerEmploymentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
+    Ok(partnerEmploymentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    val maxEarnings = request.userAnswers.partnerMaximumEarnings
+    val boundForm   = form().bindFromRequest()
 
-      val maxEarnings = request.userAnswers.partnerMaximumEarnings
-      val boundForm = form().bindFromRequest()
-
-      validateForm(maxEarnings, boundForm).fold((formWithErrors: Form[BigDecimal]) =>
+    validateForm(maxEarnings, boundForm).fold(
+      (formWithErrors: Form[BigDecimal]) =>
         Future.successful(BadRequest(partnerEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
-        value =>
-          dataCacheConnector.save[BigDecimal](request.sessionId, PartnerEmploymentIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
+      value =>
+        dataCacheConnector
+          .save[BigDecimal](request.sessionId, PartnerEmploymentIncomeCYId.toString, value)
+          .map(cacheMap => Redirect(navigator.nextPage(PartnerEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
+    )
   }
 
-  private def validateForm(maxEarnings: Option[Boolean],
-                           boundForm: Form[BigDecimal]) =
+  private def validateForm(maxEarnings: Option[Boolean], boundForm: Form[BigDecimal]) =
     if (boundForm.hasErrors) {
       boundForm
     } else {
-      validateMaxIncomeEarnings(maxEarnings,
+      validateMaxIncomeEarnings(
+        maxEarnings,
         appConfig.maxIncome,
         partnerEmploymentIncomeInvalidMaxEarningsErrorKey,
-        boundForm)
+        boundForm
+      )
     }
+
 }

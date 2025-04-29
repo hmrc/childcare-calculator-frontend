@@ -26,14 +26,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfo
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 @Singleton
-class YourIncomeInfoController @Inject()(val appConfig: FrontendAppConfig,
-                                         mcc: MessagesControllerComponents,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         taxYearInfo: TaxYearInfo,
-                                         yourIncomeInfo: yourIncomeInfo) extends FrontendController(mcc)with I18nSupport {
+class YourIncomeInfoController @Inject() (
+    val appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    taxYearInfo: TaxYearInfo,
+    yourIncomeInfo: yourIncomeInfo
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(yourIncomeInfo(appConfig, taxYearInfo))
-  }
+  def onPageLoad: Action[AnyContent] =
+    getData.andThen(requireData)(implicit request => Ok(yourIncomeInfo(appConfig, taxYearInfo)))
+
 }

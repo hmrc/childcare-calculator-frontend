@@ -21,75 +21,78 @@ import play.api.libs.json._
 
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SubCascadeUpsert, CacheMap}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
 
-case class DataGenerator(sample: CacheMap) extends SubCascadeUpsert{
-  def overWriteObject(objectName: String, properties: JsValue) : DataGenerator = {
+case class DataGenerator(sample: CacheMap) extends SubCascadeUpsert {
+
+  def overWriteObject(objectName: String, properties: JsValue): DataGenerator =
     DataGenerator(sample.copy(data = sample.data + (objectName -> properties)))
-  }
 
-  def deleteObject(objectName: String) : DataGenerator = {
+  def deleteObject(objectName: String): DataGenerator =
     DataGenerator(sample.copy(data = sample.data - objectName))
-  }
+
 }
 
 object DataGenerator {
-  val ageOf19YearsAgo: LocalDate => LocalDate = (date : LocalDate) =>
-    date.minusYears(19).minusDays(1)
-  val ageOf16WithBirthdayBefore31stAugust: LocalDate => LocalDate = (date : LocalDate) =>
+  val ageOf19YearsAgo: LocalDate => LocalDate = (date: LocalDate) => date.minusYears(19).minusDays(1)
+
+  val ageOf16WithBirthdayBefore31stAugust: LocalDate => LocalDate = (date: LocalDate) =>
     if (date.getMonthValue > 8) {
       LocalDate.parse(s"${date.minusYears(16).getYear}-07-31")
     } else {
       date.minusYears(16)
     }
-  val ageOfOver16Relative: LocalDate => LocalDate = (date : LocalDate) =>
+
+  val ageOfOver16Relative: LocalDate => LocalDate = (date: LocalDate) =>
     if (date.getMonthValue <= 8) {
       date.minusYears(17)
     } else {
       date.minusYears(16).minusDays(1)
     }
-  val ageUnder16Relative: LocalDate => LocalDate = (date : LocalDate) =>
-    date.minusYears(1)
-  val ageExactly16Relative: LocalDate => LocalDate = (date : LocalDate) =>
+
+  val ageUnder16Relative: LocalDate => LocalDate = (date: LocalDate) => date.minusYears(1)
+
+  val ageExactly16Relative: LocalDate => LocalDate = (date: LocalDate) =>
     LocalDate.of(date.minusYears(16).getYear, 6, 1)
-  val ageExactly15Relative: LocalDate => LocalDate = (date : LocalDate) =>
+
+  val ageExactly15Relative: LocalDate => LocalDate = (date: LocalDate) =>
     LocalDate.of(date.minusYears(15).getYear, 6, 1)
 
-  lazy val disabilityBenefits: String = DisabilityBenefits.DISABILITY_BENEFITS.toString
+  lazy val disabilityBenefits: String           = DisabilityBenefits.DISABILITY_BENEFITS.toString
   lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString
 
-  lazy val weekly: String = ChildcarePayFrequency.WEEKLY.toString
+  lazy val weekly: String  = ChildcarePayFrequency.WEEKLY.toString
   lazy val monthly: String = ChildcarePayFrequency.MONTHLY.toString
 
   private val sampleDate = LocalDate.parse("2019-01-01")
 
-  val sample = new CacheMap("id", Map(
-    NoOfChildrenId.toString -> JsNumber(5),
-    AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", sampleDate)),
-      "1" -> Json.toJson(AboutYourChild("Bar", sampleDate)),
-      "2" -> Json.toJson(AboutYourChild("Quux", sampleDate)),
-      "3" -> Json.toJson(AboutYourChild("Baz", sampleDate)),
-      "4" -> Json.toJson(AboutYourChild("Raz", sampleDate))
-    ),
+  val sample = new CacheMap(
+    "id",
+    Map(
+      NoOfChildrenId.toString -> JsNumber(5),
+      AboutYourChildId.toString -> Json.obj(
+        "0" -> Json.toJson(AboutYourChild("Foo", sampleDate)),
+        "1" -> Json.toJson(AboutYourChild("Bar", sampleDate)),
+        "2" -> Json.toJson(AboutYourChild("Quux", sampleDate)),
+        "3" -> Json.toJson(AboutYourChild("Baz", sampleDate)),
+        "4" -> Json.toJson(AboutYourChild("Raz", sampleDate))
+      ),
+      ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
+      WhichChildrenDisabilityId.toString    -> Json.toJson(Seq(0, 2)),
+      WhichDisabilityBenefitsId.toString -> Json.obj(
+        "0" -> Seq(disabilityBenefits),
+        "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
+      ),
+      RegisteredBlindId.toString      -> JsBoolean(true),
+      WhichChildrenBlindId.toString   -> Json.toJson(Seq(2)),
+      WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
+      ChildcarePayFrequencyId.toString -> Json.obj(
+        "0" -> monthly,
+        "2" -> weekly
+      ),
+      ExpectedChildcareCostsId.toString -> Json.obj("3" -> JsNumber(123), "4" -> JsNumber(224))
+    )
+  )
 
-    ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
-    WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2)),
-    WhichDisabilityBenefitsId.toString -> Json.obj(
-      "0" -> Seq(disabilityBenefits),
-      "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
-    ),
-    RegisteredBlindId.toString -> JsBoolean(true),
-    WhichChildrenBlindId.toString -> Json.toJson(Seq(2)),
-    WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
-    ChildcarePayFrequencyId.toString -> Json.obj(
-      "0" -> monthly,
-      "2" -> weekly
-    ),
-    ExpectedChildcareCostsId.toString -> Json.obj(
-      "3" -> JsNumber(123),
-      "4" -> JsNumber(224))
-  ))
-
-  def apply() :DataGenerator = DataGenerator(sample)
+  def apply(): DataGenerator = DataGenerator(sample)
 }

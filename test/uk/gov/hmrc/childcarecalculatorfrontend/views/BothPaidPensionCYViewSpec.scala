@@ -27,26 +27,33 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidPensionCY
 class BothPaidPensionCYViewSpec extends NewYesNoViewBehaviours {
 
   override val form = BooleanForm()
-  val taxYearInfo = new TaxYearInfo
-  val view = application.injector.instanceOf[bothPaidPensionCY]
+  val taxYearInfo   = new TaxYearInfo
+  val view          = application.injector.instanceOf[bothPaidPensionCY]
 
   val messageKeyPrefix = "bothPaidPensionCY"
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "BothPaidPensionCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothPaidPensionCYController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothPaidPensionCYController.onSubmit(NormalMode).url)
+    )
 
     "contain tax year info" in {
       val doc = asDocument(createView())
-      assertContainsText(doc, messages(s"$messageKeyPrefix.tax.year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      assertContainsText(
+        doc,
+        messages(s"$messageKeyPrefix.tax.year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
+      )
     }
   }
+
 }

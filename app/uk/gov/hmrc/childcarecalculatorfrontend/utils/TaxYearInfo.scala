@@ -20,17 +20,17 @@ import javax.inject.Inject
 import java.time.LocalDate
 import uk.gov.hmrc.time.TaxYear
 
-class TaxYearInfo @Inject()() {
+class TaxYearInfo @Inject() () {
 
   private lazy val currentTaxYear: TaxYear = TaxYear.current
 
-  lazy val currentTaxYearStart: String = currentTaxYear.starts.getYear.toString
+  lazy val currentTaxYearStart: String      = currentTaxYear.starts.getYear.toString
   lazy val currentTaxYearEndDate: LocalDate = currentTaxYear.finishes
-  lazy val currentTaxYearEnd: String = currentTaxYearEndDate.getYear.toString
+  lazy val currentTaxYearEnd: String        = currentTaxYearEndDate.getYear.toString
 
   private lazy val previousTaxYear: TaxYear = currentTaxYear.previous
 
-  lazy val previousTaxYearStart: String = previousTaxYear.starts.getYear.toString
+  lazy val previousTaxYearStart: String      = previousTaxYear.starts.getYear.toString
   lazy val previousTaxYearEndDate: LocalDate = previousTaxYear.finishes
-  lazy val previousTaxYearEnd: String = previousTaxYearEndDate.getYear.toString
+  lazy val previousTaxYearEnd: String        = previousTaxYearEndDate.getYear.toString
 }

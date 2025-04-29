@@ -44,11 +44,15 @@ class WithErrorsSpec extends PlaySpec with EitherValues {
     }
 
     "replace an error message from an inner binding" in {
-      val newMapping = mapping.replaceError(FormError("foo", "my.custom.error.notCompleted"), FormError("bar", "my.custom.error.notCompleted"))
+      val newMapping = mapping.replaceError(
+        FormError("foo", "my.custom.error.notCompleted"),
+        FormError("bar", "my.custom.error.notCompleted")
+      )
       val result = newMapping.bind(Map.empty)
       result.left.value must contain(FormError("bar", "my.custom.error.notCompleted"))
       result.left.value mustNot contain(FormError("foo", "my.custom.error.notCompleted"))
       result.left.value mustNot contain(FormError("foo", "error.required"))
     }
   }
+
 }

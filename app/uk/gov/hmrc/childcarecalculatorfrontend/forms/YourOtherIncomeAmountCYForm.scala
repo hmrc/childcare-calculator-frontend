@@ -34,9 +34,9 @@ class YourOtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) exten
 
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]) =
       data.get(key) match {
-        case None => produceError(key, errorKeyBlank)
+        case None     => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
         case Some(s) if s.matches(decimalRegex) =>
           val value = BigDecimal(s)
@@ -48,11 +48,14 @@ class YourOtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) exten
           }
         case _ => produceError(key, errorKeyInvalid)
       }
-    }
 
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = parentOtherIncomeRequiredErrorKey, errorKeyInvalid: String = parentOtherIncomeInvalidErrorKey): Form[BigDecimal] =
+  def apply(
+      errorKeyBlank: String = parentOtherIncomeRequiredErrorKey,
+      errorKeyInvalid: String = parentOtherIncomeInvalidErrorKey
+  ): Form[BigDecimal] =
     Form(single("value" -> of(yourOtherIncomeAmountCYFormatter(errorKeyBlank, errorKeyInvalid))))
+
 }

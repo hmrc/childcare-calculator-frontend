@@ -21,9 +21,7 @@ import play.twirl.api.HtmlFormat
 
 trait NewViewBehaviours extends NewViewSpecBase {
 
-  def normalPage(view: () => HtmlFormat.Appendable,
-                 messageKeyPrefix: String,
-                 expectedGuidanceKeys: String*): Unit = {
+  def normalPage(view: () => HtmlFormat.Appendable, messageKeyPrefix: String, expectedGuidanceKeys: String*): Unit =
 
     "behave like a normal page" when {
       "rendered" must {
@@ -35,7 +33,11 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct browser title" in {
           val doc = asDocument(view())
-          assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title")+" - "+messages("site.service_name")+" - GOV.UK")
+          assertEqualsValue(
+            doc,
+            "title",
+            messages(s"$messageKeyPrefix.title") + " - " + messages("site.service_name") + " - GOV.UK"
+          )
           assertNotContainsValue(doc, "title", "{}")
         }
 
@@ -60,11 +62,12 @@ trait NewViewBehaviours extends NewViewSpecBase {
         }
       }
     }
-  }
 
-  def normalPageWithCurrencySymbol(view: () => HtmlFormat.Appendable,
-                                   messageKeyPrefix: String,
-                                   expectedGuidanceKeys: String*): Unit = {
+  def normalPageWithCurrencySymbol(
+      view: () => HtmlFormat.Appendable,
+      messageKeyPrefix: String,
+      expectedGuidanceKeys: String*
+  ): Unit = {
 
     normalPage(view, messageKeyPrefix, expectedGuidanceKeys: _*)
 
@@ -80,14 +83,14 @@ trait NewViewBehaviours extends NewViewSpecBase {
   }
 
   def normalPageWithTitleAsString(
-                                   view: () => HtmlFormat.Appendable,
-                                   messageKeyPrefix: String,
-                                   messageKeyPostfix: String,
-                                   title: String,
-                                   heading: Option[String],
-                                   expectedGuidanceKeys: Seq[String],
-                                   args: Any*
-                                 ): Unit = {
+      view: () => HtmlFormat.Appendable,
+      messageKeyPrefix: String,
+      messageKeyPostfix: String,
+      title: String,
+      heading: Option[String],
+      expectedGuidanceKeys: Seq[String],
+      args: Any*
+  ): Unit =
 
     "behave like a normal page" when {
       "rendered" must {
@@ -124,16 +127,15 @@ trait NewViewBehaviours extends NewViewSpecBase {
         }
       }
     }
-  }
 
   def normalPageWithTitleParameters(
-                                   view: () => HtmlFormat.Appendable,
-                                   messageKeyPrefix: String,
-                                   messageKeyPostfix: String,
-                                   expectedGuidanceKeys: Seq[String],
-                                   args: Seq[String] = Nil,
-                                   titleArgs: Seq[String] = Nil
-                                 ): Unit = {
+      view: () => HtmlFormat.Appendable,
+      messageKeyPrefix: String,
+      messageKeyPostfix: String,
+      expectedGuidanceKeys: Seq[String],
+      args: Seq[String] = Nil,
+      titleArgs: Seq[String] = Nil
+  ): Unit =
 
     "behave like a normal page" when {
       "rendered" must {
@@ -145,7 +147,11 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct browser title" in {
           val doc = asDocument(view())
-          assertEqualsValue(doc, "title", messages(s"$messageKeyPrefix.title", titleArgs: _*) + " - " + messages("site.service_name") + " - GOV.UK")
+          assertEqualsValue(
+            doc,
+            "title",
+            messages(s"$messageKeyPrefix.title", titleArgs: _*) + " - " + messages("site.service_name") + " - GOV.UK"
+          )
           assertNotContainsValue(doc, "title", "{}")
         }
 
@@ -170,9 +176,8 @@ trait NewViewBehaviours extends NewViewSpecBase {
         }
       }
     }
-  }
 
-  def pageWithBackLink(view: () => HtmlFormat.Appendable): Unit = {
+  def pageWithBackLink(view: () => HtmlFormat.Appendable): Unit =
 
     "behave like a page with a back link" must {
       "have a back link" in {
@@ -180,9 +185,8 @@ trait NewViewBehaviours extends NewViewSpecBase {
         assertRenderedByCssSelector(doc, ".govuk-back-link")
       }
     }
-  }
 
-  def resultPage(view: () => HtmlFormat.Appendable): Unit = {
+  def resultPage(view: () => HtmlFormat.Appendable): Unit =
     "behave like a result page" when {
       "rendered" must {
         "have a link to feedback survey" in {
@@ -191,5 +195,5 @@ trait NewViewBehaviours extends NewViewSpecBase {
         }
       }
     }
-  }
+
 }

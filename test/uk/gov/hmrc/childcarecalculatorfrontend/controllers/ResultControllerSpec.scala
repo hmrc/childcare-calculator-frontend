@@ -22,9 +22,13 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.Lang
 import play.api.libs.json.JsString
 import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{
+  DataRequiredAction,
+  DataRetrievalAction,
+  FakeDataRetrievalAction
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, UniversalCreditId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.UniversalCreditEnum.{NONE}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.UniversalCreditEnum.NONE
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, ResultsService}
@@ -35,7 +39,7 @@ import scala.concurrent.Future
 
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
 
-  val view = application.injector.instanceOf[result]
+  val view                          = application.injector.instanceOf[result]
   val resultService: ResultsService = mock[ResultsService]
 
   implicit val l: Lang = mock[Lang]
@@ -46,32 +50,47 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
 
   val cacheMapWithNoLocation = new CacheMap("id", Map("test" -> JsString(location.toString)))
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
-                 resultService: ResultsService): ResultController =
-    new ResultController(frontendAppConfig,
+  def controller(
+      dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
+      resultService: ResultsService
+  ): ResultController =
+    new ResultController(
+      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       dataRetrievalAction,
       new DataRequiredAction,
       resultService,
       new Utils,
-      view)
+      view
+    )
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
-      when(resultService.getResultsViewModel(any(), any())(any(), any(), any())) thenReturn Future.successful(
-        ResultsViewModel(freeHours = Some(15), tfc = Some(600), esc = Some(1000), location = location, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true))
+      when(resultService.getResultsViewModel(any(), any())(any(), any(), any())).thenReturn(
+        Future.successful(
+          ResultsViewModel(
+            freeHours = Some(15),
+            tfc = Some(600),
+            esc = Some(1000),
+            location = location,
+            hasChildcareCosts = true,
+            hasCostsWithApprovedProvider = true,
+            isAnyoneInPaidEmployment = true,
+            livesWithPartner = true
+          )
+        )
+      )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
-      val resultPage = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
+      val resultPage      = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
       status(resultPage) mustBe OK
       contentAsString(resultPage) must include("Help you could get with your childcare costs")
     }
 
-
     "redirect to Location controller when there is no location data" in {
       val getRelevantData = new FakeDataRetrievalAction(Some(cacheMapWithNoLocation))
-      val result = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
+      val result          = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).get mustBe routes.LocationController.onPageLoad(NormalMode).url

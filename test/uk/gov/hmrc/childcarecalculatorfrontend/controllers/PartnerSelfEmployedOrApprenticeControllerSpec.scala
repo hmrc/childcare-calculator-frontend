@@ -28,18 +28,24 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerSelfEmployedOrApprentice
 
-
-
 class PartnerSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[partnerSelfEmployedOrApprentice]
+  val view        = application.injector.instanceOf[partnerSelfEmployedOrApprentice]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerSelfEmployedOrApprenticeController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new PartnerSelfEmployedOrApprenticeController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
-  def viewAsString(form: Form[String] = PartnerSelfEmployedOrApprenticeForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = PartnerSelfEmployedOrApprenticeForm()) =
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "PartnerSelfEmployedOrApprentice Controller" must {
 
@@ -51,16 +57,22 @@ class PartnerSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(PartnerSelfEmployedOrApprenticeId.toString -> JsString(PartnerSelfEmployedOrApprenticeForm.options.head.value))
+      val validData = Map(
+        PartnerSelfEmployedOrApprenticeId.toString -> JsString(PartnerSelfEmployedOrApprenticeForm.options.head.value)
+      )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(PartnerSelfEmployedOrApprenticeForm().fill(PartnerSelfEmployedOrApprenticeForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(
+        PartnerSelfEmployedOrApprenticeForm().fill(PartnerSelfEmployedOrApprenticeForm.options.head.value)
+      )
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", PartnerSelfEmployedOrApprenticeForm.options.head.value)).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody(("value", PartnerSelfEmployedOrApprenticeForm.options.head.value))
+        .withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -70,7 +82,7 @@ class PartnerSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = PartnerSelfEmployedOrApprenticeForm().bind(Map("value" -> "invalid value"))
+      val boundForm   = PartnerSelfEmployedOrApprenticeForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -86,11 +98,14 @@ class PartnerSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", PartnerSelfEmployedOrApprenticeForm.options.head.value)).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody(("value", PartnerSelfEmployedOrApprenticeForm.options.head.value))
+        .withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }

@@ -32,19 +32,18 @@ object ChildcarePayFrequencyForm extends FormErrorHelper {
     payFrequencyInputOption(ChildcarePayFrequency.MONTHLY_KEY, ChildcarePayFrequency.MONTHLY.toString)
   )
 
-  private def payFrequencyInputOption(id: String, option: String): InputOption = {
+  private def payFrequencyInputOption(id: String, option: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"childcarePayFrequency.$option"
     )
-  }
 
   private def ChildcarePayFrequencyFormatter(name: String) = new Formatter[ChildcarePayFrequency.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(ChildcarePayFrequency.withName(s))
-      case None => produceError(key, "childcarePayFrequency.error.notCompleted", name)
-      case _ => produceError(key, "error.unknown")
+      case None                        => produceError(key, "childcarePayFrequency.error.notCompleted", name)
+      case _                           => produceError(key, "error.unknown")
     }
 
     def unbind(key: String, value: ChildcarePayFrequency.Value) = Map(key -> value.toString)

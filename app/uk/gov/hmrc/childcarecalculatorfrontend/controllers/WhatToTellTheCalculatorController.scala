@@ -23,10 +23,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculato
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 @Singleton
-class WhatToTellTheCalculatorController @Inject()(mcc: MessagesControllerComponents,
-                                                  whatToTellTheCalculator: whatToTellTheCalculator) extends FrontendController(mcc) with I18nSupport {
+class WhatToTellTheCalculatorController @Inject() (
+    mcc: MessagesControllerComponents,
+    whatToTellTheCalculator: whatToTellTheCalculator
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action { implicit request =>
-    Ok(whatToTellTheCalculator())
-  }
+  def onPageLoad: Action[AnyContent] = Action(implicit request => Ok(whatToTellTheCalculator()))
 }

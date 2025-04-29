@@ -20,7 +20,7 @@ import play.api.mvc.{JavascriptLiteral, QueryStringBindable}
 
 sealed trait Mode
 
-case object CheckMode extends Mode
+case object CheckMode  extends Mode
 case object NormalMode extends Mode
 
 object Mode {
@@ -28,21 +28,24 @@ object Mode {
   implicit val jsLiteral: JavascriptLiteral[Mode] = new JavascriptLiteral[Mode] {
     override def to(value: Mode): String = value match {
       case NormalMode => "NormalMode"
-      case CheckMode => "CheckMode"
+      case CheckMode  => "CheckMode"
     }
   }
 
   implicit def binder(implicit urlInput: QueryStringBindable[String]): QueryStringBindable[Mode] =
     new QueryStringBindable[Mode] {
       override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] =
-        urlInput.bind(key, params).map(_.flatMap {
-          case "NormalMode" =>
-            Right(NormalMode)
-          case _ =>
-            Left("error.invalidMode")
-        })
+        urlInput
+          .bind(key, params)
+          .map(_.flatMap {
+            case "NormalMode" =>
+              Right(NormalMode)
+            case _ =>
+              Left("error.invalidMode")
+          })
 
       override def unbind(key: String, value: Mode): String =
         urlInput.unbind(key, value.toString)
     }
+
 }

@@ -32,33 +32,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhoGetsVouchersController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        whoGetsVouchers: whoGetsVouchers)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class WhoGetsVouchersController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    whoGetsVouchers: whoGetsVouchers
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.whoGetsVouchers match {
-        case None => WhoGetsVouchersForm()
-        case Some(value) => WhoGetsVouchersForm().fill(value)
-      }
-      Ok(whoGetsVouchers(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.whoGetsVouchers match {
+      case None        => WhoGetsVouchersForm()
+      case Some(value) => WhoGetsVouchersForm().fill(value)
+    }
+    Ok(whoGetsVouchers(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      WhoGetsVouchersForm().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    WhoGetsVouchersForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(whoGetsVouchers(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[String](request.sessionId, WhoGetsVouchersId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhoGetsVouchersId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, WhoGetsVouchersId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(WhoGetsVouchersId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

@@ -33,65 +33,69 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhichDisabilityBenefitsController @Inject() (
-                                                    appConfig: FrontendAppConfig,
-                                                    mcc: MessagesControllerComponents,
-                                                    dataCacheConnector: DataCacheConnector,
-                                                    navigator: Navigator,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    whichDisabilityBenefits: whichDisabilityBenefits
-                                                 )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with MapFormats {
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    whichDisabilityBenefits: whichDisabilityBenefits
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with MapFormats {
 
-  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withValidIndex(childIndex) {
-        name =>
-          val answer = request.userAnswers.whichDisabilityBenefits(childIndex)
-          val preparedForm = answer match {
-            case None => WhichDisabilityBenefitsForm(name)
-            case Some(value) => WhichDisabilityBenefitsForm(name).fill(value)
-          }
-          Future.successful(Ok(whichDisabilityBenefits(appConfig, preparedForm, childIndex, name, mode)))
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] =
+    getData.andThen(requireData).async { implicit request =>
+      withValidIndex(childIndex) { name =>
+        val answer = request.userAnswers.whichDisabilityBenefits(childIndex)
+        val preparedForm = answer match {
+          case None        => WhichDisabilityBenefitsForm(name)
+          case Some(value) => WhichDisabilityBenefitsForm(name).fill(value)
         }
-  }
+        Future.successful(Ok(whichDisabilityBenefits(appConfig, preparedForm, childIndex, name, mode)))
+      }
+    }
 
-  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withValidIndex(childIndex) {
-        name =>
-          WhichDisabilityBenefitsForm(name).bindFromRequest().fold(
-            formWithErrors => {
-              Future.successful(BadRequest(whichDisabilityBenefits(appConfig, formWithErrors, childIndex, name, mode)))
-            },
-            value => {
-              dataCacheConnector.saveInMap[Int, Set[DisabilityBenefits.Value]](
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    withValidIndex(childIndex) { name =>
+      WhichDisabilityBenefitsForm(name)
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(whichDisabilityBenefits(appConfig, formWithErrors, childIndex, name, mode))),
+          value =>
+            dataCacheConnector
+              .saveInMap[Int, Set[DisabilityBenefits.Value]](
                 request.sessionId,
                 WhichDisabilityBenefitsId.toString,
                 childIndex,
                 value
-              ).map {
-                cacheMap =>
-                  Redirect(navigator.nextPage(WhichDisabilityBenefitsId(childIndex), mode)(new UserAnswers(cacheMap)))
+              )
+              .map { cacheMap =>
+                Redirect(navigator.nextPage(WhichDisabilityBenefitsId(childIndex), mode)(new UserAnswers(cacheMap)))
               }
-            }
-          )
-      }
+        )
+    }
   }
 
-  private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
+  private def sessionExpired(message: String, answers: Option[UserAnswers])(
+      implicit request: RequestHeader
+  ): Future[Result] =
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName, message, answers, request.uri)))
 
-  private def withValidIndex[A](index: Int)
-                               (block: String => Future[Result])
-                               (implicit request: DataRequest[A]): Future[Result] = {
+  private def withValidIndex[A](
+      index: Int
+  )(block: String => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
     for {
       children <- request.userAnswers.childrenWithDisabilityBenefits
       name     <- request.userAnswers.aboutYourChild(index).map(_.name)
-    } yield if (children.contains(index)) {
-      block(name)
-    } else {
-      sessionExpired("withValidIndex",Some(request.userAnswers))
-    }
-  }.getOrElse(sessionExpired("withValidIndex",None))
+    } yield
+      if (children.contains(index)) {
+        block(name)
+      } else {
+        sessionExpired("withValidIndex", Some(request.userAnswers))
+      }
+  }.getOrElse(sessionExpired("withValidIndex", None))
+
 }

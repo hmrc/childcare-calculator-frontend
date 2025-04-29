@@ -25,8 +25,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourSelfEmployed
 
 class YourSelfEmployedViewSpec extends NewYesNoViewBehaviours {
 
-  override val form = BooleanForm()
-  val view = application.injector.instanceOf[yourSelfEmployed]
+  override val form    = BooleanForm()
+  val view             = application.injector.instanceOf[yourSelfEmployed]
   val messageKeyPrefix = "yourSelfEmployed"
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
@@ -35,10 +35,13 @@ class YourSelfEmployedViewSpec extends NewYesNoViewBehaviours {
 
   "YourSelfEmployed view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YourSelfEmployedController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YourSelfEmployedController.onSubmit(NormalMode).url)
+    )
   }
+
 }

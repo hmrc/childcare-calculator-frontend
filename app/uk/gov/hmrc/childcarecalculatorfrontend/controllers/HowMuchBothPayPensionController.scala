@@ -32,33 +32,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class HowMuchBothPayPensionController @Inject()(
-                                                 appConfig: FrontendAppConfig,
-                                                  mcc: MessagesControllerComponents,
-                                                  dataCacheConnector: DataCacheConnector,
-                                                  navigator: Navigator,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                 howMuchBothPayPension: howMuchBothPayPension)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc)with I18nSupport {
+class HowMuchBothPayPensionController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    howMuchBothPayPension: howMuchBothPayPension
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.howMuchBothPayPension match {
-        case None => HowMuchBothPayPensionForm()
-        case Some(value) => HowMuchBothPayPensionForm().fill(value)
-      }
-      Ok(howMuchBothPayPension(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.howMuchBothPayPension match {
+      case None        => HowMuchBothPayPensionForm()
+      case Some(value) => HowMuchBothPayPensionForm().fill(value)
+    }
+    Ok(howMuchBothPayPension(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      HowMuchBothPayPensionForm().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    HowMuchBothPayPensionForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[HowMuchBothPayPension]) =>
           Future.successful(BadRequest(howMuchBothPayPension(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[HowMuchBothPayPension](request.sessionId, HowMuchBothPayPensionId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(HowMuchBothPayPensionId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[HowMuchBothPayPension](request.sessionId, HowMuchBothPayPensionId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(HowMuchBothPayPensionId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-
 import org.mockito.{ArgumentCaptor, ArgumentMatchers}
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
@@ -31,9 +30,9 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class SplunkSubmissionServiceSpec extends PlaySpec with MockitoSugar with ScalaFutures {
 
-  implicit val hc = new HeaderCarrier
+  implicit val hc                   = new HeaderCarrier
   implicit val ec: ExecutionContext = ExecutionContext.global
-  private val mockConnector = mock[DefaultAuditConnector]
+  private val mockConnector         = mock[DefaultAuditConnector]
 
   val data = Map("key 1" -> "value 1", "key 2" -> "value 2")
 
@@ -46,7 +45,8 @@ class SplunkSubmissionServiceSpec extends PlaySpec with MockitoSugar with ScalaF
 
       val eventCaptor = ArgumentCaptor.forClass(classOf[DataEvent])
 
-      when(mockConnector.sendEvent(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(Future.successful(AuditResult.Success))
+      when(mockConnector.sendEvent(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any()))
+        .thenReturn(Future.successful(AuditResult.Success))
 
       val submissionService = new SplunkSubmissionService(mockConnector)
 
@@ -58,26 +58,21 @@ class SplunkSubmissionServiceSpec extends PlaySpec with MockitoSugar with ScalaF
       eventCaptor.getValue.detail.get("key 2") mustBe Some("value 2")
       eventCaptor.getValue.tags must contain {
         "transactionName" -> "Childcare Calculator Submission Service"
-        "path" -> "/survey/childcare-support"
+        "path"            -> "/survey/childcare-support"
       }
 
-      whenReady(submission) {
-        x =>
-          x mustBe SubmissionSuccessful
-      }
+      whenReady(submission)(x => x mustBe SubmissionSuccessful)
 
     }
 
     "receive SubmissionFailed when audit event fails" in {
 
-      when(mockConnector.sendEvent(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(Future.successful(AuditResult.Failure("")))
+      when(mockConnector.sendEvent(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any()))
+        .thenReturn(Future.successful(AuditResult.Failure("")))
 
       val submission = new SplunkSubmissionService(mockConnector)
 
-      whenReady(submission.submit(data)) {
-        x =>
-          x mustBe SubmissionFailed
-      }
+      whenReady(submission.submit(data))(x => x mustBe SubmissionFailed)
 
     }
 

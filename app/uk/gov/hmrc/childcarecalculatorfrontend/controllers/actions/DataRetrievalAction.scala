@@ -28,20 +28,24 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(val dataCacheConnector: DataCacheConnector,
-                                        val mcc: MessagesControllerComponents,
-                                        val appConfig: FrontendAppConfig)
-                                       (implicit ec: ExecutionContext) extends DataRetrievalAction
-with Logging {
+class DataRetrievalActionImpl @Inject() (
+    val dataCacheConnector: DataCacheConnector,
+    val mcc: MessagesControllerComponents,
+    val appConfig: FrontendAppConfig
+)(implicit ec: ExecutionContext)
+    extends DataRetrievalAction
+    with Logging {
 
   override protected def executionContext: ExecutionContext = mcc.executionContext
-  override def parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
+  override def parser: BodyParser[AnyContent]               = mcc.parsers.defaultBodyParser
 
   override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     if (appConfig.navigationAudit) {
-      logger.warn(s"ChildcareCalculatorNavigationAudit - sessionId : ${hc.sessionId.getOrElse("missing").toString}, request : ${request.uri}")
+      logger.warn(
+        s"ChildcareCalculatorNavigationAudit - sessionId : ${hc.sessionId.getOrElse("missing").toString}, request : ${request.uri}"
+      )
     }
 
     hc.sessionId match {
@@ -53,7 +57,10 @@ with Logging {
         }
     }
   }
+
 }
 
 @ImplementedBy(classOf[DataRetrievalActionImpl])
-trait DataRetrievalAction extends ActionTransformer[Request, OptionalDataRequest] with ActionBuilder[OptionalDataRequest, AnyContent]
+trait DataRetrievalAction
+    extends ActionTransformer[Request, OptionalDataRequest]
+    with ActionBuilder[OptionalDataRequest, AnyContent]

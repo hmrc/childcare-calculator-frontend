@@ -24,11 +24,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.session_expired
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 @Singleton
-class SessionExpiredController @Inject()(val appConfig: FrontendAppConfig,
-                                         mcc: MessagesControllerComponents,
-                                         session_expired: session_expired) extends FrontendController(mcc) with I18nSupport {
+class SessionExpiredController @Inject() (
+    val appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    session_expired: session_expired
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action { implicit request =>
-    Ok(session_expired(appConfig)).withNewSession
-  }
+  def onPageLoad: Action[AnyContent] = Action(implicit request => Ok(session_expired(appConfig)).withNewSession)
 }

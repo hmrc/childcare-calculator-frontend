@@ -24,15 +24,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 class FreeHoursInfoViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "freeHoursInfo"
-  val view = application.injector.instanceOf[freeHoursInfo]
+  val view             = application.injector.instanceOf[freeHoursInfo]
 
   def createView(location: Location) = () => view(location)(fakeRequest, messages)
 
   "FreeHoursInfo view" must {
 
-    behave like normalPage(createView(Location.ENGLAND), messageKeyPrefix)
+    behave.like(normalPage(createView(Location.ENGLAND), messageKeyPrefix))
 
-    behave like pageWithBackLink(createView(Location.ENGLAND))
+    behave.like(pageWithBackLink(createView(Location.ENGLAND)))
 
     "display correct content" when {
 

@@ -26,21 +26,33 @@ object FakeDataCacheService extends DataCacheConnector {
 
   implicit val ec: ExecutionContext = ExecutionContext.global
 
-  override def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+  override def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(
+    CacheMap(cacheId, Map())
+  )
 
   override def remove(cacheId: String, key: String): Future[Boolean] = ???
 
   override def fetch(cacheId: String): Future[Option[CacheMap]] = Future(Some(CacheMap(cacheId, Map())))
 
-  override def getEntry[A](cacheId: String, key: String)(implicit fmt: Format[A]): Future[Option[A]] = Future(CacheMap(cacheId, Map()).getEntry(key))
+  override def getEntry[A](cacheId: String, key: String)(implicit fmt: Format[A]): Future[Option[A]] = Future(
+    CacheMap(cacheId, Map()).getEntry(key)
+  )
 
-  override def addToCollection[A](cacheId: String, collectionKey: String, value: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+  override def addToCollection[A](cacheId: String, collectionKey: String, value: A)(
+      implicit fmt: Format[A]
+  ): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
 
-  override def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+  override def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(
+      implicit fmt: Format[A]
+  ): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
 
-  override def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+  override def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(
+      implicit fmt: Format[A]
+  ): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
 
-  override def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(implicit fmt: Format[Map[K, V]]) = Future(CacheMap(cacheId, Map()))
+  override def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(
+      implicit fmt: Format[Map[K, V]]
+  ) = Future(CacheMap(cacheId, Map()))
 
   override def updateMap(data: CacheMap): Future[Boolean] = Future(true)
 }

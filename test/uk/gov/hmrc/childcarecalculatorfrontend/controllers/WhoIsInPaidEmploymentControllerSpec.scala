@@ -28,8 +28,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoIsInPaidEmployment
 
-
-
 class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
 
   val view = application.injector.instanceOf[whoIsInPaidEmployment]
@@ -37,10 +35,18 @@ class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhoIsInPaidEmploymentController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new WhoIsInPaidEmploymentController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
-  def viewAsString(form: Form[String] = WhoIsInPaidEmploymentForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = WhoIsInPaidEmploymentForm()) =
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "WhoIsInPaidEmployment Controller" must {
 
@@ -57,11 +63,14 @@ class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhoIsInPaidEmploymentForm().fill(WhoIsInPaidEmploymentForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(
+        WhoIsInPaidEmploymentForm().fill(WhoIsInPaidEmploymentForm.options.head.value)
+      )
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhoIsInPaidEmploymentForm.options.head.value)).withMethod("POST")
+      val postRequest =
+        fakeRequest.withFormUrlEncodedBody(("value", WhoIsInPaidEmploymentForm.options.head.value)).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -71,7 +80,7 @@ class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = WhoIsInPaidEmploymentForm().bind(Map("value" -> "invalid value"))
+      val boundForm   = WhoIsInPaidEmploymentForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -87,11 +96,13 @@ class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", WhoIsInPaidEmploymentForm.options.head.value)).withMethod("POST")
+      val postRequest =
+        fakeRequest.withFormUrlEncodedBody(("value", WhoIsInPaidEmploymentForm.options.head.value)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }

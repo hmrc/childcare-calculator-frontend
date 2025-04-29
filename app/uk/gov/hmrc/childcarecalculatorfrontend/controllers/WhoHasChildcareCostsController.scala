@@ -33,64 +33,70 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhoHasChildcareCostsController @Inject()(
-                                                appConfig: FrontendAppConfig,
-                                                mcc: MessagesControllerComponents,
-                                                dataCacheConnector: DataCacheConnector,
-                                                navigator: Navigator,
-                                                getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction,
-                                                whoHasChildcareCosts: whoHasChildcareCosts)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class WhoHasChildcareCostsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    whoHasChildcareCosts: whoHasChildcareCosts
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withValues {
-        values =>
-          val answer = request.userAnswers.whoHasChildcareCosts
-          val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
-          val preparedForm = answer match {
-            case None => WhoHasChildcareCostsForm()
-            case Some(value) => WhoHasChildcareCostsForm().fill(value)
-          }
-          Future.successful(Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, options(values,childrenUnderSixteen).toSeq)))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    withValues { values =>
+      val answer               = request.userAnswers.whoHasChildcareCosts
+      val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
+      val preparedForm = answer match {
+        case None        => WhoHasChildcareCostsForm()
+        case Some(value) => WhoHasChildcareCostsForm().fill(value)
       }
-  }
-
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withValues {
-        values =>
-          val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
-          WhoHasChildcareCostsForm(values.values.toSeq: _*).bindFromRequest().fold(
-            (formWithErrors: Form[_]) => {
-              Future.successful(BadRequest(whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values,childrenUnderSixteen).toSeq)))
-            },
-            value => {
-              dataCacheConnector.save[Set[Int]](request.sessionId, WhoHasChildcareCostsId.toString, value).map {
-                cacheMap =>
-                  Redirect(navigator.nextPage(WhoHasChildcareCostsId, mode)(new UserAnswers(cacheMap)))
-              }
-            }
-          )
-      }
-  }
-
-  private def options(values: Map[String, Int], childrenUnder16: Seq[Int]): Map[String, String] = {
-    values.filter(c=> childrenUnder16.contains(c._2)).map {
-      case (k, v) => (k, v.toString)
+      Future.successful(
+        Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, options(values, childrenUnderSixteen).toSeq))
+      )
     }
   }
 
-  private def withValues[A](block: Map[String, Int] => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
-    request.userAnswers.aboutYourChild.map {
-      aboutYourChild =>
-        val values: Map[String, Int] = aboutYourChild.map {
-          case (i, model) =>
-            model.name -> i
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    withValues { values =>
+      val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
+      WhoHasChildcareCostsForm(values.values.toSeq: _*)
+        .bindFromRequest()
+        .fold(
+          (formWithErrors: Form[_]) =>
+            Future.successful(
+              BadRequest(
+                whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values, childrenUnderSixteen).toSeq)
+              )
+            ),
+          value =>
+            dataCacheConnector.save[Set[Int]](request.sessionId, WhoHasChildcareCostsId.toString, value).map { cacheMap =>
+              Redirect(navigator.nextPage(WhoHasChildcareCostsId, mode)(new UserAnswers(cacheMap)))
+            }
+        )
+    }
+  }
+
+  private def options(values: Map[String, Int], childrenUnder16: Seq[Int]): Map[String, String] =
+    values.filter(c => childrenUnder16.contains(c._2)).map { case (k, v) => (k, v.toString) }
+
+  private def withValues[A](
+      block: Map[String, Int] => Future[Result]
+  )(implicit request: DataRequest[A]): Future[Result] =
+    request.userAnswers.aboutYourChild
+      .map { aboutYourChild =>
+        val values: Map[String, Int] = aboutYourChild.map { case (i, model) =>
+          model.name -> i
         }
         block(values)
 
-      }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withValues",Some(request.userAnswers),request.uri))))
-  }
+      }
+      .getOrElse(
+        Future.successful(
+          Redirect(SessionExpiredRouter.route(getClass.getName, "withValues", Some(request.userAnswers), request.uri))
+        )
+      )
+
 }

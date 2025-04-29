@@ -24,15 +24,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{SurveyChildcareSupportId, SurveyDoNotUnderstandId}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-class SurveyNavigator @Inject()(utils: Utils,appConfig: FrontendAppConfig) extends SubNavigator {
-  override protected def routeMap = Map (SurveyChildcareSupportId -> doNotUnderstandRoute, SurveyDoNotUnderstandId -> reasonsForNotUnderstanding)
+class SurveyNavigator @Inject() (utils: Utils, appConfig: FrontendAppConfig) extends SubNavigator {
 
-  private def doNotUnderstandRoute(answers: UserAnswers) = {
+  override protected def routeMap =
+    Map(SurveyChildcareSupportId -> doNotUnderstandRoute, SurveyDoNotUnderstandId -> reasonsForNotUnderstanding)
+
+  private def doNotUnderstandRoute(answers: UserAnswers) =
     utils.getCall(answers.surveyChildcareSupport) {
       case false => routes.SurveyDoNotUnderstandController.onPageLoad()
-      case true => Call("",appConfig.surveyThankYouUrl)
+      case true  => Call("", appConfig.surveyThankYouUrl)
     }
-  }
 
-  private def reasonsForNotUnderstanding(answers: UserAnswers) = Call("",appConfig.surveyThankYouUrl)
+  private def reasonsForNotUnderstanding(answers: UserAnswers) = Call("", appConfig.surveyThankYouUrl)
 }

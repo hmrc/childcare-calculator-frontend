@@ -31,32 +31,38 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DoesYourPartnerGetAnyBenefitsController @Inject()(
-  appConfig: FrontendAppConfig,
-  mcc: MessagesControllerComponents,
-  dataCacheConnector: DataCacheConnector,
-  navigator: Navigator,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  doesYourPartnerGetAnyBenefits: doesYourPartnerGetAnyBenefits
+class DoesYourPartnerGetAnyBenefitsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    doesYourPartnerGetAnyBenefits: doesYourPartnerGetAnyBenefits
 )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) { implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.doesYourPartnerGetAnyBenefits match {
-      case None => DoesYourPartnerGetAnyBenefitsForm()
+      case None        => DoesYourPartnerGetAnyBenefitsForm()
       case Some(value) => DoesYourPartnerGetAnyBenefitsForm().fill(value)
     }
     Ok(doesYourPartnerGetAnyBenefits(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
-    DoesYourPartnerGetAnyBenefitsForm().bindFromRequest().fold(
-      formWithErrors =>
-        Future.successful(BadRequest(doesYourPartnerGetAnyBenefits(appConfig, formWithErrors, mode))),
-      value =>
-        dataCacheConnector.save[Set[ParentsBenefits]](request.sessionId, DoesYourPartnerGetAnyBenefitsId.toString, value).map(cacheMap =>
-          Redirect(navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
-    )
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    DoesYourPartnerGetAnyBenefitsForm()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(doesYourPartnerGetAnyBenefits(appConfig, formWithErrors, mode))),
+        value =>
+          dataCacheConnector
+            .save[Set[ParentsBenefits]](request.sessionId, DoesYourPartnerGetAnyBenefitsId.toString, value)
+            .map(cacheMap =>
+              Redirect(navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, mode)(new UserAnswers(cacheMap)))
+            )
+      )
   }
+
 }

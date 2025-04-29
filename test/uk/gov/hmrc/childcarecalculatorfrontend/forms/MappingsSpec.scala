@@ -164,4 +164,5 @@ class MappingsSpec extends PlaySpec with Mappings {
       result mustEqual Invalid("error.invalid")
     }
   }
+
 }

@@ -28,8 +28,15 @@ class WhoIsInPaidEmploymentFormSpec extends FormBehaviours {
   val form = WhoIsInPaidEmploymentForm()
 
   "WhoIsInPaidEmployment form" must {
-    behave like questionForm[String](WhoIsInPaidEmploymentForm.options.head.value)
+    behave.like(questionForm[String](WhoIsInPaidEmploymentForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", whoIsInPaidEmploymentErrorKey, WhoIsInPaidEmploymentForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError(
+        "value",
+        whoIsInPaidEmploymentErrorKey,
+        WhoIsInPaidEmploymentForm.options.map(x => x.value): _*
+      )
+    )
   }
+
 }

@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoIsInPaidEmployment
 
 class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours {
 
-  val view = application.injector.instanceOf[whoIsInPaidEmployment]
+  val view             = application.injector.instanceOf[whoIsInPaidEmployment]
   val messageKeyPrefix = "whoIsInPaidEmployment"
 
   def createView = () => view(frontendAppConfig, WhoIsInPaidEmploymentForm(), NormalMode)(fakeRequest, messages)
@@ -32,32 +32,31 @@ class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours {
   def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhoIsInPaidEmployment view" must {
-    behave like normalPage(createView, messageKeyPrefix, "para1")
+    behave.like(normalPage(createView, messageKeyPrefix, "para1"))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
   }
 
   "WhoIsInPaidEmployment view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
         val doc = asDocument(createViewUsingForm(WhoIsInPaidEmploymentForm()))
-        for (option <- WhoIsInPaidEmploymentForm.options) {
+        for (option <- WhoIsInPaidEmploymentForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
       }
     }
 
-    for(option <- WhoIsInPaidEmploymentForm.options) {
+    for (option <- WhoIsInPaidEmploymentForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(WhoIsInPaidEmploymentForm().bind(Map("value" -> s"${option.value}"))))
+          val doc =
+            asDocument(createViewUsingForm(WhoIsInPaidEmploymentForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- WhoIsInPaidEmploymentForm.options.filterNot(o => o == option)) {
+          for (unselectedOption <- WhoIsInPaidEmploymentForm.options.filterNot(o => o == option))
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
         }
       }
-    }
   }
+
 }

@@ -25,34 +25,40 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childDisabilityBenefit
 
 class ChildDisabilityBenefitsViewSpec extends NewYesNoViewBehaviours {
 
-  override val form = BooleanForm()
+  override val form    = BooleanForm()
   val messageKeyPrefix = "childDisabilityBenefits"
 
   val view = application.injector.instanceOf[childDisabilityBenefits]
 
   def createView = () => view(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
 
   "ChildDisabilityBenefits view" must {
 
-    behave like normalPageWithTitleAsString(
-      view = createView,
-      messageKeyPrefix = messageKeyPrefix,
-      messageKeyPostfix = "",
-      title = messages(s"$messageKeyPrefix.title"),
-      heading = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
-      expectedGuidanceKeys = Seq(),
-      args = "Foo"
+    behave.like(
+      normalPageWithTitleAsString(
+        view = createView,
+        messageKeyPrefix = messageKeyPrefix,
+        messageKeyPostfix = "",
+        title = messages(s"$messageKeyPrefix.title"),
+        heading = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+        expectedGuidanceKeys = Seq(),
+        args = "Foo"
+      )
     )
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(
-      createViewUsingForm,
-      messageKeyPrefix,
-      routes.ChildrenDisabilityBenefitsController.onSubmit(NormalMode).url,
-      legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+    behave.like(
+      yesNoPage(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.ChildrenDisabilityBenefitsController.onSubmit(NormalMode).url,
+        legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      )
     )
   }
+
 }

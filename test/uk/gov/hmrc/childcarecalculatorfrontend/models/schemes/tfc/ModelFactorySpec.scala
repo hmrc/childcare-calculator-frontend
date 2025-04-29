@@ -31,9 +31,9 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
 
     "`doYouLiveWithPartner` is undefined must return `None`" in {
       val answers = spy(helper())
-      when(answers.areYouInPaidWork) thenReturn Some(true)
-      when(answers.doYouGetAnyBenefits) thenReturn Some(Set(ParentsBenefits.IncapacityBenefit))
-      when(answers.doesYourPartnerGetAnyBenefits) thenReturn Some(Set.empty)
+      when(answers.areYouInPaidWork).thenReturn(Some(true))
+      when(answers.doYouGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.IncapacityBenefit)))
+      when(answers.doesYourPartnerGetAnyBenefits).thenReturn(Some(Set.empty))
       factory(answers) mustBe empty
     }
 
@@ -41,51 +41,69 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
 
       "return 'Some' when a user is self employed for less than 12 months" in {
         val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
-        when(answers.yourMinimumEarnings) thenReturn Some(false)
-        when(answers.yourMaximumEarnings) thenReturn Some(false)
-        when(answers.yourSelfEmployed) thenReturn Some(true)
-        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.areYouInPaidWork).thenReturn(Some(true))
+        when(answers.doYouGetAnyBenefits).thenReturn(Some(Set.empty))
+        when(answers.yourMinimumEarnings).thenReturn(Some(false))
+        when(answers.yourMaximumEarnings).thenReturn(Some(false))
+        when(answers.yourSelfEmployed).thenReturn(Some(true))
+        when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(SELFEMPLOYED.toString))
 
         factory(answers).value mustBe SingleHousehold(
-          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, Set.empty)
+          Parent(
+            earnsAboveMinEarnings = false,
+            earnsAboveMaxEarnings = false,
+            selfEmployed = true,
+            apprentice = false,
+            Set.empty
+          )
         )
       }
 
       "return 'Some' when a user is self employed for more than 12 months" in {
         val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
-        when(answers.yourMinimumEarnings) thenReturn Some(false)
-        when(answers.yourMaximumEarnings) thenReturn Some(false)
-        when(answers.yourSelfEmployed) thenReturn Some(false)
-        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.areYouInPaidWork).thenReturn(Some(true))
+        when(answers.doYouGetAnyBenefits).thenReturn(Some(Set.empty))
+        when(answers.yourMinimumEarnings).thenReturn(Some(false))
+        when(answers.yourMaximumEarnings).thenReturn(Some(false))
+        when(answers.yourSelfEmployed).thenReturn(Some(false))
+        when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(SELFEMPLOYED.toString))
 
         factory(answers).value mustBe SingleHousehold(
-          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, Set.empty)
+          Parent(
+            earnsAboveMinEarnings = false,
+            earnsAboveMaxEarnings = false,
+            selfEmployed = false,
+            apprentice = false,
+            Set.empty
+          )
         )
       }
 
       "return 'Some' when a user is not self employed for less than 12 months" in {
         val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.areYouInPaidWork) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
-        when(answers.yourMinimumEarnings) thenReturn Some(true)
-        when(answers.yourMaximumEarnings) thenReturn Some(false)
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.areYouInPaidWork).thenReturn(Some(true))
+        when(answers.doYouGetAnyBenefits).thenReturn(Some(Set.empty))
+        when(answers.yourMinimumEarnings).thenReturn(Some(true))
+        when(answers.yourMaximumEarnings).thenReturn(Some(false))
 
         factory(answers).value mustBe SingleHousehold(
-          Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, Set.empty)
+          Parent(
+            earnsAboveMinEarnings = true,
+            earnsAboveMaxEarnings = false,
+            selfEmployed = false,
+            apprentice = false,
+            Set.empty
+          )
         )
       }
 
       "return `None` when `areYouInPaidWork` is undefined" in {
         val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(false)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(Set(ParentsBenefits.IncapacityBenefit))
+        when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+        when(answers.doYouGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.IncapacityBenefit)))
 
         factory(answers) mustBe empty
       }
@@ -95,56 +113,80 @@ class ModelFactorySpec extends SchemeSpec with OptionValues {
 
       "return `Some` when all data is available" in {
         val answers = spy(helper())
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
-        when(answers.yourMinimumEarnings) thenReturn Some(false)
-        when(answers.partnerMinimumEarnings) thenReturn Some(false)
+        when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+        when(answers.whoIsInPaidEmployment).thenReturn(Some(Both))
+        when(answers.doYouGetAnyBenefits).thenReturn(Some(Set.empty))
+        when(answers.yourMinimumEarnings).thenReturn(Some(false))
+        when(answers.partnerMinimumEarnings).thenReturn(Some(false))
 
-        when(answers.yourSelfEmployed) thenReturn Some(true)
-        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
+        when(answers.yourSelfEmployed).thenReturn(Some(true))
+        when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(SELFEMPLOYED.toString))
 
-        when(answers.partnerSelfEmployed) thenReturn Some(true)
-        when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
+        when(answers.partnerSelfEmployed).thenReturn(Some(true))
+        when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(SELFEMPLOYED.toString))
 
         factory(answers).value mustBe JointHousehold(
-          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, Set.empty),
-          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, Set.empty)
+          Parent(
+            earnsAboveMinEarnings = false,
+            earnsAboveMaxEarnings = false,
+            selfEmployed = true,
+            apprentice = false,
+            Set.empty
+          ),
+          Parent(
+            earnsAboveMinEarnings = false,
+            earnsAboveMaxEarnings = false,
+            selfEmployed = true,
+            apprentice = false,
+            Set.empty
+          )
         )
       }
 
       "return Some when Parent is Apprentice and Partner satisfies the min amd max earnings" in {
         val answers = spy(helper())
 
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
-        when(answers.yourMinimumEarnings) thenReturn Some(false)
-        when(answers.partnerMinimumEarnings) thenReturn Some(true)
-        when(answers.partnerMaximumEarnings) thenReturn Some(false)
+        when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+        when(answers.whoIsInPaidEmployment).thenReturn(Some(Both))
+        when(answers.doYouGetAnyBenefits).thenReturn(Some(Set.empty))
+        when(answers.yourMinimumEarnings).thenReturn(Some(false))
+        when(answers.partnerMinimumEarnings).thenReturn(Some(true))
+        when(answers.partnerMaximumEarnings).thenReturn(Some(false))
 
-        when(answers.yourSelfEmployed) thenReturn Some(true)
-        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(APPRENTICE.toString)
+        when(answers.yourSelfEmployed).thenReturn(Some(true))
+        when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(APPRENTICE.toString))
 
         factory(answers).value mustBe JointHousehold(
-          Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, Set.empty),
-          Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, Set.empty)
+          Parent(
+            earnsAboveMinEarnings = false,
+            earnsAboveMaxEarnings = false,
+            selfEmployed = false,
+            apprentice = true,
+            Set.empty
+          ),
+          Parent(
+            earnsAboveMinEarnings = true,
+            earnsAboveMaxEarnings = false,
+            selfEmployed = false,
+            apprentice = false,
+            Set.empty
+          )
         )
       }
 
       "return None when whoIsInPaidEmployment value is not defined" in {
         val answers = spy(helper())
 
-        when(answers.doYouLiveWithPartner) thenReturn Some(true)
-        when(answers.doYouGetAnyBenefits) thenReturn Some(Set.empty)
-        when(answers.yourMinimumEarnings) thenReturn Some(false)
-        when(answers.partnerMinimumEarnings) thenReturn Some(false)
+        when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+        when(answers.doYouGetAnyBenefits).thenReturn(Some(Set.empty))
+        when(answers.yourMinimumEarnings).thenReturn(Some(false))
+        when(answers.partnerMinimumEarnings).thenReturn(Some(false))
 
-        when(answers.yourSelfEmployed) thenReturn Some(true)
-        when(answers.areYouSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
+        when(answers.yourSelfEmployed).thenReturn(Some(true))
+        when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(SELFEMPLOYED.toString))
 
-        when(answers.partnerSelfEmployed) thenReturn Some(true)
-        when(answers.partnerSelfEmployedOrApprentice) thenReturn Some(SELFEMPLOYED.toString)
+        when(answers.partnerSelfEmployed).thenReturn(Some(true))
+        when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(SELFEMPLOYED.toString))
 
         factory(answers) mustBe empty
       }

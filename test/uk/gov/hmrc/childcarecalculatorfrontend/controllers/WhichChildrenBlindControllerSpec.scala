@@ -32,8 +32,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 
 import java.time.LocalDate
 
-
-
 class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionValues {
 
   val view = application.injector.instanceOf[whichChildrenBlind]
@@ -48,37 +46,36 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
     }
 
     Seq(
-      Map("Foo" -> "0", "Bar" -> "1"),
+      Map("Foo"   -> "0", "Bar"    -> "1"),
       Map("Spoon" -> "2", "Womble" -> "3")
-    ).zipWithIndex.foreach {
-      case (values, i) =>
+    ).zipWithIndex.foreach { case (values, i) =>
 
-        val value = values.values.toSeq.head
+      val value = values.values.toSeq.head
 
-        s"populate the view correctly on a GET when the question has previously been answered, $i" in {
-          val validData = requiredData(values) + (
-            WhichChildrenBlindId.toString -> Json.toJson(Seq(value.toInt))
-          )
-          val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+      s"populate the view correctly on a GET when the question has previously been answered, $i" in {
+        val validData = requiredData(values) + (
+          WhichChildrenBlindId.toString -> Json.toJson(Seq(value.toInt))
+        )
+        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-          val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+        val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-          contentAsString(result) mustEqual viewAsString(WhichChildrenBlindForm().fill(Set(value.toInt)), values)
-        }
+        contentAsString(result) mustEqual viewAsString(WhichChildrenBlindForm().fill(Set(value.toInt)), values)
+      }
 
-        s"redirect to the next page when valid data is submitted, $i" in {
-          val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> value).withMethod("POST")
+      s"redirect to the next page when valid data is submitted, $i" in {
+        val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> value).withMethod("POST")
 
-          val result = controller(getRequiredData(values)).onSubmit(NormalMode)(postRequest)
+        val result = controller(getRequiredData(values)).onSubmit(NormalMode)(postRequest)
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual onwardRoute.url
-        }
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "invalid value").withMethod("POST")
-      val boundForm = WhichChildrenBlindForm().bind(Map("value[0]" -> "invalid value"))
+      val boundForm   = WhichChildrenBlindForm().bind(Map("value[0]" -> "invalid value"))
 
       val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
 
@@ -95,7 +92,7 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> "0").withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -110,31 +107,38 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
 
     "redirect to Session Expired for a POST if required data is missing" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> "0").withMethod("POST")
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result      = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
   }
-  
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichChildrenBlindController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new WhichChildrenBlindController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
   val defaultValues = Map("Foo" -> "0", "Bar" -> "1")
+
   def viewAsString(
-                    form: Form[_] = WhichChildrenBlindForm(0, 1),
-                    values: Map[String, String] = defaultValues
-                  ) =
+      form: Form[_] = WhichChildrenBlindForm(0, 1),
+      values: Map[String, String] = defaultValues
+  ) =
     view(frontendAppConfig, form, NormalMode, values.toSeq)(fakeRequest, messages).toString
 
   def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(
-      values.map {
-        case (name, v) =>
-          v -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
+      values.map { case (name, v) =>
+        v -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
       }.toSeq: _*
     )
   )

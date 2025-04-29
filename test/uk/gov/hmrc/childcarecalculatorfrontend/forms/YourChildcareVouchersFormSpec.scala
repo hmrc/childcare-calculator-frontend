@@ -28,8 +28,15 @@ class YourChildcareVouchersFormSpec extends FormBehaviours {
   val form = YourChildcareVouchersForm()
 
   "YourChildcareVouchers form" must {
-    behave like questionForm[String](YourChildcareVouchersForm.options.head.value)
+    behave.like(questionForm[String](YourChildcareVouchersForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", yourChildcareVoucherErrorKey, YourChildcareVouchersForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError(
+        "value",
+        yourChildcareVoucherErrorKey,
+        YourChildcareVouchersForm.options.map(x => x.value): _*
+      )
+    )
   }
+
 }

@@ -33,56 +33,56 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmploymentIncomeCYController @Inject()(appConfig: FrontendAppConfig,
-                                             mcc: MessagesControllerComponents,
-                                             dataCacheConnector: DataCacheConnector,
-                                             navigator: Navigator,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             form: EmploymentIncomeCYForm,
-                                             taxYearInfo: TaxYearInfo,
-                                             employmentIncomeCY: employmentIncomeCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with FormErrorHelper {
+class EmploymentIncomeCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    form: EmploymentIncomeCYForm,
+    taxYearInfo: TaxYearInfo,
+    employmentIncomeCY: employmentIncomeCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with FormErrorHelper {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.employmentIncomeCY match {
-        case None => form()
-        case Some(value) => form().fill(value)
-      }
-      Ok(employmentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.employmentIncomeCY match {
+      case None        => form()
+      case Some(value) => form().fill(value)
+    }
+    Ok(employmentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    val maxEarnings = maximumEarnings(request.userAnswers)
+    val boundForm   = form().bindFromRequest()
 
-      val maxEarnings = maximumEarnings(request.userAnswers)
-      val boundForm = form().bindFromRequest()
-
-      validateForm(boundForm, maxEarnings).fold((formWithErrors: Form[EmploymentIncomeCY]) =>
+    validateForm(boundForm, maxEarnings).fold(
+      (formWithErrors: Form[EmploymentIncomeCY]) =>
         Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
-        value =>
-          dataCacheConnector.save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
-      )
+      value =>
+        dataCacheConnector
+          .save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value)
+          .map(cacheMap => Redirect(navigator.nextPage(EmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
+    )
   }
 
-  private def validateForm(boundForm: Form[EmploymentIncomeCY], maxEarnings : Option[Boolean]) = {
+  private def validateForm(boundForm: Form[EmploymentIncomeCY], maxEarnings: Option[Boolean]) =
     if (boundForm.hasErrors) {
       boundForm
     } else {
-      validateBothMaxIncomeEarnings(maxEarnings,
-        appConfig.maxIncome,
-        boundForm)
+      validateBothMaxIncomeEarnings(maxEarnings, appConfig.maxIncome, boundForm)
     }
-  }
 
-  private def maximumEarnings(answers: UserAnswers) = {
+  private def maximumEarnings(answers: UserAnswers) =
     answers.whoIsInPaidEmployment match {
-      case Some(You) => answers.yourMaximumEarnings
+      case Some(You)     => answers.yourMaximumEarnings
       case Some(Partner) => answers.partnerMaximumEarnings
-      case Some(Both) => answers.eitherOfYouMaximumEarnings
-      case _ => None
+      case Some(Both)    => answers.eitherOfYouMaximumEarnings
+      case _             => None
     }
-  }
+
 }

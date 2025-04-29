@@ -22,7 +22,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 import javax.inject.Inject
 
-class TaxFreeChildcare @Inject()(freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator) extends Scheme {
+class TaxFreeChildcare @Inject() (freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator)
+    extends Scheme {
 
   private val eligibleBenefits: Set[ParentsBenefits] = Set(
     CarersAllowance,

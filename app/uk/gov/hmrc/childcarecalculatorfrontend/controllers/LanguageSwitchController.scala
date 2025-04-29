@@ -24,28 +24,28 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
 // TODO, upstream this into play-language
 class LanguageSwitchController @Inject() (
-                                           configuration: Configuration,
-                                           appConfig: FrontendAppConfig,
-                                           override implicit val messagesApi: MessagesApi
-                                         ) extends InjectedController with I18nSupport {
+    configuration: Configuration,
+    appConfig: FrontendAppConfig,
+    override implicit val messagesApi: MessagesApi
+) extends InjectedController
+    with I18nSupport {
 
   private def fallbackURL: String = routes.WhatToTellTheCalculatorController.onPageLoad.url
 
   private def languageMap: Map[String, Lang] = appConfig.languageMap
 
-  def switchToLanguage(language: String): Action[AnyContent] = Action {
-    implicit request =>
-      val enabled = isWelshEnabled
-      val lang = if (enabled) {
-        languageMap.getOrElse(language, Lang.defaultLang)
-      } else {
-        Lang("en")
-      }
-      val redirectURL = request.headers.get(REFERER).getOrElse(fallbackURL)
-      Redirect(redirectURL).withLang(Lang.apply(lang.code)).flashing(Flash(Map("switching-language" -> "true")))
+  def switchToLanguage(language: String): Action[AnyContent] = Action { implicit request =>
+    val enabled = isWelshEnabled
+    val lang = if (enabled) {
+      languageMap.getOrElse(language, Lang.defaultLang)
+    } else {
+      Lang("en")
+    }
+    val redirectURL = request.headers.get(REFERER).getOrElse(fallbackURL)
+    Redirect(redirectURL).withLang(Lang.apply(lang.code)).flashing(Flash(Map("switching-language" -> "true")))
   }
 
-  private def isWelshEnabled: Boolean = {
+  private def isWelshEnabled: Boolean =
     configuration.getOptional[Boolean]("microservice.services.features.welsh-translation").getOrElse(true)
-  }
+
 }
