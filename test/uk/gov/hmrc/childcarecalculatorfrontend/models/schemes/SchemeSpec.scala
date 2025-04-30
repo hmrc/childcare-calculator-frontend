@@ -25,4 +25,5 @@ trait SchemeSpec extends PlaySpec {
 
   def helper(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
+
 }

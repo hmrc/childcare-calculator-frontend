@@ -32,33 +32,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhoGetsOtherIncomeCYController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        whoGetsOtherIncomeCY: whoGetsOtherIncomeCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class WhoGetsOtherIncomeCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    whoGetsOtherIncomeCY: whoGetsOtherIncomeCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.whoGetsOtherIncomeCY match {
-        case None => WhoGetsOtherIncomeCYForm()
-        case Some(value) => WhoGetsOtherIncomeCYForm().fill(value)
-      }
-      Ok(whoGetsOtherIncomeCY(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.whoGetsOtherIncomeCY match {
+      case None        => WhoGetsOtherIncomeCYForm()
+      case Some(value) => WhoGetsOtherIncomeCYForm().fill(value)
+    }
+    Ok(whoGetsOtherIncomeCY(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      WhoGetsOtherIncomeCYForm().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    WhoGetsOtherIncomeCYForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(whoGetsOtherIncomeCY(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[String](request.sessionId, WhoGetsOtherIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhoGetsOtherIncomeCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, WhoGetsOtherIncomeCYId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(WhoGetsOtherIncomeCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

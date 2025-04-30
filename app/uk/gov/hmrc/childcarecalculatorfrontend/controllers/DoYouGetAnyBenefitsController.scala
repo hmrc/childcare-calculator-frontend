@@ -31,32 +31,36 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DoYouGetAnyBenefitsController @Inject()(
-  appConfig: FrontendAppConfig,
-  mcc: MessagesControllerComponents,
-  dataCacheConnector: DataCacheConnector,
-  navigator: Navigator,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  doYouGetAnyBenefits: doYouGetAnyBenefits
+class DoYouGetAnyBenefitsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    doYouGetAnyBenefits: doYouGetAnyBenefits
 )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) { implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
-      case None => DoYouGetAnyBenefitsForm()
+      case None        => DoYouGetAnyBenefitsForm()
       case Some(value) => DoYouGetAnyBenefitsForm().fill(value)
     }
     Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async { implicit request =>
-    DoYouGetAnyBenefitsForm().bindFromRequest().fold(
-      formWithErrors =>
-        Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode))),
-      value =>
-        dataCacheConnector.save[Set[ParentsBenefits]](request.sessionId, DoYouGetAnyBenefitsId.toString, value).map(cacheMap =>
-          Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
-    )
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    DoYouGetAnyBenefitsForm()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode))),
+        value =>
+          dataCacheConnector
+            .save[Set[ParentsBenefits]](request.sessionId, DoYouGetAnyBenefitsId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
+      )
   }
+
 }

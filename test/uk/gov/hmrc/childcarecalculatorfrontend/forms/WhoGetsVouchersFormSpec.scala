@@ -27,8 +27,15 @@ class WhoGetsVouchersFormSpec extends FormBehaviours {
   val form = WhoGetsVouchersForm()
 
   "WhoGetsVouchers form" must {
-    behave like questionForm[String](WhoGetsVouchersForm.options.head.value)
+    behave.like(questionForm[String](WhoGetsVouchersForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", "whoGetsVouchers.error.notCompleted", WhoGetsVouchersForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError(
+        "value",
+        "whoGetsVouchers.error.notCompleted",
+        WhoGetsVouchersForm.options.map(x => x.value): _*
+      )
+    )
   }
+
 }

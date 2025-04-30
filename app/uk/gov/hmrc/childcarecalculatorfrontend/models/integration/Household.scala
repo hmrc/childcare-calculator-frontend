@@ -21,12 +21,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.CreditsEnum.CreditsEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.Location
 
 case class Household(
-                      credits: Option[CreditsEnum] = None,
-                      location: Location,
-                      children: List[Child] = List.empty,
-                      parent: Claimant = Claimant(),
-                      partner: Option[Claimant] = None
-                    )
+    credits: Option[CreditsEnum] = None,
+    location: Location,
+    children: List[Child] = List.empty,
+    parent: Claimant = Claimant(),
+    partner: Option[Claimant] = None
+)
 
 object Household {
   implicit val formatHousehold: OFormat[Household] = Json.format[Household]

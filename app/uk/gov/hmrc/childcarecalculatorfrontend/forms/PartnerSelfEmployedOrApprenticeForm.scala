@@ -28,14 +28,14 @@ object PartnerSelfEmployedOrApprenticeForm extends FormErrorHelper {
   def PartnerSelfEmployedOrApprenticeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, partnerSelfEmployedOrApprenticeErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, partnerSelfEmployedOrApprenticeErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
+  def apply(): Form[String] =
     Form(single("value" -> of(PartnerSelfEmployedOrApprenticeFormatter)))
 
   def options = Seq(
@@ -44,13 +44,12 @@ object PartnerSelfEmployedOrApprenticeForm extends FormErrorHelper {
     partnerSelfEmployedOrApprenticeInputOption("value-3", SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
   )
 
-  private def partnerSelfEmployedOrApprenticeInputOption(id: String, option: String): InputOption = {
+  private def partnerSelfEmployedOrApprenticeInputOption(id: String, option: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"partnerSelfEmployedOrApprentice.$option"
     )
-  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

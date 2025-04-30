@@ -36,19 +36,34 @@ class BothOtherIncomeThisYearViewSpec extends NewYesNoViewBehaviours {
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "BothOtherIncomeThisYear view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothOtherIncomeThisYearController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.BothOtherIncomeThisYearController.onSubmit(NormalMode).url
+      )
+    )
 
     "contain tax year info" in {
       val doc = asDocument(createView())
-      assertContainsText(doc, messages(s"$messageKeyPrefix.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      assertContainsText(
+        doc,
+        messages(
+          s"$messageKeyPrefix.year.start.end.date",
+          taxYearInfo.currentTaxYearStart,
+          taxYearInfo.currentTaxYearEnd
+        )
+      )
     }
   }
+
 }

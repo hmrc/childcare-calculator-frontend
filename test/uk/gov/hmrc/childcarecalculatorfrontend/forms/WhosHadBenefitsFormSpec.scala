@@ -30,8 +30,11 @@ class WhosHadBenefitsFormSpec extends FormBehaviours {
 
   "WhosHadBenefits form" must {
 
-    behave like questionForm[YouPartnerBothEnum.Value](YouPartnerBothEnum.YOU)
+    behave.like(questionForm[YouPartnerBothEnum.Value](YouPartnerBothEnum.YOU))
 
-    behave like formWithOptionFieldError("value", whosHadBenefitsErrorKey, WhosHadBenefitsForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError("value", whosHadBenefitsErrorKey, WhosHadBenefitsForm.options.map(x => x.value): _*)
+    )
   }
+
 }

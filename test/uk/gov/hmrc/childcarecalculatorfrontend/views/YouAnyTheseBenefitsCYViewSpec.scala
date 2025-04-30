@@ -27,41 +27,83 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youAnyTheseBenefitsCY
 class YouAnyTheseBenefitsCYViewSpec extends NewYesNoViewBehaviours {
 
   override val form = BooleanForm()
-  val view = application.injector.instanceOf[youAnyTheseBenefitsCY]
-  val taxYearInfo = new TaxYearInfo
+  val view          = application.injector.instanceOf[youAnyTheseBenefitsCY]
+  val taxYearInfo   = new TaxYearInfo
 
   val messageKeyPrefix = "youAnyTheseBenefitsCY"
 
-  def createView(location:Location.Value) = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, location)(fakeRequest, messages)
+  def createView(location: Location.Value) = () =>
+    view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, location)(fakeRequest, messages)
 
-  def createViewUsingForm(location:Location.Value) = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo, location)(fakeRequest, messages)
+  def createViewUsingForm(location: Location.Value) = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, NormalMode, taxYearInfo, location)(fakeRequest, messages)
 
   "YouAnyTheseBenefits view for non scottish users" must {
     val location: Location.Value = Location.ENGLAND
-    behave like normalPage(createView(location:Location.Value), messageKeyPrefix, "li.income_support", "li.jobseekers_allowance", "li.carers",
-      "li.employment_support", "li.pensions", "li.disability" )
+    behave.like(
+      normalPage(
+        createView(location: Location.Value),
+        messageKeyPrefix,
+        "li.income_support",
+        "li.jobseekers_allowance",
+        "li.carers",
+        "li.employment_support",
+        "li.pensions",
+        "li.disability"
+      )
+    )
 
-    behave like pageWithBackLink(createView(location:Location.Value))
+    behave.like(pageWithBackLink(createView(location: Location.Value)))
 
-    behave like yesNoPage(createViewUsingForm(location:Location.Value), messageKeyPrefix, routes.YouAnyTheseBenefitsCYController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(
+        createViewUsingForm(location: Location.Value),
+        messageKeyPrefix,
+        routes.YouAnyTheseBenefitsCYController.onSubmit(NormalMode).url
+      )
+    )
 
     "contain tax year info" in {
-      val doc = asDocument(createView(location:Location.Value)())
-      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      val doc = asDocument(createView(location: Location.Value)())
+      assertContainsText(
+        doc,
+        messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
+      )
     }
   }
+
   "YouAnyTheseBenefits view for scottish users" must {
     val location: Location.Value = Location.SCOTLAND
-    behave like normalPage(createView(location:Location.Value), messageKeyPrefix, "li.income_support", "li.jobseekers_allowance", "li.scottishCarersAllowance",
-      "li.employment_support", "li.pensions", "li.disability" )
+    behave.like(
+      normalPage(
+        createView(location: Location.Value),
+        messageKeyPrefix,
+        "li.income_support",
+        "li.jobseekers_allowance",
+        "li.scottishCarersAllowance",
+        "li.employment_support",
+        "li.pensions",
+        "li.disability"
+      )
+    )
 
-    behave like pageWithBackLink(createView(location:Location.Value))
+    behave.like(pageWithBackLink(createView(location: Location.Value)))
 
-    behave like yesNoPage(createViewUsingForm(location:Location.Value), messageKeyPrefix, routes.YouAnyTheseBenefitsCYController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(
+        createViewUsingForm(location: Location.Value),
+        messageKeyPrefix,
+        routes.YouAnyTheseBenefitsCYController.onSubmit(NormalMode).url
+      )
+    )
 
     "contain tax year info" in {
-      val doc = asDocument(createView(location:Location.Value)())
-      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      val doc = asDocument(createView(location: Location.Value)())
+      assertContainsText(
+        doc,
+        messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
+      )
     }
   }
+
 }

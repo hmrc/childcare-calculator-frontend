@@ -37,7 +37,7 @@ class FreeHoursInfoControllerSpec extends ControllerSpecBase with BeforeAndAfter
     Seq(ENGLAND, WALES, SCOTLAND, NORTHERN_IRELAND).foreach { location =>
       s"location is $location" must {
         "return OK containing freeHoursInfo view" in {
-          val cacheData = Map(LocationId.toString -> JsString(location.toString))
+          val cacheData           = Map(LocationId.toString -> JsString(location.toString))
           val dataRetrievalAction = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, cacheData)))
 
           val result = controller(dataRetrievalAction).onPageLoad(fakeRequest)

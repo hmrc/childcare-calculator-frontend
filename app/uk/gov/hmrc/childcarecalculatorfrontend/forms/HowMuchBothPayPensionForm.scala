@@ -20,9 +20,9 @@ import play.api.data.Form
 import play.api.data.Forms._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 
-object HowMuchBothPayPensionForm extends FormErrorHelper{
+object HowMuchBothPayPensionForm extends FormErrorHelper {
 
-  private val howMuchYouPayInvalidKey = "howMuchYouPayPension.error.invalid"
+  private val howMuchYouPayInvalidKey     = "howMuchYouPayPension.error.invalid"
   private val howMuchPartnerPayInvalidKey = "howMuchPartnerPayPension.error.invalid"
 
   def apply(): Form[HowMuchBothPayPension] = Form(
@@ -37,4 +37,5 @@ object HowMuchBothPayPensionForm extends FormErrorHelper{
           .verifying(maximumValue[BigDecimal](9999.99, howMuchPartnerPayInvalidKey))
     )(HowMuchBothPayPension.apply)(HowMuchBothPayPension.unapply)
   )
+
 }

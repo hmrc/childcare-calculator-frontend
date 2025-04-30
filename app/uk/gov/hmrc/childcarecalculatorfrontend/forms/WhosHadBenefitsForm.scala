@@ -31,21 +31,21 @@ object WhosHadBenefitsForm extends FormErrorHelper {
   def options: Seq[InputOption] = Seq(
     whosHadBenefitsInputOption("value", YouPartnerBothEnum.YOU.toString),
     whosHadBenefitsInputOption("value-2", YouPartnerBothEnum.PARTNER.toString),
-    whosHadBenefitsInputOption("value-3", YouPartnerBothEnum.BOTH.toString))
+    whosHadBenefitsInputOption("value-3", YouPartnerBothEnum.BOTH.toString)
+  )
 
-  private def whosHadBenefitsInputOption(id: String, option: String): InputOption = {
+  private def whosHadBenefitsInputOption(id: String, option: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"whosHadBenefits.$option"
     )
-  }
 
   private def WhosHadBenefitsFormatter = new Formatter[YouPartnerBothEnum.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(YouPartnerBothEnum.withName(s))
-      case None => produceError(key, whosHadBenefitsErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, whosHadBenefitsErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: YouPartnerBothEnum.Value) = Map(key -> value.toString)

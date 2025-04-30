@@ -22,10 +22,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class FakeNavigator(
-                     desiredRoute: Call,
-                     mode: Mode = NormalMode
-                   ) extends Navigator {
+    desiredRoute: Call,
+    mode: Mode = NormalMode
+) extends Navigator {
 
   override def nextPage(controllerId: Identifier, mode: Mode): (UserAnswers) => Call =
     _ => desiredRoute
+
 }

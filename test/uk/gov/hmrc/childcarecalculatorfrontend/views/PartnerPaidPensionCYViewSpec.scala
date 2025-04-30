@@ -25,8 +25,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerPaidPensionCY
 
 class PartnerPaidPensionCYViewSpec extends NewYesNoViewBehaviours {
 
-  override val form = BooleanForm()
-  val view = application.injector.instanceOf[partnerPaidPensionCY]
+  override val form    = BooleanForm()
+  val view             = application.injector.instanceOf[partnerPaidPensionCY]
   val messageKeyPrefix = "PartnerPaidPensionCY"
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
@@ -35,10 +35,13 @@ class PartnerPaidPensionCYViewSpec extends NewYesNoViewBehaviours {
 
   "PartnerPaidPensionCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerPaidPensionCYController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerPaidPensionCYController.onSubmit(NormalMode).url)
+    )
   }
+
 }

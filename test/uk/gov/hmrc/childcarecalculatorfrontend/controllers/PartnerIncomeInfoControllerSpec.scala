@@ -19,35 +19,39 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction, FakeDataRetrievalAction}
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{
+  DataRequiredAction,
+  DataRetrievalAction,
+  FakeDataRetrievalAction
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 
-
-
 class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[partnerIncomeInfo]
+  val view        = application.injector.instanceOf[partnerIncomeInfo]
   val taxYearInfo = new TaxYearInfo
 
   def onwardRoute = routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerIncomeInfoController(frontendAppConfig,
+    new PartnerIncomeInfoController(
+      frontendAppConfig,
       mcc,
       dataRetrievalAction,
       new FakeNavigator(onwardRoute),
       new DataRequiredAction,
       taxYearInfo,
-      view)
+      view
+    )
 
   "PartnerIncomeInfo Controller" must {
     "return OK and the correct view for a GET" in {
 
       val validData = Map(
-        DoYouLiveWithPartnerId.toString -> JsBoolean(true),
+        DoYouLiveWithPartnerId.toString  -> JsBoolean(true),
         WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.YOU.toString)
       )
 
@@ -56,7 +60,10 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
-        view(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(NormalMode), taxYearInfo)(fakeRequest, messages).toString
+        view(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(NormalMode), taxYearInfo)(
+          fakeRequest,
+          messages
+        ).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -66,4 +73,5 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }

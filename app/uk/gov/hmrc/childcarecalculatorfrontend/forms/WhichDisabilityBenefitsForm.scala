@@ -27,14 +27,15 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
   private def whichDisabilityBenefitsFormatter = new Formatter[DisabilityBenefits.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(DisabilityBenefits.withName(s))
-      case None => produceError(key, "whichDisabilityBenefits.error.notCompleted")
-      case _ => produceError(key, "error.unknown")
+      case None                        => produceError(key, "whichDisabilityBenefits.error.notCompleted")
+      case _                           => produceError(key, "error.unknown")
     }
 
     def unbind(key: String, value: DisabilityBenefits.Value) = Map(key -> value.toString)
   }
 
-  private def optionIsValid(value: String): Boolean = DisabilityBenefits.sortedDisabilityBenefits.map(_.toString).contains(value)
+  private def optionIsValid(value: String): Boolean =
+    DisabilityBenefits.sortedDisabilityBenefits.map(_.toString).contains(value)
 
   private def constraint(name: String): Constraint[Set[DisabilityBenefits.Value]] = Constraint {
     case set if set.nonEmpty =>
@@ -49,8 +50,7 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
         .verifying(constraint(name))
     )
 
-  def options: Seq[(String, String)] = DisabilityBenefits.sortedDisabilityBenefits.map {
-    value =>
-      s"whichDisabilityBenefits.$value" -> value.toString
-  }
+  def options: Seq[(String, String)] =
+    DisabilityBenefits.sortedDisabilityBenefits.map(value => s"whichDisabilityBenefits.$value" -> value.toString)
+
 }

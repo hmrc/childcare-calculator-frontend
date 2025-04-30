@@ -41,4 +41,5 @@ class WithPrefixSpec extends PlaySpec {
       error.message mustEqual "error"
     }
   }
+
 }

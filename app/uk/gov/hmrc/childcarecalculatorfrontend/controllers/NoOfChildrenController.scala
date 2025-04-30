@@ -32,37 +32,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class NoOfChildrenController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        form: NoOfChildrenForm,
-                                        noOfChildren: noOfChildren)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class NoOfChildrenController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    form: NoOfChildrenForm,
+    noOfChildren: noOfChildren
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.noOfChildren match {
-        case None => form()
-        case Some(value) => form().fill(value)
-      }
-      Ok(noOfChildren(appConfig, preparedForm, mode))
-  }
-
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request => {
-      form().bindFromRequest().fold(
-        (formWithErrors: Form[Int]) => {
-          Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors, mode)))
-        },
-        value => {
-          dataCacheConnector.save[Int](request.sessionId, NoOfChildrenId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(NoOfChildrenId, mode)(new UserAnswers(cacheMap))))
-        }
-      )
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.noOfChildren match {
+      case None        => form()
+      case Some(value) => form().fill(value)
     }
+    Ok(noOfChildren(appConfig, preparedForm, mode))
   }
+
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    form()
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[Int]) => Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors, mode))),
+        value =>
+          dataCacheConnector
+            .save[Int](request.sessionId, NoOfChildrenId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(NoOfChildrenId, mode)(new UserAnswers(cacheMap))))
+      )
+  }
+
 }

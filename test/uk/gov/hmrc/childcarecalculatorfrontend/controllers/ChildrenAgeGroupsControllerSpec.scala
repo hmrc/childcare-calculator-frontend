@@ -29,7 +29,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenAgeGroups
 
-
 class ChildrenAgeGroupsControllerSpec extends ControllerSpecBase {
 
   val view: childrenAgeGroups = application.injector.instanceOf[childrenAgeGroups]
@@ -37,10 +36,17 @@ class ChildrenAgeGroupsControllerSpec extends ControllerSpecBase {
   def onwardRoute: Call = routes.ChildcareCostsController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): ChildrenAgeGroupsController =
-    new ChildrenAgeGroupsController(mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new ChildrenAgeGroupsController(
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
-  def viewAsString(form: Form[Set[ChildAgeGroup]] = ChildrenAgeGroupsForm()): String = view(form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[ChildAgeGroup]] = ChildrenAgeGroupsForm()): String =
+    view(form, NormalMode)(fakeRequest, messages).toString
 
   "ChildrenAgeGroupsController" must {
     "return OK and the correct view for a GET" in {
@@ -102,4 +108,5 @@ class ChildrenAgeGroupsControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }

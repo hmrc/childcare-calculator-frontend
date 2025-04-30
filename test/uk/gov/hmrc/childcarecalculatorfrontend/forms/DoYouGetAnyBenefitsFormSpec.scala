@@ -29,9 +29,9 @@ class DoYouGetAnyBenefitsFormSpec extends CheckboxBehaviours[ParentsBenefits] {
   override val fieldName = "doYouGetAnyBenefits"
 
   "DoYouGetAnyBenefitsForm form" must {
-    behave like aCheckboxForm(invalid = "doYouGetAnyBenefits.error.select")
+    behave.like(aCheckboxForm(invalid = "doYouGetAnyBenefits.error.select"))
 
-    behave like aMandatoryCheckboxForm(required = "doYouGetAnyBenefits.error.select")
+    behave.like(aMandatoryCheckboxForm(required = "doYouGetAnyBenefits.error.select"))
 
     "fail to bind when multiple options are selected along with 'No'" in {
       val data = Map(
@@ -41,4 +41,5 @@ class DoYouGetAnyBenefitsFormSpec extends CheckboxBehaviours[ParentsBenefits] {
       form.bind(data).errors mustBe Seq(FormError(fieldName, "doYouGetAnyBenefits.error.select"))
     }
   }
+
 }

@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourPartnersAge
 
 class YourPartnersAgeViewSpec extends NewViewBehaviours {
 
-  val view = application.injector.instanceOf[yourPartnersAge]
+  val view             = application.injector.instanceOf[yourPartnersAge]
   val messageKeyPrefix = "yourPartnersAge"
 
   def createView = () => view(frontendAppConfig, YourPartnersAgeForm(), NormalMode)(fakeRequest, messages)
@@ -32,32 +32,30 @@ class YourPartnersAgeViewSpec extends NewViewBehaviours {
   def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "YourPartnersAge view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
   }
 
   "YourPartnersAge view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
         val doc = asDocument(createViewUsingForm(YourPartnersAgeForm()))
-        for (option <- YourPartnersAgeForm.options) {
+        for (option <- YourPartnersAgeForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
       }
     }
 
-    for(option <- YourPartnersAgeForm.options) {
+    for (option <- YourPartnersAgeForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
           val doc = asDocument(createViewUsingForm(YourPartnersAgeForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- YourPartnersAgeForm.options.filterNot(o => o == option)) {
+          for (unselectedOption <- YourPartnersAgeForm.options.filterNot(o => o == option))
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
         }
       }
-    }
   }
+
 }

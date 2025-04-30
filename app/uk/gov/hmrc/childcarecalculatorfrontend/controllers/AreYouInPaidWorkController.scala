@@ -33,33 +33,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AreYouInPaidWorkController @Inject()(appConfig: FrontendAppConfig,
-                                           mcc: MessagesControllerComponents,
-                                           dataCacheConnector: DataCacheConnector,
-                                           navigator: Navigator,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           areYouInPaidWork: areYouInPaidWork)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class AreYouInPaidWorkController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    areYouInPaidWork: areYouInPaidWork
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.areYouInPaidWork match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
-      }
-      Ok(areYouInPaidWork(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.areYouInPaidWork match {
+      case None        => BooleanForm()
+      case Some(value) => BooleanForm().fill(value)
+    }
+    Ok(areYouInPaidWork(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      BooleanForm(areYouInPaidWorkErrorKey).bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    BooleanForm(areYouInPaidWorkErrorKey)
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(areYouInPaidWork(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, AreYouInPaidWorkId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(AreYouInPaidWorkId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Boolean](request.sessionId, AreYouInPaidWorkId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(AreYouInPaidWorkId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

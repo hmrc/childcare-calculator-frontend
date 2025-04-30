@@ -33,8 +33,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefit
 import java.time.LocalDate
 import scala.util.Random
 
-
-
 class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with OptionValues {
 
   val view = application.injector.instanceOf[whichDisabilityBenefits]
@@ -43,48 +41,51 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     val cases: LazyList[(Int, String)] = {
       val indices = LazyList.from(Random.nextInt(15))
-      val names = LazyList.continually(Random.alphanumeric.take(5).mkString)
+      val names   = LazyList.continually(Random.alphanumeric.take(5).mkString)
       indices.zip(names).take(3)
     }.distinct
 
-    cases.foreach {
-      case (index, name) =>
+    cases.foreach { case (index, name) =>
 
-        s"return OK and the correct view for a GET, for index: $index, name: $name" in {
-          val result = controller(getRequiredData(cases: _*)).onPageLoad(NormalMode, index)(fakeRequest)
-          status(result) mustEqual OK
-          contentAsString(result) mustEqual viewAsString(index = index, name = name)
-        }
+      s"return OK and the correct view for a GET, for index: $index, name: $name" in {
+        val result = controller(getRequiredData(cases: _*)).onPageLoad(NormalMode, index)(fakeRequest)
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual viewAsString(index = index, name = name)
+      }
 
-        s"populate the view correctly on a GET when the question has previously been answered, for index: $index, name: $name" in {
-          val validData = requiredData(cases) + (
-            WhichDisabilityBenefitsId.toString -> Json.obj(
-              cases.map {
-                case (i, _) =>
-                  i.toString -> (Seq(DisabilityBenefits(0).toString): JsValueWrapper)
-              }: _*
-            )
+      s"populate the view correctly on a GET when the question has previously been answered, for index: $index, name: $name" in {
+        val validData = requiredData(cases) + (
+          WhichDisabilityBenefitsId.toString -> Json.obj(
+            cases.map { case (i, _) =>
+              i.toString -> (Seq(DisabilityBenefits(0).toString): JsValueWrapper)
+            }: _*
           )
-          val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+        )
+        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-          val result = controller(getRelevantData).onPageLoad(NormalMode, index)(fakeRequest)
+        val result = controller(getRelevantData).onPageLoad(NormalMode, index)(fakeRequest)
 
-          contentAsString(result) mustEqual viewAsString(WhichDisabilityBenefitsForm(name).fill(Set(DisabilityBenefits(0))), index, name)
-        }
+        contentAsString(result) mustEqual viewAsString(
+          WhichDisabilityBenefitsForm(name).fill(Set(DisabilityBenefits(0))),
+          index,
+          name
+        )
+      }
 
-        s"redirect to the next page when valid data is submitted, for index: $index, name: $name" in {
-          val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> DisabilityBenefits(0).toString).withMethod("POST")
+      s"redirect to the next page when valid data is submitted, for index: $index, name: $name" in {
+        val postRequest =
+          fakeRequest.withFormUrlEncodedBody("value[0]" -> DisabilityBenefits(0).toString).withMethod("POST")
 
-          val result = controller(getRequiredData(cases: _*)).onSubmit(NormalMode, index)(postRequest)
+        val result = controller(getRequiredData(cases: _*)).onSubmit(NormalMode, index)(postRequest)
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual onwardRoute.url
-        }
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value")).withMethod("POST")
-      val boundForm = WhichDisabilityBenefitsForm("Foo").bind(Map("value[0]" -> "invalid value"))
+      val boundForm   = WhichDisabilityBenefitsForm("Foo").bind(Map("value[0]" -> "invalid value"))
 
       val result = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, 0)(postRequest)
 
@@ -101,7 +102,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if no existing cacheMap is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -116,7 +117,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if required data is missing" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result = controller().onSubmit(NormalMode, 0)(postRequest)
+      val result      = controller().onSubmit(NormalMode, 0)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -131,7 +132,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if index is negative" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, -1)(postRequest)
+      val result      = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, -1)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -146,7 +147,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if index is out of bounds" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, 1)(postRequest)
+      val result      = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, 1)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -156,30 +157,37 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichDisabilityBenefitsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new WhichDisabilityBenefitsController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
   def viewAsString(form: Form[Set[DisabilityBenefits.Value]]): String =
     viewAsString(form, 0, "Foo")
 
   def viewAsString(
-                  index: Int,
-                  name: String
-                  ): String = viewAsString(WhichDisabilityBenefitsForm(name), index, name)
+      index: Int,
+      name: String
+  ): String = viewAsString(WhichDisabilityBenefitsForm(name), index, name)
 
   def viewAsString(
-                    form: Form[Set[DisabilityBenefits.Value]],
-                    index: Int,
-                    name: String
-                  ): String =
+      form: Form[Set[DisabilityBenefits.Value]],
+      index: Int,
+      name: String
+  ): String =
     view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages).toString
 
-  def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] = {
+  def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] =
     if (cases.size == 1) {
       Map(
         NoOfChildrenId.toString               -> JsNumber(1),
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
-        AboutYourChildId.toString             -> Json.obj(
+        AboutYourChildId.toString -> Json.obj(
           cases.head._1.toString -> (Json.toJson(AboutYourChild(cases.head._2, LocalDate.now)): JsValueWrapper)
         )
       )
@@ -187,15 +195,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       Map(
         WhichChildrenDisabilityId.toString -> Json.toJson(cases.map(_._1)),
         AboutYourChildId.toString -> Json.obj(
-          cases.map {
-            case (index, name) =>
-              index.toString -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
+          cases.map { case (index, name) =>
+            index.toString -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
           }: _*
         )
       )
     }
-  }
 
   def getRequiredData(cases: (Int, String)*) =
     new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(cases))))
+
 }

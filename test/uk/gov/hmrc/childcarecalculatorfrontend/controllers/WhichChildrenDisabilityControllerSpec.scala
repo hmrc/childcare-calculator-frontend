@@ -31,8 +31,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisabilit
 
 import java.time.LocalDate
 
-
-
 class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with OptionValues {
 
   val view = application.injector.instanceOf[whichChildrenDisability]
@@ -40,8 +38,15 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new WhichChildrenDisabilityController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new WhichChildrenDisabilityController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
   val requiredData: Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(
@@ -49,6 +54,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
       "1" -> Json.toJson(AboutYourChild("Bar", LocalDate.now))
     )
   )
+
   val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
   val options = Seq(
@@ -68,7 +74,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = requiredData + (WhichChildrenDisabilityId.toString -> JsArray(Seq(JsNumber(0))))
+      val validData       = requiredData + (WhichChildrenDisabilityId.toString -> JsArray(Seq(JsNumber(0))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -78,7 +84,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "0").withMethod("POST")
-      val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual onwardRoute.url
@@ -86,7 +92,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "invalid value").withMethod("POST")
-      val boundForm = WhichChildrenDisabilityForm().bind(Map("value[0]" -> "invalid value"))
+      val boundForm   = WhichChildrenDisabilityForm().bind(Map("value[0]" -> "invalid value"))
 
       val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
 
@@ -103,7 +109,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0")).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -118,10 +124,11 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if no required data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0")).withMethod("POST")
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result      = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
   }
+
 }

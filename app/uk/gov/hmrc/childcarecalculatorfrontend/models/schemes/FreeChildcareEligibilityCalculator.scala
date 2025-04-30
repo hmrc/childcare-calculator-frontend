@@ -21,14 +21,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-private[schemes] class FreeChildcareEligibilityCalculator @Inject()(modelFactory: ModelFactory) {
+private[schemes] class FreeChildcareEligibilityCalculator @Inject() (modelFactory: ModelFactory) {
 
-  def calculateEligibility(answers: UserAnswers, eligibleBenefits: Set[ParentsBenefits]): Eligibility = {
-    modelFactory(answers).map {
-      case SingleHousehold(parent)         => singleEligibility(parent)
-      case JointHousehold(parent, partner) => jointEligibility(parent, partner, eligibleBenefits: Set[ParentsBenefits])
-    }
-  }.getOrElse(NotDetermined)
+  def calculateEligibility(answers: UserAnswers, eligibleBenefits: Set[ParentsBenefits]): Eligibility =
+    modelFactory(answers)
+      .map {
+        case SingleHousehold(parent) => singleEligibility(parent)
+        case JointHousehold(parent, partner) =>
+          jointEligibility(parent, partner, eligibleBenefits: Set[ParentsBenefits])
+      }
+      .getOrElse(NotDetermined)
 
   private def singleEligibility(parent: Parent): Eligibility =
     if (isEligibleBasedOnEarnings(parent)) Eligible
@@ -38,9 +40,19 @@ private[schemes] class FreeChildcareEligibilityCalculator @Inject()(modelFactory
     if (isJointHouseholdEligible(parent, partner, eligibleBenefits)) Eligible
     else NotEligible
 
-  private def isJointHouseholdEligible(parent: Parent, partner: Parent, eligibleBenefits: Set[ParentsBenefits]): Boolean =
-    isEligibleBasedOnEarnings(parent) && (isEligibleBasedOnEarnings(partner) || isEligibleBasedOnBenefits(partner, eligibleBenefits)) ||
-      isEligibleBasedOnEarnings(partner) && (isEligibleBasedOnEarnings(parent) || isEligibleBasedOnBenefits(parent, eligibleBenefits))
+  private def isJointHouseholdEligible(
+      parent: Parent,
+      partner: Parent,
+      eligibleBenefits: Set[ParentsBenefits]
+  ): Boolean =
+    isEligibleBasedOnEarnings(parent) && (isEligibleBasedOnEarnings(partner) || isEligibleBasedOnBenefits(
+      partner,
+      eligibleBenefits
+    )) ||
+      isEligibleBasedOnEarnings(partner) && (isEligibleBasedOnEarnings(parent) || isEligibleBasedOnBenefits(
+        parent,
+        eligibleBenefits
+      ))
 
   private def isEligibleBasedOnEarnings(parent: Parent): Boolean =
     earnsBetweenMinAndMaxEarnings(parent) || earnsBelowMinEarningsButIsApprenticeOrSelfEmployed(parent)

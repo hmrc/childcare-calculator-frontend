@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaysIntoPension
 
 class WhoPaysIntoPensionViewSpec extends NewViewBehaviours {
 
-  val view = application.injector.instanceOf[whoPaysIntoPension]
+  val view             = application.injector.instanceOf[whoPaysIntoPension]
   val messageKeyPrefix = "whoPaysIntoPension"
 
   def createView = () => view(frontendAppConfig, WhoPaysIntoPensionForm(), NormalMode)(fakeRequest, messages)
@@ -32,32 +32,30 @@ class WhoPaysIntoPensionViewSpec extends NewViewBehaviours {
   def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "WhoPaysIntoPension view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
   }
 
   "WhoPaysIntoPension view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
         val doc = asDocument(createViewUsingForm(WhoPaysIntoPensionForm()))
-        for (option <- WhoPaysIntoPensionForm.options) {
+        for (option <- WhoPaysIntoPensionForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
       }
     }
 
-    for(option <- WhoPaysIntoPensionForm.options) {
+    for (option <- WhoPaysIntoPensionForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
           val doc = asDocument(createViewUsingForm(WhoPaysIntoPensionForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- WhoPaysIntoPensionForm.options.filterNot(o => o == option)) {
+          for (unselectedOption <- WhoPaysIntoPensionForm.options.filterNot(o => o == option))
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
         }
       }
-    }
   }
+
 }

@@ -27,37 +27,43 @@ class MessagesSpec extends SpecBase {
   private val matchSingleQuoteOnly = """\w+'{1}\w+""".r
 
   private val englishMessages = parseMessages("conf/messages")
-  private val welshMessages = parseMessages("conf/messages.cy")
+  private val welshMessages   = parseMessages("conf/messages.cy")
 
   "All message files" must {
-    "have the same set of keys" in {
+    "have the same set of keys" in
       withClue(describeMismatch(englishMessages.keySet, welshMessages.keySet)) {
         welshMessages.keySet.diff(englishMessages.keySet).size mustBe 0
         englishMessages.keySet.diff(welshMessages.keySet).size mustBe 0
       }
-    }
 
     "have no unescaped single quotes in value" in {
       assertCorrectUseOfQuotes("English", englishMessages)
       assertCorrectUseOfQuotes("Welsh", welshMessages)
     }
 
-    "have a resolvable message for keys which take args" in {
-      withClue(describeMismatch(countMessagesWithArgs(englishMessages).keySet, countMessagesWithArgs(welshMessages).keySet, "missing args in")) {
+    "have a resolvable message for keys which take args" in
+      withClue(
+        describeMismatch(
+          countMessagesWithArgs(englishMessages).keySet,
+          countMessagesWithArgs(welshMessages).keySet,
+          "missing args in"
+        )
+      ) {
         countMessagesWithArgs(welshMessages).keySet.diff(countMessagesWithArgs(englishMessages).keySet).size mustBe 0
         countMessagesWithArgs(englishMessages).keySet.diff(countMessagesWithArgs(welshMessages).keySet).size mustBe 0
       }
-    }
   }
 
-  private def parseMessages(filename: String): Map[String, String] = {
-    Messages.parse(new MessageSource {
-      override def read: String = Source.fromFile(filename).mkString
-    }, filename) match {
+  private def parseMessages(filename: String): Map[String, String] =
+    Messages.parse(
+      new MessageSource {
+        override def read: String = Source.fromFile(filename).mkString
+      },
+      filename
+    ) match {
       case Right(messages) => messages
-      case Left(e) => throw e
+      case Left(e)         => throw e
     }
-  }
 
   private def countMessagesWithArgs(messages: Map[String, String]) =
     messages.filter(_._2.contains("{0}"))
@@ -74,20 +80,35 @@ class MessagesSpec extends SpecBase {
     missingKeys.toList.sorted.mkString(header + displayLine, "\n", displayLine)
   }
 
-  private def describeMismatch(englishKeySet: Set[String], welshKeySet: Set[String], description: String = "missing from") = {
-    val missingFromWelsh = englishKeySet -- welshKeySet
+  private def describeMismatch(
+      englishKeySet: Set[String],
+      welshKeySet: Set[String],
+      description: String = "missing from"
+  ) = {
+    val missingFromWelsh   = englishKeySet -- welshKeySet
     val missingFromEnglish = welshKeySet -- englishKeySet
     val welshMsg = if (missingFromWelsh.nonEmpty) {
-      Some(listMissingMessageKeys(s"The following message keys are $description the Welsh Set:", englishKeySet -- welshKeySet))
+      Some(
+        listMissingMessageKeys(
+          s"The following message keys are $description the Welsh Set:",
+          englishKeySet -- welshKeySet
+        )
+      )
     } else {
       None
     }
     val englishMsg = if (missingFromEnglish.nonEmpty) {
-      Some(listMissingMessageKeys(s"The following message keys are $description the English Set:", welshKeySet -- englishKeySet))
+      Some(
+        listMissingMessageKeys(
+          s"The following message keys are $description the English Set:",
+          welshKeySet -- englishKeySet
+        )
+      )
     } else {
       None
     }
 
     Seq(welshMsg, englishMsg).flatten.mkString("\n")
   }
+
 }

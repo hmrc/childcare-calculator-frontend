@@ -23,11 +23,10 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY,NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-
 
 class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with OptionValues {
 
@@ -42,23 +41,28 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
       "Partner Paid Work CY Route" must {
         "redirects to parent employment income CY when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.partnerPaidWorkCY) thenReturn Some(false)
+          when(answers.partnerPaidWorkCY).thenReturn(Some(false))
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(PartnerPaidWorkCYId, NormalMode)
+            .value(answers) mustBe routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to both employment income CY when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.partnerPaidWorkCY) thenReturn Some(true)
+          when(answers.partnerPaidWorkCY).thenReturn(Some(true))
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe routes.EmploymentIncomeCYController
+            .onPageLoad(NormalMode)
         }
 
         "redirects to session expired route when relevant answers has no value" in {
           val answers = spy(userAnswers())
-          when(answers.partnerPaidWorkCY) thenReturn None
+          when(answers.partnerPaidWorkCY).thenReturn(None)
 
-          navigator.nextPage(PartnerPaidWorkCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(PartnerPaidWorkCYId, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
 
       }
@@ -66,62 +70,75 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
       "Parent Paid Work CY Route" must {
         "redirects to partner employment income CY when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.parentPaidWorkCY) thenReturn Some(false)
+          when(answers.parentPaidWorkCY).thenReturn(Some(false))
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(ParentPaidWorkCYId, NormalMode)
+            .value(answers) mustBe routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to both employment income CY when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.parentPaidWorkCY) thenReturn Some(true)
+          when(answers.parentPaidWorkCY).thenReturn(Some(true))
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
+          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe routes.EmploymentIncomeCYController
+            .onPageLoad(NormalMode)
         }
 
         "redirects to session expired route when relevant answers has no value" in {
           val answers = spy(userAnswers())
-          when(answers.parentPaidWorkCY) thenReturn None
+          when(answers.parentPaidWorkCY).thenReturn(None)
 
-          navigator.nextPage(ParentPaidWorkCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(ParentPaidWorkCYId, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
       "Parent Employment Income CY Route" must {
         "redirects to parent paid pension CY when user provides valid value and is single" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(ParentEmploymentIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.YouPaidPensionCYController.onPageLoad(NormalMode)
         }
 
         "redirects to parent paid pension CY when user lives with partner and partner does not work" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(You)
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(You))
 
-          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(ParentEmploymentIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.YouPaidPensionCYController.onPageLoad(NormalMode)
         }
 
         "redirects to both paid pension CY when user provides valid value and lives with partner" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(Both))
 
-          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(ParentEmploymentIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.BothPaidPensionCYController.onPageLoad(NormalMode)
         }
 
         "redirects to session expired route when relevant answers has no value" in {
           val answers = spy(userAnswers())
-          when(answers.parentEmploymentIncomeCY) thenReturn None
+          when(answers.parentEmploymentIncomeCY).thenReturn(None)
 
-          navigator.nextPage(ParentEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(ParentEmploymentIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
       "Partner Employment Income CY Route" must {
         "redirects to both paid pension CY when when user provides valid value" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Both)
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(Both))
 
           navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe
             routes.BothPaidPensionCYController.onPageLoad(NormalMode)
@@ -129,22 +146,26 @@ class EmploymentIncomeNavigationSpec extends SpecBase with MockitoSugar with Opt
 
         "redirects to partner paid pension CY when only partner works" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
-          when(answers.whoIsInPaidEmployment) thenReturn Some(Partner)
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(Partner))
 
-          navigator.nextPage(PartnerEmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(PartnerEmploymentIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
         }
       }
 
       "Parent and Partner Employment Income CY Route" must {
         "redirects to both paid pension CY when when user provides valid values" in {
           val answers = spy(userAnswers())
-          when(answers.employmentIncomeCY) thenReturn Some(EmploymentIncomeCY(12, 20))
+          when(answers.employmentIncomeCY).thenReturn(Some(EmploymentIncomeCY(12, 20)))
 
-          navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+          navigator.nextPage(EmploymentIncomeCYId, NormalMode).value(answers) mustBe routes.BothPaidPensionCYController
+            .onPageLoad(NormalMode)
         }
       }
 
     }
   }
+
 }

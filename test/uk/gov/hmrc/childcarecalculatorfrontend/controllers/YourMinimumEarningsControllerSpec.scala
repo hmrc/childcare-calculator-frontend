@@ -31,9 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
 
-
-
-class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar{
+class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar {
 
   val view = application.injector.instanceOf[yourMinimumEarnings]
 
@@ -42,15 +40,24 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, mockUtils, view)
+    new YourMinimumEarningsController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      mockUtils,
+      view
+    )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) =
+    view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
 
   "YourMinimumEarnings Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val validData = Map(YourAgeId.toString -> JsString(AgeEnum.UNDER18.toString))
+      val validData       = Map(YourAgeId.toString -> JsString(AgeEnum.UNDER18.toString))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       setUpMock()
@@ -62,7 +69,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        YourAgeId.toString -> JsString(AgeEnum.UNDER18.toString),
+        YourAgeId.toString             -> JsString(AgeEnum.UNDER18.toString),
         YourMinimumEarningsId.toString -> JsBoolean(true)
       )
 
@@ -87,7 +94,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = BooleanForm("yourMinimumEarnings.error.notCompleted", 0).bind(Map("value" -> "invalid value"))
+      val boundForm   = BooleanForm("yourMinimumEarnings.error.notCompleted", 0).bind(Map("value" -> "invalid value"))
       setUpMock()
 
       val result = controller().onSubmit(NormalMode)(postRequest)
@@ -106,7 +113,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
       setUpMock()
 
       status(result) mustBe SEE_OTHER
@@ -122,11 +129,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
   }
 
-  private def setUpMock() = {
+  private def setUpMock() =
     when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
-  }
+
 }
-
-
-
-

@@ -35,19 +35,18 @@ object LocationForm extends FormErrorHelper {
     locationInputOption(Location.NORTHERN_IRELAND.toString, "value-4")
   )
 
-  private def locationInputOption(option: String, id: String) = {
+  private def locationInputOption(option: String, id: String) =
     new InputOption(
-      id =  id,
+      id = id,
       value = option,
       messageKey = s"location.$option"
     )
-  }
 
   private def LocationFormatter = new Formatter[Location.Value] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(Location.withName(s))
-      case None => produceError(key, locationErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, locationErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: Location.Value) = Map(key -> value.toString)

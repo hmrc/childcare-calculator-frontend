@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentIncomeCY] {
 
   val messageKeyPrefix = "employmentIncomeCY"
-  val view = application.injector.instanceOf[employmentIncomeCY]
+  val view             = application.injector.instanceOf[employmentIncomeCY]
 
   val taxYearInfo = new TaxYearInfo
 
@@ -35,24 +35,31 @@ class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentInc
 
   def createView = () => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[EmploymentIncomeCY]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[EmploymentIncomeCY]) =>
+    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "EmploymentIncomeCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "hint")
+    behave.like(normalPage(createView, messageKeyPrefix, "hint"))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like pageWithTextFields(
-      createViewUsingForm,
-      messageKeyPrefix,
-      routes.EmploymentIncomeCYController.onSubmit(NormalMode).url,
-      "parentEmploymentIncomeCY", "partnerEmploymentIncomeCY")
-
+    behave.like(
+      pageWithTextFields(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.EmploymentIncomeCYController.onSubmit(NormalMode).url,
+        "parentEmploymentIncomeCY",
+        "partnerEmploymentIncomeCY"
+      )
+    )
 
     "contain tax year info" in {
       val doc = asDocument(createView())
-      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      assertContainsText(
+        doc,
+        messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
+      )
     }
 
     "contain the currencySymbol class and £ " in {
@@ -60,7 +67,7 @@ class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentInc
 
       assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 
-      val parentCurrencySymbol = doc.getElementById("parentEmploymentIncomeCY").firstElementSibling().text()
+      val parentCurrencySymbol  = doc.getElementById("parentEmploymentIncomeCY").firstElementSibling().text()
       val partnerCurrencySymbol = doc.getElementById("partnerEmploymentIncomeCY").firstElementSibling().text()
 
       parentCurrencySymbol mustBe "£"

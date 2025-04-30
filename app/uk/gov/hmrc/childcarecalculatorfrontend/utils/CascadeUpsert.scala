@@ -21,30 +21,34 @@ import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts._
 
 @Singleton
-class CascadeUpsert @Inject()(pensions: PensionsCascadeUpsert,
-                              income: IncomeCascadeUpsert,
-                              benefits: BenefitsCascadeUpsert,
-                              maxHours: MaximumHoursCascadeUpsert,
-                              minHours: MinimumHoursCascadeUpsert,
-                              children: ChildrenCascadeUpsert){
+class CascadeUpsert @Inject() (
+    pensions: PensionsCascadeUpsert,
+    income: IncomeCascadeUpsert,
+    benefits: BenefitsCascadeUpsert,
+    maxHours: MaximumHoursCascadeUpsert,
+    minHours: MinimumHoursCascadeUpsert,
+    children: ChildrenCascadeUpsert
+) {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] = pensions.funcMap ++ income.funcMap ++
-                                                     benefits.funcMap ++ maxHours.funcMap ++ minHours.funcMap ++ children.funcMap
+    benefits.funcMap ++ maxHours.funcMap ++ minHours.funcMap ++ children.funcMap
 
   def apply[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap =
-    funcMap.get(key).fold(store(key, value, originalCacheMap)) { fn => fn(Json.toJson(value), originalCacheMap)}
+    funcMap.get(key).fold(store(key, value, originalCacheMap))(fn => fn(Json.toJson(value), originalCacheMap))
 
   def addRepeatedValue[A](key: String, value: A, originalCacheMap: CacheMap)(implicit fmt: Format[A]): CacheMap = {
     val values = originalCacheMap.getEntry[Seq[A]](key).getOrElse(Seq()) :+ value
-    originalCacheMap copy(data = originalCacheMap.data + (key -> Json.toJson(values)))
+    originalCacheMap.copy(data = originalCacheMap.data + (key -> Json.toJson(values)))
   }
 
-  private def store[A](key:String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
-    cacheMap copy (data = cacheMap.data + (key -> Json.toJson(value)))
+  private def store[A](key: String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
+    cacheMap.copy(data = cacheMap.data + (key -> Json.toJson(value)))
 
 }
 
 abstract class SubCascadeUpsert {
-  def store[A](key:String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
-    cacheMap copy (data = cacheMap.data + (key -> Json.toJson(value)))
+
+  def store[A](key: String, value: A, cacheMap: CacheMap)(implicit fmt: Format[A]) =
+    cacheMap.copy(data = cacheMap.data + (key -> Json.toJson(value)))
+
 }

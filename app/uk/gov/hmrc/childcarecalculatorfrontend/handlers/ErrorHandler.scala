@@ -26,26 +26,34 @@ import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ErrorHandler @Inject()(
-                              val messagesApi: MessagesApi,
-                              errorTemplate: error_template
-                            )(implicit val ec: ExecutionContext) extends FrontendErrorHandler with I18nSupport {
+class ErrorHandler @Inject() (
+    val messagesApi: MessagesApi,
+    errorTemplate: error_template
+)(implicit val ec: ExecutionContext)
+    extends FrontendErrorHandler
+    with I18nSupport {
 
-  override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] =
+  override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(
+      implicit request: RequestHeader
+  ): Future[Html] =
     Future.successful(errorTemplate(pageTitle, heading, message))
 
   override def badRequestTemplate(implicit request: RequestHeader): Future[Html] =
-    Future.successful(errorTemplate(
-      Messages("global.error.InternalServerError500.title"),
-      Messages("global.error.InternalServerError500.heading"),
-      Messages("global.error.InternalServerError500.message")))
+    Future.successful(
+      errorTemplate(
+        Messages("global.error.InternalServerError500.title"),
+        Messages("global.error.InternalServerError500.heading"),
+        Messages("global.error.InternalServerError500.message")
+      )
+    )
 
-  override def internalServerErrorTemplate(implicit request: RequestHeader): Future[Html] = {
-    Future.successful(errorTemplate(
-      Messages("ccc.error.InternalServerError500.title"),
-      Messages("ccc.error.InternalServerError500.heading"),
-      Messages("ccc.error.InternalServerError500.message"),
-    ))
-  }
+  override def internalServerErrorTemplate(implicit request: RequestHeader): Future[Html] =
+    Future.successful(
+      errorTemplate(
+        Messages("ccc.error.InternalServerError500.title"),
+        Messages("ccc.error.InternalServerError500.heading"),
+        Messages("ccc.error.InternalServerError500.message")
+      )
+    )
+
 }
-

@@ -26,8 +26,7 @@ class SessionExpiredViewSpec extends NewViewBehaviours {
 
   def createView: () => HtmlFormat.Appendable = () => view(frontendAppConfig)(fakeRequest, messages)
 
-  "Session Expired view" must {
+  "Session Expired view" must
+    behave.like(normalPage(createView, "session_expired", "guidance", "link.text"))
 
-    behave like normalPage(createView, "session_expired", "guidance","link.text")
-  }
 }

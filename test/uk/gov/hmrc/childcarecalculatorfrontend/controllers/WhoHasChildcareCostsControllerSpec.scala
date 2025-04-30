@@ -26,15 +26,18 @@ import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, WhichChildrenBlindId, WhichChildrenDisabilityId, WhoHasChildcareCostsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
+  AboutYourChildId,
+  WhichChildrenBlindId,
+  WhichChildrenDisabilityId,
+  WhoHasChildcareCostsId
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 
 import java.time.LocalDate
-
-
 
 class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionValues {
 
@@ -56,9 +59,9 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
     "return OK and only display the children that are under 16 and exact 16 with DOB before 31st august and disabled" in {
       val children = Map(
-        "Over16" -> "0",
-        "Under16_1" -> "1",
-        "Under16_2" -> "2",
+        "Over16"                              -> "0",
+        "Under16_1"                           -> "1",
+        "Under16_2"                           -> "2",
         "exact16WithBirthdayBefore31stAugust" -> "3"
       )
 
@@ -66,51 +69,54 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
         "0" -> Json.toJson(AboutYourChild("Over16", ageOf19)),
         "1" -> Json.toJson(AboutYourChild("Under16_1", ageOfExactly15)),
         "2" -> Json.toJson(AboutYourChild("Under16_2", ageOfExactly15)),
-        "3" -> Json.toJson(AboutYourChild("exact16WithBirthdayBefore31stAugust", ageOf16Before31Aug)))) +
-        (WhichChildrenBlindId.toString -> Json.toJson(Seq(2))) +
+        "3" -> Json.toJson(AboutYourChild("exact16WithBirthdayBefore31stAugust", ageOf16Before31Aug))
+      )) +
+        (WhichChildrenBlindId.toString      -> Json.toJson(Seq(2))) +
         (WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 3)))
 
-      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)), Some(testDate))
+      val getRelevantData =
+        new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)), Some(testDate))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(0)),
-        Map("Under16_1" -> "1", "Under16_2" -> "2","exact16WithBirthdayBefore31stAugust" ->"3"))
+      contentAsString(result) mustEqual viewAsString(
+        WhoHasChildcareCostsForm().fill(Set(0)),
+        Map("Under16_1" -> "1", "Under16_2" -> "2", "exact16WithBirthdayBefore31stAugust" -> "3")
+      )
     }
 
     Seq(
-      Map("Foo" -> "0", "Bar" -> "1"),
+      Map("Foo"   -> "0", "Bar"  -> "1"),
       Map("Spoon" -> "2", "Fork" -> "3")
-    ).zipWithIndex.foreach {
-      case(values, i) =>
+    ).zipWithIndex.foreach { case (values, i) =>
 
-        val value = values.values.toSeq.head
+      val value = values.values.toSeq.head
 
-        s"populate the view correctly on a GET when the question has previously been answered $i" in {
-          val validData = requiredData(values) + (
-            WhoHasChildcareCostsId.toString -> Json.toJson(Seq(value.toInt))
-            )
-          val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
+      s"populate the view correctly on a GET when the question has previously been answered $i" in {
+        val validData = requiredData(values) + (
+          WhoHasChildcareCostsId.toString -> Json.toJson(Seq(value.toInt))
+        )
+        val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
 
-          val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+        val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-          contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(value.toInt)), values)
-        }
+        contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(value.toInt)), values)
+      }
 
-        s"redirect to the next page when valid data is submitted $i" in {
-          val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> value).withMethod("POST")
+      s"redirect to the next page when valid data is submitted $i" in {
+        val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> value).withMethod("POST")
 
-          val result = controller(getRequiredData(values)).onSubmit(NormalMode)(postRequest)
+        val result = controller(getRequiredData(values)).onSubmit(NormalMode)(postRequest)
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual onwardRoute.url
-        }
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
 
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value")).withMethod("POST")
-      val boundForm = WhoHasChildcareCostsForm().bind(Map("value[0]" -> "invalid value"))
+      val boundForm   = WhoHasChildcareCostsForm().bind(Map("value[0]" -> "invalid value"))
 
       val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
 
@@ -127,7 +133,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> "0").withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -142,35 +148,39 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
     "redirect to Session Expired for a POST if required data is missing" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> "0").withMethod("POST")
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result      = controller().onSubmit(NormalMode)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
   }
-  def onwardRoute: Call = {
+
+  def onwardRoute: Call =
     routes.WhatToTellTheCalculatorController.onPageLoad
-  }
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): WhoHasChildcareCostsController =
-    new WhoHasChildcareCostsController(frontendAppConfig, mcc,
-      FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new WhoHasChildcareCostsController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
-  val defaultValues: Map[String, String] = Map("Foo" -> "0", "Bar" ->"1")
+  val defaultValues: Map[String, String] = Map("Foo" -> "0", "Bar" -> "1")
 
   def viewAsString(
-                    form: Form[_] = WhoHasChildcareCostsForm(0, 1),
-                    values: Map[String, String] = defaultValues
-                  ): String =
+      form: Form[_] = WhoHasChildcareCostsForm(0, 1),
+      values: Map[String, String] = defaultValues
+  ): String =
     view(frontendAppConfig, form, NormalMode, values.toSeq)(fakeRequest, messages).toString
-
 
   def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(
-      values.map {
-        case (name, v) =>
-          v -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
+      values.map { case (name, v) =>
+        v -> (Json.toJson(AboutYourChild(name, LocalDate.now)): JsValueWrapper)
       }.toSeq: _*
     )
   )
@@ -179,6 +189,5 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
     new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(values))), Some(testDate))
 
   def getRequiredData: DataRetrievalAction = getRequiredData(defaultValues)
-
 
 }

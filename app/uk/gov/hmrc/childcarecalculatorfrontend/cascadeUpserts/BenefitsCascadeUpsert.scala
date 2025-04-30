@@ -21,44 +21,56 @@ import javax.inject.Inject
 import play.api.libs.json.{JsBoolean, JsString, JsValue}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SubCascadeUpsert, CacheMap}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
 
-class BenefitsCascadeUpsert @Inject()() extends SubCascadeUpsert {
+class BenefitsCascadeUpsert @Inject() () extends SubCascadeUpsert {
 
-  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
+  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      WhosHadBenefitsId.toString->((v,cm) => storeWhosHadBenefits(v,cm)),
-      YouAnyTheseBenefitsIdCY.toString ->((v,cm) => storeYouAnyTheseBenefits(v,cm)),
-      BothAnyTheseBenefitsCYId.toString ->((v,cm) => storeBothAnyTheseBenefitsCY(v,cm))
+      WhosHadBenefitsId.toString        -> ((v, cm) => storeWhosHadBenefits(v, cm)),
+      YouAnyTheseBenefitsIdCY.toString  -> ((v, cm) => storeYouAnyTheseBenefits(v, cm)),
+      BothAnyTheseBenefitsCYId.toString -> ((v, cm) => storeBothAnyTheseBenefitsCY(v, cm))
     )
 
-  private def storeWhosHadBenefits(value: JsValue, cacheMap: CacheMap): CacheMap ={
+  private def storeWhosHadBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsString(`you`) => cacheMap copy (data = cacheMap.data  - PartnerBenefitsIncomeCYId.toString -
-        BenefitsIncomeCYId.toString)
-      case JsString(`partner`) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomeCYId.toString -
-        BenefitsIncomeCYId.toString)
-      case JsString(`both`) => cacheMap copy (data = cacheMap.data  - YouBenefitsIncomeCYId.toString -
-        PartnerBenefitsIncomeCYId.toString)
+      case JsString(`you`) =>
+        cacheMap.copy(data =
+          cacheMap.data - PartnerBenefitsIncomeCYId.toString -
+            BenefitsIncomeCYId.toString
+        )
+      case JsString(`partner`) =>
+        cacheMap.copy(data =
+          cacheMap.data - YouBenefitsIncomeCYId.toString -
+            BenefitsIncomeCYId.toString
+        )
+      case JsString(`both`) =>
+        cacheMap.copy(data =
+          cacheMap.data - YouBenefitsIncomeCYId.toString -
+            PartnerBenefitsIncomeCYId.toString
+        )
       case _ => cacheMap
     }
 
     store(WhosHadBenefitsId.toString, value, mapToStore)
   }
 
-  private def storeYouAnyTheseBenefits(value: JsValue, cacheMap: CacheMap): CacheMap ={
+  private def storeYouAnyTheseBenefits(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - YouBenefitsIncomeCYId.toString)
-      case _ => cacheMap
+      case JsBoolean(false) => cacheMap.copy(data = cacheMap.data - YouBenefitsIncomeCYId.toString)
+      case _                => cacheMap
     }
 
     store(YouAnyTheseBenefitsIdCY.toString, value, mapToStore)
   }
 
-  private def storeBothAnyTheseBenefitsCY(value: JsValue, cacheMap: CacheMap): CacheMap ={
+  private def storeBothAnyTheseBenefitsCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - WhosHadBenefitsId.toString -
-        YouBenefitsIncomeCYId.toString - PartnerBenefitsIncomeCYId.toString - BenefitsIncomeCYId.toString)
+      case JsBoolean(false) =>
+        cacheMap.copy(data =
+          cacheMap.data - WhosHadBenefitsId.toString -
+            YouBenefitsIncomeCYId.toString - PartnerBenefitsIncomeCYId.toString - BenefitsIncomeCYId.toString
+        )
       case _ => cacheMap
     }
 
@@ -66,6 +78,3 @@ class BenefitsCascadeUpsert @Inject()() extends SubCascadeUpsert {
   }
 
 }
-
-
-

@@ -22,51 +22,50 @@ object ChildcareConstants {
 
   val maxFreeHours = BigDecimal(30)
 
-  val YouSelected: String = YouPartnerBothNeitherEnum.YOU.toString
+  val YouSelected: String     = YouPartnerBothNeitherEnum.YOU.toString
   val PartnerSelected: String = YouPartnerBothNeitherEnum.PARTNER.toString
-  val BothSelected: String = YouPartnerBothNeitherEnum.BOTH.toString
+  val BothSelected: String    = YouPartnerBothNeitherEnum.BOTH.toString
   val NeitherSelected: String = YouPartnerBothNeitherEnum.NEITHER.toString
 
-  val you: String = YouPartnerBothEnum.YOU.toString
+  val you: String     = YouPartnerBothEnum.YOU.toString
   val partner: String = YouPartnerBothEnum.PARTNER.toString
-  val both: String = YouPartnerBothEnum.BOTH.toString
+  val both: String    = YouPartnerBothEnum.BOTH.toString
   val neither: String = YouPartnerBothNeitherEnum.NEITHER.toString
   val notSure: String = YouPartnerBothNeitherNotSureEnum.NOTSURE.toString
 
   // First letter is capital in naming for below constants as these are being used in case statements
-  val You: String = YouPartnerBothEnum.YOU.toString
+  val You: String     = YouPartnerBothEnum.YOU.toString
   val Partner: String = YouPartnerBothEnum.PARTNER.toString
-  val Both: String = YouPartnerBothEnum.BOTH.toString
+  val Both: String    = YouPartnerBothEnum.BOTH.toString
 
-  val YES: String = YesNoUnsureEnum.YES.toString
-  val NO: String = YesNoUnsureEnum.NO.toString
+  val YES: String     = YesNoUnsureEnum.YES.toString
+  val NO: String      = YesNoUnsureEnum.NO.toString
   val NOTSURE: String = YesNoUnsureEnum.NOTSURE.toString
 
-  val no = YesNoNotYetEnum.NO.toString
-  val yes = YesNoNotYetEnum.YES.toString
+  val no     = YesNoNotYetEnum.NO.toString
+  val yes    = YesNoNotYetEnum.YES.toString
   val notYet = YesNoNotYetEnum.NOTYET.toString
 
   val firstMonthOfTaxYear = 4
-  val startDayOfTaxYear = 6
+  val startDayOfTaxYear   = 6
 
   val lastMonthOfTaxYear = 4
-  val lastDayOfTaxYear = 5
+  val lastDayOfTaxYear   = 5
 
-  val freeHoursForEngland = 15
+  val freeHoursForEngland  = 15
   val freeHoursForScotland = 22
-  val freeHoursForWales = 10
-  val freeHoursForNI = 12.5
+  val freeHoursForWales    = 10
+  val freeHoursForNI       = 12.5
   val eligibleMaxFreeHours = 30
-  val sixteenHours = 16
-  val twentyFoursHours = 24
+  val sixteenHours         = 16
+  val twentyFoursHours     = 24
 
   val totalNoOfHoursAYear = 570
-  val noOfFreeHours30 = 30
-  val noOfFreeHours15 = 15
+  val noOfFreeHours30     = 30
+  val noOfFreeHours15     = 15
 
   val nineteen = 19
-  val sixteen = 16
-
+  val sixteen  = 16
 
   val ucSchemeGuidanceLinkUrl = "https://www.gov.uk/guidance/universal-credit-childcare-costs"
 
@@ -81,120 +80,118 @@ object ChildcareConstants {
   val northernIrelandExtraHelpLink = "https://www.nidirect.gov.uk/articles/pre-school-education-places"
 
   val universalCredits = "uc"
-  val unknownErrorKey = "error.unknown"
+  val unknownErrorKey  = "error.unknown"
 
   val locationErrorKey = "location.error.notCompleted"
 
-  val areYouInPaidWorkErrorKey = "areYouInPaidWork.error.notCompleted"
-  val doYouLiveWithPartnerErrorKey = "doYouLiveWithPartner.error.notCompleted"
-  val whoIsInPaidEmploymentErrorKey = "whoIsInPaidEmployment.error.notCompleted"
-  val paidEmploymentErrorKey = "paidEmployment.error.notCompleted"
-  val universalCreditErrorKey = "universalCredit.error.notCompleted"
+  val areYouInPaidWorkErrorKey       = "areYouInPaidWork.error.notCompleted"
+  val doYouLiveWithPartnerErrorKey   = "doYouLiveWithPartner.error.notCompleted"
+  val whoIsInPaidEmploymentErrorKey  = "whoIsInPaidEmployment.error.notCompleted"
+  val paidEmploymentErrorKey         = "paidEmployment.error.notCompleted"
+  val universalCreditErrorKey        = "universalCredit.error.notCompleted"
   val universalCreditPartnerErrorKey = "universalCreditPartner.error.notCompleted"
 
-  val whichBenefitsYouGetErrorKey = "whichBenefitsYouGet.error.notCompleted"
+  val whichBenefitsYouGetErrorKey     = "whichBenefitsYouGet.error.notCompleted"
   val whichBenefitsPartnerGetErrorKey = "whichBenefitsPartnerGet.error.notCompleted"
 
   val doYouKnowYourPartnerAdjustedTaxCodeErrorKey = "doYouKnowYourPartnersAdjustedTaxCode.error.notCompleted"
-  val taxCodeLength_six = 6
-  val taxCodeLength_four = 4
-  val taxCodeLength_five = 5
-  val two = 2
-  val one = 1
-  val taxCode0T = "0T"
+  val taxCodeLength_six                           = 6
+  val taxCodeLength_four                          = 4
+  val taxCodeLength_five                          = 5
+  val two                                         = 2
+  val one                                         = 1
+  val taxCode0T                                   = "0T"
 
-  val yourAgeErrorKey = "yourAge.error.notCompleted"
+  val yourAgeErrorKey         = "yourAge.error.notCompleted"
   val yourPartnersAgeErrorKey = "yourPartnersAge.error.notCompleted"
 
-  val yourMinimumEarningsErrorKey = "yourMinimumEarnings.error.notCompleted"
+  val yourMinimumEarningsErrorKey    = "yourMinimumEarnings.error.notCompleted"
   val partnerMinimumEarningsErrorKey = "partnerMinimumEarnings.error.notCompleted"
-  val yourMaximumEarningsErrorKey = "yourMaximumEarnings.error.notCompleted"
+  val yourMaximumEarningsErrorKey    = "yourMaximumEarnings.error.notCompleted"
 
-  val partnerMaximumEarningsErrorKey = "partnerMaximumEarnings.error.notCompleted"
+  val partnerMaximumEarningsErrorKey     = "partnerMaximumEarnings.error.notCompleted"
   val eitherOfYouMaximumEarningsErrorKey = "eitherOfYouMaximumEarnings.error.notCompleted"
 
   val yourSelfEmployedErrorKey = "yourSelfEmployed.error.notCompleted"
 
-  val ruleDateConfigParam = "rule-date"
-  val ccDateFormat = "dd-MM-yyyy"
+  val ruleDateConfigParam       = "rule-date"
+  val ccDateFormat              = "dd-MM-yyyy"
   val nmwConfigFileAbbreviation = "nmw"
 
   val taxCodeRegularExpression = """([K][1-9][0-9]{2,3})|([1-9][0-9]{2,3}(L|M|N|BR|D0|D1|NT|S|0T|W1|M1|X)+)"""
 
   val partnerSelfEmployedErrorKey = "partnerSelfEmployed.error.notCompleted"
 
-  val parentPaidWorkCYErrorKey = "parentPaidWorkCY.error.notCompleted"
+  val parentPaidWorkCYErrorKey  = "parentPaidWorkCY.error.notCompleted"
   val partnerPaidWorkCYErrorKey = "partnerPaidWorkCY.error.notCompleted"
-  val bothPaidWorkCYErrorKey = "bothPaidWorkCY.error.notCompleted"
+  val bothPaidWorkCYErrorKey    = "bothPaidWorkCY.error.notCompleted"
 
-  val whoPaysIntoPensionErrorKey = "whoPaysIntoPension.error.notCompleted"
-  val whoGetsOtherIncomeCYErrorKey = "whoGetsOtherIncomeCY.error.notCompleted"
+  val whoPaysIntoPensionErrorKey      = "whoPaysIntoPension.error.notCompleted"
+  val whoGetsOtherIncomeCYErrorKey    = "whoGetsOtherIncomeCY.error.notCompleted"
   val employmentIncomeInvalidErrorKey = "employmentIncome.error.invalid"
 
-  val parentEmploymentIncomeBlankErrorKey = "parentEmploymentIncomeCY.error.blank"
-  val parentEmploymentIncomeInvalidErrorKey = "parentEmploymentIncomeCY.error.invalid"
-  val parentEmploymentIncomeInvalidMaxEarningsErrorKey = "parentEmploymentIncomeCY.maxEarnings.error.invalid"
-  val parentEmploymentIncomeBothInvalidMaxEarningsErrorKey = "parentEmploymentIncomeCY.both.maxEarnings.error.invalid"
-  val partnerEmploymentIncomeBlankErrorKey = "partnerEmploymentIncomeCY.error.blank"
-  val partnerEmploymentIncomeInvalidErrorKey = "partnerEmploymentIncomeCY.error.invalid"
-  val partnerEmploymentIncomeInvalidMaxEarningsErrorKey = "partnerEmploymentIncomeCY.maxEarnings.error.invalid"
+  val parentEmploymentIncomeBlankErrorKey                   = "parentEmploymentIncomeCY.error.blank"
+  val parentEmploymentIncomeInvalidErrorKey                 = "parentEmploymentIncomeCY.error.invalid"
+  val parentEmploymentIncomeInvalidMaxEarningsErrorKey      = "parentEmploymentIncomeCY.maxEarnings.error.invalid"
+  val parentEmploymentIncomeBothInvalidMaxEarningsErrorKey  = "parentEmploymentIncomeCY.both.maxEarnings.error.invalid"
+  val partnerEmploymentIncomeBlankErrorKey                  = "partnerEmploymentIncomeCY.error.blank"
+  val partnerEmploymentIncomeInvalidErrorKey                = "partnerEmploymentIncomeCY.error.invalid"
+  val partnerEmploymentIncomeInvalidMaxEarningsErrorKey     = "partnerEmploymentIncomeCY.maxEarnings.error.invalid"
   val partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey = "partnerEmploymentIncomeCY.both.maxEarnings.error.invalid"
 
-  val youAnyTheseBenefitsCYErrorKey = "youAnyTheseBenefitsCY.error.notCompleted"
-  val youAnyTheseBenefitsCYCarerAllowanceErrorKey = "youAnyTheseBenefitsCY.error.carers.allowance"
-  val youAnyTheseBenefitsCYScottishCarerAllowanceErrorKey = "youAnyTheseBenefitsCY.error.scottishCarers.allowance"
-  val bothAnyTheseBenefitsCYErrorKey = "bothAnyTheseBenefitsCY.error.notCompleted"
-  val bothAnyTheseBenefitsCYCarerAllowanceErrorKey = "bothAnyTheseBenefitsCY.error.carers.allowance"
+  val youAnyTheseBenefitsCYErrorKey                        = "youAnyTheseBenefitsCY.error.notCompleted"
+  val youAnyTheseBenefitsCYCarerAllowanceErrorKey          = "youAnyTheseBenefitsCY.error.carers.allowance"
+  val youAnyTheseBenefitsCYScottishCarerAllowanceErrorKey  = "youAnyTheseBenefitsCY.error.scottishCarers.allowance"
+  val bothAnyTheseBenefitsCYErrorKey                       = "bothAnyTheseBenefitsCY.error.notCompleted"
+  val bothAnyTheseBenefitsCYCarerAllowanceErrorKey         = "bothAnyTheseBenefitsCY.error.carers.allowance"
   val bothAnyTheseBenefitsCYScottishCarerAllowanceErrorKey = "bothAnyTheseBenefitsCY.error.scottishCarers.allowance"
-  val whosHadBenefitsErrorKey = "whosHadBenefits.error.notCompleted"
-  val bothBenefitsIncomeCYErrorKey = "bothBenefitsIncomeCY.error.notCompleted"
-  val howMuchYouPayPensionInvalidErrorKey = "howMuchYouPayPension.error.invalid"
-  val howMuchYouPayPensionRequiredErrorKey = "howMuchYouPayPension.error.required"
-  val howMuchPartnerPayPensionInvalidErrorKey = "howMuchPartnerPayPension.error.invalid"
-  val howMuchPartnerPayPensionRequiredErrorKey = "howMuchPartnerPayPension.error.required"
-  val howMuchBothPayPensionInvalidErrorKey = "howMuchBothPayPension.error.invalid"
-  val howMuchBothPayPensionRequiredErrorKey = "howMuchBothPayPension.error.required"
+  val whosHadBenefitsErrorKey                              = "whosHadBenefits.error.notCompleted"
+  val bothBenefitsIncomeCYErrorKey                         = "bothBenefitsIncomeCY.error.notCompleted"
+  val howMuchYouPayPensionInvalidErrorKey                  = "howMuchYouPayPension.error.invalid"
+  val howMuchYouPayPensionRequiredErrorKey                 = "howMuchYouPayPension.error.required"
+  val howMuchPartnerPayPensionInvalidErrorKey              = "howMuchPartnerPayPension.error.invalid"
+  val howMuchPartnerPayPensionRequiredErrorKey             = "howMuchPartnerPayPension.error.required"
+  val howMuchBothPayPensionInvalidErrorKey                 = "howMuchBothPayPension.error.invalid"
+  val howMuchBothPayPensionRequiredErrorKey                = "howMuchBothPayPension.error.required"
 
-  val parentBenefitsIncomeCYRequiredErrorKey = "parentBenefitsIncome.error.required"
+  val parentBenefitsIncomeCYRequiredErrorKey  = "parentBenefitsIncome.error.required"
   val partnerBenefitsIncomeCYRequiredErrorKey = "partnerBenefitsIncome.error.required"
-  val partnerBenefitsIncomeCYInvalidErrorKey = "partnerBenefitsIncome.error.invalid"
-  val parentBenefitsIncomeInvalidErrorKey = "parentBenefitsIncome.error.invalid"
-  val partnerBenefitsIncomeInvalidErrorKey = "partnerBenefitsIncome.error.invalid"
+  val partnerBenefitsIncomeCYInvalidErrorKey  = "partnerBenefitsIncome.error.invalid"
+  val parentBenefitsIncomeInvalidErrorKey     = "parentBenefitsIncome.error.invalid"
+  val partnerBenefitsIncomeInvalidErrorKey    = "partnerBenefitsIncome.error.invalid"
 
-  val parentOtherIncomeRequiredErrorKey = "parentOtherIncome.error.required"
-  val parentOtherIncomeInvalidErrorKey = "parentOtherIncome.error.invalid"
+  val parentOtherIncomeRequiredErrorKey  = "parentOtherIncome.error.required"
+  val parentOtherIncomeInvalidErrorKey   = "parentOtherIncome.error.invalid"
   val partnerOtherIncomeRequiredErrorKey = "partnerOtherIncome.error.required"
-  val partnerOtherIncomeInvalidErrorKey = "partnerOtherIncome.error.invalid"
-
-
+  val partnerOtherIncomeInvalidErrorKey  = "partnerOtherIncome.error.invalid"
 
   val childcareCostsErrorKey = "childcareCosts.error.notCompleted"
 
   val eitherGetsVouchersErrorKey = "eitherGetsVouchers.error.notCompleted"
-  val approvedProviderErrorKey = "approvedProvider.error.notCompleted"
+  val approvedProviderErrorKey   = "approvedProvider.error.notCompleted"
 
   val selfEmployedOrApprenticeErrorKey = "areYouSelfEmployedOrApprentice.error.notCompleted"
-  val noOfChildrenErrorKey = "noOfChildren.error.notCompleted"
-  val noOfChildrenRequiredErrorKey = "noOfChildren.error.required"
-  val noOfChildrenNotInteger = "noOfChildren.error.non_numeric"
+  val noOfChildrenErrorKey             = "noOfChildren.error.notCompleted"
+  val noOfChildrenRequiredErrorKey     = "noOfChildren.error.required"
+  val noOfChildrenNotInteger           = "noOfChildren.error.non_numeric"
   val partnerChildcareVouchersErrorKey = "partnerChildcareVouchers.error.notCompleted"
 
-  val partnerSelfEmployedOrApprenticeErrorKey = "partnerSelfEmployedOrApprentice.error.notCompleted"
-  val whatIsYourPartnersTaxCodeBlankErrorKey = "whatIsYourPartnersTaxCode.error.blank"
+  val partnerSelfEmployedOrApprenticeErrorKey  = "partnerSelfEmployedOrApprentice.error.notCompleted"
+  val whatIsYourPartnersTaxCodeBlankErrorKey   = "whatIsYourPartnersTaxCode.error.blank"
   val whatIsYourPartnersTaxCodeInvalidErrorKey = "whatIsYourPartnersTaxCode.error.invalid"
-  val whatIsYourTaxCodeInvalidErrorKey = "whatIsYourTaxCode.error.invalid"
-  val whatIsYourTaxCodeBlankErrorKey = "whatIsYourTaxCode.error.blank"
-  val whoGetsVouchersErrorKey = "whoGetsVouchers.error.notCompleted"
-  val yourChildcareVoucherErrorKey = "yourChildcareVouchers.error.notCompleted"
+  val whatIsYourTaxCodeInvalidErrorKey         = "whatIsYourTaxCode.error.invalid"
+  val whatIsYourTaxCodeBlankErrorKey           = "whatIsYourTaxCode.error.blank"
+  val whoGetsVouchersErrorKey                  = "whoGetsVouchers.error.notCompleted"
+  val yourChildcareVoucherErrorKey             = "yourChildcareVouchers.error.notCompleted"
 
-  val youBenefitsIncomeCYInvalidErrorKey = "youBenefitsIncomeCY.error.invalid"
+  val youBenefitsIncomeCYInvalidErrorKey  = "youBenefitsIncomeCY.error.invalid"
   val youBenefitsIncomeCYRequiredErrorKey = "youBenefitsIncomeCY.error.required"
 
   val surveyChildcareSupportErrorKey = "surveyChildcareSupport.error.notCompleted"
 
-  val parentEmpIncomeCYFormField = "parentEmploymentIncomeCY"
+  val parentEmpIncomeCYFormField  = "parentEmploymentIncomeCY"
   val partnerEmpIncomeCYFormField = "partnerEmploymentIncomeCY"
-  val defaultFormValueField = "value"
+  val defaultFormValueField       = "value"
 
   val whoGetsTheBenefitsErrorKey = "whoGetsTheBenefits.error.notCompleted"
 }

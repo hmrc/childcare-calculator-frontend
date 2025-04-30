@@ -32,52 +32,58 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ChildcarePayFrequencyController @Inject()(
-                                                 appConfig: FrontendAppConfig,
-                                                 mcc: MessagesControllerComponents,
-                                                 dataCacheConnector: DataCacheConnector,
-                                                 navigator: Navigator,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 childcarePayFrequency: childcarePayFrequency
-                                               )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with MapFormats {
+class ChildcarePayFrequencyController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    childcarePayFrequency: childcarePayFrequency
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with MapFormats {
 
-  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] =
+    getData.andThen(requireData).async { implicit request =>
       request.userAnswers.aboutYourChild(childIndex) match {
-        case Some(child) => {
+        case Some(child) =>
           val preparedForm = request.userAnswers.childcarePayFrequency(childIndex) match {
-            case None => ChildcarePayFrequencyForm(child.name)
+            case None        => ChildcarePayFrequencyForm(child.name)
             case Some(value) => ChildcarePayFrequencyForm(child.name).fill(value)
           }
           Future.successful(Ok(childcarePayFrequency(appConfig, preparedForm, childIndex, child.name, mode)))
-        }
         case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
       }
-  }
+    }
 
-  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] =
+    getData.andThen(requireData).async { implicit request =>
       request.userAnswers.aboutYourChild(childIndex) match {
-        case Some(child) =>{
-          ChildcarePayFrequencyForm(child.name).bindFromRequest().fold(
-            (formWithErrors: Form[ChildcarePayFrequency.Value]) =>
-              Future.successful(BadRequest(childcarePayFrequency(appConfig, formWithErrors, childIndex, child.name, mode))),
-            value =>
-              dataCacheConnector.saveInMap[Int, ChildcarePayFrequency.Value](
-                request.sessionId,
-                ChildcarePayFrequencyId.toString,
-                childIndex,
-                value
-              ).map { cacheMap =>
-                Redirect(navigator.nextPage(ChildcarePayFrequencyId(childIndex), mode)(new UserAnswers(cacheMap)))
-              }
-          )
-        }
+        case Some(child) =>
+          ChildcarePayFrequencyForm(child.name)
+            .bindFromRequest()
+            .fold(
+              (formWithErrors: Form[ChildcarePayFrequency.Value]) =>
+                Future.successful(
+                  BadRequest(childcarePayFrequency(appConfig, formWithErrors, childIndex, child.name, mode))
+                ),
+              value =>
+                dataCacheConnector
+                  .saveInMap[Int, ChildcarePayFrequency.Value](
+                    request.sessionId,
+                    ChildcarePayFrequencyId.toString,
+                    childIndex,
+                    value
+                  )
+                  .map { cacheMap =>
+                    Redirect(navigator.nextPage(ChildcarePayFrequencyId(childIndex), mode)(new UserAnswers(cacheMap)))
+                  }
+            )
         case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
       }
-  }
+    }
 
 //  private def validateIndex[A](i: Int)(block: String => Future[Result])
 //                           (implicit request: DataRequest[A]): Future[Result] = {

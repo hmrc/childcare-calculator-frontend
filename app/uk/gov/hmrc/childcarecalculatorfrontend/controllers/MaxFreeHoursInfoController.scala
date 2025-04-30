@@ -26,22 +26,26 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.maxFreeHoursInfo
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 @Singleton
-class MaxFreeHoursInfoController @Inject()(val appConfig: FrontendAppConfig,
-                                           mcc: MessagesControllerComponents,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           tfc: TaxFreeChildcare,
-                                           esc: EmploymentSupportedChildcare,
-                                           maxFreeHoursInfo: maxFreeHoursInfo
-                                          ) extends FrontendController(mcc) with I18nSupport {
+class MaxFreeHoursInfoController @Inject() (
+    val appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    tfc: TaxFreeChildcare,
+    esc: EmploymentSupportedChildcare,
+    maxFreeHoursInfo: maxFreeHoursInfo
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
-
-    implicit request =>
-      Ok(maxFreeHoursInfo(appConfig,
+  def onPageLoad: Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    Ok(
+      maxFreeHoursInfo(
+        appConfig,
         tfc.eligibility(request.userAnswers),
         esc.eligibility(request.userAnswers),
-        request.userAnswers)
+        request.userAnswers
       )
+    )
   }
+
 }

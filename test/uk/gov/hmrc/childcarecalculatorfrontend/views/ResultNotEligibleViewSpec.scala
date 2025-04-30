@@ -27,20 +27,36 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
 
   lazy val appResultNotEligible: resultNotEligible = application.injector.instanceOf[resultNotEligible]
 
-  val answers: UserAnswers = mock[UserAnswers]
+  val answers: UserAnswers            = mock[UserAnswers]
   val locationEngland: Location.Value = Location.ENGLAND
 
   "Result not eligible view" must {
     "contain results" when {
       "We don't have Free Childcare For Working Parents" in {
-        val model = ResultsViewModel(freeHours = None, freeChildcareWorkingParentsEligibilityMsg = Some("not working"), location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true)
+        val model = ResultsViewModel(
+          freeHours = None,
+          freeChildcareWorkingParentsEligibilityMsg = Some("not working"),
+          location = locationEngland,
+          hasChildcareCosts = true,
+          hasCostsWithApprovedProvider = true,
+          isAnyoneInPaidEmployment = true,
+          livesWithPartner = true
+        )
         val view = asDocument(appResultNotEligible(model)(messages))
 
         view.getElementById("notEligibleFreeChildcareWorkingParents").text() mustBe messages("not working")
       }
 
       "User is not eligible for TFC scheme" in {
-        val model = ResultsViewModel(tfc = None, location = locationEngland, hasChildcareCosts = true, hasCostsWithApprovedProvider = true, isAnyoneInPaidEmployment = true, livesWithPartner = true, taxFreeChildcareEligibilityMsg = Some("not working"))
+        val model = ResultsViewModel(
+          tfc = None,
+          location = locationEngland,
+          hasChildcareCosts = true,
+          hasCostsWithApprovedProvider = true,
+          isAnyoneInPaidEmployment = true,
+          livesWithPartner = true,
+          taxFreeChildcareEligibilityMsg = Some("not working")
+        )
         val view = asDocument(appResultNotEligible(model)(messages))
 
         assertContainsMessages(view, "Tax-Free Childcare")
@@ -48,4 +64,5 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
       }
     }
   }
+
 }

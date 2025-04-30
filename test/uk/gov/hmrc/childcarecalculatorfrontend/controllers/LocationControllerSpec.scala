@@ -28,18 +28,24 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
-
-
 class LocationControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[location]
+  val view        = application.injector.instanceOf[location]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new LocationController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new LocationController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
-  def viewAsString(form: Form[_] = LocationForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[_] = LocationForm()) =
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "Location Controller" must {
 
@@ -51,7 +57,7 @@ class LocationControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(LocationId.toString -> JsString(LocationForm.options.head.value))
+      val validData       = Map(LocationId.toString -> JsString(LocationForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -60,7 +66,8 @@ class LocationControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
+      val postRequest =
+        fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -70,7 +77,7 @@ class LocationControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = LocationForm().bind(Map("value" -> "invalid value"))
+      val boundForm   = LocationForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -86,11 +93,13 @@ class LocationControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted and no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
+      val postRequest =
+        fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
   }
+
 }

@@ -24,15 +24,20 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 @Singleton
-class ParentEmploymentIncomeCYForm @Inject()(appConfig: FrontendAppConfig) extends IncomeFormatter {
+class ParentEmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends IncomeFormatter {
 
-  val minValue: Double = appConfig.minEmploymentIncome
-  val maxValue: Double = appConfig.maxEmploymentIncome
-  val errorKeyBlank: String = parentEmploymentIncomeBlankErrorKey
+  val minValue: Double        = appConfig.minEmploymentIncome
+  val maxValue: Double        = appConfig.maxEmploymentIncome
+  val errorKeyBlank: String   = parentEmploymentIncomeBlankErrorKey
   val errorKeyInvalid: String = parentEmploymentIncomeInvalidErrorKey
 
   def apply(): Form[BigDecimal] =
-    Form(single("value" -> of(formatter(errorKeyBlank, errorKeyInvalid))
-      .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid))
-      .verifying(maximumValue[BigDecimal](maxValue, errorKeyInvalid))))
+    Form(
+      single(
+        "value" -> of(formatter(errorKeyBlank, errorKeyInvalid))
+          .verifying(minimumValue[BigDecimal](minValue, errorKeyInvalid))
+          .verifying(maximumValue[BigDecimal](maxValue, errorKeyInvalid))
+      )
+    )
+
 }

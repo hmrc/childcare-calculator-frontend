@@ -23,24 +23,37 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, SplunkSubmissionServiceInterface, SubmissionStatus, SubmissionSuccessful}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{
+  FakeDataCacheService,
+  SplunkSubmissionServiceInterface,
+  SubmissionStatus,
+  SubmissionSuccessful
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-
 class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[surveyDoNotUnderstand]
+  val view        = application.injector.instanceOf[surveyDoNotUnderstand]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new SurveyDoNotUnderstandController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new FakeSplunkSubmissionService(), view)
+    new SurveyDoNotUnderstandController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      new FakeSplunkSubmissionService(),
+      view
+    )
 
-  def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) = view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[String] = SurveyDoNotUnderstandForm()) =
+    view(frontendAppConfig, form)(fakeRequest, messages).toString
 
   val testString = "feedback string"
 
@@ -54,7 +67,7 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(SurveyDoNotUnderstandId.toString -> JsString("feedback string"))
+      val validData       = Map(SurveyDoNotUnderstandId.toString -> JsString("feedback string"))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -80,18 +93,20 @@ class SurveyDoNotUnderstandControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testString)).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit()(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }
 
 class FakeSplunkSubmissionService extends SplunkSubmissionServiceInterface {
   implicit val ec: ExecutionContext = ExecutionContext.global
-  def submit(date: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
+
+  def submit(date: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] =
 
     Future(SubmissionSuccessful)
-  }
+
 }

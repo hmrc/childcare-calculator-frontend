@@ -22,12 +22,12 @@ import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
 
 class ExpectedChildcareCostsFormSpec extends FormSpec {
 
-  val errorKeyBlank = "expectedChildcareCosts.error.notCompleted"
-  val errorKeyInvalid = "expectedChildcareCosts.error.invalid"
-  val firstName = "name"
-  val frequency = WEEKLY
-  implicit val messages = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
-  val form = ExpectedChildcareCostsForm(frequency, firstName)
+  val errorKeyBlank           = "expectedChildcareCosts.error.notCompleted"
+  val errorKeyInvalid         = "expectedChildcareCosts.error.invalid"
+  val firstName               = "name"
+  val frequency               = WEEKLY
+  implicit val messages       = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
+  val form                    = ExpectedChildcareCostsForm(frequency, firstName)
   val frequencyString: String = messages(s"childcarePayFrequency.$frequency").toLowerCase
 
   "ExpectedChildcareCosts Form" must {
@@ -97,4 +97,5 @@ class ExpectedChildcareCostsFormSpec extends FormSpec {
       checkForError(form, emptyForm, expectedError)
     }
   }
+
 }

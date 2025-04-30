@@ -29,9 +29,9 @@ class ChildrenAgeGroupsFormSpec extends CheckboxBehaviours[ChildAgeGroup] {
   override val fieldName = "childrenAgeGroups"
 
   "ChildrenAgeGroupsForm form" must {
-    behave like aCheckboxForm(invalid = "childrenAgeGroups.error.select")
+    behave.like(aCheckboxForm(invalid = "childrenAgeGroups.error.select"))
 
-    behave like aMandatoryCheckboxForm(required = "childrenAgeGroups.error.select")
+    behave.like(aMandatoryCheckboxForm(required = "childrenAgeGroups.error.select"))
 
     "fail to bind when multiple options are selected along with 'No'" in {
       val data = Map(
@@ -41,4 +41,5 @@ class ChildrenAgeGroupsFormSpec extends CheckboxBehaviours[ChildAgeGroup] {
       form.bind(data).errors mustBe Seq(FormError(fieldName, "childrenAgeGroups.error.exclusive"))
     }
   }
+
 }

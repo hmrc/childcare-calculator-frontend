@@ -24,38 +24,37 @@ import play.api.data.validation.{Constraint, Invalid, Valid}
 trait Mappings extends Formatters {
 
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
-    Constraint {
-      input =>
-        constraints
-          .map(_.apply(input))
-          .find(_ != Valid)
-          .getOrElse(Valid)
+    Constraint { input =>
+      constraints
+        .map(_.apply(input))
+        .find(_ != Valid)
+        .getOrElse(Valid)
     }
 
-  protected def minimumValue[A](minimum: A, errorKey: String, errorArgs: Any*)(implicit ev: Ordering[A]): Constraint[A] =
-    Constraint {
-      input =>
+  protected def minimumValue[A](minimum: A, errorKey: String, errorArgs: Any*)(
+      implicit ev: Ordering[A]
+  ): Constraint[A] =
+    Constraint { input =>
+      import ev._
 
-        import ev._
-
-        if (input >= minimum) {
-          Valid
-        } else {
-          Invalid(errorKey, errorArgs:_*)
-        }
+      if (input >= minimum) {
+        Valid
+      } else {
+        Invalid(errorKey, errorArgs: _*)
+      }
     }
 
-  protected def maximumValue[A](maximum: A, errorKey: String, errorArgs: Any*)(implicit ev: Ordering[A]): Constraint[A] =
-    Constraint {
-      input =>
+  protected def maximumValue[A](maximum: A, errorKey: String, errorArgs: Any*)(
+      implicit ev: Ordering[A]
+  ): Constraint[A] =
+    Constraint { input =>
+      import ev._
 
-        import ev._
-
-        if (input <= maximum) {
-          Valid
-        } else {
-          Invalid(errorKey, errorArgs:_*)
-        }
+      if (input <= maximum) {
+        Valid
+      } else {
+        Invalid(errorKey, errorArgs: _*)
+      }
     }
 
   protected def maxLength(maximum: Int, errorKey: String, errorArgs: Any*): Constraint[String] =
@@ -63,10 +62,10 @@ trait Mappings extends Formatters {
       case str if str.length <= maximum =>
         Valid
       case _ =>
-        Invalid(errorKey, errorArgs:_*)
+        Invalid(errorKey, errorArgs: _*)
     }
 
-  protected def inRange[A : Ordering](minimum: A, maximum: A, errorKey: String, errorArgs: Any*): Constraint[A] =
+  protected def inRange[A: Ordering](minimum: A, maximum: A, errorKey: String, errorArgs: Any*): Constraint[A] =
     firstError(
       minimumValue[A](minimum, errorKey, errorArgs: _*),
       maximumValue[A](maximum, errorKey, errorArgs: _*)
@@ -88,16 +87,13 @@ trait Mappings extends Formatters {
         Invalid(errorKey, errorArgs: _*)
     }
 
-  protected def decimal(requiredKey: String,
-                        invalidKey: String,
-                        args: Any*): FieldMapping[BigDecimal] =
-    of(decimalFormatter(requiredKey, invalidKey, args:_*))
+  protected def decimal(requiredKey: String, invalidKey: String, args: Any*): FieldMapping[BigDecimal] =
+    of(decimalFormatter(requiredKey, invalidKey, args: _*))
 
   protected def string(requiredKey: String, args: Any*): FieldMapping[String] =
-    of(stringFormatter(requiredKey, args:_*))
+    of(stringFormatter(requiredKey, args: _*))
 
-  protected def int(requiredKey: String,
-                    invalidKey: String,
-                    args: Any*): FieldMapping[Int] =
-    of(intFormatter(requiredKey, invalidKey, args:_*))
+  protected def int(requiredKey: String, invalidKey: String, args: Any*): FieldMapping[Int] =
+    of(intFormatter(requiredKey, invalidKey, args: _*))
+
 }

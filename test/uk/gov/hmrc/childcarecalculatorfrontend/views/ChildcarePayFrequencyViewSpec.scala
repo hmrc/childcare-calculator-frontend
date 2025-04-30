@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 class ChildcarePayFrequencyViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "childcarePayFrequency"
-  val view = application.injector.instanceOf[childcarePayFrequency]
+  val view             = application.injector.instanceOf[childcarePayFrequency]
 
   def createView = () =>
     view(frontendAppConfig, ChildcarePayFrequencyForm("Foo"), 0, "Foo", NormalMode)(fakeRequest, messages)
@@ -37,46 +37,47 @@ class ChildcarePayFrequencyViewSpec extends NewViewBehaviours {
 
   "ChildcarePayFrequency view" must {
 
-    behave like normalPageWithTitleParameters(
-      view = createView,
-      messageKeyPrefix = messageKeyPrefix,
-      messageKeyPostfix = "",
-      expectedGuidanceKeys = Seq(),
-      args = Seq("Foo"),
-      titleArgs = Seq(cardinal)
+    behave.like(
+      normalPageWithTitleParameters(
+        view = createView,
+        messageKeyPrefix = messageKeyPrefix,
+        messageKeyPostfix = "",
+        expectedGuidanceKeys = Seq(),
+        args = Seq("Foo"),
+        titleArgs = Seq(cardinal)
+      )
     )
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
   }
 
   "ChildcarePayFrequency view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
         val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo")))
-        for (option <- ChildcarePayFrequencyForm.options) {
+        for (option <- ChildcarePayFrequencyForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
       }
 
       "have hidden legend text with child name" in {
-        val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo")))
+        val doc     = asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo")))
         val legends = doc.getElementsByTag("legend")
         legends.size mustBe 1
         legends.first.text mustBe messages(s"$messageKeyPrefix.heading", "Foo")
       }
     }
 
-    for(option <- ChildcarePayFrequencyForm.options) {
+    for (option <- ChildcarePayFrequencyForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo").bind(Map("value" -> s"${option.value}"))))
+          val doc =
+            asDocument(createViewUsingForm(ChildcarePayFrequencyForm("Foo").bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- ChildcarePayFrequencyForm.options.filterNot(o => o == option)) {
+          for (unselectedOption <- ChildcarePayFrequencyForm.options.filterNot(o => o == option))
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
         }
       }
-    }
   }
+
 }

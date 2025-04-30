@@ -29,11 +29,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 
-
-
 class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[employmentIncomeCY]
+  val view        = application.injector.instanceOf[employmentIncomeCY]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   val taxYearInfo = new TaxYearInfo
@@ -41,7 +39,8 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
   val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new EmploymentIncomeCYController(frontendAppConfig,
+    new EmploymentIncomeCYController(
+      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -49,9 +48,11 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       new DataRequiredAction,
       new EmploymentIncomeCYForm(frontendAppConfig),
       taxYearInfo,
-      view)
+      view
+    )
 
-  def viewAsString(form: Form[EmploymentIncomeCY] = form) = view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[EmploymentIncomeCY] = form) =
+    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
 
   "EmploymentIncomeCY Controller" must {
 
@@ -63,7 +64,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
+      val validData       = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -72,7 +73,9 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2")).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2"))
+        .withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -82,7 +85,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val boundForm   = form.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -98,7 +101,9 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "value 1"), ("partnerEmploymentIncomeCY", "value 2")).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody(("parentEmploymentIncomeCY", "value 1"), ("partnerEmploymentIncomeCY", "value 2"))
+        .withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
@@ -106,12 +111,16 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "return a Bad Request and errors when user answered max earnings question under 100000 but input was above 100000" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000")).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody(("parentEmploymentIncomeCY", "100000"), ("partnerEmploymentIncomeCY", "100000"))
+        .withMethod("POST")
 
-      val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(false),
-        ParentEmploymentIncomeCYId.toString -> Json.toJson("100000"),
-        PartnerEmploymentIncomeCYId.toString -> Json.toJson("100000"),
-        WhoIsInPaidEmploymentId.toString -> Json.toJson("both"))
+      val validData = Map(
+        EitherOfYouMaximumEarningsId.toString -> JsBoolean(false),
+        ParentEmploymentIncomeCYId.toString   -> Json.toJson("100000"),
+        PartnerEmploymentIncomeCYId.toString  -> Json.toJson("100000"),
+        WhoIsInPaidEmploymentId.toString      -> Json.toJson("both")
+      )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
@@ -122,14 +131,17 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages(partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
     }
 
-
     "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000")).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1000000"), ("partnerEmploymentIncomeCY", "1000000"))
+        .withMethod("POST")
 
-      val validData = Map(EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
-        ParentEmploymentIncomeCYId.toString -> Json.toJson("1000000"),
-        PartnerEmploymentIncomeCYId.toString -> Json.toJson("1000000"),
-        WhoIsInPaidEmploymentId.toString -> Json.toJson("both"))
+      val validData = Map(
+        EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
+        ParentEmploymentIncomeCYId.toString   -> Json.toJson("1000000"),
+        PartnerEmploymentIncomeCYId.toString  -> Json.toJson("1000000"),
+        WhoIsInPaidEmploymentId.toString      -> Json.toJson("both")
+      )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
@@ -140,4 +152,5 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       contentAsString(result) contains messages(partnerEmploymentIncomeInvalidErrorKey)
     }
   }
+
 }

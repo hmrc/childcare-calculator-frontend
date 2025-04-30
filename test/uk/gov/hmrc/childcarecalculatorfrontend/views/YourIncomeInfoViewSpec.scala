@@ -24,23 +24,35 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfo
 
 class YourIncomeInfoViewSpec extends NewViewBehaviours {
 
-  val view = application.injector.instanceOf[yourIncomeInfo]
+  val view        = application.injector.instanceOf[yourIncomeInfo]
   val taxYearInfo = new TaxYearInfo
 
-  def createView = () => view(frontendAppConfig, taxYearInfo)(fakeRequest, messages)
+  def createView       = () => view(frontendAppConfig, taxYearInfo)(fakeRequest, messages)
   val messageKeyPrefix = "yourIncomeInfo"
 
   "Your Income Info view" must {
-    behave like normalPage(createView, messageKeyPrefix, "guidance",
-      "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income")
+    behave.like(
+      normalPage(
+        createView,
+        messageKeyPrefix,
+        "guidance",
+        "li.income_paid_work",
+        "li.pensions",
+        "li.other_income",
+        "li.benefits_income"
+      )
+    )
 
     "contain tax year info" in {
       val doc = asDocument(createView())
-      assertContainsText(doc, messages("yourIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      assertContainsText(
+        doc,
+        messages("yourIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
+      )
     }
 
     "contain the link for parent paid work for current year" in {
-      val doc = asDocument(createView())
+      val doc          = asDocument(createView())
       val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))
@@ -48,4 +60,5 @@ class YourIncomeInfoViewSpec extends NewViewBehaviours {
 
     }
   }
+
 }

@@ -25,14 +25,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
 object AboutYourChildForm extends Mappings {
 
-  private val dateKey = "aboutYourChild.dob"
+  private val dateKey        = "aboutYourChild.dob"
   private val maxYearsInPast = 18
-  private val maxLength = 35
-  private val minDate = LocalDate.now.minusYears(maxYearsInPast).minusDays(1)
-  private val maxDate = LocalDate.now.plusDays(1)
+  private val maxLength      = 35
+  private val minDate        = LocalDate.now.minusYears(maxYearsInPast).minusDays(1)
+  private val maxDate        = LocalDate.now.plusDays(1)
 
-  def apply(index: Int = 0, total: Int = 1, children: Option[Map[Int, AboutYourChild]] = None)(implicit messages: Messages): Form[AboutYourChild] = {
-    if(total > 1) {
+  def apply(index: Int = 0, total: Int = 1, children: Option[Map[Int, AboutYourChild]] = None)(
+      implicit messages: Messages
+  ): Form[AboutYourChild] =
+    if (total > 1) {
       multipleChildrenForm(index, children)
     } else {
       Form(
@@ -41,17 +43,20 @@ object AboutYourChildForm extends Mappings {
             string("aboutYourChild.name.error.required")
               .verifying(maxLength(maxLength, "aboutYourChild.name.error.maxLength"))
               .verifying("aboutYourChild.name.error.duplicate", isDuplicateValue(_, index, children)),
-          dateKey -> of(DateFormatter(
-            dateKey,
-            optMinDate = Some(minDate),
-            optMaxDate = Some(maxDate)
+          dateKey -> of(
+            DateFormatter(
+              dateKey,
+              optMinDate = Some(minDate),
+              optMaxDate = Some(maxDate)
+            )
           )
-          ))((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
+        )((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
       )
     }
-  }
 
-  private def multipleChildrenForm(index: Int, children: Option[Map[Int, AboutYourChild]])(implicit messages: Messages): Form[AboutYourChild] = {
+  private def multipleChildrenForm(index: Int, children: Option[Map[Int, AboutYourChild]])(
+      implicit messages: Messages
+  ): Form[AboutYourChild] = {
     val indexMessage = messages(s"nth.$index")
 
     Form(
@@ -60,22 +65,24 @@ object AboutYourChildForm extends Mappings {
           string("aboutYourChild.nth.name.error.required", indexMessage)
             .verifying(maxLength(maxLength, "aboutYourChild.nth.name.error.maxLength", indexMessage))
             .verifying("aboutYourChild.name.error.duplicate", isDuplicateValue(_, index, children)),
-        dateKey -> of(DateFormatter(
-          dateKey,
-          optMinDate = Some(LocalDate.now.minusYears(maxYearsInPast).minusDays(1)),
-          optMaxDate = Some(LocalDate.now.plusDays(1)),
-          args = Seq(indexMessage)
+        dateKey -> of(
+          DateFormatter(
+            dateKey,
+            optMinDate = Some(LocalDate.now.minusYears(maxYearsInPast).minusDays(1)),
+            optMaxDate = Some(LocalDate.now.plusDays(1)),
+            args = Seq(indexMessage)
+          )
         )
-        ))((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
-      )
+      )((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
+    )
   }
 
-  private def isDuplicateValue(x: String, index: Int, children: Option[Map[Int, AboutYourChild]]): Boolean = children match {
-    case None => true
-    case Some(child) =>
-      val filtered = child.view.filterKeys(_ != index)
-      !filtered.values.exists(_.name == x)
-  }
-
+  private def isDuplicateValue(x: String, index: Int, children: Option[Map[Int, AboutYourChild]]): Boolean =
+    children match {
+      case None => true
+      case Some(child) =>
+        val filtered = child.view.filterKeys(_ != index)
+        !filtered.values.exists(_.name == x)
+    }
 
 }

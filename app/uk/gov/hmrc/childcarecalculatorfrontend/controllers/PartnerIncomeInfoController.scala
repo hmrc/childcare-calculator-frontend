@@ -28,16 +28,25 @@ import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 @Singleton
-class PartnerIncomeInfoController @Inject()(val appConfig: FrontendAppConfig,
-                                            mcc: MessagesControllerComponents,
-                                            getData: DataRetrievalAction,
-                                            navigator: Navigator,
-                                            requireData: DataRequiredAction,
-                                            taxYearInfo: TaxYearInfo,
-                                            partnerIncomeInfo: partnerIncomeInfo) extends FrontendController(mcc) with I18nSupport {
+class PartnerIncomeInfoController @Inject() (
+    val appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    getData: DataRetrievalAction,
+    navigator: Navigator,
+    requireData: DataRequiredAction,
+    taxYearInfo: TaxYearInfo,
+    partnerIncomeInfo: partnerIncomeInfo
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
-    Ok(partnerIncomeInfo(appConfig, navigator.nextPage(PartnerIncomeInfoId, NormalMode)(request.userAnswers), taxYearInfo))
+  def onPageLoad: Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    Ok(
+      partnerIncomeInfo(
+        appConfig,
+        navigator.nextPage(PartnerIncomeInfoId, NormalMode)(request.userAnswers),
+        taxYearInfo
+      )
+    )
   }
 
 }

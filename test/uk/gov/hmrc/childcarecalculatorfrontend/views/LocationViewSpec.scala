@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
 class LocationViewSpec extends NewViewBehaviours {
 
-  val view = application.injector.instanceOf[location]
+  val view             = application.injector.instanceOf[location]
   val messageKeyPrefix = "location"
 
   def createView = () => view(frontendAppConfig, LocationForm(), NormalMode)(fakeRequest, messages)
@@ -32,32 +32,30 @@ class LocationViewSpec extends NewViewBehaviours {
   def createViewUsingForm = (form: Form[_]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "Location view" must {
-    behave like normalPage(createView, messageKeyPrefix, "guidance")
+    behave.like(normalPage(createView, messageKeyPrefix, "guidance"))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
   }
 
   "Location view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
         val doc = asDocument(createViewUsingForm(LocationForm()))
-        for (option <- LocationForm.options) {
+        for (option <- LocationForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
       }
     }
 
-    for(option <- LocationForm.options) {
+    for (option <- LocationForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
           val doc = asDocument(createViewUsingForm(LocationForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- LocationForm.options.filterNot(o => o == option)) {
+          for (unselectedOption <- LocationForm.options.filterNot(o => o == option))
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
         }
       }
-    }
   }
+
 }

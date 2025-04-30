@@ -23,18 +23,19 @@ trait NewIntViewBehaviours extends NewQuestionViewBehaviours[Int] {
 
   val number = 12
 
-  def intPage(createView: (Form[Int]) => HtmlFormat.Appendable,
-              messageKeyPrefix: String,
-              expectedFormAction: String,
-              messageDynamicValue: Option[String] = None) = {
+  def intPage(
+      createView: (Form[Int]) => HtmlFormat.Appendable,
+      messageKeyPrefix: String,
+      expectedFormAction: String,
+      messageDynamicValue: Option[String] = None
+  ) =
 
     "behave like a page with an integer value field" when {
       "rendered" must {
 
         "contain a label for the value" in {
           val doc = asDocument(createView(form))
-          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.title", messageDynamicValue.getOrElse(""))
-          )
+          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.title", messageDynamicValue.getOrElse("")))
         }
 
         "contain an input for the value" in {
@@ -58,11 +59,11 @@ trait NewIntViewBehaviours extends NewQuestionViewBehaviours[Int] {
         }
 
         "show an error in the value field's label" in {
-          val doc = asDocument(createView(form.withError(error)))
+          val doc       = asDocument(createView(form.withError(error)))
           val errorSpan = doc.getElementsByClass("govuk-error-message").first
           errorSpan.text must include(messages(errorMessage))
         }
       }
     }
-  }
+
 }

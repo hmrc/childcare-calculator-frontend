@@ -25,31 +25,38 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMaximumEarnings
 
 class PartnerMaximumEarningsViewSpec extends NewYesNoViewBehaviours {
 
-  override val form = BooleanForm()
+  override val form    = BooleanForm()
   val messageKeyPrefix = "partnerMaximumEarnings"
-  val view = application.injector.instanceOf[partnerMaximumEarnings]
+  val view             = application.injector.instanceOf[partnerMaximumEarnings]
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "PartnerMaximumEarnings view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(
-      createViewUsingForm,
-      messageKeyPrefix,
-      routes.PartnerMaximumEarningsController.onSubmit(NormalMode).url,
-      legend = Some(messages(s"$messageKeyPrefix.form"))
+    behave.like(
+      yesNoPage(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.PartnerMaximumEarningsController.onSubmit(NormalMode).url,
+        legend = Some(messages(s"$messageKeyPrefix.form"))
+      )
     )
 
     "show correct guidance" in {
       val doc = asDocument(createView())
 
       assertContainsText(doc, messages(s"$messageKeyPrefix.para"))
-      assertContainsLinkWithHref(doc, messages(s"$messageKeyPrefix.linkText"), "https://www.gov.uk/guidance/adjusted-net-income")
+      assertContainsLinkWithHref(
+        doc,
+        messages(s"$messageKeyPrefix.linkText"),
+        "https://www.gov.uk/guidance/adjusted-net-income"
+      )
     }
   }
+
 }

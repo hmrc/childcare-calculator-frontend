@@ -40,56 +40,69 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       "Parent Benefits CY Route" must {
         "redirects to youBenefitsIncomeCY page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.youAnyTheseBenefits) thenReturn Some(true)
+          when(answers.youAnyTheseBenefits).thenReturn(Some(true))
 
-          navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(YouAnyTheseBenefitsIdCY, NormalMode)
+            .value(answers) mustBe routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
         }
 
         "redirects to your other income cy page when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.youAnyTheseBenefits) thenReturn Some(false)
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.youAnyTheseBenefits).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-
-          navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(YouAnyTheseBenefitsIdCY, NormalMode)
+            .value(answers) mustBe routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to both other income cy page when user selects no and lives with partner" in {
           val answers = spy(userAnswers())
-          when(answers.youAnyTheseBenefits) thenReturn Some(false)
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.youAnyTheseBenefits).thenReturn(Some(false))
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
 
-          navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(YouAnyTheseBenefitsIdCY, NormalMode)
+            .value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.youAnyTheseBenefits) thenReturn None
+          when(answers.youAnyTheseBenefits).thenReturn(None)
 
-          navigator.nextPage(YouAnyTheseBenefitsIdCY, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(YouAnyTheseBenefitsIdCY, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
       "Both Benefits CY Route" must {
         "redirects to whosHadBenefits page when user selects yes" in {
           val answers = spy(userAnswers())
-          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(true)
+          when(answers.bothAnyTheseBenefitsCY).thenReturn(Some(true))
 
-          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe routes.WhosHadBenefitsController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(BothAnyTheseBenefitsCYId, NormalMode)
+            .value(answers) mustBe routes.WhosHadBenefitsController.onPageLoad(NormalMode)
         }
 
         "redirects to other income page when user selects no" in {
           val answers = spy(userAnswers())
-          when(answers.bothAnyTheseBenefitsCY) thenReturn Some(false)
+          when(answers.bothAnyTheseBenefitsCY).thenReturn(Some(false))
 
-          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(BothAnyTheseBenefitsCYId, NormalMode)
+            .value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.bothAnyTheseBenefitsCY) thenReturn None
+          when(answers.bothAnyTheseBenefitsCY).thenReturn(None)
 
-          navigator.nextPage(BothAnyTheseBenefitsCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(BothAnyTheseBenefitsCYId, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
 
       }
@@ -97,7 +110,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       "Whos Had Benefits CY Route" must {
         "redirects to youBenefitsIncomeCY page when user selects you option" in {
           val answers = spy(userAnswers())
-          when(answers.whosHadBenefits) thenReturn Some(YOU)
+          when(answers.whosHadBenefits).thenReturn(Some(YOU))
 
           navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
             routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
@@ -105,7 +118,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to partnerBenefitsIncomeCY page when user selects partner option" in {
           val answers = spy(userAnswers())
-          when(answers.whosHadBenefits) thenReturn Some(PARTNER)
+          when(answers.whosHadBenefits).thenReturn(Some(PARTNER))
 
           navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
             routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
@@ -113,7 +126,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to benefitsIncomeCY page when user selects both option" in {
           val answers = spy(userAnswers())
-          when(answers.whosHadBenefits) thenReturn Some(BOTH)
+          when(answers.whosHadBenefits).thenReturn(Some(BOTH))
 
           navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe
             routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
@@ -121,84 +134,102 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.whosHadBenefits) thenReturn None
+          when(answers.whosHadBenefits).thenReturn(None)
 
-          navigator.nextPage(WhosHadBenefitsId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(WhosHadBenefitsId, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
       "You Benefits Income CY Route" must {
         "redirects to other income page when user provides valid input,lives on own and in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+          when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(YouBenefitsIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
-
 
         "redirects to other income page when user provides valid input,lives with partner and parent in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
 
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(YouBenefitsIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to Your other income page when user provides valid input, does not live with partner and " +
           "parent in paid employment" in {
-          val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(false)
+            val answers = spy(userAnswers())
+            when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
-        }
+            navigator
+              .nextPage(YouBenefitsIncomeCYId, NormalMode)
+              .value(answers) mustBe routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+          }
 
         "redirects to SessionExpired page when user provides valid input, lives with partner and " +
           "partner in paid employment" in {
-          val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(partner)
-          when(answers.youBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
+            val answers = spy(userAnswers())
+            when(answers.whoIsInPaidEmployment).thenReturn(Some(partner))
+            when(answers.youBenefitsIncomeCY).thenReturn(Some(BigDecimal(23)))
 
-
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
-        }
+            navigator
+              .nextPage(YouBenefitsIncomeCYId, NormalMode)
+              .value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          }
 
         "redirects to other income page when user provides valid input, live with partner" in {
           val answers = spy(userAnswers())
-          when(answers.doYouLiveWithPartner) thenReturn Some(true)
+          when(answers.doYouLiveWithPartner).thenReturn(Some(true))
 
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(YouBenefitsIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.youBenefitsIncomeCY) thenReturn None
+          when(answers.youBenefitsIncomeCY).thenReturn(None)
 
-          navigator.nextPage(YouBenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(YouBenefitsIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
 
       "Partner Benefits Income CY Route" must {
         "redirects to other income page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment) thenReturn Some(both)
-          when(answers.partnerBenefitsIncomeCY) thenReturn Some(BigDecimal(23))
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(both))
+          when(answers.partnerBenefitsIncomeCY).thenReturn(Some(BigDecimal(23)))
 
-          navigator.nextPage(PartnerBenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(PartnerBenefitsIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
       }
 
       "Both Benefits Income CY Route" must {
         "redirects to BothOtherIncomeThisYear page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.benefitsIncomeCY) thenReturn Some(BenefitsIncomeCY(23, 23))
+          when(answers.benefitsIncomeCY).thenReturn(Some(BenefitsIncomeCY(23, 23)))
 
-          navigator.nextPage(BenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+          navigator
+            .nextPage(BenefitsIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
         }
 
         "redirects to sessionExpired page when there is no value for user selection" in {
           val answers = spy(userAnswers())
-          when(answers.benefitsIncomeCY) thenReturn None
+          when(answers.benefitsIncomeCY).thenReturn(None)
 
-          navigator.nextPage(BenefitsIncomeCYId, NormalMode).value(answers) mustBe routes.SessionExpiredController.onPageLoad
+          navigator
+            .nextPage(BenefitsIncomeCYId, NormalMode)
+            .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
     }

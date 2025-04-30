@@ -34,4 +34,5 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe view(frontendAppConfig)(fakeRequest, messages).toString
     }
   }
+
 }

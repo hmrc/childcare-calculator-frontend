@@ -57,4 +57,5 @@ class WithRequiredBooleanMappingSpec extends FormSpec {
       checkForError(TestForm(), emptyForm, expectedError)
     }
   }
+
 }

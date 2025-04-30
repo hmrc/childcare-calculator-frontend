@@ -32,33 +32,38 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class OtherIncomeAmountCYController @Inject()(appConfig: FrontendAppConfig,
-                                              mcc: MessagesControllerComponents,
-                                              dataCacheConnector: DataCacheConnector,
-                                              navigator: Navigator,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              form : OtherIncomeAmountCYForm,
-                                              otherIncomeAmountCY: otherIncomeAmountCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class OtherIncomeAmountCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    form: OtherIncomeAmountCYForm,
+    otherIncomeAmountCY: otherIncomeAmountCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.otherIncomeAmountCY match {
-        case None => form()
-        case Some(value) => form().fill(value)
-      }
-      Ok(otherIncomeAmountCY(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.otherIncomeAmountCY match {
+      case None        => form()
+      case Some(value) => form().fill(value)
+    }
+    Ok(otherIncomeAmountCY(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      form().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    form()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[OtherIncomeAmountCY]) =>
           Future.successful(BadRequest(otherIncomeAmountCY(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[OtherIncomeAmountCY](request.sessionId, OtherIncomeAmountCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(OtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[OtherIncomeAmountCY](request.sessionId, OtherIncomeAmountCYId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(OtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

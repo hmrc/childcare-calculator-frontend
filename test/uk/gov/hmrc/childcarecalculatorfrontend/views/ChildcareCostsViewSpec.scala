@@ -25,39 +25,37 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcareCosts
 class ChildcareCostsViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "childcareCosts"
-  val view = application.injector.instanceOf[childcareCosts]
+  val view             = application.injector.instanceOf[childcareCosts]
 
   def createView = () => view(frontendAppConfig, ChildcareCostsForm(), NormalMode)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "ChildcareCosts view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
   }
 
   "ChildcareCosts view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
         val doc = asDocument(createViewUsingForm(ChildcareCostsForm()))
-        for (option <- ChildcareCostsForm.options) {
+        for (option <- ChildcareCostsForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
-        }
       }
     }
 
-    for(option <- ChildcareCostsForm.options) {
+    for (option <- ChildcareCostsForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
           val doc = asDocument(createViewUsingForm(ChildcareCostsForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for(unselectedOption <- ChildcareCostsForm.options.filterNot(o => o == option)) {
+          for (unselectedOption <- ChildcareCostsForm.options.filterNot(o => o == option))
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
-          }
         }
       }
-    }
   }
+
 }

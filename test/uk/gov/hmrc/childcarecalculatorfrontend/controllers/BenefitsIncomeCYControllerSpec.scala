@@ -30,14 +30,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefitsIncomeCY
 
 class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[benefitsIncomeCY]
+  val view        = application.injector.instanceOf[benefitsIncomeCY]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new BenefitsIncomeCYController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, view, new DataRequiredAction)
+    new BenefitsIncomeCYController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      view,
+      new DataRequiredAction
+    )
 
-  def viewAsString(form: Form[BenefitsIncomeCY] = BenefitsIncomeCYForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BenefitsIncomeCY] = BenefitsIncomeCYForm()) =
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "BenefitsIncomeCY Controller" must {
 
@@ -49,7 +57,7 @@ class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(1, 2)))
+      val validData       = Map(BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -58,7 +66,9 @@ class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the next page when valid data is submitted" in {
-      val postRequest = fakeRequest.withFormUrlEncodedBody(("parentBenefitsIncome", "1"), ("partnerBenefitsIncome", "2")).withMethod("POST")
+      val postRequest = fakeRequest
+        .withFormUrlEncodedBody(("parentBenefitsIncome", "1"), ("partnerBenefitsIncome", "2"))
+        .withMethod("POST")
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -68,7 +78,7 @@ class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = BenefitsIncomeCYForm().bind(Map("value" -> "invalid value"))
+      val boundForm   = BenefitsIncomeCYForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -85,10 +95,11 @@ class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("field1", "1"), ("field2", "2")).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }

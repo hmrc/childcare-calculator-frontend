@@ -24,26 +24,28 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAverageWeeklyEarni
 class YourAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "yourAverageWeeklyEarnings"
-  val view = application.injector.instanceOf[yourAverageWeeklyEarnings]
+  val view             = application.injector.instanceOf[yourAverageWeeklyEarnings]
 
   def createView = () => view()(fakeRequest, messages)
 
   "YourAverageWeeklyEarnings view" must {
-    behave like normalPageWithTitleAsString(
-      view = createView,
-      messageKeyPrefix = messageKeyPrefix,
-      messageKeyPostfix = "",
-      title = messages("yourAverageWeeklyEarnings.heading", 0),
-      heading = Some(""),
-      expectedGuidanceKeys= Seq(),
-      args = 0
+    behave.like(
+      normalPageWithTitleAsString(
+        view = createView,
+        messageKeyPrefix = messageKeyPrefix,
+        messageKeyPostfix = "",
+        title = messages("yourAverageWeeklyEarnings.heading", 0),
+        heading = Some(""),
+        expectedGuidanceKeys = Seq(),
+        args = 0
+      )
     )
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
     "display the correct guidance text " in {
       val view1 = view()(fakeRequest, messages)
-      val doc = asDocument(view1)
+      val doc   = asDocument(view1)
 
       assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
       assertContainsText(doc, messages(s"$messageKeyPrefix.heading2"))
@@ -55,7 +57,7 @@ class YourAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
 
     }
     "contain the link for Your minimum earning" in {
-      val doc = asDocument(createView())
+      val doc          = asDocument(createView())
       val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))
@@ -63,5 +65,5 @@ class YourAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
 
     }
   }
-}
 
+}

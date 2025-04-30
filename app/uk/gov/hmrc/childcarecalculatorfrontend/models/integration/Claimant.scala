@@ -23,37 +23,37 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum.YesNoUnsureEnum
 
 case class Income(
-                   employmentIncome: Option[BigDecimal] = None,
-                   pension: Option[BigDecimal] = None,
-                   otherIncome: Option[BigDecimal] = None,
-                   benefits: Option[BigDecimal] = None,
-                   taxCode: Option[String] = None
-                 )
+    employmentIncome: Option[BigDecimal] = None,
+    pension: Option[BigDecimal] = None,
+    otherIncome: Option[BigDecimal] = None,
+    benefits: Option[BigDecimal] = None,
+    taxCode: Option[String] = None
+)
 
 object Income {
   implicit val formatIncome: OFormat[Income] = Json.format[Income]
 }
 
 case class MinimumEarnings(
-                            amount: BigDecimal = 0.00,
-                            employmentStatus: Option[EmploymentStatusEnum] = None,
-                            selfEmployedIn12Months: Option[Boolean] = None
-                          )
+    amount: BigDecimal = 0.00,
+    employmentStatus: Option[EmploymentStatusEnum] = None,
+    selfEmployedIn12Months: Option[Boolean] = None
+)
 
 object MinimumEarnings {
   implicit val formatMinimumEarnings: OFormat[MinimumEarnings] = Json.format[MinimumEarnings]
 }
 
 case class Claimant(
-                     ageRange: Option[AgeEnum] = None,
-                     benefits: Set[ParentsBenefits] = Set.empty,
-                     lastYearlyIncome: Option[Income] = None,
-                     currentYearlyIncome: Option[Income] = None,
-                     hours: Option[BigDecimal] = None,
-                     minimumEarnings: Option[MinimumEarnings] = None,
-                     escVouchers: Option[YesNoUnsureEnum] = None,
-                     maximumEarnings: Option[Boolean] = None
-                   )
+    ageRange: Option[AgeEnum] = None,
+    benefits: Set[ParentsBenefits] = Set.empty,
+    lastYearlyIncome: Option[Income] = None,
+    currentYearlyIncome: Option[Income] = None,
+    hours: Option[BigDecimal] = None,
+    minimumEarnings: Option[MinimumEarnings] = None,
+    escVouchers: Option[YesNoUnsureEnum] = None,
+    maximumEarnings: Option[Boolean] = None
+)
 
 object Claimant {
   implicit val formatClaimant: OFormat[Claimant] = Json.format[Claimant]

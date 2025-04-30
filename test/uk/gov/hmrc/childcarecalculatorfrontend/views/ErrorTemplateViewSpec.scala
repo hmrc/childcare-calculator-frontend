@@ -22,9 +22,9 @@ class errorTemplateViewSpec extends NewViewSpecBase {
 
   val view = application.injector.instanceOf[error_template]
 
-  val pageTitle = "title"
+  val pageTitle   = "title"
   val headingText = "heading"
-  val message = "message"
+  val message     = "message"
 
   def createView = () => view(pageTitle, headingText, message)(fakeRequest, messages)
 
@@ -40,7 +40,7 @@ class errorTemplateViewSpec extends NewViewSpecBase {
 
   "display the correct browser title" in {
     val doc = asDocument(createView())
-    assertEqualsValue(doc, "title", s"$pageTitle - "+messages("site.service_name")+" - GOV.UK")
+    assertEqualsValue(doc, "title", s"$pageTitle - " + messages("site.service_name") + " - GOV.UK")
   }
 
   "display the correct page title" in {

@@ -24,7 +24,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMod
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewDateViewBehaviours, NewQuestionViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
 
-class AboutYourChildViewSpec extends NewQuestionViewBehaviours[AboutYourChild] with NewDateViewBehaviours[AboutYourChild] {
+class AboutYourChildViewSpec
+    extends NewQuestionViewBehaviours[AboutYourChild]
+    with NewDateViewBehaviours[AboutYourChild] {
 
   val messageKeyPrefix = "aboutYourChild"
 
@@ -32,7 +34,8 @@ class AboutYourChildViewSpec extends NewQuestionViewBehaviours[AboutYourChild] w
 
   def createView: () => Html = () => createView(0, 1)
 
-  def createViewUsingForm: Form[AboutYourChild] => HtmlFormat.Appendable = (form: Form[AboutYourChild]) => view(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
+  def createViewUsingForm: Form[AboutYourChild] => HtmlFormat.Appendable = (form: Form[AboutYourChild]) =>
+    view(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
 
   def createView(index: Int, total: Int): Html =
     view(frontendAppConfig, AboutYourChildForm(), NormalMode, index, total)(fakeRequest, messages)
@@ -41,13 +44,27 @@ class AboutYourChildViewSpec extends NewQuestionViewBehaviours[AboutYourChild] w
 
   "AboutYourChild view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "title", "heading")
+    behave.like(normalPage(createView, messageKeyPrefix, "title", "heading"))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "name")
+    behave.like(
+      pageWithTextFields(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.AboutYourChildController.onSubmit(NormalMode, 0).url,
+        "name"
+      )
+    )
 
-    behave like pageWithDateFields(createViewUsingForm, messageKeyPrefix, routes.AboutYourChildController.onSubmit(NormalMode, 0).url, "aboutYourChild.dob")
+    behave.like(
+      pageWithDateFields(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.AboutYourChildController.onSubmit(NormalMode, 0).url,
+        "aboutYourChild.dob"
+      )
+    )
 
     "use the correct messages when there are multiple children" in {
       val doc = asDocument(createView(0, 2))
@@ -64,4 +81,5 @@ class AboutYourChildViewSpec extends NewQuestionViewBehaviours[AboutYourChild] w
       assertContainsText(doc, messages(s"$messageKeyPrefix.lede"))
     }
   }
+
 }

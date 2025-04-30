@@ -16,35 +16,38 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
-  import play.api.data.{Form, FormError}
-  import play.twirl.api.HtmlFormat
+import play.api.data.{Form, FormError}
+import play.twirl.api.HtmlFormat
 
-  trait NewDateViewBehaviours[A] extends NewViewBehaviours {
+trait NewDateViewBehaviours[A] extends NewViewBehaviours {
 
-    val form: Form[A]
+  val form: Form[A]
 
-    def pageWithDateFields(createView: (Form[A]) => HtmlFormat.Appendable,
-                           messageKeyPrefix: String,
-                           expectedFormAction: String,
-                           fields: String*) = {
+  def pageWithDateFields(
+      createView: (Form[A]) => HtmlFormat.Appendable,
+      messageKeyPrefix: String,
+      expectedFormAction: String,
+      fields: String*
+  ) =
 
-      "behave like a date view page" when {
-        for(field <- fields; sub <- Seq(field, s"$field.day", s"$field.month", s"$field.year")) {
-          s"rendered with an error with field '$sub'" must {
-            "show an error summary" in {
-              val doc = asDocument(createView(form.withError(FormError(sub, "error"))))
-              assertRenderedByCssSelector(doc, ".govuk-error-summary__title")
-            }
+    "behave like a date view page" when {
+      for {
+        field <- fields
+        sub   <- Seq(field, s"$field.day", s"$field.month", s"$field.year")
+      }
+        s"rendered with an error with field '$sub'" must {
+          "show an error summary" in {
+            val doc = asDocument(createView(form.withError(FormError(sub, "error"))))
+            assertRenderedByCssSelector(doc, ".govuk-error-summary__title")
+          }
 
-            s"show an error in the legend for fieldset when '$sub' has an error" in {
-              val doc = asDocument(createView(form.withError(FormError(sub, "error"))))
-              val errorSpan = doc.getElementsByClass("govuk-error-message").first
-              errorSpan mustNot be(null)
-              errorSpan.parent mustNot be(null)
-            }
+          s"show an error in the legend for fieldset when '$sub' has an error" in {
+            val doc       = asDocument(createView(form.withError(FormError(sub, "error"))))
+            val errorSpan = doc.getElementsByClass("govuk-error-message").first
+            errorSpan mustNot be(null)
+            errorSpan.parent mustNot be(null)
           }
         }
-      }
     }
-  }
 
+}

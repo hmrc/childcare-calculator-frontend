@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 class OtherIncomeAmountCYFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "parentOtherIncome" -> "1",
+    "parentOtherIncome"  -> "1",
     "partnerOtherIncome" -> "2"
   )
 
@@ -32,16 +32,27 @@ class OtherIncomeAmountCYFormSpec extends FormBehaviours {
   val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
 
   "OtherIncomeAmountCY form" must {
-    behave like questionForm(OtherIncomeAmountCY(1, 2))
+    behave.like(questionForm(OtherIncomeAmountCY(1, 2)))
 
-    behave like formWithMandatoryTextFieldWithErrorMsgs("parentOtherIncome",
-      "parentOtherIncome.error.required", "parentOtherIncome.error.required")
+    behave.like(
+      formWithMandatoryTextFieldWithErrorMsgs(
+        "parentOtherIncome",
+        "parentOtherIncome.error.required",
+        "parentOtherIncome.error.required"
+      )
+    )
 
-    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerOtherIncome",
-      "partnerOtherIncome.error.required", "partnerOtherIncome.error.required")
+    behave.like(
+      formWithMandatoryTextFieldWithErrorMsgs(
+        "partnerOtherIncome",
+        "partnerOtherIncome.error.required",
+        "partnerOtherIncome.error.required"
+      )
+    )
 
-    behave like formWithDecimalField("parentOtherIncome", "partnerOtherIncome")
+    behave.like(formWithDecimalField("parentOtherIncome", "partnerOtherIncome"))
 
-    behave like formWithInRange("parentOtherIncome", "partnerOtherIncome")
+    behave.like(formWithInRange("parentOtherIncome", "partnerOtherIncome"))
   }
+
 }

@@ -21,11 +21,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfo
 
-
-
 class YourIncomeInfoControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[yourIncomeInfo]
+  val view        = application.injector.instanceOf[yourIncomeInfo]
   val taxYearInfo = new TaxYearInfo
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
@@ -45,4 +43,5 @@ class YourIncomeInfoControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }

@@ -24,36 +24,45 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
 
-
 class ParentEmploymentIncomeCYViewSpec extends NewBigDecimalViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
-  val view = application.injector.instanceOf[parentEmploymentIncomeCY]
+  val view        = application.injector.instanceOf[parentEmploymentIncomeCY]
 
   val messageKeyPrefix = "parentEmploymentIncomeCY"
 
-  def createView = () => view(frontendAppConfig,
-    new ParentEmploymentIncomeCYForm(frontendAppConfig).apply(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () =>
+    view(frontendAppConfig, new ParentEmploymentIncomeCYForm(frontendAppConfig).apply(), NormalMode, taxYearInfo)(
+      fakeRequest,
+      messages
+    )
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) =>
+    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  val form =   new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
+  val form = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
 
   "ParentEmploymentIncomeCY view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like bigDecimalPage(
-      createViewUsingForm,
-      messageKeyPrefix,
-      routes.ParentEmploymentIncomeCYController.onSubmit(NormalMode).url,
-      Some(messages(s"$messageKeyPrefix.heading"))
+    behave.like(
+      bigDecimalPage(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.ParentEmploymentIncomeCYController.onSubmit(NormalMode).url,
+        Some(messages(s"$messageKeyPrefix.heading"))
+      )
     )
 
     "contain tax year info" in {
       val doc = asDocument(createView())
-      assertContainsText(doc, messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      assertContainsText(
+        doc,
+        messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
+      )
     }
   }
+
 }

@@ -29,37 +29,43 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{partnerMinimumEarningsErrorKey, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{ChildcareConstants, UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{partnerAverageWeeklyEarnings, partnerMinimumEarnings, yourAndPartnerAverageWeeklyEarnings, yourAverageWeeklyEarnings}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{
+  partnerAverageWeeklyEarnings,
+  partnerMinimumEarnings,
+  yourAndPartnerAverageWeeklyEarnings,
+  yourAverageWeeklyEarnings
+}
 
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AverageWeeklyEarningController @Inject()(
-                                                 mcc: MessagesControllerComponents,
-                                                 dataCacheConnector: DataCacheConnector,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 utils: Utils,
-                                                 yourAverageWeeklyEarnings: yourAverageWeeklyEarnings,
-                                                 partnerAverageWeeklyEarnings: partnerAverageWeeklyEarnings,
-                                                 yourAndPartnerAverageWeeklyEarnings:  yourAndPartnerAverageWeeklyEarnings )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with Logging {
+class AverageWeeklyEarningController @Inject() (
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    utils: Utils,
+    yourAverageWeeklyEarnings: yourAverageWeeklyEarnings,
+    partnerAverageWeeklyEarnings: partnerAverageWeeklyEarnings,
+    yourAndPartnerAverageWeeklyEarnings: yourAndPartnerAverageWeeklyEarnings
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with Logging {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-
-
-       val whoIsInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
-        if (request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.you)) {
-          Ok(yourAverageWeeklyEarnings())
-        } else if (request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.both)){
-          Ok(yourAndPartnerAverageWeeklyEarnings())
-        } else {
-          Ok(partnerAverageWeeklyEarnings())
-        }
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val whoIsInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
+    if (request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.you)) {
+      Ok(yourAverageWeeklyEarnings())
+    } else if (
+      request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.both)
+    ) {
+      Ok(yourAndPartnerAverageWeeklyEarnings())
+    } else {
+      Ok(partnerAverageWeeklyEarnings())
+    }
 
   }
-
 
 }

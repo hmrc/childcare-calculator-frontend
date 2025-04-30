@@ -22,35 +22,33 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup._
 trait ChildAgeGroup {
   override def toString: String = inverseMappping(this)
 }
+
 case object NineTo23Months extends ChildAgeGroup
-case object TwoYears extends ChildAgeGroup
-case object ThreeYears extends ChildAgeGroup
-case object FourYears extends ChildAgeGroup
-case object NoneOfThese extends ChildAgeGroup
+case object TwoYears       extends ChildAgeGroup
+case object ThreeYears     extends ChildAgeGroup
+case object FourYears      extends ChildAgeGroup
+case object NoneOfThese    extends ChildAgeGroup
 
 object ChildAgeGroup {
   val nineTo23Months = "nineTo23Months"
-  val twoYears = "twoYears"
-  val threeYears = "threeYears"
-  val fourYears = "fourYears"
-  val noneOfThese = "noneOfThese"
+  val twoYears       = "twoYears"
+  val threeYears     = "threeYears"
+  val fourYears      = "fourYears"
+  val noneOfThese    = "noneOfThese"
 
   val mapping: Map[String, ChildAgeGroup] = Map(
     nineTo23Months -> NineTo23Months,
-    twoYears -> TwoYears,
-    threeYears -> ThreeYears,
-    fourYears -> FourYears,
-    noneOfThese -> NoneOfThese
+    twoYears       -> TwoYears,
+    threeYears     -> ThreeYears,
+    fourYears      -> FourYears,
+    noneOfThese    -> NoneOfThese
   )
+
   val inverseMappping: Map[ChildAgeGroup, String] = mapping.map(_.swap)
 
-  private val reads: Reads[ChildAgeGroup] = Reads { json =>
-    json.validate[String].map(mapping)
-  }
+  private val reads: Reads[ChildAgeGroup] = Reads(json => json.validate[String].map(mapping))
 
-  private val writes: Writes[ChildAgeGroup] = Writes { childAgeGroup =>
-    JsString(inverseMappping(childAgeGroup))
-  }
+  private val writes: Writes[ChildAgeGroup] = Writes(childAgeGroup => JsString(inverseMappping(childAgeGroup)))
 
   implicit val format: Format[ChildAgeGroup] = Format(reads, writes)
 }

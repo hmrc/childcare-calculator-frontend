@@ -34,11 +34,11 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
 
   val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
-  val utils: Utils = mock[Utils]
+  val utils: Utils                         = mock[Utils]
 
   val mockTaxYearInfo: TaxYearInfo = mock[TaxYearInfo]
 
-  val currentTaxYear =  TaxYear.current.startYear
+  val currentTaxYear = TaxYear.current.startYear
 
   val previousTaxYear = currentTaxYear - 1
 
@@ -47,15 +47,15 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
   val currentDate: LocalDate = LocalDate.now()
 
   override def beforeEach(): Unit = {
-    reset(frontendAppConfig, utils,mockTaxYearInfo)
+    reset(frontendAppConfig, utils, mockTaxYearInfo)
     super.beforeEach()
   }
 
   "UserAnswerToHousehold" should {
     "convert UserAnswers to Household object specifically when not all children have dob" when {
       "includes all child with dob" in {
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings =
-          Some(MinimumEarnings(0.0, None, None)))
+        val claimant =
+          Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0, None, None)))
 
         val child1 = Child(
           id = 0,
@@ -63,7 +63,8 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
           dob = currentDate.minusYears(7),
           disability = None,
           childcareCost = None,
-          education = None)
+          education = None
+        )
 
         val child2 = Child(
           id = 1,
@@ -71,7 +72,8 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
           dob = currentDate.minusYears(2),
           disability = None,
           childcareCost = None,
-          education = None)
+          education = None
+        )
 
         val child3 = Child(
           id = 2,
@@ -79,22 +81,25 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
           dob = currentDate.minusYears(3),
           disability = None,
           childcareCost = None,
-          education = None)
+          education = None
+        )
 
-        val expectedHousehold = Household(location = Location.ENGLAND, children = List(child1, child2, child3), parent = claimant)
+        val expectedHousehold =
+          Household(location = Location.ENGLAND, children = List(child1, child2, child3), parent = claimant)
         val answers = spy(userAnswers())
 
-        when(answers.location) thenReturn Some(Location.ENGLAND)
-        when(answers.noOfChildren) thenReturn Some(3)
-        when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("child-1", currentDate.minusYears(7)))
-        when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("child-2", currentDate.minusYears(2)))
-        when(answers.aboutYourChild(2)) thenReturn Some(AboutYourChild("child-3", currentDate.minusYears(3)))
+        when(answers.location).thenReturn(Some(Location.ENGLAND))
+        when(answers.noOfChildren).thenReturn(Some(3))
+        when(answers.aboutYourChild(0)).thenReturn(Some(AboutYourChild("child-1", currentDate.minusYears(7))))
+        when(answers.aboutYourChild(1)).thenReturn(Some(AboutYourChild("child-2", currentDate.minusYears(2))))
+        when(answers.aboutYourChild(2)).thenReturn(Some(AboutYourChild("child-3", currentDate.minusYears(3))))
 
         userAnswerToHousehold.convert(answers) mustEqual expectedHousehold
       }
 
       "exclude child with no dob or details" in {
-        val claimant = Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0, None, None)))
+        val claimant =
+          Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0, None, None)))
 
         val child1 = Child(
           id = 0,
@@ -102,7 +107,8 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
           dob = currentDate.minusYears(7),
           disability = None,
           childcareCost = None,
-          education = None)
+          education = None
+        )
 
         val child2 = Child(
           id = 1,
@@ -110,17 +116,19 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
           dob = currentDate.minusYears(2),
           disability = None,
           childcareCost = None,
-          education = None)
+          education = None
+        )
 
-        val expectedHousehold = Household(location = Location.ENGLAND, children = List(child1, child2), parent = claimant)
+        val expectedHousehold =
+          Household(location = Location.ENGLAND, children = List(child1, child2), parent = claimant)
         val answers = spy(userAnswers())
 
-        when(answers.noOfChildren) thenReturn Some(3)
-        when(answers.aboutYourChild(0)) thenReturn Some(AboutYourChild("child-1", currentDate.minusYears(7)))
-        when(answers.aboutYourChild(1)) thenReturn Some(AboutYourChild("child-2", currentDate.minusYears(2)))
-        when(answers.aboutYourChild(2)) thenReturn None
+        when(answers.noOfChildren).thenReturn(Some(3))
+        when(answers.aboutYourChild(0)).thenReturn(Some(AboutYourChild("child-1", currentDate.minusYears(7))))
+        when(answers.aboutYourChild(1)).thenReturn(Some(AboutYourChild("child-2", currentDate.minusYears(2))))
+        when(answers.aboutYourChild(2)).thenReturn(None)
 
-        when(answers.whichChildrenDisability) thenReturn Some(Set(0, 1))
+        when(answers.whichChildrenDisability).thenReturn(Some(Set(0, 1)))
 
         userAnswerToHousehold.convert(answers) mustEqual expectedHousehold
       }

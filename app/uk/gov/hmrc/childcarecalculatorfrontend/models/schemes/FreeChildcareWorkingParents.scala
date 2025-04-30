@@ -23,7 +23,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 import javax.inject.Inject
 
-class FreeChildcareWorkingParents @Inject()(freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator) extends Scheme {
+class FreeChildcareWorkingParents @Inject() (freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator)
+    extends Scheme {
 
   private val eligibleBenefits: Set[ParentsBenefits] = Set(
     CarersAllowance,
@@ -50,4 +51,5 @@ class FreeChildcareWorkingParents @Inject()(freeChildcareEligibilityCalculator: 
     answers.isChildAgedNineTo23Months.getOrElse(false) ||
       answers.isChildAgedTwo.getOrElse(false) ||
       answers.isChildAgedThreeOrFour.getOrElse(false)
+
 }

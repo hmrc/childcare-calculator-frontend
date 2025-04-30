@@ -28,14 +28,14 @@ object YourPartnersAgeForm extends FormErrorHelper {
   def YourPartnersAgeFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, yourPartnersAgeErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, yourPartnersAgeErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
+  def apply(): Form[String] =
     Form(single("value" -> of(YourPartnersAgeFormatter)))
 
   def options = Seq(
@@ -44,13 +44,12 @@ object YourPartnersAgeForm extends FormErrorHelper {
     yourPartnersAgeInputOption("value-3", AgeEnum.TWENTYONEOROVER.toString)
   )
 
-  private def yourPartnersAgeInputOption(id: String, option: String): InputOption = {
+  private def yourPartnersAgeInputOption(id: String, option: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"yourPartnersAge.$option"
     )
-  }
 
   def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }

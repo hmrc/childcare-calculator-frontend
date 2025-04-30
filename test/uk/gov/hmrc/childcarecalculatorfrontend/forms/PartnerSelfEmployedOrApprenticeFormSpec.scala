@@ -28,8 +28,15 @@ class PartnerSelfEmployedOrApprenticeFormSpec extends FormBehaviours {
   val form = PartnerSelfEmployedOrApprenticeForm()
 
   "PartnerSelfEmployedOrApprentice form" must {
-    behave like questionForm[String](PartnerSelfEmployedOrApprenticeForm.options.head.value)
+    behave.like(questionForm[String](PartnerSelfEmployedOrApprenticeForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", partnerSelfEmployedOrApprenticeErrorKey, PartnerSelfEmployedOrApprenticeForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError(
+        "value",
+        partnerSelfEmployedOrApprenticeErrorKey,
+        PartnerSelfEmployedOrApprenticeForm.options.map(x => x.value): _*
+      )
+    )
   }
+
 }

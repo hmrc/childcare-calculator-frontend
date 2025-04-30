@@ -22,8 +22,8 @@ import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class PartnerOtherIncomeAmountCYFormSpec extends FormSpec {
   val partnerOtherIncomeAmountCYForm: Form[BigDecimal] = new PartnerOtherIncomeAmountCYForm(frontendAppConfig).apply()
-  val errorKeyBlank = partnerOtherIncomeRequiredErrorKey
-  val errorKeyInvalid = partnerOtherIncomeInvalidErrorKey
+  val errorKeyBlank                                    = partnerOtherIncomeRequiredErrorKey
+  val errorKeyInvalid                                  = partnerOtherIncomeInvalidErrorKey
 
   "PartnerOtherIncomeAmountCY Form" must {
 
@@ -65,4 +65,5 @@ class PartnerOtherIncomeAmountCYFormSpec extends FormSpec {
     }
 
   }
+
 }
