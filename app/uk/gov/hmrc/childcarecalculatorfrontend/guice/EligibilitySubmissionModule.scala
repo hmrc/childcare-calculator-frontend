@@ -21,8 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.{EligibilityService, Sub
 
 class EligibilitySubmissionModule extends AbstractModule {
 
-  override def configure(): Unit = {
+  override def configure(): Unit =
     bind(classOf[SubmissionService]).to(classOf[EligibilityService])
-  }
 
 }

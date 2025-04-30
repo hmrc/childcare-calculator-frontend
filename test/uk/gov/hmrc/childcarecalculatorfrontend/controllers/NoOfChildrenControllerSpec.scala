@@ -28,18 +28,25 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 
-
-
 class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[noOfChildren]
+  val view        = application.injector.instanceOf[noOfChildren]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new NoOfChildrenController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, new NoOfChildrenForm(frontendAppConfig), view)
+    new NoOfChildrenController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      new NoOfChildrenForm(frontendAppConfig),
+      view
+    )
 
-  def viewAsString(form: Form[Int] = NoOfChildrenForm) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = NoOfChildrenForm) =
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   val testNumber = 19
 
@@ -55,7 +62,7 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(NoOfChildrenId.toString -> JsNumber(testNumber))
+      val validData       = Map(NoOfChildrenId.toString -> JsNumber(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -74,7 +81,7 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = NoOfChildrenForm.bind(Map("value" -> "invalid value"))
+      val boundForm   = NoOfChildrenForm.bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -91,10 +98,11 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }

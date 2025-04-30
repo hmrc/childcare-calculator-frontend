@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 class SurveyDoNotUnderstandFormSpec extends FormSpec {
 
-  val errorKeyBlank = "blank"
+  val errorKeyBlank   = "blank"
   val errorKeyInvalid = "invalid"
 
   "SurveyDoNotUnderstand Form" must {
@@ -34,4 +34,5 @@ class SurveyDoNotUnderstandFormSpec extends FormSpec {
     }
 
   }
+
 }

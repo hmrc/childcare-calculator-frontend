@@ -27,10 +27,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenAgeGroups
 class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ChildAgeGroup] {
 
   override val form: Form[Set[ChildAgeGroup]] = ChildrenAgeGroupsForm()
-  val mockView: childrenAgeGroups = application.injector.instanceOf[childrenAgeGroups]
-  val messageKeyPrefix = "childrenAgeGroups"
-  val fieldKey: String = ChildrenAgeGroupsForm.formId
-  val errorMessage = s"$messageKeyPrefix.error.select"
+  val mockView: childrenAgeGroups             = application.injector.instanceOf[childrenAgeGroups]
+  val messageKeyPrefix                        = "childrenAgeGroups"
+  val fieldKey: String                        = ChildrenAgeGroupsForm.formId
+  val errorMessage                            = s"$messageKeyPrefix.error.select"
 
   override val values: Seq[(String, String)] =
     Seq(
@@ -46,11 +46,11 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
     mockView(form, NormalMode)(fakeRequest, messages)
 
   "ChildrenAgeGroupsView" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like checkboxPage()
+    behave.like(checkboxPage())
 
     "display correct content when loaded" in {
       val view = mockView(form, NormalMode)(fakeRequest, messages)
@@ -58,4 +58,5 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.or"))
     }
   }
+
 }

@@ -32,33 +32,39 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PartnerSelfEmployedOrApprenticeController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        partnerSelfEmployedOrApprentice: partnerSelfEmployedOrApprentice)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class PartnerSelfEmployedOrApprenticeController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    partnerSelfEmployedOrApprentice: partnerSelfEmployedOrApprentice
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.partnerSelfEmployedOrApprentice match {
-        case None => PartnerSelfEmployedOrApprenticeForm()
-        case Some(value) => PartnerSelfEmployedOrApprenticeForm().fill(value)
-      }
-      Ok(partnerSelfEmployedOrApprentice(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.partnerSelfEmployedOrApprentice match {
+      case None        => PartnerSelfEmployedOrApprenticeForm()
+      case Some(value) => PartnerSelfEmployedOrApprenticeForm().fill(value)
+    }
+    Ok(partnerSelfEmployedOrApprentice(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      PartnerSelfEmployedOrApprenticeForm().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    PartnerSelfEmployedOrApprenticeForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(partnerSelfEmployedOrApprentice(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[String](request.sessionId, PartnerSelfEmployedOrApprenticeId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerSelfEmployedOrApprenticeId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, PartnerSelfEmployedOrApprenticeId.toString, value)
+            .map(cacheMap =>
+              Redirect(navigator.nextPage(PartnerSelfEmployedOrApprenticeId, mode)(new UserAnswers(cacheMap)))
+            )
       )
   }
+
 }

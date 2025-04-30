@@ -28,19 +28,19 @@ object YourChildcareVouchersForm extends FormErrorHelper {
   def YourChildcareVouchersFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, yourChildcareVoucherErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, yourChildcareVoucherErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
+  def apply(): Form[String] =
     Form(single("value" -> of(YourChildcareVouchersFormatter)))
 
   def options = Seq(
     InputOption("yourChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    InputOption("yourChildcareVouchers",  YesNoUnsureEnum.NO.toString)
+    InputOption("yourChildcareVouchers", YesNoUnsureEnum.NO.toString)
   )
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)

@@ -19,11 +19,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import play.api.libs.json.{JsPath, JsValue, Json, JsonValidationError}
 
 class CacheEntryValidationException(
-                                        val key        : String,
-                                        val invalidJson: JsValue,
-                                        val readingAs  : Class[_],
-                                        val errors     : scala.collection.Seq[(JsPath, scala.collection.Seq[JsonValidationError])] // default Seq for Scala 2.13 is scala.collection.immutable.Seq - this keeps it the same as JsResult
-                                      ) extends Exception {
+    val key: String,
+    val invalidJson: JsValue,
+    val readingAs: Class[_],
+    val errors: scala.collection.Seq[(JsPath, scala.collection.Seq[JsonValidationError])] // default Seq for Scala 2.13 is scala.collection.immutable.Seq - this keeps it the same as JsResult
+) extends Exception {
+
   override def getMessage: String =
     s"Cache entry validation for key '$key' was '${Json.stringify(invalidJson)}'. Attempt to convert to ${readingAs.getName} gave errors: $errors"
+
 }

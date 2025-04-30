@@ -35,43 +35,39 @@ import scala.concurrent.{ExecutionContext, Future}
 class EligibilityServiceSpec extends SchemeSpec with MockitoSugar with ScalaFutures {
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
-  val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
-  val utils: Utils = mock[Utils]
-  val connector: EligibilityConnector = mock[EligibilityConnector]
-  implicit val hc: HeaderCarrier = HeaderCarrier()
-  implicit val ec: ExecutionContext = ExecutionContext.global
-  implicit val req: Request[_] = mock[Request[_]]
+  val frontendAppConfig: FrontendAppConfig                  = mock[FrontendAppConfig]
+  val utils: Utils                                          = mock[Utils]
+  val connector: EligibilityConnector                       = mock[EligibilityConnector]
+  implicit val hc: HeaderCarrier                            = HeaderCarrier()
+  implicit val ec: ExecutionContext                         = ExecutionContext.global
+  implicit val req: Request[_]                              = mock[Request[_]]
 
   def eligibilityService: EligibilityService = new EligibilityService(frontendAppConfig, utils, connector)
-  val todaysDate: LocalDate = LocalDate.now()
+  val todaysDate: LocalDate                  = LocalDate.now()
 
   "EligibilityService" should {
 
     "return a SchemeResults object when given minimum data and no scheme eligible" in {
       val schemeResults = SchemeResults(schemes = Nil)
-      val answers = spy(userAnswers())
+      val answers       = spy(userAnswers())
 
-      when(answers.location) thenReturn Some(Location.ENGLAND)
-      when(connector.getEligibility(any())(any())) thenReturn Future(schemeResults)
+      when(answers.location).thenReturn(Some(Location.ENGLAND))
+      when(connector.getEligibility(any())(any())).thenReturn(Future(schemeResults))
 
       val futureResult = eligibilityService.eligibility(answers)
-      whenReady(futureResult) { result =>
-        result mustBe schemeResults
-      }
+      whenReady(futureResult)(result => result mustBe schemeResults)
     }
 
     "return a SchemeResults object when given minimum data" in {
       val schemeResults = SchemeResults(schemes = Nil)
-      val answers = spy(userAnswers())
+      val answers       = spy(userAnswers())
 
-      when(answers.location) thenReturn Some(Location.ENGLAND)
-      when(answers.childAgedThreeOrFour) thenReturn Some(true)
-      when(connector.getEligibility(any())(any())) thenReturn Future(schemeResults)
+      when(answers.location).thenReturn(Some(Location.ENGLAND))
+      when(answers.childAgedThreeOrFour).thenReturn(Some(true))
+      when(connector.getEligibility(any())(any())).thenReturn(Future(schemeResults))
 
       val futureResult = eligibilityService.eligibility(answers)
-      whenReady(futureResult) { result =>
-        result mustBe schemeResults
-      }
+      whenReady(futureResult)(result => result mustBe schemeResults)
     }
 
   }

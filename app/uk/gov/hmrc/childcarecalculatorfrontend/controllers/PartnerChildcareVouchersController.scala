@@ -33,33 +33,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PartnerChildcareVouchersController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        partnerChildcareVouchers: partnerChildcareVouchers)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class PartnerChildcareVouchersController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    partnerChildcareVouchers: partnerChildcareVouchers
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.partnerChildcareVouchers match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
-      }
-      Ok(partnerChildcareVouchers(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.partnerChildcareVouchers match {
+      case None        => BooleanForm()
+      case Some(value) => BooleanForm().fill(value)
+    }
+    Ok(partnerChildcareVouchers(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      BooleanForm(partnerChildcareVouchersErrorKey).bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    BooleanForm(partnerChildcareVouchersErrorKey)
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerChildcareVouchers(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, PartnerChildcareVouchersId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerChildcareVouchersId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Boolean](request.sessionId, PartnerChildcareVouchersId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(PartnerChildcareVouchersId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

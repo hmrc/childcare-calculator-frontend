@@ -30,15 +30,16 @@ trait ResultsNavigator extends SubNavigator {
 
   protected def resultsMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
 
-  override def nextPage(id: Identifier, mode: Mode): Option[UserAnswers => Call] = {
-    resultsMap.lift(id).map {
-      route =>
-        (userAnswers: UserAnswers) =>
-          if (schemes.allSchemesDetermined(userAnswers)) {
-            resultLocation
-          } else {
-            route(userAnswers)
-          }
-    } orElse super.nextPage(id, mode)
-  }
+  override def nextPage(id: Identifier, mode: Mode): Option[UserAnswers => Call] =
+    resultsMap
+      .lift(id)
+      .map { route => (userAnswers: UserAnswers) =>
+        if (schemes.allSchemesDetermined(userAnswers)) {
+          resultLocation
+        } else {
+          route(userAnswers)
+        }
+      }
+      .orElse(super.nextPage(id, mode))
+
 }

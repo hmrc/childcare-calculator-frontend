@@ -33,33 +33,38 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PartnerPaidWorkCYController @Inject()(appConfig: FrontendAppConfig,
-                                            mcc: MessagesControllerComponents,
-                                            dataCacheConnector: DataCacheConnector,
-                                            navigator: Navigator,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            taxYearInfo: TaxYearInfo,
-                                            partnerPaidWorkCY: partnerPaidWorkCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class PartnerPaidWorkCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    taxYearInfo: TaxYearInfo,
+    partnerPaidWorkCY: partnerPaidWorkCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.partnerPaidWorkCY match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
-      }
-      Ok(partnerPaidWorkCY(appConfig, preparedForm, mode, taxYearInfo))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.partnerPaidWorkCY match {
+      case None        => BooleanForm()
+      case Some(value) => BooleanForm().fill(value)
+    }
+    Ok(partnerPaidWorkCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      BooleanForm(partnerPaidWorkCYErrorKey).bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    BooleanForm(partnerPaidWorkCYErrorKey)
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(partnerPaidWorkCY(appConfig, formWithErrors, mode, taxYearInfo))),
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, PartnerPaidWorkCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(PartnerPaidWorkCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Boolean](request.sessionId, PartnerPaidWorkCYId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(PartnerPaidWorkCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

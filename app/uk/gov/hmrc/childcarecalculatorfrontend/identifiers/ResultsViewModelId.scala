@@ -19,4 +19,3 @@ package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 case object ResultsViewModelId extends Identifier {
   override def toString: String = "resultsViewModel"
 }
-

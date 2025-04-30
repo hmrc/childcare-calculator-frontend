@@ -28,8 +28,15 @@ class WhoGetsOtherIncomeCYFormSpec extends FormBehaviours {
   val form = WhoGetsOtherIncomeCYForm()
 
   "WhoGetsOtherIncomeCY form" must {
-    behave like questionForm[String](WhoGetsOtherIncomeCYForm.options.head.value)
+    behave.like(questionForm[String](WhoGetsOtherIncomeCYForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", whoGetsOtherIncomeCYErrorKey, WhoGetsOtherIncomeCYForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError(
+        "value",
+        whoGetsOtherIncomeCYErrorKey,
+        WhoGetsOtherIncomeCYForm.options.map(x => x.value): _*
+      )
+    )
   }
+
 }

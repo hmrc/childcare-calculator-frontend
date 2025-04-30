@@ -32,33 +32,36 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class YourAgeController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        yourAge: yourAge)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class YourAgeController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    yourAge: yourAge
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.yourAge match {
-        case None => YourAgeForm()
-        case Some(value) => YourAgeForm().fill(value)
-      }
-      Ok(yourAge(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.yourAge match {
+      case None        => YourAgeForm()
+      case Some(value) => YourAgeForm().fill(value)
+    }
+    Ok(yourAge(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      YourAgeForm().bindFromRequest().fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(yourAge(appConfig, formWithErrors, mode))),
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    YourAgeForm()
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[String]) => Future.successful(BadRequest(yourAge(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[String](request.sessionId, YourAgeId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YourAgeId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, YourAgeId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(YourAgeId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

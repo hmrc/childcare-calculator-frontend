@@ -49,4 +49,5 @@ class BooleanFormSpec extends FormSpec {
       checkForError(BooleanForm(errorKey), emptyForm, expectedError)
     }
   }
+
 }

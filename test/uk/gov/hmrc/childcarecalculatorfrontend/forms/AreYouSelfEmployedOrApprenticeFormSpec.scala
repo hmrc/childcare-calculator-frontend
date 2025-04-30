@@ -28,8 +28,15 @@ class AreYouSelfEmployedOrApprenticeFormSpec extends FormBehaviours {
   val form = AreYouSelfEmployedOrApprenticeForm()
 
   "AreYouSelfEmployedOrApprentice form" must {
-    behave like questionForm[String](AreYouSelfEmployedOrApprenticeForm.options.head.value)
+    behave.like(questionForm[String](AreYouSelfEmployedOrApprenticeForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", selfEmployedOrApprenticeErrorKey, AreYouSelfEmployedOrApprenticeForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError(
+        "value",
+        selfEmployedOrApprenticeErrorKey,
+        AreYouSelfEmployedOrApprenticeForm.options.map(x => x.value): _*
+      )
+    )
   }
+
 }

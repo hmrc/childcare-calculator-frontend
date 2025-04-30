@@ -26,11 +26,10 @@ class EnumUtilsSpec extends PlaySpec {
   "EnumerationUtil" must {
 
     "return a JsError when it cannot parse json object" in {
-      val json = Json.parse(
-        """
-          |{
-          | "enum" : "something"
-          |}
+      val json = Json.parse("""
+                              |{
+                              | "enum" : "something"
+                              |}
         """.stripMargin)
       json.validate[Location.Value] match {
         case JsSuccess(v, _) =>
@@ -41,9 +40,8 @@ class EnumUtilsSpec extends PlaySpec {
     }
 
     "return a JsError when it cannot parse json string" in {
-      val json = Json.parse(
-        """
-          |"something"
+      val json = Json.parse("""
+                              |"something"
         """.stripMargin)
       json.validate[Location.Value] match {
         case JsSuccess(v, _) =>
@@ -55,9 +53,8 @@ class EnumUtilsSpec extends PlaySpec {
     }
 
     "return success when the the input is part of the Enum" in {
-      val json = Json.parse(
-        """
-          |"england"
+      val json = Json.parse("""
+                              |"england"
         """.stripMargin)
       json.validate[Location.Value] match {
         case JsSuccess(v, _) =>

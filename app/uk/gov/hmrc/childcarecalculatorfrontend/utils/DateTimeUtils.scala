@@ -24,6 +24,8 @@ trait DateTimeUtils {
 
 object DateTimeUtils {
   private val DAYS_IN_A_WEEK = 7
+
   def getWeeksBetween(startDate: LocalDate, endDate: LocalDate): Int =
     ((endDate.toEpochDay - startDate.toEpochDay) / DAYS_IN_A_WEEK).toInt
+
 }

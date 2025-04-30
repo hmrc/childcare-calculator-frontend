@@ -28,17 +28,31 @@ class SchemeResultViewSpec extends NewViewBehaviours {
   "Scheme Result view" must {
 
     "Contain title and paragraph" in {
-        val view = asDocument(appSchemeResult(SchemeResultModel(
-          title = "You are eligible",
-          couldGet = Some("you could get"),
-          eligibility = Some(EligibilityModel("100", "")),
-          periodText = Some("a month"),
-          para1 = Some("some text"),
-          para2 = Some(Html("some more text")),
-          para3 = Some("some even more text"))
-        )(messages))
+      val view = asDocument(
+        appSchemeResult(
+          SchemeResultModel(
+            title = "You are eligible",
+            couldGet = Some("you could get"),
+            eligibility = Some(EligibilityModel("100", "")),
+            periodText = Some("a month"),
+            para1 = Some("some text"),
+            para2 = Some(Html("some more text")),
+            para3 = Some("some even more text")
+          )
+        )(messages)
+      )
 
-        assertContainsMessages(view, "You are eligible", "you could get", "100", "a month", "some text", "some more text", "some even more text")
+      assertContainsMessages(
+        view,
+        "You are eligible",
+        "you could get",
+        "100",
+        "a month",
+        "some text",
+        "some more text",
+        "some even more text"
+      )
     }
   }
+
 }

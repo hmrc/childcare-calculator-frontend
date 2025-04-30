@@ -32,33 +32,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ChildcareCostsController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        childcareCosts: childcareCosts)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class ChildcareCostsController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    childcareCosts: childcareCosts
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.childcareCosts match {
-        case None => ChildcareCostsForm()
-        case Some(value) => ChildcareCostsForm().fill(value)
-      }
-      Ok(childcareCosts(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.childcareCosts match {
+      case None        => ChildcareCostsForm()
+      case Some(value) => ChildcareCostsForm().fill(value)
+    }
+    Ok(childcareCosts(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      ChildcareCostsForm().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    ChildcareCostsForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(childcareCosts(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[String](request.sessionId, ChildcareCostsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(ChildcareCostsId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, ChildcareCostsId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(ChildcareCostsId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

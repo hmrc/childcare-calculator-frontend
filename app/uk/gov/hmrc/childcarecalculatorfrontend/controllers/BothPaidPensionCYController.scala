@@ -32,33 +32,38 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class BothPaidPensionCYController @Inject()(appConfig: FrontendAppConfig,
-                                            mcc: MessagesControllerComponents,
-                                            dataCacheConnector: DataCacheConnector,
-                                            navigator: Navigator,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            taxYearInfo: TaxYearInfo,
-                                            bothPaidPensionCY: bothPaidPensionCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class BothPaidPensionCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    taxYearInfo: TaxYearInfo,
+    bothPaidPensionCY: bothPaidPensionCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.bothPaidPensionCY match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
-      }
-      Ok(bothPaidPensionCY(appConfig, preparedForm, mode, taxYearInfo))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.bothPaidPensionCY match {
+      case None        => BooleanForm()
+      case Some(value) => BooleanForm().fill(value)
+    }
+    Ok(bothPaidPensionCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      BooleanForm("bothPaidPensionCY.error.notCompleted").bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    BooleanForm("bothPaidPensionCY.error.notCompleted")
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(bothPaidPensionCY(appConfig, formWithErrors, mode, taxYearInfo))),
         value =>
-          dataCacheConnector.save[Boolean](request.sessionId, BothPaidPensionCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(BothPaidPensionCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Boolean](request.sessionId, BothPaidPensionCYId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(BothPaidPensionCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

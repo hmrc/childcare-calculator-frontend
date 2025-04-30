@@ -16,46 +16,46 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, YesNoNotYetEnum, NotEligible, Eligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotEligible, YesNoNotYetEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{You, Partner, Both}
-
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{Both, Partner, You}
 
 class EmploymentSupportedChildcare extends Scheme {
 
   override def eligibility(answers: UserAnswers): Eligibility = {
 
     val hasParentChildcareCosts: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.YES.toString)
-    val childcareCostsNotYet: Boolean = answers.childcareCosts.contains(YesNoNotYetEnum.NOTYET.toString)
-    val hasPartnerChildcareVouchers = answers.partnerChildcareVouchers.getOrElse(false)
-    val hasParentChildcareVouchers = answers.yourChildcareVouchers.getOrElse(false)
+    val childcareCostsNotYet: Boolean    = answers.childcareCosts.contains(YesNoNotYetEnum.NOTYET.toString)
+    val hasPartnerChildcareVouchers      = answers.partnerChildcareVouchers.getOrElse(false)
+    val hasParentChildcareVouchers       = answers.yourChildcareVouchers.getOrElse(false)
 
-    val hasPartner = answers.doYouLiveWithPartner.getOrElse(false)
-    val whoInPaidEmployment = answers.whoIsInPaidEmployment
+    val hasPartner            = answers.doYouLiveWithPartner.getOrElse(false)
+    val whoInPaidEmployment   = answers.whoIsInPaidEmployment
     val bothChildcareVouchers = answers.whoGetsVouchers
 
     if (hasPartner) {
       whoInPaidEmployment match {
-        case Some(You) => {
+        case Some(You) =>
           getEligibility((hasParentChildcareCosts || childcareCostsNotYet) && hasParentChildcareVouchers)
-        }
-        case Some(Partner) => {
+        case Some(Partner) =>
           getEligibility((hasParentChildcareCosts || childcareCostsNotYet) && hasPartnerChildcareVouchers)
-        }
-        case Some(_) => {
-          getEligibility((hasParentChildcareCosts || childcareCostsNotYet) &&
-            (bothChildcareVouchers.contains(Both) || bothChildcareVouchers.contains(You) || bothChildcareVouchers.contains(Partner)))
-        }
+        case Some(_) =>
+          getEligibility(
+            (hasParentChildcareCosts || childcareCostsNotYet) &&
+              (bothChildcareVouchers.contains(Both) || bothChildcareVouchers.contains(You) || bothChildcareVouchers
+                .contains(Partner))
+          )
         case _ => NotEligible
       }
     } else {
 
-       getEligibility((hasParentChildcareCosts || childcareCostsNotYet) && hasParentChildcareVouchers)
+      getEligibility((hasParentChildcareCosts || childcareCostsNotYet) && hasParentChildcareVouchers)
     }
   }
 
   private def getEligibility(f: Boolean): Eligibility = f match {
-    case true => Eligible
+    case true  => Eligible
     case false => NotEligible
   }
+
 }

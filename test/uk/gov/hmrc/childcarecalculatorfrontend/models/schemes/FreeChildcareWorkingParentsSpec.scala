@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with BeforeAndAfterEach {
 
   private val freeChildcareEligibilityCalculator = mock[FreeChildcareEligibilityCalculator]
-  private val userAnswers: UserAnswers = mock[UserAnswers]
+  private val userAnswers: UserAnswers           = mock[UserAnswers]
 
   private val freeChildcareWorkingParents: FreeChildcareWorkingParents =
     new FreeChildcareWorkingParents(freeChildcareEligibilityCalculator)
@@ -54,7 +54,7 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
 
     "location is empty" must {
       "return NotDetermined" in {
-        when(userAnswers.location) thenReturn None
+        when(userAnswers.location).thenReturn(None)
 
         freeChildcareWorkingParents.eligibility(userAnswers) mustBe NotDetermined
       }
@@ -64,7 +64,7 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
       s"location is ${location.toString}" must {
 
         "NOT call FreeChildcareEligibilityCalculator" in {
-          when(userAnswers.location) thenReturn Some(location)
+          when(userAnswers.location).thenReturn(Some(location))
 
           freeChildcareWorkingParents.eligibility(userAnswers)
 
@@ -72,7 +72,7 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
         }
 
         "return NotEligible" in {
-          when(userAnswers.location) thenReturn Some(location)
+          when(userAnswers.location).thenReturn(Some(location))
 
           freeChildcareWorkingParents.eligibility(userAnswers) mustBe NotEligible
         }
@@ -84,10 +84,10 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
       "user does NOT have children in any of the qualifying age groups" must {
 
         def initMocks(): Unit = {
-          when(userAnswers.location) thenReturn Some(ENGLAND)
-          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(false)
-          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
-          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(false)
+          when(userAnswers.location).thenReturn(Some(ENGLAND))
+          when(userAnswers.isChildAgedNineTo23Months).thenReturn(Some(false))
+          when(userAnswers.isChildAgedTwo).thenReturn(Some(false))
+          when(userAnswers.isChildAgedThreeOrFour).thenReturn(Some(false))
         }
 
         "NOT call FreeChildcareEligibilityCalculator" in {
@@ -108,25 +108,28 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
       "user has a 9 to 23 months old child" must {
 
         def initMocks(): Unit = {
-          when(userAnswers.location) thenReturn Some(ENGLAND)
-          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(true)
-          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
-          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(false)
+          when(userAnswers.location).thenReturn(Some(ENGLAND))
+          when(userAnswers.isChildAgedNineTo23Months).thenReturn(Some(true))
+          when(userAnswers.isChildAgedTwo).thenReturn(Some(false))
+          when(userAnswers.isChildAgedThreeOrFour).thenReturn(Some(false))
         }
 
         "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
           initMocks()
-          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
 
           freeChildcareWorkingParents.eligibility(userAnswers)
 
-          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(
+            eqTo(userAnswers),
+            eqTo(FreeChildcareEligibleBenefits)
+          )
         }
 
         Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
           s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
             initMocks()
-            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(calcResult)
 
             freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
           }
@@ -136,25 +139,28 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
       "user has a 2 years old child" must {
 
         def initMocks(): Unit = {
-          when(userAnswers.location) thenReturn Some(ENGLAND)
-          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(false)
-          when(userAnswers.isChildAgedTwo) thenReturn Some(true)
-          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(false)
+          when(userAnswers.location).thenReturn(Some(ENGLAND))
+          when(userAnswers.isChildAgedNineTo23Months).thenReturn(Some(false))
+          when(userAnswers.isChildAgedTwo).thenReturn(Some(true))
+          when(userAnswers.isChildAgedThreeOrFour).thenReturn(Some(false))
         }
 
         "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
           initMocks()
-          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
 
           freeChildcareWorkingParents.eligibility(userAnswers)
 
-          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(
+            eqTo(userAnswers),
+            eqTo(FreeChildcareEligibleBenefits)
+          )
         }
 
         Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
           s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
             initMocks()
-            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(calcResult)
 
             freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
           }
@@ -164,25 +170,28 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
       "user has a 3 or 4 years old child" must {
 
         def initMocks(): Unit = {
-          when(userAnswers.location) thenReturn Some(ENGLAND)
-          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(false)
-          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
-          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(true)
+          when(userAnswers.location).thenReturn(Some(ENGLAND))
+          when(userAnswers.isChildAgedNineTo23Months).thenReturn(Some(false))
+          when(userAnswers.isChildAgedTwo).thenReturn(Some(false))
+          when(userAnswers.isChildAgedThreeOrFour).thenReturn(Some(true))
         }
 
         "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
           initMocks()
-          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
 
           freeChildcareWorkingParents.eligibility(userAnswers)
 
-          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(
+            eqTo(userAnswers),
+            eqTo(FreeChildcareEligibleBenefits)
+          )
         }
 
         Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
           s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
             initMocks()
-            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(calcResult)
 
             freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
           }
@@ -192,25 +201,28 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
       "user has children in several qualifying age groups" must {
 
         def initMocks(): Unit = {
-          when(userAnswers.location) thenReturn Some(ENGLAND)
-          when(userAnswers.isChildAgedNineTo23Months) thenReturn Some(true)
-          when(userAnswers.isChildAgedTwo) thenReturn Some(false)
-          when(userAnswers.isChildAgedThreeOrFour) thenReturn Some(true)
+          when(userAnswers.location).thenReturn(Some(ENGLAND))
+          when(userAnswers.isChildAgedNineTo23Months).thenReturn(Some(true))
+          when(userAnswers.isChildAgedTwo).thenReturn(Some(false))
+          when(userAnswers.isChildAgedThreeOrFour).thenReturn(Some(true))
         }
 
         "call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
           initMocks()
-          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+          when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
 
           freeChildcareWorkingParents.eligibility(userAnswers)
 
-          verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(FreeChildcareEligibleBenefits))
+          verify(freeChildcareEligibilityCalculator).calculateEligibility(
+            eqTo(userAnswers),
+            eqTo(FreeChildcareEligibleBenefits)
+          )
         }
 
         Seq(Eligible, NotEligible, NotDetermined).foreach { calcResult =>
           s"return value returned from FreeChildcareEligibilityCalculator when it is ${calcResult.toString}" in {
             initMocks()
-            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn calcResult
+            when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(calcResult)
 
             freeChildcareWorkingParents.eligibility(userAnswers) mustBe calcResult
           }
@@ -218,4 +230,5 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
       }
     }
   }
+
 }

@@ -29,18 +29,24 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourSelfEmployed
 
-
-
 class YourSelfEmployedControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[yourSelfEmployed]
+  val view        = application.injector.instanceOf[yourSelfEmployed]
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourSelfEmployedController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, view)
+    new YourSelfEmployedController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      view
+    )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) =
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
 
   "YourSelfEmployed Controller" must {
 
@@ -52,7 +58,7 @@ class YourSelfEmployedControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData = Map(YourSelfEmployedId.toString -> JsBoolean(true))
+      val validData       = Map(YourSelfEmployedId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
@@ -71,7 +77,7 @@ class YourSelfEmployedControllerSpec extends ControllerSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
-      val boundForm = BooleanForm(yourSelfEmployedErrorKey).bind(Map("value" -> "invalid value"))
+      val boundForm   = BooleanForm(yourSelfEmployedErrorKey).bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit(NormalMode)(postRequest)
 
@@ -88,14 +94,11 @@ class YourSelfEmployedControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }
-
-
-
-

@@ -24,10 +24,12 @@ class FreeHours extends Scheme {
   override def eligibility(answers: UserAnswers): Eligibility = {
     for {
       childAgedThreeOrFour <- answers.isChildAgedThreeOrFour
-    } yield if (childAgedThreeOrFour) {
-      Eligible
-    } else {
-      NotEligible
-    }
+    } yield
+      if (childAgedThreeOrFour) {
+        Eligible
+      } else {
+        NotEligible
+      }
   }.getOrElse(NotDetermined)
+
 }

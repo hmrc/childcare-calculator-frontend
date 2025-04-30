@@ -27,11 +27,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
 import javax.inject.Inject
 
-/**
-  * Contains the navigation for current and previous year employment income pages
+/** Contains the navigation for current and previous year employment income pages
   */
 @Singleton
-class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
+class IncomeInfoNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] =
     Map(
@@ -42,12 +41,12 @@ class IncomeInfoNavigator @Inject() (utils:Utils)extends SubNavigator {
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
     if (hasPartner) {
       utils.getCall(userAnswers.whoIsInPaidEmployment) {
-        case `you` => routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
+        case `you`     => routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
         case `partner` => routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
-        case `both` => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
+        case `both`    => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
       }
     } else {
-      SessionExpiredRouter.route(getClass.getName,"nextPageUrlCY",Some(userAnswers))
+      SessionExpiredRouter.route(getClass.getName, "nextPageUrlCY", Some(userAnswers))
     }
   }
 

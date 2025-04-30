@@ -31,9 +31,9 @@ trait IncomeFormatter extends FormErrorHelper {
 
   protected def formatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]) =
       data.get(key) match {
-        case None => produceError(key, errorKeyBlank)
+        case None     => produceError(key, errorKeyBlank)
         case Some("") => produceError(key, errorKeyBlank)
         case Some(strValue) if strValue.matches(decimalRegex) =>
           val value = BigDecimal(strValue)
@@ -44,11 +44,11 @@ trait IncomeFormatter extends FormErrorHelper {
           }
         case _ => produceError(key, errorKeyInvalid)
       }
-    }
 
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
   def apply(errorKeyBlank: String = errorKeyBlank, errorKeyInvalid: String = errorKeyInvalid): Form[BigDecimal] =
     Form(single("value" -> of(formatter(errorKeyBlank, errorKeyInvalid))))
+
 }

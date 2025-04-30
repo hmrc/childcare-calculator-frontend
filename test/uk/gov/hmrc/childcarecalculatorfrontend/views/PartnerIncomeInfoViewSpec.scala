@@ -24,30 +24,45 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 class PartnerIncomeInfoViewSpec extends NewViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
-  val view = application.injector.instanceOf[partnerIncomeInfo]
+  val view        = application.injector.instanceOf[partnerIncomeInfo]
 
   def createView = () => view(frontendAppConfig, Call("GET", "test"), taxYearInfo)(fakeRequest, messages)
-  def createViewWithNextPageLink = (nextPage: Call) => view(frontendAppConfig, nextPage, taxYearInfo)(fakeRequest, messages)
+
+  def createViewWithNextPageLink = (nextPage: Call) =>
+    view(frontendAppConfig, nextPage, taxYearInfo)(fakeRequest, messages)
+
   val messageKeyPrefix = "partnerIncomeInfo"
 
-  "Partner Income Info view" must {
-    behave like normalPage(createView, messageKeyPrefix, "guidance",
-      "li.income_paid_work", "li.pensions", "li.other_income", "li.benefits_income")
-  }
+  "Partner Income Info view" must
+    behave.like(
+      normalPage(
+        createView,
+        messageKeyPrefix,
+        "guidance",
+        "li.income_paid_work",
+        "li.pensions",
+        "li.other_income",
+        "li.benefits_income"
+      )
+    )
 
   "contain tax year info" in {
     val doc = asDocument(createView())
-    assertContainsText(doc, messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+    assertContainsText(
+      doc,
+      messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
+    )
   }
 
   "contain the link for next page" in {
     val testCall = Call("GET", "http://google.com")
 
-    val doc = asDocument(createViewWithNextPageLink(testCall))
+    val doc          = asDocument(createViewWithNextPageLink(testCall))
     val continueLink = doc.getElementsByClass("govuk-button")
 
     assertContainsText(doc, messages("site.save_and_continue"))
     continueLink.attr("href") mustBe testCall.url
 
   }
+
 }

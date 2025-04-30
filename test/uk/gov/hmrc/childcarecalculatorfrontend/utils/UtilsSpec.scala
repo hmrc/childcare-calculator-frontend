@@ -43,9 +43,9 @@ class UtilsSpec extends SpecBase {
 
       "throw exception and return the custom error message when only None value and custom message is given" in {
 
-        val testString = None
+        val testString    = None
         val customMessage = "error occured while fetching the object"
-        val utils = new Utils
+        val utils         = new Utils
 
         intercept[RuntimeException] {
           utils.getOrException(testString, errorMessage = customMessage)
@@ -55,15 +55,13 @@ class UtilsSpec extends SpecBase {
 
       "throw exception and return the correct error when only None value and other fields are given" in {
 
-        val testString = None
+        val testString   = None
         val controllerId = Some("testController")
-        val objectName = Some("testObject")
-        val utils = new Utils
+        val objectName   = Some("testObject")
+        val utils        = new Utils
 
         intercept[RuntimeException] {
-          utils.getOrException(optionalElement = testString,
-            controllerId = controllerId,
-            objectName = objectName)
+          utils.getOrException(optionalElement = testString, controllerId = controllerId, objectName = objectName)
         }.getMessage mustBe
           s"no element found in ${controllerId.getOrElse("")} while fetching ${objectName.getOrElse("")}"
 
@@ -78,17 +76,17 @@ class UtilsSpec extends SpecBase {
         val call2 = Call("GET", "two")
 
         val optionalStringValue = Some(partner)
-        val partnerCall = Call("GET", "partner")
-        val bothCall = Call("GET", "both")
+        val partnerCall         = Call("GET", "partner")
+        val bothCall            = Call("GET", "both")
 
         def booleanPf: PartialFunction[Boolean, Call] = {
-          case true => call1
+          case true  => call1
           case false => call2
         }
 
         def stringPf: PartialFunction[String, Call] = {
           case `partner` => partnerCall
-          case `both` => bothCall
+          case `both`    => bothCall
         }
 
         val utils = new Utils
@@ -98,14 +96,14 @@ class UtilsSpec extends SpecBase {
       }
 
       "return SessionExpired call when there is None in element" in {
-        val noneValue = None
+        val noneValue           = None
         val optionalStringValue = Some(you)
-        val call1 = Call("GET", "one")
-        val call2 = Call("GET", "two")
+        val call1               = Call("GET", "one")
+        val call2               = Call("GET", "two")
 
         def stringPf: PartialFunction[String, Call] = {
           case `partner` => call1
-          case `both` => call2
+          case `both`    => call2
         }
 
         val utils = new Utils
@@ -146,7 +144,7 @@ class UtilsSpec extends SpecBase {
 
     "emptyCacheMap" should {
       "clear the existing cache map values and initialize an empty map" in {
-        val sessionId = "sessionId"
+        val sessionId   = "sessionId"
         val existingMap = new CacheMap(sessionId, Map(LocationId.toString -> JsString(LocationForm.options.head.value)))
 
         val utils = new Utils
@@ -159,64 +157,125 @@ class UtilsSpec extends SpecBase {
       val utils = new Utils
 
       "return the 2019 earnings value for an apprentice on day of tax year change" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("apprentice")) mustBe 62
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-06"),
+          Some("apprentice")
+        ) mustBe 62
       }
 
       "return the 2019 earnings value for an apprentice on 1st April 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("apprentice")) mustBe 62
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-01"),
+          Some("apprentice")
+        ) mustBe 62
       }
 
       "return the 2018 earnings value for an apprentice on 31 March 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("apprentice")) mustBe 59
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-03-31"),
+          Some("apprentice")
+        ) mustBe 59
       }
 
       "return the 2019 earnings value for under 18 on day of tax year change" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("UNDER18")) mustBe 69
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-06"),
+          Some("UNDER18")
+        ) mustBe 69
       }
 
       "return the 2019 earnings value for under 18 on 1st April 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("UNDER18")) mustBe 69
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-01"),
+          Some("UNDER18")
+        ) mustBe 69
       }
 
       "return the 2018 earnings value for under 18 on 31 March 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("UNDER18")) mustBe 67
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-03-31"),
+          Some("UNDER18")
+        ) mustBe 67
       }
 
       "return the 2019 earnings value for 18-20 year old on day of tax year change" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("EIGHTEENTOTWENTY")) mustBe 98
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-06"),
+          Some("EIGHTEENTOTWENTY")
+        ) mustBe 98
       }
 
       "return the 2019 earnings value for 18-20 year old on 1st April 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("EIGHTEENTOTWENTY")) mustBe 98
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-01"),
+          Some("EIGHTEENTOTWENTY")
+        ) mustBe 98
       }
 
       "return the 2018 earnings value for 18-20 year old on 31 March 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("EIGHTEENTOTWENTY")) mustBe 94
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-03-31"),
+          Some("EIGHTEENTOTWENTY")
+        ) mustBe 94
       }
 
       "return the 2019 earnings value for 21-24 year old on day of tax year change" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("TWENTYONETOTWENTYFOUR")) mustBe 123
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-06"),
+          Some("TWENTYONETOTWENTYFOUR")
+        ) mustBe 123
       }
 
       "return the 2019 earnings value for 21-24 year old on 1st April 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("TWENTYONETOTWENTYFOUR")) mustBe 123
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-01"),
+          Some("TWENTYONETOTWENTYFOUR")
+        ) mustBe 123
       }
 
       "return the 2018 earnings value for 21-24 year old on 31 March 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("TWENTYONETOTWENTYFOUR")) mustBe 118
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-03-31"),
+          Some("TWENTYONETOTWENTYFOUR")
+        ) mustBe 118
       }
 
       "return the 2019 earnings value for over 24 year old on day of tax year change" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-06"), Some("OVERTWENTYFOUR")) mustBe 131
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-06"),
+          Some("OVERTWENTYFOUR")
+        ) mustBe 131
       }
 
       "return the 2019 earnings value for over 24 year old on 1st April 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-04-01"), Some("OVERTWENTYFOUR")) mustBe 131
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-04-01"),
+          Some("OVERTWENTYFOUR")
+        ) mustBe 131
       }
 
       "return the 2018 earnings value for over 24 old on 31 March 2019" in {
-        utils.getEarningsForAgeRange(frontendAppConfig.configuration, LocalDate.parse("2019-03-31"), Some("OVERTWENTYFOUR")) mustBe 125
+        utils.getEarningsForAgeRange(
+          frontendAppConfig.configuration,
+          LocalDate.parse("2019-03-31"),
+          Some("OVERTWENTYFOUR")
+        ) mustBe 125
       }
     }
   }
+
 }

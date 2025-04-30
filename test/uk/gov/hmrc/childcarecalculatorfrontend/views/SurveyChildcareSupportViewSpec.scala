@@ -36,10 +36,13 @@ class SurveyChildcareSupportViewSpec extends NewYesNoViewBehaviours {
 
   "SurveyChildcareSupport view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.SurveyChildcareSupportController.onSubmit().url)
+    behave.like(
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.SurveyChildcareSupportController.onSubmit().url)
+    )
   }
+
 }

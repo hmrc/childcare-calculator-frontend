@@ -22,33 +22,38 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{partnerAverageWeeklyEarnings, yourAndPartnerAverageWeeklyEarnings, yourAverageWeeklyEarnings}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{
+  partnerAverageWeeklyEarnings,
+  yourAndPartnerAverageWeeklyEarnings,
+  yourAverageWeeklyEarnings
+}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject
 
-class AverageWeeklyEarningController @Inject()(
-                                                 mcc: MessagesControllerComponents,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 yourAverageWeeklyEarnings: yourAverageWeeklyEarnings,
-                                                 partnerAverageWeeklyEarnings: partnerAverageWeeklyEarnings,
-                                                 yourAndPartnerAverageWeeklyEarnings:  yourAndPartnerAverageWeeklyEarnings)
-  extends FrontendController(mcc) with I18nSupport with Logging {
+class AverageWeeklyEarningController @Inject() (
+    mcc: MessagesControllerComponents,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    yourAverageWeeklyEarnings: yourAverageWeeklyEarnings,
+    partnerAverageWeeklyEarnings: partnerAverageWeeklyEarnings,
+    yourAndPartnerAverageWeeklyEarnings: yourAndPartnerAverageWeeklyEarnings
+) extends FrontendController(mcc)
+    with I18nSupport
+    with Logging {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-
-      val whoIsInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
-        if (request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.you)) {
-          Ok(yourAverageWeeklyEarnings())
-        } else if (request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.both)){
-          Ok(yourAndPartnerAverageWeeklyEarnings())
-        } else {
-          Ok(partnerAverageWeeklyEarnings())
-        }
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val whoIsInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
+    if (request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.you)) {
+      Ok(yourAverageWeeklyEarnings())
+    } else if (
+      request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.both)
+    ) {
+      Ok(yourAndPartnerAverageWeeklyEarnings())
+    } else {
+      Ok(partnerAverageWeeklyEarnings())
+    }
 
   }
-
 
 }

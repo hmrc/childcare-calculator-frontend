@@ -63,8 +63,8 @@ class LocalDateMappingSpec extends PlaySpec with OptionValues {
     "fail to bind when missing a month" in {
 
       val data: Map[String, String] = Map(
-        "date.day"   -> "1",
-        "date.year"  -> "2017"
+        "date.day"  -> "1",
+        "date.year" -> "2017"
       )
 
       form.bind(data).errors must contain(FormError("date.month", "error.required"))
@@ -94,4 +94,5 @@ class LocalDateMappingSpec extends PlaySpec with OptionValues {
       form.fill(LocalDate.of(2017, 2, 1)).data mustEqual data
     }
   }
+
 }

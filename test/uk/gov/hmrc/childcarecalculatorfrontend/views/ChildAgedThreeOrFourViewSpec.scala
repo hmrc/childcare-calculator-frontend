@@ -26,23 +26,27 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 
 class ChildAgedThreeOrFourViewSpec extends NewYesNoViewBehaviours {
 
-  override val form =  BooleanForm()
+  override val form = BooleanForm()
 
   val messageKeyPrefix = "childAgedThreeOrFour"
-  val view = application.injector.instanceOf[childAgedThreeOrFour]
+  val view             = application.injector.instanceOf[childAgedThreeOrFour]
 
   val location = Location.ENGLAND
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
 
   "ChildAgedThreeOrFour view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, s"guidance.$location")
+    behave.like(normalPage(createView, messageKeyPrefix, s"guidance.$location"))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedThreeOrFourController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedThreeOrFourController.onSubmit(NormalMode).url)
+    )
   }
+
 }

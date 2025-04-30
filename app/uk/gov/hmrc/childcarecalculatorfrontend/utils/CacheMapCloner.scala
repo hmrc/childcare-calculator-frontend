@@ -20,46 +20,53 @@ import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 
 object CacheMapCloner {
-  def cloneSection(userAnswers: CacheMap, sectionToClone: Map[String, String], customSections: Option[Map[String, JsValue]] = None): CacheMap = {
+
+  def cloneSection(
+      userAnswers: CacheMap,
+      sectionToClone: Map[String, String],
+      customSections: Option[Map[String, JsValue]] = None
+  ): CacheMap = {
     val cacheMapWithClearedData = removeClonedData(userAnswers, sectionToClone)
-    val clonedCacheMap = sectionToClone.foldLeft(cacheMapWithClearedData)((clonedData, sectionToClone) => {
+    val clonedCacheMap = sectionToClone.foldLeft(cacheMapWithClearedData)((clonedData, sectionToClone) =>
       clonedData.data.get(sectionToClone._1) match {
-        case Some(dataToClone) => clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
-          complexObjectsMapper.get(sectionToClone._1) match {
-            case Some(data) => {
-              data.foldLeft(Json.obj())((clonedResult, property) => {
-                clonedResult + (jsonObjectsMapper.get(property).getOrElse(mappingError) -> (dataToClone \ property).getOrElse(Json.toJson(mappingError)))
-              })
+        case Some(dataToClone) =>
+          clonedData.copy(data = clonedData.data + (sectionToClone._2 -> {
+            complexObjectsMapper.get(sectionToClone._1) match {
+              case Some(data) =>
+                data.foldLeft(Json.obj())((clonedResult, property) =>
+                  clonedResult + (jsonObjectsMapper.get(property).getOrElse(mappingError) -> (dataToClone \ property)
+                    .getOrElse(Json.toJson(mappingError)))
+                )
+              case _ => dataToClone
             }
-            case _ => dataToClone
-          }
-        }))
+          }))
         case _ => clonedData
       }
-    })
+    )
 
-    customSections.fold(clonedCacheMap)(customSections => {
-      customSections.foldLeft(clonedCacheMap)((clonedCacheMap, section) => {
+    customSections.fold(clonedCacheMap)(customSections =>
+      customSections.foldLeft(clonedCacheMap)((clonedCacheMap, section) =>
         clonedCacheMap.copy(data = clonedCacheMap.data + section)
-      })
-    })
+      )
+    )
   }
-
 
   private val mappingError = "mapping not found"
 
-  private val complexObjectsMapper: Map[String, Seq[String]] = Map(EmploymentIncomeCYId.toString -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
+  private val complexObjectsMapper: Map[String, Seq[String]] = Map(
+    EmploymentIncomeCYId.toString    -> Seq(ParentEmploymentIncomeCYId.toString, PartnerEmploymentIncomeCYId.toString),
     HowMuchBothPayPensionId.toString -> Seq(HowMuchYouPayPensionId.toString, HowMuchPartnerPayPensionId.toString),
-    BenefitsIncomeCYId.toString -> Seq(ParentBenefitsIncomeId.toString, PartnerBenefitsIncomeId.toString),
-    OtherIncomeAmountCYId.toString -> Seq(ParentOtherIncomeId.toString, PartnerOtherIncomeId.toString))
+    BenefitsIncomeCYId.toString      -> Seq(ParentBenefitsIncomeId.toString, PartnerBenefitsIncomeId.toString),
+    OtherIncomeAmountCYId.toString   -> Seq(ParentOtherIncomeId.toString, PartnerOtherIncomeId.toString)
+  )
 
   private val jsonObjectsMapper: Map[String, String] = Map(
-    ParentBenefitsIncomeId.toString -> ParentBenefitsIncomePYId.toString)
+    ParentBenefitsIncomeId.toString -> ParentBenefitsIncomePYId.toString
+  )
 
-
-  private def removeClonedData(data: CacheMap, sectionToClone: Map[String, String]) = {
-    sectionToClone.foldLeft(data)((clonedData, sectionToClear) => {
+  private def removeClonedData(data: CacheMap, sectionToClone: Map[String, String]) =
+    sectionToClone.foldLeft(data)((clonedData, sectionToClear) =>
       clonedData.copy(data = clonedData.data - sectionToClear._2)
-    })
-  }
+    )
+
 }

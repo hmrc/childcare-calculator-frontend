@@ -28,12 +28,11 @@ object ChildrenAgeGroupsForm {
     single(
       formId -> set(text)
         .verifying("childrenAgeGroups.error.select", _.forall(ChildAgeGroup.mapping.keySet.contains _))
-        //technically first .verifying not needed, just a sanity check to avoid exceptions from html tampering
+        // technically first .verifying not needed, just a sanity check to avoid exceptions from html tampering
         .transform[Set[ChildAgeGroup]](_.map(ChildAgeGroup.mapping), _.map(ChildAgeGroup.inverseMappping))
         .verifying("childrenAgeGroups.error.select", _.nonEmpty)
         .verifying("childrenAgeGroups.error.exclusive", set => !(set.contains(NoneOfThese) && set.size > 1))
     )
-
   )
 
 }

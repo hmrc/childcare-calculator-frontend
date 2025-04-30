@@ -21,15 +21,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviou
 class WhichChildrenBlindFormSpec extends CheckboxBehaviours[Int] {
 
   override val validOptions: Set[Int] = Set(0, 1)
-  override val invalidValue: String = "5"
-  override val fieldName = "value"
+  override val invalidValue: String   = "5"
+  override val fieldName              = "value"
 
   val form = WhichChildrenBlindForm(0, 1)
 
   "WhichChildrenBlind form" must {
 
-    behave like aCheckboxForm(invalid = "error.unknown")
+    behave.like(aCheckboxForm(invalid = "error.unknown"))
 
-    behave like aMandatoryCheckboxForm("whichChildrenBlind.error.notCompleted")
+    behave.like(aMandatoryCheckboxForm("whichChildrenBlind.error.notCompleted"))
   }
+
 }

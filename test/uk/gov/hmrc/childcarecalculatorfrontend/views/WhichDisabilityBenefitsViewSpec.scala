@@ -25,12 +25,14 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefit
 
 import scala.util.Random
 
-class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[DisabilityBenefits.Value] {
+class WhichDisabilityBenefitsViewSpec
+    extends NewViewBehaviours
+    with NewCheckboxViewBehaviours[DisabilityBenefits.Value] {
 
-  val view = application.injector.instanceOf[whichDisabilityBenefits]
+  val view             = application.injector.instanceOf[whichDisabilityBenefits]
   val messageKeyPrefix = "whichDisabilityBenefits"
-  val fieldKey = "value"
-  val errorMessage = "error.invalid"
+  val fieldKey         = "value"
+  val errorMessage     = "error.invalid"
 
   val values: Seq[(String, String)] = WhichDisabilityBenefitsForm.options
 
@@ -39,30 +41,29 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
   def createView(form: Form[Set[DisabilityBenefits.Value]]): Html = createView(form, 0, "Foo")
 
   def createView(
-                  form: Form[Set[DisabilityBenefits.Value]],
-                  index: Int,
-                  name: String
-                ): Html =
+      form: Form[Set[DisabilityBenefits.Value]],
+      index: Int,
+      name: String
+  ): Html =
     view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages)
 
   lazy val cases: Seq[(Int, String)] = {
-    val names: LazyList[String] = LazyList.continually(Random.alphanumeric.take(5).mkString)
+    val names: LazyList[String]     = LazyList.continually(Random.alphanumeric.take(5).mkString)
     lazy val indices: LazyList[Int] = LazyList.from(Random.nextInt(15))
     indices.zip(names).take(3)
   }.distinct
 
   "WhichDisabilityBenefits view" must {
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like checkboxPage(legend = Some(messages(s"$messageKeyPrefix.heading", "Foo")))
+    behave.like(checkboxPage(legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))))
 
-    cases.foreach {
-      case (index, name) =>
+    cases.foreach { case (index, name) =>
 
-        s"data of index: $index, name: $name" when {
-
-          behave like normalPageWithTitleParameters(
+      s"data of index: $index, name: $name" when
+        behave.like(
+          normalPageWithTitleParameters(
             () => createView(WhichDisabilityBenefitsForm(name), index, name),
             messageKeyPrefix,
             messageKeyPostfix = "",
@@ -70,7 +71,8 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
             args = Seq(name),
             titleArgs = Seq(messages(s"nth.$index"))
           )
-        }
+        )
     }
   }
+
 }

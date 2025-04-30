@@ -21,15 +21,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviou
 class WhoHasChildcareCostsFormSpec extends CheckboxBehaviours[Int] {
 
   override val validOptions: Set[Int] = Set(0, 1)
-  override val invalidValue: String = "5"
-  override val fieldName = "value"
+  override val invalidValue: String   = "5"
+  override val fieldName              = "value"
 
   val form = WhoHasChildcareCostsForm(0, 1)
 
   "WhoHasChildcareCosts form" must {
 
-    behave like aCheckboxForm(invalid = "error.unknown")
+    behave.like(aCheckboxForm(invalid = "error.unknown"))
 
-    behave like aMandatoryCheckboxForm("whoHasChildcareCosts.error.notCompleted")
+    behave.like(aMandatoryCheckboxForm("whoHasChildcareCosts.error.notCompleted"))
   }
+
 }

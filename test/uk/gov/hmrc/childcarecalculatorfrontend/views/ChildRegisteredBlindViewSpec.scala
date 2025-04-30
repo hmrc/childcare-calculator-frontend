@@ -25,34 +25,40 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 
 class ChildRegisteredBlindViewSpec extends NewYesNoViewBehaviours {
 
-  override val form = BooleanForm()
+  override val form    = BooleanForm()
   val messageKeyPrefix = "childRegisteredBlind"
-  val view = application.injector.instanceOf[childRegisteredBlind]
+  val view             = application.injector.instanceOf[childRegisteredBlind]
 
   def createView = () => view(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
 
   "ChildRegisteredBlind view" must {
 
-    behave like normalPageWithTitleAsString(
-      createView,
-      messageKeyPrefix,
-      messageKeyPostfix = "",
-      messages(s"$messageKeyPrefix.title"),
-      Some(messages(s"$messageKeyPrefix.heading", "Foo")),
-      expectedGuidanceKeys = Seq(),
-      args = ("Foo")
+    behave.like(
+      normalPageWithTitleAsString(
+        createView,
+        messageKeyPrefix,
+        messageKeyPostfix = "",
+        messages(s"$messageKeyPrefix.title"),
+        Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+        expectedGuidanceKeys = Seq(),
+        args = "Foo"
+      )
     )
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(
-      createViewUsingForm,
-      messageKeyPrefix,
-      routes.RegisteredBlindController.onSubmit(NormalMode).url,
-      legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+    behave.like(
+      yesNoPage(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.RegisteredBlindController.onSubmit(NormalMode).url,
+        legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
+      )
     )
 
   }
+
 }

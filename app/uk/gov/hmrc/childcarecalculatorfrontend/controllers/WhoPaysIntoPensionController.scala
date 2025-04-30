@@ -32,33 +32,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhoPaysIntoPensionController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        whoPaysIntoPension: whoPaysIntoPension)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class WhoPaysIntoPensionController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    whoPaysIntoPension: whoPaysIntoPension
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.whoPaysIntoPension match {
-        case None => WhoPaysIntoPensionForm()
-        case Some(value) => WhoPaysIntoPensionForm().fill(value)
-      }
-      Ok(whoPaysIntoPension(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.whoPaysIntoPension match {
+      case None        => WhoPaysIntoPensionForm()
+      case Some(value) => WhoPaysIntoPensionForm().fill(value)
+    }
+    Ok(whoPaysIntoPension(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      WhoPaysIntoPensionForm().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    WhoPaysIntoPensionForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[String]) =>
           Future.successful(BadRequest(whoPaysIntoPension(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[String](request.sessionId, WhoPaysIntoPensionId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(WhoPaysIntoPensionId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, WhoPaysIntoPensionId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(WhoPaysIntoPensionId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

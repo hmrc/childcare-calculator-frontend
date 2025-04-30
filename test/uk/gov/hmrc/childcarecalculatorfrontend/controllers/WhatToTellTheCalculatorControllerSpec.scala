@@ -34,4 +34,5 @@ class WhatToTellTheCalculatorControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe view()(fakeRequest, messages).toString
     }
   }
+
 }

@@ -28,8 +28,15 @@ class WhoPaysIntoPensionFormSpec extends FormBehaviours {
   val form = WhoPaysIntoPensionForm()
 
   "WhoPaysIntoPension form" must {
-    behave like questionForm[String](WhoPaysIntoPensionForm.options.head.value)
+    behave.like(questionForm[String](WhoPaysIntoPensionForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", whoPaysIntoPensionErrorKey, WhoPaysIntoPensionForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError(
+        "value",
+        whoPaysIntoPensionErrorKey,
+        WhoPaysIntoPensionForm.options.map(x => x.value): _*
+      )
+    )
   }
+
 }

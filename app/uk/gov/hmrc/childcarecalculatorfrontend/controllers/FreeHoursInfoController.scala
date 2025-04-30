@@ -25,14 +25,15 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject
 
-class FreeHoursInfoController @Inject()(
-                                         mcc: MessagesControllerComponents,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         freeHoursInfo: freeHoursInfo
-                                       ) extends FrontendController(mcc) with I18nSupport {
+class FreeHoursInfoController @Inject() (
+    mcc: MessagesControllerComponents,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    freeHoursInfo: freeHoursInfo
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) { implicit request =>
+  def onPageLoad: Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     request.userAnswers.location match {
       case Some(location) => Ok(freeHoursInfo(location))
       case None           => Redirect(routes.LocationController.onPageLoad(NormalMode))

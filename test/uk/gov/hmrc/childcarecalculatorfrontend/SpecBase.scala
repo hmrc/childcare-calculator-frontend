@@ -40,7 +40,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite {
 
   def lang: Lang = Lang("en")
 
-  def messagesApi : MessagesApi = injector.instanceOf[MessagesApi]
+  def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 

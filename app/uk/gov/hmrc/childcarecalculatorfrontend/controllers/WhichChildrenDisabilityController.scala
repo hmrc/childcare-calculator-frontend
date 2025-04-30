@@ -33,66 +33,65 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhichChildrenDisabilityController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        whichChildrenDisability: whichChildrenDisability)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class WhichChildrenDisabilityController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    whichChildrenDisability: whichChildrenDisability
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withValues {
-        values =>
-          val answer = request.userAnswers.whichChildrenDisability
-          val preparedForm = answer match {
-            case None => WhichChildrenDisabilityForm()
-            case Some(value) => WhichChildrenDisabilityForm().fill(value)
-          }
-          Future.successful(Ok(whichChildrenDisability(appConfig, preparedForm, options(values), mode)))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    withValues { values =>
+      val answer = request.userAnswers.whichChildrenDisability
+      val preparedForm = answer match {
+        case None        => WhichChildrenDisabilityForm()
+        case Some(value) => WhichChildrenDisabilityForm().fill(value)
       }
+      Future.successful(Ok(whichChildrenDisability(appConfig, preparedForm, options(values), mode)))
+    }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      withValues {
-        values =>
-          WhichChildrenDisabilityForm(values.values.toSeq: _*).bindFromRequest().fold(
-            (formWithErrors: Form[_]) => {
-              Future.successful(BadRequest(whichChildrenDisability(appConfig, formWithErrors, options(values), mode)))
-            },
-            value => {
-              dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenDisabilityId.toString, value).map {
-                cacheMap =>
-                  Redirect(navigator.nextPage(WhichChildrenDisabilityId, mode)(new UserAnswers (cacheMap)))
-              }
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    withValues { values =>
+      WhichChildrenDisabilityForm(values.values.toSeq: _*)
+        .bindFromRequest()
+        .fold(
+          (formWithErrors: Form[_]) =>
+            Future.successful(BadRequest(whichChildrenDisability(appConfig, formWithErrors, options(values), mode))),
+          value =>
+            dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenDisabilityId.toString, value).map {
+              cacheMap => Redirect(navigator.nextPage(WhichChildrenDisabilityId, mode)(new UserAnswers(cacheMap)))
             }
-          )
-      }
+        )
+    }
   }
 
   private def options(values: Map[String, Int]): Seq[(String, String)] =
-    values.map {
-      case (k, v) =>
-        (k, v.toString)
+    values.map { case (k, v) =>
+      (k, v.toString)
     }.toSeq
 
-  private def withValues(block: Map[String, Int] => Future[Result])
-                        (implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def withValues(
+      block: Map[String, Int] => Future[Result]
+  )(implicit request: DataRequest[AnyContent]): Future[Result] =
 
-    request.userAnswers.aboutYourChild.map {
-      aboutYourChild =>
-
-        val values: Map[String, Int] = aboutYourChild.map {
-          case (k, v) =>
-            v.name -> k
+    request.userAnswers.aboutYourChild
+      .map { aboutYourChild =>
+        val values: Map[String, Int] = aboutYourChild.map { case (k, v) =>
+          v.name -> k
         }
 
         block(values)
-    }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"withValues",Some(request.userAnswers),request.uri))))
-  }
+      }
+      .getOrElse(
+        Future.successful(
+          Redirect(SessionExpiredRouter.route(getClass.getName, "withValues", Some(request.userAnswers), request.uri))
+        )
+      )
 
 }

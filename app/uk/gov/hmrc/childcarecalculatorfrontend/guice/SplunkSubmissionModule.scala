@@ -21,8 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionService
 
 class SplunkSubmissionModule extends AbstractModule {
 
-  override def configure(): Unit = {
+  override def configure(): Unit =
     bind(classOf[SplunkSubmissionServiceInterface]).to(classOf[SplunkSubmissionService])
-  }
 
 }

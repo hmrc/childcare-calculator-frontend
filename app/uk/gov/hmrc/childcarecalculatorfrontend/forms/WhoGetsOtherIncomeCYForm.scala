@@ -28,14 +28,14 @@ object WhoGetsOtherIncomeCYForm extends FormErrorHelper {
   def WhoGetsOtherIncomeCYFormatter = new Formatter[String] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(s) if optionIsValid(s) => Right(s)
-      case None => produceError(key, whoGetsOtherIncomeCYErrorKey)
-      case _ => produceError(key, unknownErrorKey)
+      case None                        => produceError(key, whoGetsOtherIncomeCYErrorKey)
+      case _                           => produceError(key, unknownErrorKey)
     }
 
     def unbind(key: String, value: String) = Map(key -> value)
   }
 
-  def apply(): Form[String] = 
+  def apply(): Form[String] =
     Form(single("value" -> of(WhoGetsOtherIncomeCYFormatter)))
 
   def options = Seq(
@@ -44,13 +44,12 @@ object WhoGetsOtherIncomeCYForm extends FormErrorHelper {
     whoGetsOtherIncomeCYInputOption("value-3", YouPartnerBothEnum.BOTH.toString)
   )
 
-  private def whoGetsOtherIncomeCYInputOption(id: String, option: String): InputOption = {
+  private def whoGetsOtherIncomeCYInputOption(id: String, option: String): InputOption =
     new InputOption(
       id = id,
       value = option,
       messageKey = s"whoGetsOtherIncomeCY.$option"
     )
-  }
 
   def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

@@ -27,21 +27,27 @@ object PartnerBenefitsIncomeCYForm extends FormErrorHelper {
 
     val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
-    def bind(key: String, data: Map[String, String]) = {
+    def bind(key: String, data: Map[String, String]) =
       data.get(key) match {
-        case None => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, errorKeyBlank)
+        case None                               => produceError(key, errorKeyBlank)
+        case Some("")                           => produceError(key, errorKeyBlank)
         case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
-        case _ => produceError(key, errorKeyInvalid)
+        case _                                  => produceError(key, errorKeyInvalid)
       }
-    }
 
     def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
   }
 
-  def apply(errorKeyBlank: String = partnerBenefitsIncomeCYRequiredErrorKey,
-            errorKeyInvalid: String = partnerBenefitsIncomeInvalidErrorKey): Form[BigDecimal] =
-    Form(single("value" -> of(partnerBenefitsIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))
-      .verifying(maximumValue[BigDecimal](9999.99, errorKeyInvalid))
-      .verifying(minimumValue[BigDecimal](1, errorKeyInvalid))))
+  def apply(
+      errorKeyBlank: String = partnerBenefitsIncomeCYRequiredErrorKey,
+      errorKeyInvalid: String = partnerBenefitsIncomeInvalidErrorKey
+  ): Form[BigDecimal] =
+    Form(
+      single(
+        "value" -> of(partnerBenefitsIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))
+          .verifying(maximumValue[BigDecimal](9999.99, errorKeyInvalid))
+          .verifying(minimumValue[BigDecimal](1, errorKeyInvalid))
+      )
+    )
+
 }

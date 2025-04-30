@@ -25,33 +25,38 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountCY
 
 class OtherIncomeAmountCYViewSpec extends NewQuestionViewBehaviours[OtherIncomeAmountCY] {
 
-  val view = application.injector.instanceOf[otherIncomeAmountCY]
+  val view             = application.injector.instanceOf[otherIncomeAmountCY]
   val messageKeyPrefix = "otherIncomeAmountCY"
 
   override val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
 
   def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[OtherIncomeAmountCY]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[OtherIncomeAmountCY]) =>
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "OtherIncomeAmountCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like pageWithTextFields(
-      createViewUsingForm,
-      messageKeyPrefix,
-      routes.OtherIncomeAmountCYController.onSubmit(NormalMode).url,
-      "parentOtherIncome", "partnerOtherIncome")
+    behave.like(
+      pageWithTextFields(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.OtherIncomeAmountCYController.onSubmit(NormalMode).url,
+        "parentOtherIncome",
+        "partnerOtherIncome"
+      )
+    )
 
     "contain the currencySymbol class and £ " in {
       val doc = asDocument(createView())
 
       assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 
-      val parentCurrencySymbol = doc.getElementById("parentOtherIncome").firstElementSibling().text()
+      val parentCurrencySymbol  = doc.getElementById("parentOtherIncome").firstElementSibling().text()
       val partnerCurrencySymbol = doc.getElementById("partnerOtherIncome").firstElementSibling().text()
 
       parentCurrencySymbol mustBe "£"
@@ -59,4 +64,5 @@ class OtherIncomeAmountCYViewSpec extends NewQuestionViewBehaviours[OtherIncomeA
 
     }
   }
+
 }

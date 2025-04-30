@@ -22,52 +22,64 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
-class PensionsCascadeUpsert @Inject()() extends SubCascadeUpsert {
+class PensionsCascadeUpsert @Inject() () extends SubCascadeUpsert {
 
-  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap]  =
+  val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      YouPaidPensionCYId.toString -> ((v, cm) => storeYouPaidPensionCY(v, cm)),
+      YouPaidPensionCYId.toString     -> ((v, cm) => storeYouPaidPensionCY(v, cm)),
       PartnerPaidPensionCYId.toString -> ((v, cm) => storePartnerPaidPensionCY(v, cm)),
-      BothPaidPensionCYId.toString -> ((v, cm) => storeBothPaidPensionCY(v, cm)),
-      WhoPaysIntoPensionId.toString -> ((v, cm) => storeWhoPaysIntoPension(v, cm))
+      BothPaidPensionCYId.toString    -> ((v, cm) => storeBothPaidPensionCY(v, cm)),
+      WhoPaysIntoPensionId.toString   -> ((v, cm) => storeWhoPaysIntoPension(v, cm))
     )
 
   private def storeYouPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore= value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchYouPayPensionId.toString)
-      case _ => cacheMap
+    val mapToStore = value match {
+      case JsBoolean(false) => cacheMap.copy(data = cacheMap.data - HowMuchYouPayPensionId.toString)
+      case _                => cacheMap
     }
 
     store(YouPaidPensionCYId.toString, value, mapToStore)
   }
 
   private def storePartnerPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore= value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchPartnerPayPensionId.toString)
-      case _ => cacheMap
+    val mapToStore = value match {
+      case JsBoolean(false) => cacheMap.copy(data = cacheMap.data - HowMuchPartnerPayPensionId.toString)
+      case _                => cacheMap
     }
 
     store(PartnerPaidPensionCYId.toString, value, mapToStore)
   }
 
   private def storeBothPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore= value match {
-      case JsBoolean(false) => cacheMap copy (data = cacheMap.data - HowMuchYouPayPensionId.toString - HowMuchPartnerPayPensionId.toString
-        - HowMuchBothPayPensionId.toString  - WhoPaysIntoPensionId.toString)
+    val mapToStore = value match {
+      case JsBoolean(false) =>
+        cacheMap.copy(data =
+          cacheMap.data - HowMuchYouPayPensionId.toString - HowMuchPartnerPayPensionId.toString
+            - HowMuchBothPayPensionId.toString - WhoPaysIntoPensionId.toString
+        )
       case _ => cacheMap
     }
 
     store(BothPaidPensionCYId.toString, value, mapToStore)
   }
 
-  private def storeWhoPaysIntoPension(value: JsValue, cacheMap: CacheMap): CacheMap ={
+  private def storeWhoPaysIntoPension(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsString(`you`) => cacheMap copy (data = cacheMap.data  - HowMuchPartnerPayPensionId.toString -
-        HowMuchBothPayPensionId.toString)
-      case JsString(`partner`) => cacheMap copy (data = cacheMap.data  - HowMuchYouPayPensionId.toString -
-        HowMuchBothPayPensionId.toString)
-      case JsString(`both`) => cacheMap copy (data = cacheMap.data  - HowMuchYouPayPensionId.toString -
-        HowMuchPartnerPayPensionId.toString)
+      case JsString(`you`) =>
+        cacheMap.copy(data =
+          cacheMap.data - HowMuchPartnerPayPensionId.toString -
+            HowMuchBothPayPensionId.toString
+        )
+      case JsString(`partner`) =>
+        cacheMap.copy(data =
+          cacheMap.data - HowMuchYouPayPensionId.toString -
+            HowMuchBothPayPensionId.toString
+        )
+      case JsString(`both`) =>
+        cacheMap.copy(data =
+          cacheMap.data - HowMuchYouPayPensionId.toString -
+            HowMuchPartnerPayPensionId.toString
+        )
       case _ => cacheMap
     }
 

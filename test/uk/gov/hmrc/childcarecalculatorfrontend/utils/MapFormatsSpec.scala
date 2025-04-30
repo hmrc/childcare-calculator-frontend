@@ -41,12 +41,12 @@ class MapFormatsSpec extends PlaySpec with EitherValues with MapFormats {
 
       val json = Json.obj(
         "foo" -> "foo",
-        "1" -> "bar"
+        "1"   -> "bar"
       )
 
       val result = Json.fromJson[Map[Int, String]](json).asEither
 
-      result.left.value must contain (JsPath -> Seq(JsonValidationError("Failed to convert map keys into ints")))
+      result.left.value must contain(JsPath -> Seq(JsonValidationError("Failed to convert map keys into ints")))
     }
   }
 
@@ -67,4 +67,5 @@ class MapFormatsSpec extends PlaySpec with EitherValues with MapFormats {
       Json.toJson(model) mustEqual json
     }
   }
+
 }

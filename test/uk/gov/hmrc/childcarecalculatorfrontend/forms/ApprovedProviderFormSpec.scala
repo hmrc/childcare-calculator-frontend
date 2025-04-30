@@ -28,8 +28,11 @@ class ApprovedProviderFormSpec extends FormBehaviours {
   val form = ApprovedProviderForm()
 
   "ApprovedProvider form" must {
-    behave like questionForm[String](ApprovedProviderForm.options.head.value)
+    behave.like(questionForm[String](ApprovedProviderForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", approvedProviderErrorKey, ApprovedProviderForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError("value", approvedProviderErrorKey, ApprovedProviderForm.options.map(x => x.value): _*)
+    )
   }
+
 }

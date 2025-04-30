@@ -22,9 +22,22 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{CarersAllowance, CarersCredit, ContributionBasedEmploymentAndSupportAllowance, IncapacityBenefit, NICreditsForIncapacityOrLimitedCapabilityForWork, NoneOfThese, SevereDisablementAllowance}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{
+  CarersAllowance,
+  CarersCredit,
+  ContributionBasedEmploymentAndSupportAllowance,
+  IncapacityBenefit,
+  NICreditsForIncapacityOrLimitedCapabilityForWork,
+  NoneOfThese,
+  SevereDisablementAllowance
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, NotDetermined, NotEligible, ParentsBenefits}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{JointHousehold, ModelFactory, Parent, SingleHousehold}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{
+  JointHousehold,
+  ModelFactory,
+  Parent,
+  SingleHousehold
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers}
 
 class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with BeforeAndAfterEach {
@@ -49,7 +62,7 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
   "FreeChildcareEligibilityCalculator on calculateEligibility" when {
 
     "should always call ModelFactory" in {
-      when(modelFactory(any())) thenReturn None
+      when(modelFactory(any())).thenReturn(None)
 
       eligibilityCalculator.calculateEligibility(userAnswers, Set.empty)
 
@@ -58,7 +71,7 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
 
     "ModelFactory returns empty Option" should {
       "return NotDetermined" in {
-        when(modelFactory(any())) thenReturn None
+        when(modelFactory(any())).thenReturn(None)
 
         eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe NotDetermined
       }
@@ -70,18 +83,30 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
 
         "parent earns less than minimum earnings" in {
           val household = SingleHousehold(
-            Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe NotEligible
         }
 
         "parent earns over maximum earnings" in {
           val household = SingleHousehold(
-            Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = true, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = true,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe NotEligible
         }
@@ -91,45 +116,75 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
 
         "parent earns between minimum and maximum earnings" in {
           val household = SingleHousehold(
-            Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "parent earns below minimum earnings and is an apprentice" in {
           val household = SingleHousehold(
-            Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, benefits = Set.empty)
+            Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = true,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "parent earns below minimum earnings and is self employed" in {
           val household = SingleHousehold(
-            Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, benefits = Set.empty)
+            Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = true,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "parent earns between minimum and maximum earnings and is an apprentice" in {
           val household = SingleHousehold(
-            Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, benefits = Set.empty)
+            Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = true,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "parent earns between minimum and maximum earnings and is self-employed" in {
           val household = SingleHousehold(
-            Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, benefits = Set.empty)
+            Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = true,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
@@ -142,40 +197,88 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
 
         "both parents do not earn above minimum earnings" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe NotEligible
         }
 
         "both parents earn above maximum earnings" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = true, selfEmployed = false, apprentice = false, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = true, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = true,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = true,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe NotEligible
         }
 
         "parent does, but partner does NOT earn above minimum earnings" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe NotEligible
         }
 
         "parent does NOT, but partner does earn above minimum earnings" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe NotEligible
         }
@@ -185,10 +288,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "partner gets NO benefits" in {
             val benefits: Set[ParentsBenefits] = Set(NoneOfThese)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-              partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits)
+              parent = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe NotEligible
           }
@@ -196,10 +311,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "partner gets one benefit and it is NOT eligible one" in {
             val benefits: Set[ParentsBenefits] = Set(ContributionBasedEmploymentAndSupportAllowance)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-              partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits)
+              parent = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe NotEligible
           }
@@ -207,10 +334,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "partner gets several benefits, but NONE of them are eligible benefits" in {
             val benefits: Set[ParentsBenefits] = Set(NICreditsForIncapacityOrLimitedCapabilityForWork, CarersCredit)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-              partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits)
+              parent = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe NotEligible
           }
@@ -221,10 +360,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "parent gets NO benefits" in {
             val benefits: Set[ParentsBenefits] = Set(NoneOfThese)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits),
-              partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+              parent = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe NotEligible
           }
@@ -232,10 +383,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "parent gets one benefit and it is NOT eligible one" in {
             val benefits: Set[ParentsBenefits] = Set(ContributionBasedEmploymentAndSupportAllowance)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits),
-              partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+              parent = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe NotEligible
           }
@@ -243,10 +406,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "parent gets several benefits, but NONE of them are eligible benefits" in {
             val benefits: Set[ParentsBenefits] = Set(NICreditsForIncapacityOrLimitedCapabilityForWork, CarersCredit)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits),
-              partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+              parent = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe NotEligible
           }
@@ -257,50 +432,110 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
 
         "both parent and partner earn between minimum and maximum earnings" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "parent earns between minimum and maximum earnings and partner is an apprentice" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = true,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "partner earns between minimum and maximum earnings and parent is an apprentice" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = true,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = true,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "both parents earn below minimum earnings, but parent is self employed and partner is an apprentice" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = true,
+              apprentice = false,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = true,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
 
         "both parents earn below minimum earnings, but parent is an apprentice and partner is self employed" in {
           val household = JointHousehold(
-            parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = true, benefits = Set.empty),
-            partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = true, apprentice = false, benefits = Set.empty)
+            parent = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = false,
+              apprentice = true,
+              benefits = Set.empty
+            ),
+            partner = Parent(
+              earnsAboveMinEarnings = false,
+              earnsAboveMaxEarnings = false,
+              selfEmployed = true,
+              apprentice = false,
+              benefits = Set.empty
+            )
           )
-          when(modelFactory(any())) thenReturn Some(household)
+          when(modelFactory(any())).thenReturn(Some(household))
 
           eligibilityCalculator.calculateEligibility(userAnswers, Set.empty) mustBe Eligible
         }
@@ -310,10 +545,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "partner gets one of eligible benefits" in {
             val benefits: Set[ParentsBenefits] = Set(CarersAllowance)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-              partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits)
+              parent = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe Eligible
           }
@@ -322,10 +569,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
             val benefits: Set[ParentsBenefits] =
               Set(CarersAllowance, NICreditsForIncapacityOrLimitedCapabilityForWork, CarersCredit)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty),
-              partner = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits)
+              parent = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe Eligible
           }
@@ -336,10 +595,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
           "parent gets one of eligible benefits" in {
             val benefits: Set[ParentsBenefits] = Set(CarersAllowance)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits),
-              partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+              parent = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe Eligible
           }
@@ -348,10 +619,22 @@ class FreeChildcareEligibilityCalculatorSpec extends PlaySpec with Matchers with
             val benefits: Set[ParentsBenefits] =
               Set(CarersAllowance, NICreditsForIncapacityOrLimitedCapabilityForWork, CarersCredit)
             val household = JointHousehold(
-              parent = Parent(earnsAboveMinEarnings = false, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = benefits),
-              partner = Parent(earnsAboveMinEarnings = true, earnsAboveMaxEarnings = false, selfEmployed = false, apprentice = false, benefits = Set.empty)
+              parent = Parent(
+                earnsAboveMinEarnings = false,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = benefits
+              ),
+              partner = Parent(
+                earnsAboveMinEarnings = true,
+                earnsAboveMaxEarnings = false,
+                selfEmployed = false,
+                apprentice = false,
+                benefits = Set.empty
+              )
             )
-            when(modelFactory(any())) thenReturn Some(household)
+            when(modelFactory(any())).thenReturn(Some(household))
 
             eligibilityCalculator.calculateEligibility(userAnswers, eligibleBenefits) mustBe Eligible
           }

@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
-  val navigator = new SurveyNavigator(new Utils(), appConfig =frontendAppConfig)
+  val navigator = new SurveyNavigator(new Utils(), appConfig = frontendAppConfig)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -36,16 +36,18 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
     "Redirect to Not Understand Survey Page" when {
       "User selects that I don't understand childcare support options" in {
         val answers = spy(userAnswers())
-        when(answers.surveyChildcareSupport) thenReturn Some(false)
+        when(answers.surveyChildcareSupport).thenReturn(Some(false))
 
-        navigator.nextPage(SurveyChildcareSupportId, NormalMode).value(answers) mustBe routes.SurveyDoNotUnderstandController.onPageLoad()
+        navigator
+          .nextPage(SurveyChildcareSupportId, NormalMode)
+          .value(answers) mustBe routes.SurveyDoNotUnderstandController.onPageLoad()
       }
     }
 
     "Redirect to thank you page" when {
       "User selects that they understand their childcare support options" in {
         val answers = spy(userAnswers())
-        when(answers.surveyChildcareSupport) thenReturn Some(true)
+        when(answers.surveyChildcareSupport).thenReturn(Some(true))
 
         val result = navigator.nextPage(SurveyChildcareSupportId, NormalMode).value(answers)
 
@@ -54,7 +56,7 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
 
       "User submits why they don't understand their childcare support options" in {
         val answers = spy(userAnswers())
-        when(answers.surveyDoNotUnderstand) thenReturn Some("I don't understand.")
+        when(answers.surveyDoNotUnderstand).thenReturn(Some("I don't understand."))
 
         val result = navigator.nextPage(SurveyDoNotUnderstandId, NormalMode).value(answers)
 
@@ -62,4 +64,5 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
       }
     }
   }
+
 }

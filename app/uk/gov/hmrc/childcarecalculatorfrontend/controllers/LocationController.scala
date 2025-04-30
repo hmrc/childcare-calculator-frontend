@@ -32,33 +32,36 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class LocationController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        location: location)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class LocationController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    location: location
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData {
-    implicit request =>
-      val preparedForm = request.userAnswers.flatMap(x => x.location) match {
-        case None => LocationForm()
-        case Some(value) => LocationForm().fill(value)
-      }
-      Ok(location(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData { implicit request =>
+    val preparedForm = request.userAnswers.flatMap(x => x.location) match {
+      case None        => LocationForm()
+      case Some(value) => LocationForm().fill(value)
+    }
+    Ok(location(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.async {
-    implicit request =>
-      LocationForm().bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(location(appConfig, formWithErrors, mode))),
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.async { implicit request =>
+    LocationForm()
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(location(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[Location.Value](request.sessionId, LocationId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(LocationId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Location.Value](request.sessionId, LocationId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(LocationId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

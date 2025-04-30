@@ -32,43 +32,49 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ChildAgedThreeOrFourController @Inject()(appConfig: FrontendAppConfig,
-                                               mcc: MessagesControllerComponents,
-                                               dataCacheConnector: DataCacheConnector,
-                                               navigator: Navigator,
-                                               getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
-                                               childAgedThreeOrFour: childAgedThreeOrFour)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc)with I18nSupport {
+class ChildAgedThreeOrFourController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    childAgedThreeOrFour: childAgedThreeOrFour
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      request.userAnswers.location match {
-        case None =>
-          Redirect(routes.LocationController.onPageLoad(mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    request.userAnswers.location match {
+      case None =>
+        Redirect(routes.LocationController.onPageLoad(mode))
 
-        case Some(location) =>
-          val preparedForm = request.userAnswers.childAgedThreeOrFour match {
-            case None => BooleanForm()
-            case Some(value) => BooleanForm().fill(value)
-          }
-          Ok(childAgedThreeOrFour(appConfig, preparedForm, mode, location))
-      }
+      case Some(location) =>
+        val preparedForm = request.userAnswers.childAgedThreeOrFour match {
+          case None        => BooleanForm()
+          case Some(value) => BooleanForm().fill(value)
+        }
+        Ok(childAgedThreeOrFour(appConfig, preparedForm, mode, location))
+    }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-
-      if (request.userAnswers.location.isEmpty) {
-        Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
-      } else {
-        BooleanForm("childAgedThreeOrFour.error.notCompleted").bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    if (request.userAnswers.location.isEmpty) {
+      Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+    } else {
+      BooleanForm("childAgedThreeOrFour.error.notCompleted")
+        .bindFromRequest()
+        .fold(
           (formWithErrors: Form[Boolean]) =>
-            Future.successful(BadRequest(childAgedThreeOrFour(appConfig, formWithErrors, mode, request.userAnswers.location.get))),
+            Future.successful(
+              BadRequest(childAgedThreeOrFour(appConfig, formWithErrors, mode, request.userAnswers.location.get))
+            ),
           value =>
-            dataCacheConnector.save[Boolean](request.sessionId, ChildAgedThreeOrFourId.toString, value).map(cacheMap =>
-              Redirect(navigator.nextPage(ChildAgedThreeOrFourId, mode)(new UserAnswers(cacheMap))))
+            dataCacheConnector
+              .save[Boolean](request.sessionId, ChildAgedThreeOrFourId.toString, value)
+              .map(cacheMap => Redirect(navigator.nextPage(ChildAgedThreeOrFourId, mode)(new UserAnswers(cacheMap))))
         )
-      }
+    }
   }
+
 }

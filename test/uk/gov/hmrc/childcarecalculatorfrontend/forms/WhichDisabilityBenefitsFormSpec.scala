@@ -29,8 +29,9 @@ class WhichDisabilityBenefitsFormSpec extends CheckboxBehaviours[DisabilityBenef
 
   "WhichDisabilityBenefits form" must {
 
-    behave like aCheckboxForm(invalid = "error.unknown")
+    behave.like(aCheckboxForm(invalid = "error.unknown"))
 
-    behave like aMandatoryCheckboxForm("whichDisabilityBenefits.error.notCompleted", "Foo")
+    behave.like(aMandatoryCheckboxForm("whichDisabilityBenefits.error.notCompleted", "Foo"))
   }
+
 }

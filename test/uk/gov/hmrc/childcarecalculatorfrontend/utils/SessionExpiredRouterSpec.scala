@@ -22,29 +22,30 @@ import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 class SessionExpiredRouterSpec extends SpecBase {
+
   "Session Expired Router" should {
     "Route to session expired controller" in {
       val answers = spy(userAnswers())
-      val result = SessionExpiredRouter.route("test","test",Some(answers))
+      val result  = SessionExpiredRouter.route("test", "test", Some(answers))
 
       result mustBe routes.SessionExpiredController.onPageLoad
     }
 
     "Be able to cope with no UserAnswers" in {
-      val result = SessionExpiredRouter.route("test","test",None)
+      val result = SessionExpiredRouter.route("test", "test", None)
 
       result mustBe routes.SessionExpiredController.onPageLoad
     }
 
     "Be able to cope with UserAnswers with populated cache map" in {
       val answers = spy(userAnswers())
-      val result = SessionExpiredRouter.route("test","test",Some(answers))
+      val result  = SessionExpiredRouter.route("test", "test", Some(answers))
 
       result mustBe routes.SessionExpiredController.onPageLoad
     }
 
     "Be able to cope with UserAnswers with no cache map" in {
-      val result = SessionExpiredRouter.route("test","test",Some(new UserAnswers(null)))
+      val result = SessionExpiredRouter.route("test", "test", Some(new UserAnswers(null)))
 
       result mustBe routes.SessionExpiredController.onPageLoad
     }
@@ -52,4 +53,5 @@ class SessionExpiredRouterSpec extends SpecBase {
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
+
 }

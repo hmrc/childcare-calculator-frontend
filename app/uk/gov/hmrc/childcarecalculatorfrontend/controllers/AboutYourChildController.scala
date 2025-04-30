@@ -33,62 +33,69 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AboutYourChildController @Inject()(
-                                          appConfig: FrontendAppConfig,
-                                          mcc: MessagesControllerComponents,
-                                          dataCacheConnector: DataCacheConnector,
-                                          navigator: Navigator,
-                                          getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction,
-                                          aboutYourChild: aboutYourChild
-                                        )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with MapFormats {
+class AboutYourChildController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    aboutYourChild: aboutYourChild
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with MapFormats {
 
-  private def sessionExpired(message: String, answers: Option[UserAnswers])(implicit request: RequestHeader): Future[Result] =
-    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,message,answers,request.uri)))
+  private def sessionExpired(message: String, answers: Option[UserAnswers])(
+      implicit request: RequestHeader
+  ): Future[Result] =
+    Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName, message, answers, request.uri)))
 
-  private def validateIndex[A](childIndex: Int)(block: Int => Future[Result])
-                              (implicit request: DataRequest[A]): Future[Result] = {
-    request.userAnswers.noOfChildren.map {
-      noOfChildren =>
+  private def validateIndex[A](
+      childIndex: Int
+  )(block: Int => Future[Result])(implicit request: DataRequest[A]): Future[Result] =
+    request.userAnswers.noOfChildren
+      .map { noOfChildren =>
         if (childIndex >= 0 && childIndex < noOfChildren) {
           block(noOfChildren)
         } else {
-          sessionExpired("validateIndex",Some(request.userAnswers))
+          sessionExpired("validateIndex", Some(request.userAnswers))
         }
-    }.getOrElse(sessionExpired("validateIndex",None))
-  }
-
-  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      validateIndex(childIndex) {
-        noOfChildren =>
-          val preparedForm = request.userAnswers.aboutYourChild(childIndex) match {
-            case None => AboutYourChildForm(childIndex, noOfChildren)
-            case Some(value) => AboutYourChildForm(childIndex, noOfChildren, request.userAnswers.aboutYourChild).fill(value)
-          }
-          Future.successful(Ok(aboutYourChild(appConfig, preparedForm, mode, childIndex, noOfChildren)))
       }
-  }
+      .getOrElse(sessionExpired("validateIndex", None))
 
-  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      validateIndex(childIndex) {
-        noOfChildren =>
-          AboutYourChildForm(childIndex, noOfChildren, request.userAnswers.aboutYourChild).bindFromRequest().fold(
-            (formWithErrors: Form[AboutYourChild]) =>
-              Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, mode, childIndex, noOfChildren))),
-              value =>
-          dataCacheConnector.saveInMap[Int, AboutYourChild](
-            request.sessionId,
-            AboutYourChildId.toString,
-            childIndex,
-            value
-          ).map {
-            cacheMap =>
-              Redirect(navigator.nextPage(AboutYourChildId(childIndex), mode)(new UserAnswers(cacheMap)))
-          }
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] =
+    getData.andThen(requireData).async { implicit request =>
+      validateIndex(childIndex) { noOfChildren =>
+        val preparedForm = request.userAnswers.aboutYourChild(childIndex) match {
+          case None => AboutYourChildForm(childIndex, noOfChildren)
+          case Some(value) =>
+            AboutYourChildForm(childIndex, noOfChildren, request.userAnswers.aboutYourChild).fill(value)
+        }
+        Future.successful(Ok(aboutYourChild(appConfig, preparedForm, mode, childIndex, noOfChildren)))
+      }
+    }
+
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    validateIndex(childIndex) { noOfChildren =>
+      AboutYourChildForm(childIndex, noOfChildren, request.userAnswers.aboutYourChild)
+        .bindFromRequest()
+        .fold(
+          (formWithErrors: Form[AboutYourChild]) =>
+            Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, mode, childIndex, noOfChildren))),
+          value =>
+            dataCacheConnector
+              .saveInMap[Int, AboutYourChild](
+                request.sessionId,
+                AboutYourChildId.toString,
+                childIndex,
+                value
+              )
+              .map { cacheMap =>
+                Redirect(navigator.nextPage(AboutYourChildId(childIndex), mode)(new UserAnswers(cacheMap)))
+              }
         )
-      }
+    }
   }
+
 }

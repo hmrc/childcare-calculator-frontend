@@ -31,33 +31,36 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ChildrenAgeGroupsController @Inject()(mcc: MessagesControllerComponents,
-                                            dataCacheConnector: DataCacheConnector,
-                                            navigator: Navigator,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            childAgeGroup: childrenAgeGroups
-                                           )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class ChildrenAgeGroupsController @Inject() (
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    childAgeGroup: childrenAgeGroups
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.childrenAgeGroups match {
-        case None => ChildrenAgeGroupsForm()
-        case Some(value) => ChildrenAgeGroupsForm().fill(value)
-      }
-      Ok(childAgeGroup(preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.childrenAgeGroups match {
+      case None        => ChildrenAgeGroupsForm()
+      case Some(value) => ChildrenAgeGroupsForm().fill(value)
+    }
+    Ok(childAgeGroup(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      ChildrenAgeGroupsForm().bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(childAgeGroup(formWithErrors, mode))),
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    ChildrenAgeGroupsForm()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(childAgeGroup(formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[Set[ChildAgeGroup]](request.sessionId, ChildrenAgeGroupsId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(ChildrenAgeGroupsId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Set[ChildAgeGroup]](request.sessionId, ChildrenAgeGroupsId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(ChildrenAgeGroupsId, mode)(new UserAnswers(cacheMap))))
       )
 
   }
+
 }

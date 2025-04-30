@@ -30,7 +30,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 
 class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[doYouGetAnyBenefits]
+  val view        = application.injector.instanceOf[doYouGetAnyBenefits]
   def onwardRoute = routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
 
   val cacheMapWithPreviousAnswers = new CacheMap("id", Map.empty)
@@ -103,14 +103,11 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
   }
+
 }
-
-
-
-

@@ -23,31 +23,26 @@ import scala.util.{Failure, Success, Try}
 trait MapFormats {
 
   implicit def mapReads[V](implicit rds: Reads[Map[String, V]]): Reads[Map[Int, V]] =
-    Reads[Map[Int, V]] {
-      json =>
-        Json.fromJson[Map[String, V]](json).flatMap {
-          data =>
-            Try(data.map {
-              case (k, v) =>
-                (k.toInt, v)
-            }) match {
-              case Success(v) =>
-                JsSuccess(v)
-              case Failure(e) =>
-                JsError("Failed to convert map keys into ints")
-            }
+    Reads[Map[Int, V]] { json =>
+      Json.fromJson[Map[String, V]](json).flatMap { data =>
+        Try(data.map { case (k, v) =>
+          (k.toInt, v)
+        }) match {
+          case Success(v) =>
+            JsSuccess(v)
+          case Failure(e) =>
+            JsError("Failed to convert map keys into ints")
         }
+      }
     }
 
   implicit def mapWrites[V](implicit wrts: Writes[Map[String, V]]): Writes[Map[Int, V]] =
-    Writes[Map[Int, V]] {
-      map =>
+    Writes[Map[Int, V]] { map =>
+      val newMap = map.map { case (k, v) =>
+        (k.toString, v)
+      }
 
-        val newMap = map.map {
-          case (k, v) =>
-            (k.toString, v)
-        }
-
-        Json.toJson(newMap)
+      Json.toJson(newMap)
     }
+
 }

@@ -29,25 +29,40 @@ class PartnerAnyOtherIncomeThisYearViewSpec extends NewYesNoViewBehaviours {
   override val form = BooleanForm()
 
   val taxYearInfo = new TaxYearInfo
-  val view = application.injector.instanceOf[partnerAnyOtherIncomeThisYear]
+  val view        = application.injector.instanceOf[partnerAnyOtherIncomeThisYear]
 
   val messageKeyPrefix = "partnerAnyOtherIncomeThisYear"
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
 
   "PartnerAnyOtherIncomeThisYear view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerAnyOtherIncomeThisYearController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.PartnerAnyOtherIncomeThisYearController.onSubmit(NormalMode).url
+      )
+    )
 
     "contain tax year info" in {
       val doc = asDocument(createView())
-      assertContainsText(doc, messages(s"$messageKeyPrefix.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd))
+      assertContainsText(
+        doc,
+        messages(
+          s"$messageKeyPrefix.year.start.end.date",
+          taxYearInfo.currentTaxYearStart,
+          taxYearInfo.currentTaxYearEnd
+        )
+      )
     }
   }
+
 }

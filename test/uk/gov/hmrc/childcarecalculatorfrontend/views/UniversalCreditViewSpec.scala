@@ -27,31 +27,45 @@ class UniversalCreditViewSpec extends NewYesNoViewBehaviours {
 
   val view = application.injector.instanceOf[universalCredit]
 
-  override val form =  BooleanForm()
+  override val form = BooleanForm()
 
-  val messageKeyPrefix = "universalCredit"
+  val messageKeyPrefix        = "universalCredit"
   val messageKeyPartnerPrefix = "universalCreditPartner"
 
+  def createView(isPartner: Option[Boolean]) = () =>
+    view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
 
-  def createView(isPartner : Option[Boolean]) = () => view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
-
-  def createViewUsingForm( isPartner : Option[Boolean]) = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode,  isPartner)(fakeRequest, messages)
+  def createViewUsingForm(isPartner: Option[Boolean]) = (form: Form[Boolean]) =>
+    view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
 
   "UniversalCredit view when there is partner" must {
 
-    behave like normalPage(createView(Some(true)), messageKeyPartnerPrefix)
+    behave.like(normalPage(createView(Some(true)), messageKeyPartnerPrefix))
 
-    behave like pageWithBackLink(createView(Some(true)))
+    behave.like(pageWithBackLink(createView(Some(true))))
 
-    behave like yesNoPage(createViewUsingForm(Some(true)), messageKeyPartnerPrefix, routes.UniversalCreditController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(
+        createViewUsingForm(Some(true)),
+        messageKeyPartnerPrefix,
+        routes.UniversalCreditController.onSubmit(NormalMode).url
+      )
+    )
   }
 
   "UniversalCredit view when there is no partner" must {
 
-    behave like normalPage(createView(Some(false)), messageKeyPrefix)
+    behave.like(normalPage(createView(Some(false)), messageKeyPrefix))
 
-    behave like pageWithBackLink(createView(Some(false)))
+    behave.like(pageWithBackLink(createView(Some(false))))
 
-    behave like yesNoPage(createViewUsingForm(Some(false)), messageKeyPrefix, routes.UniversalCreditController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(
+        createViewUsingForm(Some(false)),
+        messageKeyPrefix,
+        routes.UniversalCreditController.onSubmit(NormalMode).url
+      )
+    )
   }
+
 }

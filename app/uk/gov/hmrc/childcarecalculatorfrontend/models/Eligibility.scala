@@ -17,6 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
 sealed trait Eligibility
-case object Eligible extends Eligibility
-case object NotEligible extends Eligibility
+case object Eligible      extends Eligibility
+case object NotEligible   extends Eligibility
 case object NotDetermined extends Eligibility

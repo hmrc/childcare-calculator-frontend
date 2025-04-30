@@ -24,12 +24,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 
 @Singleton
-class OtherIncomeAmountCYForm @Inject()(appConfig: FrontendAppConfig) extends FormErrorHelper {
+class OtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   val minValue: Double = appConfig.minIncome
   val maxValue: Double = appConfig.maxIncome
 
-  private val parentIncomeInvalidKey = "parentOtherIncome.error.invalid"
+  private val parentIncomeInvalidKey  = "parentOtherIncome.error.invalid"
   private val partnerIncomeInvalidKey = "partnerOtherIncome.error.invalid"
 
   def apply(): Form[OtherIncomeAmountCY] = Form(
@@ -44,4 +44,5 @@ class OtherIncomeAmountCYForm @Inject()(appConfig: FrontendAppConfig) extends Fo
           .verifying(maximumValue[BigDecimal](maxValue, partnerIncomeInvalidKey))
     )(OtherIncomeAmountCY.apply)(OtherIncomeAmountCY.unapply)
   )
+
 }

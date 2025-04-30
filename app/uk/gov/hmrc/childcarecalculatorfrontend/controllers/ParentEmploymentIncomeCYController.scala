@@ -33,47 +33,53 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ParentEmploymentIncomeCYController @Inject()(
-                                                    appConfig: FrontendAppConfig,
-                                                    mcc: MessagesControllerComponents,
-                                                    dataCacheConnector: DataCacheConnector,
-                                                    navigator: Navigator,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    form: ParentEmploymentIncomeCYForm,
-                                                    taxYearInfo: TaxYearInfo,
-                                                    parentEmploymentIncomeCY: parentEmploymentIncomeCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with FormErrorHelper {
+class ParentEmploymentIncomeCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    form: ParentEmploymentIncomeCYForm,
+    taxYearInfo: TaxYearInfo,
+    parentEmploymentIncomeCY: parentEmploymentIncomeCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with FormErrorHelper {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.parentEmploymentIncomeCY match {
-        case None => form()
-        case Some(value) => form().fill(value)
-      }
-      Ok(parentEmploymentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.parentEmploymentIncomeCY match {
+      case None        => form()
+      case Some(value) => form().fill(value)
+    }
+    Ok(parentEmploymentIncomeCY(appConfig, preparedForm, mode, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    val maxEarnings = request.userAnswers.yourMaximumEarnings
+    val boundForm   = form().bindFromRequest()
 
-      val maxEarnings = request.userAnswers.yourMaximumEarnings
-      val boundForm = form().bindFromRequest()
-
-      validateForm(maxEarnings, boundForm).fold((formWithErrors: Form[BigDecimal]) =>
+    validateForm(maxEarnings, boundForm).fold(
+      (formWithErrors: Form[BigDecimal]) =>
         Future.successful(BadRequest(parentEmploymentIncomeCY(appConfig, formWithErrors, mode, taxYearInfo))),
-        value =>
-          dataCacheConnector.save[BigDecimal](request.sessionId, ParentEmploymentIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(ParentEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap)))))
+      value =>
+        dataCacheConnector
+          .save[BigDecimal](request.sessionId, ParentEmploymentIncomeCYId.toString, value)
+          .map(cacheMap => Redirect(navigator.nextPage(ParentEmploymentIncomeCYId, mode)(new UserAnswers(cacheMap))))
+    )
   }
 
   private def validateForm(maxEarnings: Option[Boolean], boundForm: Form[BigDecimal]) =
     if (boundForm.hasErrors) {
       boundForm
     } else {
-      validateMaxIncomeEarnings(maxEarnings,
+      validateMaxIncomeEarnings(
+        maxEarnings,
         appConfig.maxIncome,
         parentEmploymentIncomeInvalidMaxEarningsErrorKey,
-        boundForm)
+        boundForm
+      )
     }
+
 }

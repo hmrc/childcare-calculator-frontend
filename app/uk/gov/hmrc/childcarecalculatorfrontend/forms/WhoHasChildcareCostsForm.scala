@@ -19,12 +19,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.Form
 import play.api.data.Forms._
 
-
 object WhoHasChildcareCostsForm extends FormErrorHelper {
 
   def apply(options: Int*): Form[Set[Int]] =
     Form(
       "value" -> set(number.verifying("error.unknown", options.contains _))
-          .verifying("whoHasChildcareCosts.error.notCompleted", _.nonEmpty)
+        .verifying("whoHasChildcareCosts.error.notCompleted", _.nonEmpty)
     )
+
 }

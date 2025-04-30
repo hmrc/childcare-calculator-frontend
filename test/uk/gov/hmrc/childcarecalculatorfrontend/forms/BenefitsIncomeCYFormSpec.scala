@@ -22,20 +22,30 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
 class BenefitsIncomeCYFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "parentBenefitsIncome" -> "1",
+    "parentBenefitsIncome"  -> "1",
     "partnerBenefitsIncome" -> "2"
   )
 
   val form = BenefitsIncomeCYForm()
 
   "BenefitsIncomeCY form" must {
-    behave like questionForm(BenefitsIncomeCY(1, 2))
+    behave.like(questionForm(BenefitsIncomeCY(1, 2)))
 
-    behave like formWithMandatoryTextFieldWithErrorMsgs("parentBenefitsIncome",
-      "parentBenefitsIncome.error.required", "parentBenefitsIncome.error.required")
+    behave.like(
+      formWithMandatoryTextFieldWithErrorMsgs(
+        "parentBenefitsIncome",
+        "parentBenefitsIncome.error.required",
+        "parentBenefitsIncome.error.required"
+      )
+    )
 
-    behave like formWithMandatoryTextFieldWithErrorMsgs("partnerBenefitsIncome",
-      "partnerBenefitsIncome.error.required", "partnerBenefitsIncome.error.required")
+    behave.like(
+      formWithMandatoryTextFieldWithErrorMsgs(
+        "partnerBenefitsIncome",
+        "partnerBenefitsIncome.error.required",
+        "partnerBenefitsIncome.error.required"
+      )
+    )
 
     "not bind when either value is above the threshold of 9999.99" in {
       val expectedErrors =
@@ -43,11 +53,12 @@ class BenefitsIncomeCYFormSpec extends FormBehaviours {
           error("partnerBenefitsIncome", "partnerBenefitsIncome.error.invalid")
 
       val data = Map(
-        "parentBenefitsIncome" -> "10000.0",
+        "parentBenefitsIncome"  -> "10000.0",
         "partnerBenefitsIncome" -> "10000.0"
       )
 
-      checkForError(BenefitsIncomeCYForm(), data, expectedErrors )
+      checkForError(BenefitsIncomeCYForm(), data, expectedErrors)
     }
   }
+
 }

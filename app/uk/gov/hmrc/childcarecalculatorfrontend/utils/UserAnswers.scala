@@ -23,7 +23,7 @@ import java.time.LocalDate
 
 // scalastyle:off number.of.methods
 
-class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
+class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils {
 
   def surveyDoNotUnderstand: Option[String] = cacheMap.getEntry[String](SurveyDoNotUnderstandId.toString)
 
@@ -59,7 +59,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def childDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildDisabilityBenefitsId.toString)
 
-  def howMuchBothPayPension: Option[HowMuchBothPayPension] = cacheMap.getEntry[HowMuchBothPayPension](HowMuchBothPayPensionId.toString)
+  def howMuchBothPayPension: Option[HowMuchBothPayPension] =
+    cacheMap.getEntry[HowMuchBothPayPension](HowMuchBothPayPensionId.toString)
 
   def howMuchPartnerPayPension: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](HowMuchPartnerPayPensionId.toString)
 
@@ -69,13 +70,16 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def benefitsIncomeCY: Option[BenefitsIncomeCY] = cacheMap.getEntry[BenefitsIncomeCY](BenefitsIncomeCYId.toString)
 
-  def employmentIncomeCY: Option[EmploymentIncomeCY] = cacheMap.getEntry[EmploymentIncomeCY](EmploymentIncomeCYId.toString)
+  def employmentIncomeCY: Option[EmploymentIncomeCY] =
+    cacheMap.getEntry[EmploymentIncomeCY](EmploymentIncomeCYId.toString)
 
-  def partnerOtherIncomeAmountCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerOtherIncomeAmountCYId.toString)
+  def partnerOtherIncomeAmountCY: Option[BigDecimal] =
+    cacheMap.getEntry[BigDecimal](PartnerOtherIncomeAmountCYId.toString)
 
   def yourOtherIncomeAmountCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourOtherIncomeAmountCYId.toString)
 
-  def otherIncomeAmountCY: Option[OtherIncomeAmountCY] = cacheMap.getEntry[OtherIncomeAmountCY](OtherIncomeAmountCYId.toString)
+  def otherIncomeAmountCY: Option[OtherIncomeAmountCY] =
+    cacheMap.getEntry[OtherIncomeAmountCY](OtherIncomeAmountCYId.toString)
 
   def youBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YouBenefitsIncomeCYId.toString)
 
@@ -83,7 +87,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def aboutYourChild(index: Int): Option[AboutYourChild] = aboutYourChild.flatMap(_.get(index))
 
-  def aboutYourChild: Option[Map[Int, AboutYourChild]] = cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
+  def aboutYourChild: Option[Map[Int, AboutYourChild]] =
+    cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
 
   def bothOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](BothOtherIncomeThisYearId.toString)
 
@@ -93,13 +98,15 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def YouPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionCYId.toString)
 
-  def whosHadBenefits: Option[YouPartnerBothEnum.Value] = cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
+  def whosHadBenefits: Option[YouPartnerBothEnum.Value] =
+    cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
 
   def bothAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothAnyTheseBenefitsCYId.toString)
 
   def youAnyTheseBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](YouAnyTheseBenefitsIdCY.toString)
 
-  def partnerEmploymentIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerEmploymentIncomeCYId.toString)
+  def partnerEmploymentIncomeCY: Option[BigDecimal] =
+    cacheMap.getEntry[BigDecimal](PartnerEmploymentIncomeCYId.toString)
 
   def parentEmploymentIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentEmploymentIncomeCYId.toString)
 
@@ -113,7 +120,8 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def whoPaysIntoPension: Option[String] = cacheMap.getEntry[String](WhoPaysIntoPensionId.toString)
 
-  def partnerAnyOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeThisYearId.toString)
+  def partnerAnyOtherIncomeThisYear: Option[Boolean] =
+    cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeThisYearId.toString)
 
   def yourOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeThisYearId.toString)
 
@@ -131,9 +139,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def partnerSelfEmployed: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerSelfEmployedId.toString)
 
-  def partnerSelfEmployedOrApprentice: Option[String] = cacheMap.getEntry[String](PartnerSelfEmployedOrApprenticeId.toString)
+  def partnerSelfEmployedOrApprentice: Option[String] =
+    cacheMap.getEntry[String](PartnerSelfEmployedOrApprenticeId.toString)
 
-  def areYouSelfEmployedOrApprentice: Option[String] = cacheMap.getEntry[String](AreYouSelfEmployedOrApprenticeId.toString)
+  def areYouSelfEmployedOrApprentice: Option[String] =
+    cacheMap.getEntry[String](AreYouSelfEmployedOrApprenticeId.toString)
 
   def partnerMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMinimumEarningsId.toString)
 
@@ -143,9 +153,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def yourPartnersAge: Option[String] = cacheMap.getEntry[String](YourPartnersAgeId.toString)
 
-  def doYouGetAnyBenefits: Option[Set[ParentsBenefits]] = cacheMap.getEntry[Set[ParentsBenefits]](DoYouGetAnyBenefitsId.toString)
+  def doYouGetAnyBenefits: Option[Set[ParentsBenefits]] =
+    cacheMap.getEntry[Set[ParentsBenefits]](DoYouGetAnyBenefitsId.toString)
 
-  def doesYourPartnerGetAnyBenefits: Option[Set[ParentsBenefits]] = cacheMap.getEntry[Set[ParentsBenefits]](DoesYourPartnerGetAnyBenefitsId.toString)
+  def doesYourPartnerGetAnyBenefits: Option[Set[ParentsBenefits]] =
+    cacheMap.getEntry[Set[ParentsBenefits]](DoesYourPartnerGetAnyBenefitsId.toString)
 
   def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
 
@@ -171,38 +183,40 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
 
   def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
 
-  def childrenAgeGroups: Option[Set[ChildAgeGroup]] = cacheMap.getEntry[Set[ChildAgeGroup]](ChildrenAgeGroupsId.toString) match {
-    case None =>
-      (childAgedTwo, childAgedThreeOrFour) match {
-        case (Some(true), Some(true)) => Some(Set(TwoYears, ThreeYears, FourYears))
-        case (_, Some(true)) => Some(Set(ThreeYears, FourYears))
-        case (Some(true), _) => Some(Set(TwoYears))
-        case (_, Some(false)) => Some(Set(NoneOfThese))
-        case _ => None
-      }
-    case option => option
-  }
+  def childrenAgeGroups: Option[Set[ChildAgeGroup]] =
+    cacheMap.getEntry[Set[ChildAgeGroup]](ChildrenAgeGroupsId.toString) match {
+      case None =>
+        (childAgedTwo, childAgedThreeOrFour) match {
+          case (Some(true), Some(true)) => Some(Set(TwoYears, ThreeYears, FourYears))
+          case (_, Some(true))          => Some(Set(ThreeYears, FourYears))
+          case (Some(true), _)          => Some(Set(TwoYears))
+          case (_, Some(false))         => Some(Set(NoneOfThese))
+          case _                        => None
+        }
+      case option => option
+    }
 
   def isChildAgedTwo: Option[Boolean] = childrenAgeGroups.map(_.contains(TwoYears))
 
-  def isChildAgedThreeOrFour: Option[Boolean] = childrenAgeGroups.map(_.exists(Set[ChildAgeGroup](ThreeYears, FourYears).contains))
+  def isChildAgedThreeOrFour: Option[Boolean] =
+    childrenAgeGroups.map(_.exists(Set[ChildAgeGroup](ThreeYears, FourYears).contains))
 
   def isChildAgedNineTo23Months: Option[Boolean] = childrenAgeGroups.map(_.contains(NineTo23Months))
 
   def location: Option[Location.Value] = cacheMap.getEntry[Location.Value](LocationId.toString)
 
   def isYouPartnerOrBoth(who: Option[String]): String = {
-    val You: String = YouPartnerBothEnum.YOU.toString
+    val You: String     = YouPartnerBothEnum.YOU.toString
     val Partner: String = YouPartnerBothEnum.PARTNER.toString
-    val Both: String = YouPartnerBothEnum.BOTH.toString
+    val Both: String    = YouPartnerBothEnum.BOTH.toString
     val Neither: String = YouPartnerBothNeitherEnum.NEITHER.toString
 
     who match {
-      case Some(You) => You
+      case Some(You)     => You
       case Some(Partner) => Partner
-      case Some(Both) => Both
+      case Some(Both)    => Both
       case Some(Neither) => Neither
-      case _ => You
+      case _             => You
     }
   }
 
@@ -215,141 +229,130 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils{
     def after11yoCutoff(dob: LocalDate) = dob.isAfter(LocalDate.of(now.getYear - 12, 8, 31))
 
     aboutYourChild.exists { children =>
-      children.map {
-        case (_, AboutYourChild(_, dob)) if after11yoCutoff(dob) =>
-          true
-        case (childId, AboutYourChild(_, dob)) if children.size > 1 && after16yoCutoff(dob) &&
-          (whichChildrenDisability.exists(_.contains(childId)) || whichChildrenBlind.exists(_.contains(childId))) =>
-          true
-        case (_, AboutYourChild(_, dob)) if children.size == 1 && after16yoCutoff(dob) &&
-          (childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)) =>
-          true
-        case _ =>
-          false
-      }.toSeq.contains(true)
+      children
+        .map {
+          case (_, AboutYourChild(_, dob)) if after11yoCutoff(dob) =>
+            true
+          case (childId, AboutYourChild(_, dob))
+              if children.size > 1 && after16yoCutoff(dob) &&
+                (whichChildrenDisability
+                  .exists(_.contains(childId)) || whichChildrenBlind.exists(_.contains(childId))) =>
+            true
+          case (_, AboutYourChild(_, dob))
+              if children.size == 1 && after16yoCutoff(dob) &&
+                (childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)) =>
+            true
+          case _ =>
+            false
+        }
+        .toSeq
+        .contains(true)
     }
   }
 
   def childrenOver16: Option[Map[Int, AboutYourChild]] = {
-    val children16OrOlder = get16YearOldsAndOlder
+    val children16OrOlder      = get16YearOldsAndOlder
     val childrenBetween16And17 = extract16YearOldsWithBirthdayBefore31stAugust(children16OrOlder)
-    children16OrOlder.map {
-      children =>
-        children.filterNot {
-          case (x, _) => childrenBetween16And17.getOrElse(Map()).keys.exists(_ == x)
-        }
+    children16OrOlder.map { children =>
+      children.filterNot { case (x, _) => childrenBetween16And17.getOrElse(Map()).keys.exists(_ == x) }
     }
   }
 
-  def extract16YearOldsWithBirthdayBefore31stAugust(children: Option[Map[Int, AboutYourChild]]): Option[Map[Int, AboutYourChild]] = {
-    children.map {
-      children16OrOlder =>
-        children16OrOlder.filter {
-          case (_, model) => model.dob.plusYears(16).isAfter(LocalDate.parse(s"${now.getYear - 1}-08-31")) &&
-            model.dob.plusYears(16).isBefore(LocalDate.parse(s"${now.getYear}-09-01"))
-        }
+  def extract16YearOldsWithBirthdayBefore31stAugust(
+      children: Option[Map[Int, AboutYourChild]]
+  ): Option[Map[Int, AboutYourChild]] =
+    children.map { children16OrOlder =>
+      children16OrOlder.filter { case (_, model) =>
+        model.dob.plusYears(16).isAfter(LocalDate.parse(s"${now.getYear - 1}-08-31")) &&
+        model.dob.plusYears(16).isBefore(LocalDate.parse(s"${now.getYear}-09-01"))
+      }
     }
-  }
 
-  private def get16YearOldsAndOlder: Option[Map[Int, AboutYourChild]] = {
-    aboutYourChild.map {
-      children =>
-        children.filter {
-          case (_, model) => model.dob.isBefore(now.minusYears(16))
-        }
-    }
-  }
+  private def get16YearOldsAndOlder: Option[Map[Int, AboutYourChild]] =
+    aboutYourChild.map(children => children.filter { case (_, model) => model.dob.isBefore(now.minusYears(16)) })
 
   def numberOfChildrenOver16: Int = childrenOver16.fold(0)(_.size)
 
   def childrenIdsForAgeExactly16: List[Int] =
     extract16YearOldsWithBirthdayBefore31stAugust(aboutYourChild).getOrElse(Map()).keys.toList
 
-  def childrenBelow16AndExactly16Disabled: List[Int] = {
+  def childrenBelow16AndExactly16Disabled: List[Int] =
     (childrenIdsForAgeExactly16AndDisabled ++ childrenBelow16).sorted
-  }
 
   def childrenBelow16: List[Int] =
     aboutYourChild.getOrElse(Map()).filter(_._2.dob.isAfter(now.minusYears(16))).keys.toList
 
-  def childrenIdsForAgeExactly16AndDisabled: List[Int] = {
+  def childrenIdsForAgeExactly16AndDisabled: List[Int] =
 
-    childrenIdsForAgeExactly16.filter {
-
-      identity =>
-        if (noOfChildren.getOrElse(0) == 1) {
-          childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)
-        } else {
-          whichChildrenDisability.getOrElse(Set()).contains(identity) || whichChildrenBlind.getOrElse(Set()).contains(identity)
-        }
+    childrenIdsForAgeExactly16.filter { identity =>
+      if (noOfChildren.getOrElse(0) == 1) {
+        childrenDisabilityBenefits.contains(true) || registeredBlind.contains(true)
+      } else {
+        whichChildrenDisability.getOrElse(Set()).contains(identity) || whichChildrenBlind
+          .getOrElse(Set())
+          .contains(identity)
+      }
     }
-  }
 
-  def childrenWithDisabilityBenefits: Option[Set[Int]] = {
+  def childrenWithDisabilityBenefits: Option[Set[Int]] =
     whichChildrenDisability.orElse {
-      noOfChildren.flatMap {
-        noOfChildren =>
-          if (noOfChildren == 1) {
-            childrenDisabilityBenefits.map {
-              case true => Set(0)
-              case false => Set.empty
-            }
-          } else {
-            childrenDisabilityBenefits.flatMap {
-              case true => None
-              case false => Some(Set.empty)
-            }
+      noOfChildren.flatMap { noOfChildren =>
+        if (noOfChildren == 1) {
+          childrenDisabilityBenefits.map {
+            case true  => Set(0)
+            case false => Set.empty
           }
+        } else {
+          childrenDisabilityBenefits.flatMap {
+            case true  => None
+            case false => Some(Set.empty)
+          }
+        }
       }
     }
-  }
 
-  def childrenWithCosts: Option[Set[Int]] = {
+  def childrenWithCosts: Option[Set[Int]] =
     whoHasChildcareCosts.orElse {
-      noOfChildren.flatMap {
-        noOfChildren =>
-          if (noOfChildren == 1) {
-            childcareCosts.map {
-              value =>
-                if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
-                  Set(0)
-                } else {
-                  Set.empty
-                }
+      noOfChildren.flatMap { noOfChildren =>
+        if (noOfChildren == 1) {
+          childcareCosts.map { value =>
+            if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
+              Set(0)
+            } else {
+              Set.empty
             }
-          } else {
-            None
           }
+        } else {
+          None
+        }
       }
     }
-  }
 
-  def hasApprovedCosts: Option[Boolean] = {
+  def hasApprovedCosts: Option[Boolean] =
     for {
       costs <- childcareCosts.map(_ != YesNoNotYetEnum.NO.toString)
-      approved <- if (costs) {
-        approvedProvider.map(_ != YesNoUnsureEnum.NO.toString)
-      } else {
-        Some(false)
-      }
+      approved <-
+        if (costs) {
+          approvedProvider.map(_ != YesNoUnsureEnum.NO.toString)
+        } else {
+          Some(false)
+        }
     } yield approved
-  }
 
-
-  def hasVouchers: Boolean = Seq(yourChildcareVouchers, partnerChildcareVouchers, checkVouchersForBoth).flatten.contains(true)
+  def hasVouchers: Boolean =
+    Seq(yourChildcareVouchers, partnerChildcareVouchers, checkVouchersForBoth).flatten.contains(true)
 
   def checkVouchersForBoth: Option[Boolean] = whoGetsVouchers match {
-    case None => None
+    case None            => None
     case Some("neither") => Some(false)
-    case _ => Some(true)
+    case _               => Some(true)
   }
 
-  def max30HoursEnglandContent: Option[Boolean] = {
+  def max30HoursEnglandContent: Option[Boolean] =
     (location, hasVouchers) match {
-      case (Some(Location.ENGLAND), true) => Some(true)
+      case (Some(Location.ENGLAND), true)  => Some(true)
       case (Some(Location.ENGLAND), false) => Some(false)
-      case (_, _) => None
+      case (_, _)                          => None
     }
-  }
 
 }

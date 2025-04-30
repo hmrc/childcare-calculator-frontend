@@ -26,32 +26,42 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefitsIncomeCY
 class BenefitsIncomeCYViewSpec extends NewQuestionViewBehaviours[BenefitsIncomeCY] {
 
   val messageKeyPrefix = "benefitsIncomeCY"
-  val view = application.injector.instanceOf[benefitsIncomeCY]
+  val view             = application.injector.instanceOf[benefitsIncomeCY]
 
   def createView = () => view(frontendAppConfig, BenefitsIncomeCYForm(), NormalMode)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BenefitsIncomeCY]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BenefitsIncomeCY]) =>
+    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   override val form = BenefitsIncomeCYForm()
 
   "BenefitsIncomeCY view" must {
 
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like pageWithTextFields(createViewUsingForm, messageKeyPrefix, routes.BenefitsIncomeCYController.onSubmit(NormalMode).url, "parentBenefitsIncome", "partnerBenefitsIncome")
+    behave.like(
+      pageWithTextFields(
+        createViewUsingForm,
+        messageKeyPrefix,
+        routes.BenefitsIncomeCYController.onSubmit(NormalMode).url,
+        "parentBenefitsIncome",
+        "partnerBenefitsIncome"
+      )
+    )
 
     "contain the currencySymbol class and £ for parent and partner input text boxes" in {
       val doc = asDocument(createView())
 
       assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 
-      val parentCurrencySymbol = doc.getElementById("parentBenefitsIncome").firstElementSibling().text()
+      val parentCurrencySymbol  = doc.getElementById("parentBenefitsIncome").firstElementSibling().text()
       val partnerCurrencySymbol = doc.getElementById("partnerBenefitsIncome").firstElementSibling().text()
 
       parentCurrencySymbol mustBe "£"
       partnerCurrencySymbol mustBe "£"
     }
   }
+
 }

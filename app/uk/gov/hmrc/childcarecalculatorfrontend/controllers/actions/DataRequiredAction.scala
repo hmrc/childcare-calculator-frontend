@@ -24,14 +24,21 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.SessionExpiredRouter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRequiredAction @Inject()()(implicit val executionContext: ExecutionContext) extends ActionRefiner[OptionalDataRequest, DataRequest] {
+class DataRequiredAction @Inject() ()(implicit val executionContext: ExecutionContext)
+    extends ActionRefiner[OptionalDataRequest, DataRequest] {
 
-  override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
+  override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] =
 
     request.userAnswers match {
-      case None => Future.successful(Left(Redirect(SessionExpiredRouter.route(getClass.getName,"refine",uri = request.uri, session = request.sessionId))))
+      case None =>
+        Future.successful(
+          Left(
+            Redirect(
+              SessionExpiredRouter.route(getClass.getName, "refine", uri = request.uri, session = request.sessionId)
+            )
+          )
+        )
       case Some(data) => Future.successful(Right(DataRequest(request.request, request.sessionId, data)))
     }
-  }
-}
 
+}

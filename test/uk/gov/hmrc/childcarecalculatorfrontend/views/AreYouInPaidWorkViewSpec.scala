@@ -25,9 +25,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
 class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours {
 
-  override val form = BooleanForm()
+  override val form    = BooleanForm()
   val messageKeyPrefix = "areYouInPaidWork"
-  val view = application.injector.instanceOf[areYouInPaidWork]
+  val view             = application.injector.instanceOf[areYouInPaidWork]
 
   def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
 
@@ -35,10 +35,13 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours {
 
   "AreYouInPaidWork view" must {
 
-    behave like normalPage(createView, messageKeyPrefix, "heading", "para1" )
+    behave.like(normalPage(createView, messageKeyPrefix, "heading", "para1"))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit(NormalMode).url)
+    behave.like(
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit(NormalMode).url)
+    )
   }
+
 }

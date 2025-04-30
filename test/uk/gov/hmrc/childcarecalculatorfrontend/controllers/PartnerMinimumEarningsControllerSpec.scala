@@ -31,25 +31,32 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 
+class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar {
 
-
-class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar{
-
-  val view = application.injector.instanceOf[partnerMinimumEarnings]
+  val view      = application.injector.instanceOf[partnerMinimumEarnings]
   val mockUtils = mock[Utils]
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new PartnerMinimumEarningsController(frontendAppConfig, mcc, FakeDataCacheService, new FakeNavigator(desiredRoute = onwardRoute),
-      dataRetrievalAction, new DataRequiredAction, mockUtils, view)
+    new PartnerMinimumEarningsController(
+      frontendAppConfig,
+      mcc,
+      FakeDataCacheService,
+      new FakeNavigator(desiredRoute = onwardRoute),
+      dataRetrievalAction,
+      new DataRequiredAction,
+      mockUtils,
+      view
+    )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()) =
+    view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
 
   "PartnerMinimumEarnings Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val validData = Map(YourPartnersAgeId.toString -> JsString(AgeEnum.UNDER18.toString))
+      val validData       = Map(YourPartnersAgeId.toString -> JsString(AgeEnum.UNDER18.toString))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       setUpMock()
@@ -63,7 +70,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val validData = Map(
-        YourPartnersAgeId.toString -> JsString(AgeEnum.UNDER18.toString),
+        YourPartnersAgeId.toString        -> JsString(AgeEnum.UNDER18.toString),
         PartnerMinimumEarningsId.toString -> JsBoolean(true)
       )
 
@@ -73,7 +80,9 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
       val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(BooleanForm("partnerMinimumEarnings.error.notCompleted", 0).fill(true))
+      contentAsString(result) mustBe viewAsString(
+        BooleanForm("partnerMinimumEarnings.error.notCompleted", 0).fill(true)
+      )
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -124,11 +133,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
   }
 
-  private def setUpMock() = {
+  private def setUpMock() =
     when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
-  }
+
 }
-
-
-
-

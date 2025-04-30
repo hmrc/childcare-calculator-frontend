@@ -46,4 +46,5 @@ class FreeHoursSpec extends SchemeSpec {
       freeHours.eligibility(answers) mustEqual NotEligible
     }
   }
+
 }

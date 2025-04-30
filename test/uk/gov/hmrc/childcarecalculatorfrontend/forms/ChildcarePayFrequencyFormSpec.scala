@@ -30,11 +30,14 @@ class ChildcarePayFrequencyFormSpec extends FormBehaviours {
 
   "ChildcarePayFrequency form" must {
 
-    behave like questionForm[ChildcarePayFrequency.Value](ChildcarePayFrequency(0))
+    behave.like(questionForm[ChildcarePayFrequency.Value](ChildcarePayFrequency(0)))
 
-    behave like formWithOptionFieldError(
-      FormError("value", "childcarePayFrequency.error.notCompleted", Seq("Foo")),
-      ChildcarePayFrequencyForm.options.map(_.value): _*
+    behave.like(
+      formWithOptionFieldError(
+        FormError("value", "childcarePayFrequency.error.notCompleted", Seq("Foo")),
+        ChildcarePayFrequencyForm.options.map(_.value): _*
+      )
     )
   }
+
 }

@@ -33,33 +33,37 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class YouBenefitsIncomeCYController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        youBenefitsIncomeCY: youBenefitsIncomeCY)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class YouBenefitsIncomeCYController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    youBenefitsIncomeCY: youBenefitsIncomeCY
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.youBenefitsIncomeCY match {
-        case None => YouBenefitsIncomeCYForm()
-        case Some(value) => YouBenefitsIncomeCYForm().fill(value)
-      }
-      Ok(youBenefitsIncomeCY(appConfig, preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.youBenefitsIncomeCY match {
+      case None        => YouBenefitsIncomeCYForm()
+      case Some(value) => YouBenefitsIncomeCYForm().fill(value)
+    }
+    Ok(youBenefitsIncomeCY(appConfig, preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      YouBenefitsIncomeCYForm(parentBenefitsIncomeCYRequiredErrorKey).bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    YouBenefitsIncomeCYForm(parentBenefitsIncomeCYRequiredErrorKey)
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[BigDecimal]) =>
           Future.successful(BadRequest(youBenefitsIncomeCY(appConfig, formWithErrors, mode))),
         value =>
-          dataCacheConnector.save[BigDecimal](request.sessionId, YouBenefitsIncomeCYId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(YouBenefitsIncomeCYId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[BigDecimal](request.sessionId, YouBenefitsIncomeCYId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(YouBenefitsIncomeCYId, mode)(new UserAnswers(cacheMap))))
       )
   }
+
 }

@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 trait ControllerSpecBase extends SpecBase {
 
-  val cacheMapId = "id"
+  val cacheMapId    = "id"
   def emptyCacheMap = CacheMap(cacheMapId, Map())
 
   def getEmptyCacheMap = new FakeDataRetrievalAction(Some(emptyCacheMap))
@@ -32,7 +32,7 @@ trait ControllerSpecBase extends SpecBase {
 
   val statutoryType = "maternity"
 
-  def buildFakeRequest(x: Map[String, JsString]) = {
+  def buildFakeRequest(x: Map[String, JsString]) =
     new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, x)))
-  }
+
 }

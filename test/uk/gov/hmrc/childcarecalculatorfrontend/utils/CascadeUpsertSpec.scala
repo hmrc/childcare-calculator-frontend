@@ -20,7 +20,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
 
-class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
+class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
   lazy val no: String = YesNoUnsureEnum.NO.toString
 
@@ -44,8 +44,7 @@ class CascadeUpsertSpec extends SpecBase with CascadeUpsertBase{
     }
   }
 
-
- "addRepeatedValue" when {
+  "addRepeatedValue" when {
     "the key doesn't already exist" must {
       "add the key to the cache map and save the value in a sequence" in {
         val originalCacheMap = new CacheMap("id", Map())

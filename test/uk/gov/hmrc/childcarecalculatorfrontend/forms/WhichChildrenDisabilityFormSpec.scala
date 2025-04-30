@@ -20,16 +20,17 @@ import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviou
 
 class WhichChildrenDisabilityFormSpec extends CheckboxBehaviours[Int] {
 
-  override def fieldName: String = "value"
+  override def fieldName: String    = "value"
   override def invalidValue: String = "5"
-  override def validOptions = Set(0, 1)
+  override def validOptions         = Set(0, 1)
 
   val form = WhichChildrenDisabilityForm(validOptions.toSeq: _*)
 
   "WhichChildrenDisability form" must {
 
-    behave like aCheckboxForm()
+    behave.like(aCheckboxForm())
 
-    behave like aMandatoryCheckboxForm("whichChildrenDisability.error.notCompleted")
+    behave.like(aMandatoryCheckboxForm("whichChildrenDisability.error.notCompleted"))
   }
+
 }

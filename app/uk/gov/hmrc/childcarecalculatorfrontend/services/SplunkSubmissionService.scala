@@ -25,33 +25,33 @@ import uk.gov.hmrc.play.audit.AuditExtensions._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-sealed
-trait SubmissionStatus
+sealed trait SubmissionStatus
 
 object SubmissionSuccessful extends SubmissionStatus
-object SubmissionFailed extends SubmissionStatus
+object SubmissionFailed     extends SubmissionStatus
 
-sealed
-class SplunkSubmissionEvent @Inject() (data: Map[String, String])(implicit hc: HeaderCarrier)
-  extends DataEvent(
-    auditSource = "Childcare-Calculator",
-    auditType = "childcare-calculator-feedback-survey",
-    tags = hc.toAuditTags("Childcare Calculator Submission Service", "/survey/childcare-support"),
-    detail = hc.toAuditDetails(data.toSeq: _*))
+sealed class SplunkSubmissionEvent @Inject() (data: Map[String, String])(implicit hc: HeaderCarrier)
+    extends DataEvent(
+      auditSource = "Childcare-Calculator",
+      auditType = "childcare-calculator-feedback-survey",
+      tags = hc.toAuditTags("Childcare Calculator Submission Service", "/survey/childcare-support"),
+      detail = hc.toAuditDetails(data.toSeq: _*)
+    )
 
 trait SplunkSubmissionServiceInterface {
   def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus]
 }
 
-class SplunkSubmissionService @Inject() (http: DefaultAuditConnector)(implicit val ec: ExecutionContext) extends SplunkSubmissionServiceInterface {
+class SplunkSubmissionService @Inject() (http: DefaultAuditConnector)(implicit val ec: ExecutionContext)
+    extends SplunkSubmissionServiceInterface {
 
   def submit(data: Map[String, String])(implicit hc: HeaderCarrier): Future[SubmissionStatus] = {
-    
+
     val dataEvent = new SplunkSubmissionEvent(data)
 
     http.sendEvent(dataEvent).map {
       case AuditResult.Success => SubmissionSuccessful
-      case _ => SubmissionFailed
+      case _                   => SubmissionFailed
     }
 
   }

@@ -25,9 +25,23 @@ class WhatToTellTheCalculatorViewSpec extends NewViewBehaviours {
 
   def createView = () => view()(fakeRequest, messages)
 
-  "whatToTellTheCalculator view" must {
+  "whatToTellTheCalculator view" must
+    behave.like(
+      normalPage(
+        createView,
+        "whatToTellTheCalculator",
+        "guidanceA",
+        "guidanceB",
+        "li.workingHours",
+        "li.workingHoursPartner",
+        "guidanceC",
+        "li.dob",
+        "li.costs",
+        "li.benefits",
+        "uc",
+        "p1.a",
+        "p2.link"
+      )
+    )
 
-    behave like normalPage(createView, "whatToTellTheCalculator", "guidanceA", "guidanceB",
-      "li.workingHours", "li.workingHoursPartner", "guidanceC", "li.dob", "li.costs", "li.benefits", "uc", "p1.a", "p2.link")
-  }
 }

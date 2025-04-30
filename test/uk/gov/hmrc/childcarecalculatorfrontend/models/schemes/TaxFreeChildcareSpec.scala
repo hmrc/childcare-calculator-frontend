@@ -42,7 +42,7 @@ class TaxFreeChildcareSpec extends PlaySpec with Matchers with BeforeAndAfterEac
   "TaxFreeChildcare on eligibility" must {
 
     "always call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
-      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
 
       taxFreeChildcare.eligibility(userAnswers)
 
@@ -56,7 +56,7 @@ class TaxFreeChildcareSpec extends PlaySpec with Matchers with BeforeAndAfterEac
     }
 
     "return the value returned by FreeChildcareEligibilityCalculator" in {
-      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())) thenReturn Eligible
+      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
 
       taxFreeChildcare.eligibility(userAnswers) mustBe Eligible
     }

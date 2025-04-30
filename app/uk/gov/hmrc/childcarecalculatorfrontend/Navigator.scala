@@ -30,48 +30,49 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
 
   @Inject()
   def this(
-            minHours: MinimumHoursNavigator,
-            maxHours: MaximumHoursNavigator,
-            pensions: PensionNavigator,
-            employment: EmploymentIncomeNavigator,
-            benefitsIncome: BenefitsIncomeNavigator,
-            otherIncome: OtherIncomeNavigator,
-            incomeInfo: IncomeInfoNavigator,
-            childcare: ChildcareNavigator,
-            survey: SurveyNavigator
-          ) = {
+      minHours: MinimumHoursNavigator,
+      maxHours: MaximumHoursNavigator,
+      pensions: PensionNavigator,
+      employment: EmploymentIncomeNavigator,
+      benefitsIncome: BenefitsIncomeNavigator,
+      otherIncome: OtherIncomeNavigator,
+      incomeInfo: IncomeInfoNavigator,
+      childcare: ChildcareNavigator,
+      survey: SurveyNavigator
+  ) =
     this(Seq(minHours, maxHours, pensions, employment, benefitsIncome, otherIncome, incomeInfo, childcare, survey): _*)
-  }
 
   override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call =
-    navigators.map(_.nextPage(id, mode)).reduce(_ orElse _)
-      .getOrElse {
-            _ => routes.WhatToTellTheCalculatorController.onPageLoad
-      }
-  }
+    navigators
+      .map(_.nextPage(id, mode))
+      .reduce(_ orElse _)
+      .getOrElse(_ => routes.WhatToTellTheCalculatorController.onPageLoad)
+
+}
 
 @ImplementedBy(classOf[NavigatorImpl])
 trait Navigator {
 
-  protected def routeMap: Map[Identifier, UserAnswers => Call] = Map.empty
+  protected def routeMap: Map[Identifier, UserAnswers => Call]     = Map.empty
   protected def editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
 
-  def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = {
-    answers => routeMap.getOrElse(id, (_: UserAnswers) => routes.WhatToTellTheCalculatorController.onPageLoad)(answers)
+  def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = { answers =>
+    routeMap.getOrElse(id, (_: UserAnswers) => routes.WhatToTellTheCalculatorController.onPageLoad)(answers)
   }
+
 }
 
 trait SubNavigator {
 
-  protected def routeMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
+  protected def routeMap: PartialFunction[Identifier, UserAnswers => Call]     = Map.empty
   protected def editRouteMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
 
-  def nextPage(id: Identifier, mode: Mode): Option[UserAnswers => Call] = {
+  def nextPage(id: Identifier, mode: Mode): Option[UserAnswers => Call] =
     mode match {
       case NormalMode =>
         routeMap.lift(id)
       case CheckMode =>
         editRouteMap.lift(id)
     }
-  }
+
 }

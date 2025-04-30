@@ -26,32 +26,39 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 
 class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ParentsBenefits] {
 
-  override val form = DoYouGetAnyBenefitsForm()
-  val testView = application.injector.instanceOf[doYouGetAnyBenefits]
+  override val form    = DoYouGetAnyBenefitsForm()
+  val testView         = application.injector.instanceOf[doYouGetAnyBenefits]
   val messageKeyPrefix = "doYouGetAnyBenefits"
   val fieldKey: String = DoYouGetAnyBenefitsForm.formId
-  val errorMessage = s"$messageKeyPrefix.error.select"
+  val errorMessage     = s"$messageKeyPrefix.error.select"
 
   override val values: Seq[(String, String)] =
     Seq(
       (s"$messageKeyPrefix.$CarersAllowance", CarersAllowance.toString),
       (s"$messageKeyPrefix.$CarersCredit", CarersCredit.toString),
-      (s"$messageKeyPrefix.$ContributionBasedEmploymentAndSupportAllowance", ContributionBasedEmploymentAndSupportAllowance.toString),
+      (
+        s"$messageKeyPrefix.$ContributionBasedEmploymentAndSupportAllowance",
+        ContributionBasedEmploymentAndSupportAllowance.toString
+      ),
       (s"$messageKeyPrefix.$IncapacityBenefit", IncapacityBenefit.toString),
-      (s"$messageKeyPrefix.$NICreditsForIncapacityOrLimitedCapabilityForWork", NICreditsForIncapacityOrLimitedCapabilityForWork.toString),
+      (
+        s"$messageKeyPrefix.$NICreditsForIncapacityOrLimitedCapabilityForWork",
+        NICreditsForIncapacityOrLimitedCapabilityForWork.toString
+      ),
       (s"$messageKeyPrefix.$SevereDisablementAllowance", SevereDisablementAllowance.toString),
       (s"$messageKeyPrefix.or", "divider"),
       (s"$messageKeyPrefix.$NoneOfThese", NoneOfThese.toString)
     )
+
   override def createView(form: Form[Set[ParentsBenefits]] = form): Html =
     testView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "DoYouGetAnyBenefits view" must {
-    behave like normalPage(createView, messageKeyPrefix)
+    behave.like(normalPage(createView, messageKeyPrefix))
 
-    behave like pageWithBackLink(createView)
+    behave.like(pageWithBackLink(createView))
 
-    behave like checkboxPage()
+    behave.like(checkboxPage())
 
     "display correct content when loaded" in {
       val view = createView()
@@ -59,4 +66,5 @@ class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxView
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.or"))
     }
   }
+
 }

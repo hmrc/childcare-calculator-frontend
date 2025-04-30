@@ -23,19 +23,24 @@ trait NewBigDecimalViewBehaviours extends NewQuestionViewBehaviours[BigDecimal] 
 
   val number = 12
 
-  def bigDecimalPage(createView: (Form[BigDecimal]) => HtmlFormat.Appendable,
-                     messageKeyPrefix: String,
-                     expectedFormAction: String,
-                     label: Option[String] = None,
-                     messageDynamicValue: Option[String] = None
-             ): Unit = {
+  def bigDecimalPage(
+      createView: (Form[BigDecimal]) => HtmlFormat.Appendable,
+      messageKeyPrefix: String,
+      expectedFormAction: String,
+      label: Option[String] = None,
+      messageDynamicValue: Option[String] = None
+  ): Unit =
 
     "behave like a page with an bigDecimal value field" when {
       "rendered" must {
 
         "contain a label for the value" in {
           val doc = asDocument(createView(form))
-          assertContainsLabel(doc, "value", label.getOrElse(messages(s"$messageKeyPrefix.title", messageDynamicValue.getOrElse(""))))
+          assertContainsLabel(
+            doc,
+            "value",
+            label.getOrElse(messages(s"$messageKeyPrefix.title", messageDynamicValue.getOrElse("")))
+          )
         }
 
         "contain an input for the value" in {
@@ -59,11 +64,11 @@ trait NewBigDecimalViewBehaviours extends NewQuestionViewBehaviours[BigDecimal] 
         }
 
         "show an error in the value field's label" in {
-          val doc = asDocument(createView(form.withError(error)))
+          val doc       = asDocument(createView(form.withError(error)))
           val errorSpan = doc.getElementsByClass("govuk-error-message").first
           errorSpan.text mustBe s"Error: ${messages(errorMessage)}"
         }
       }
     }
-  }
+
 }

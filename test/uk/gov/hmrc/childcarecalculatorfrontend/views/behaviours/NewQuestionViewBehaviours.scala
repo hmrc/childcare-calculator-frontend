@@ -37,26 +37,26 @@ import play.twirl.api.HtmlFormat
 
 trait NewQuestionViewBehaviours[A] extends NewViewBehaviours {
 
-
-  val errorKey = "value"
+  val errorKey     = "value"
   val errorMessage = "error.number"
-  val error = FormError(errorKey, errorMessage)
+  val error        = FormError(errorKey, errorMessage)
 
   val form: Form[A]
 
-  def pageWithTextFields(createView: (Form[A]) => HtmlFormat.Appendable,
-                         messageKeyPrefix: String,
-                         expectedFormAction: String,
-                         fields: String*) = {
+  def pageWithTextFields(
+      createView: (Form[A]) => HtmlFormat.Appendable,
+      messageKeyPrefix: String,
+      expectedFormAction: String,
+      fields: String*
+  ) =
 
     "behave like a question page" when {
       "rendered" must {
-        for(field <- fields) {
+        for (field <- fields)
           s"contain an input for $field" in {
             val doc = asDocument(createView(form))
             assertRenderedById(doc, field)
           }
-        }
 
         "not render an error summary" in {
           val doc = asDocument(createView(form))
@@ -64,7 +64,7 @@ trait NewQuestionViewBehaviours[A] extends NewViewBehaviours {
         }
       }
 
-      for(field <- fields) {
+      for (field <- fields)
         s"rendered with an error with field '$field'" must {
           "show an error summary" in {
             val doc = asDocument(createView(form.withError(FormError(field, "error"))))
@@ -72,12 +72,11 @@ trait NewQuestionViewBehaviours[A] extends NewViewBehaviours {
           }
 
           s"show an error in the label for field '$field'" in {
-            val doc = asDocument(createView(form.withError(FormError(field, "error"))))
+            val doc       = asDocument(createView(form.withError(FormError(field, "error"))))
             val errorSpan = doc.getElementsByClass("govuk-form-group govuk-form-group--error").first
             errorSpan.getElementById(field).attr("name") mustBe field
           }
         }
-      }
     }
-  }
+
 }

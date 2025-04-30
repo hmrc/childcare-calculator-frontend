@@ -28,12 +28,12 @@ import uk.gov.hmrc.http.client.HttpClientV2
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EligibilityConnector @Inject()(appConfig: FrontendAppConfig, http: HttpClientV2)(implicit ec: ExecutionContext) {
+class EligibilityConnector @Inject() (appConfig: FrontendAppConfig, http: HttpClientV2)(implicit ec: ExecutionContext) {
 
-  def getEligibility(eligibilityInput: Household)(implicit headerCarrier: HeaderCarrier): Future[SchemeResults] = {
-    http.post(url"${appConfig.eligibilityUrl}")
+  def getEligibility(eligibilityInput: Household)(implicit headerCarrier: HeaderCarrier): Future[SchemeResults] =
+    http
+      .post(url"${appConfig.eligibilityUrl}")
       .withBody(Json.toJson(eligibilityInput))
       .execute[SchemeResults]
-  }
 
 }

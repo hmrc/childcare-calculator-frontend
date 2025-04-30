@@ -26,59 +26,58 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-/**
- * Contains the navigation for current and previous year pension pages
- */
-class PensionNavigator @Inject()(utils: Utils) extends SubNavigator {
+/** Contains the navigation for current and previous year pension pages
+  */
+class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
-    YouPaidPensionCYId -> yourPensionRouteCY,
-    PartnerPaidPensionCYId -> partnerPensionRouteCY,
-    BothPaidPensionCYId -> bothPensionRouteCY,
-    WhoPaysIntoPensionId -> whoPaysPensionRouteCY,
-    HowMuchYouPayPensionId -> howMuchYouPayPensionRouteCY,
+    YouPaidPensionCYId         -> yourPensionRouteCY,
+    PartnerPaidPensionCYId     -> partnerPensionRouteCY,
+    BothPaidPensionCYId        -> bothPensionRouteCY,
+    WhoPaysIntoPensionId       -> whoPaysPensionRouteCY,
+    HowMuchYouPayPensionId     -> howMuchYouPayPensionRouteCY,
     HowMuchPartnerPayPensionId -> howMuchPartnerPayPensionRouteCY,
-    HowMuchBothPayPensionId -> howMuchBothPayPensionRouteCY
+    HowMuchBothPayPensionId    -> howMuchBothPayPensionRouteCY
   )
 
   private def yourPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.YouPaidPensionCY) {
       case true => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
-      case false => {
+      case false =>
         utils.getCall(answers.doYouLiveWithPartner) {
-          case true => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+          case true  => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
           case false => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
         }
-      }
     }
 
   private def partnerPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.PartnerPaidPensionCY) {
-      case true => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
+      case true  => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
       case false => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     }
 
   private def bothPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.bothPaidPensionCY) {
-      case true => routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
+      case true  => routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
       case false => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     }
 
   private def whoPaysPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.whoPaysIntoPension) {
-      case `you` => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+      case `you`     => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
       case `partner` => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case `both` => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
+      case `both`    => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
     }
 
   private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call = utils.getCall(answers.doYouLiveWithPartner) {
-    case true => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+    case true  => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
     case false => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
   }
 
-  private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call = routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+  private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
+    routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
 
-
-  private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call = routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+  private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
+    routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
 
 }

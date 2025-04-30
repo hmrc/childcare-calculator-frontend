@@ -28,8 +28,11 @@ class YourPartnersAgeFormSpec extends FormBehaviours {
   val form = YourPartnersAgeForm()
 
   "YourPartnersAge form" must {
-    behave like questionForm[String](YourPartnersAgeForm.options.head.value)
+    behave.like(questionForm[String](YourPartnersAgeForm.options.head.value))
 
-    behave like formWithOptionFieldError("value", yourPartnersAgeErrorKey, YourPartnersAgeForm.options.map{x => x.value}:_*)
+    behave.like(
+      formWithOptionFieldError("value", yourPartnersAgeErrorKey, YourPartnersAgeForm.options.map(x => x.value): _*)
+    )
   }
+
 }

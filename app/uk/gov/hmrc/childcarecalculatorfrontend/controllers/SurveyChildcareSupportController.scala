@@ -26,7 +26,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequired
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyChildcareSupportId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.services.{SplunkSubmissionServiceInterface, SubmissionFailed, SubmissionSuccessful}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.{
+  SplunkSubmissionServiceInterface,
+  SubmissionFailed,
+  SubmissionSuccessful
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyChildcareSupportErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
@@ -35,43 +39,50 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SurveyChildcareSupportController @Inject()(appConfig: FrontendAppConfig,
-                                                 mcc: MessagesControllerComponents,
-                                                 dataCacheConnector: DataCacheConnector,
-                                                 navigator: Navigator,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 splunkSubmissionService: SplunkSubmissionServiceInterface,
-                                                 surveyChildcareSupport: surveyChildcareSupport)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with Logging {
+class SurveyChildcareSupportController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    splunkSubmissionService: SplunkSubmissionServiceInterface,
+    surveyChildcareSupport: surveyChildcareSupport
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with Logging {
 
-  def onPageLoad: Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.surveyChildcareSupport match {
-        case None => BooleanForm()
-        case Some(value) => BooleanForm().fill(value)
-      }
-      Ok(surveyChildcareSupport(appConfig, preparedForm))
+  def onPageLoad: Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val preparedForm = request.userAnswers.surveyChildcareSupport match {
+      case None        => BooleanForm()
+      case Some(value) => BooleanForm().fill(value)
+    }
+    Ok(surveyChildcareSupport(appConfig, preparedForm))
   }
 
-  def onSubmit: Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      BooleanForm(surveyChildcareSupportErrorKey).bindFromRequest().fold(
+  def onSubmit: Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    BooleanForm(surveyChildcareSupportErrorKey)
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(BadRequest(surveyChildcareSupport(appConfig, formWithErrors))),
         value => {
 
           val data = Map("understandChildcareSupport" -> s"$value")
 
-          splunkSubmissionService.submit(data) map {
+          splunkSubmissionService.submit(data).map {
             case SubmissionSuccessful => logger.info("understandChildcareSupport logged to Splunk")
-            case SubmissionFailed => logger.warn("understandChildcareSupport failed to log to Splunk")
+            case SubmissionFailed     => logger.warn("understandChildcareSupport failed to log to Splunk")
           }
 
-          dataCacheConnector.save[Boolean](request.sessionId, SurveyChildcareSupportId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(SurveyChildcareSupportId, NormalMode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[Boolean](request.sessionId, SurveyChildcareSupportId.toString, value)
+            .map(cacheMap =>
+              Redirect(navigator.nextPage(SurveyChildcareSupportId, NormalMode)(new UserAnswers(cacheMap)))
+            )
         }
-
       )
   }
+
 }

@@ -32,40 +32,44 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ApprovedProviderController @Inject()(
-                                        appConfig: FrontendAppConfig,
-                                        mcc: MessagesControllerComponents,
-                                        dataCacheConnector: DataCacheConnector,
-                                        navigator: Navigator,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        approvedProvider: approvedProvider)(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class ApprovedProviderController @Inject() (
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    approvedProvider: approvedProvider
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (getData andThen requireData) {
-    implicit request =>
-      val childcareCostsMaybeInFuture = checkIfUnsureAboutChildcareCosts(request.userAnswers)
+  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+    val childcareCostsMaybeInFuture = checkIfUnsureAboutChildcareCosts(request.userAnswers)
 
-      val preparedForm = request.userAnswers.approvedProvider match {
-        case None => ApprovedProviderForm()
-        case Some(value) => ApprovedProviderForm().fill(value)
-      }
-      Ok(approvedProvider(appConfig, preparedForm,childcareCostsMaybeInFuture, mode))
+    val preparedForm = request.userAnswers.approvedProvider match {
+      case None        => ApprovedProviderForm()
+      case Some(value) => ApprovedProviderForm().fill(value)
+    }
+    Ok(approvedProvider(appConfig, preparedForm, childcareCostsMaybeInFuture, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      ApprovedProviderForm().bindFromRequest().fold(
+  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+    ApprovedProviderForm()
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[String]) => {
           val childcareCostsMaybeInFuture = checkIfUnsureAboutChildcareCosts(request.userAnswers)
-          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors,childcareCostsMaybeInFuture, mode)))},
+          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors, childcareCostsMaybeInFuture, mode)))
+        },
         value =>
-          dataCacheConnector.save[String](request.sessionId, ApprovedProviderId.toString, value).map(cacheMap =>
-            Redirect(navigator.nextPage(ApprovedProviderId, mode)(new UserAnswers(cacheMap))))
+          dataCacheConnector
+            .save[String](request.sessionId, ApprovedProviderId.toString, value)
+            .map(cacheMap => Redirect(navigator.nextPage(ApprovedProviderId, mode)(new UserAnswers(cacheMap))))
       )
   }
 
-  private def checkIfUnsureAboutChildcareCosts(answers: UserAnswers): Boolean = {
+  private def checkIfUnsureAboutChildcareCosts(answers: UserAnswers): Boolean =
     answers.childcareCosts.getOrElse("no") == YesNoNotYetEnum.NOTYET.toString
-  }
+
 }

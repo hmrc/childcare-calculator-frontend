@@ -34,51 +34,61 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import scala.concurrent.{ExecutionContext, Future}
 
 class ExpectedChildcareCostsController @Inject() (
-                                                   appConfig: FrontendAppConfig,
-                                                   mcc: MessagesControllerComponents,
-                                                   dataCacheConnector: DataCacheConnector,
-                                                   navigator: Navigator,
-                                                   getData: DataRetrievalAction,
-                                                   requireData: DataRequiredAction,
-                                                   expectedChildcareCosts: expectedChildcareCosts
-                                                 )(implicit ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with MapFormats {
+    appConfig: FrontendAppConfig,
+    mcc: MessagesControllerComponents,
+    dataCacheConnector: DataCacheConnector,
+    navigator: Navigator,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    expectedChildcareCosts: expectedChildcareCosts
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
+    with I18nSupport
+    with MapFormats {
 
-  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      validIndex(childIndex) {
-        case (hasCosts, name, frequency) =>
-          val preparedForm = request.userAnswers.expectedChildcareCosts(childIndex) match {
-            case None => ExpectedChildcareCostsForm(frequency, name)
-            case Some(value) => ExpectedChildcareCostsForm(frequency, name).fill(value)
-          }
-          Future.successful(Ok(expectedChildcareCosts(appConfig, preparedForm, hasCosts, childIndex, frequency, name, mode)))
+  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] =
+    getData.andThen(requireData).async { implicit request =>
+      validIndex(childIndex) { case (hasCosts, name, frequency) =>
+        val preparedForm = request.userAnswers.expectedChildcareCosts(childIndex) match {
+          case None        => ExpectedChildcareCostsForm(frequency, name)
+          case Some(value) => ExpectedChildcareCostsForm(frequency, name).fill(value)
+        }
+        Future.successful(
+          Ok(expectedChildcareCosts(appConfig, preparedForm, hasCosts, childIndex, frequency, name, mode))
+        )
       }
-  }
+    }
 
-  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = (getData andThen requireData).async {
-    implicit request =>
-      validIndex(childIndex) {
-        case (hasCosts, name, frequency) =>
-          ExpectedChildcareCostsForm(frequency, name).bindFromRequest().fold(
+  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] =
+    getData.andThen(requireData).async { implicit request =>
+      validIndex(childIndex) { case (hasCosts, name, frequency) =>
+        ExpectedChildcareCostsForm(frequency, name)
+          .bindFromRequest()
+          .fold(
             (formWithErrors: Form[BigDecimal]) =>
-              Future.successful(BadRequest(expectedChildcareCosts(appConfig, formWithErrors, hasCosts, childIndex, frequency, name, mode))),
+              Future.successful(
+                BadRequest(
+                  expectedChildcareCosts(appConfig, formWithErrors, hasCosts, childIndex, frequency, name, mode)
+                )
+              ),
             value =>
-              dataCacheConnector.saveInMap[Int, BigDecimal](
-                request.sessionId,
-                ExpectedChildcareCostsId.toString,
-                childIndex,
-                value
-              ).map {
-                cacheMap =>
+              dataCacheConnector
+                .saveInMap[Int, BigDecimal](
+                  request.sessionId,
+                  ExpectedChildcareCostsId.toString,
+                  childIndex,
+                  value
+                )
+                .map { cacheMap =>
                   Redirect(navigator.nextPage(ExpectedChildcareCostsId(childIndex), mode)(new UserAnswers(cacheMap)))
-              }
+                }
           )
       }
-  }
+    }
 
-  private def validIndex[A](childIndex: Int)(block: (YesNoNotYetEnum.Value, String, ChildcarePayFrequency.Value) => Future[Result])
-                        (implicit request: DataRequest[A]): Future[Result] = {
+  private def validIndex[A](childIndex: Int)(
+      block: (YesNoNotYetEnum.Value, String, ChildcarePayFrequency.Value) => Future[Result]
+  )(implicit request: DataRequest[A]): Future[Result] = {
 
     for {
       // TODO remove `map` when type is fixed
@@ -86,5 +96,10 @@ class ExpectedChildcareCostsController @Inject() (
       model     <- request.userAnswers.aboutYourChild(childIndex)
       frequency <- request.userAnswers.childcarePayFrequency(childIndex)
     } yield block(hasCosts, model.name, frequency)
-  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validIndex",Some(request.userAnswers),request.uri))))
+  }.getOrElse(
+    Future.successful(
+      Redirect(SessionExpiredRouter.route(getClass.getName, "validIndex", Some(request.userAnswers), request.uri))
+    )
+  )
+
 }

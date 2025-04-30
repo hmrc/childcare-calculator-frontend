@@ -27,11 +27,12 @@ import java.time.LocalDate
 class AboutYourChildFormSpec extends FormBehaviours {
 
   val validData: Map[String, String] = Map(
-    "name"      -> "Foo",
+    "name"                     -> "Foo",
     "aboutYourChild.dob.day"   -> "1",
     "aboutYourChild.dob.month" -> "2",
     "aboutYourChild.dob.year"  -> "2017"
   )
+
   implicit val messages: MessagesImpl = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
 
   val form: Form[AboutYourChild] = AboutYourChildForm()
@@ -42,7 +43,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
   "AboutYourChild form" must {
 
-    behave like questionForm(AboutYourChild("Foo", LocalDate.of(2017, 2, 1)))
+    behave.like(questionForm(AboutYourChild("Foo", LocalDate.of(2017, 2, 1))))
 
     "bind when name is 35 chars long" in {
       val data = validData + ("name" -> "a" * 35)
@@ -50,19 +51,19 @@ class AboutYourChildFormSpec extends FormBehaviours {
     }
 
     "fail to bind when name is omitted" in {
-      val data = validData - "name"
+      val data          = validData - "name"
       val expectedError = error("name", "aboutYourChild.name.error.required")
       checkForError(form, data, expectedError)
     }
 
     "fail to bind when name is blank" in {
-      val data = validData + ("name" -> "")
+      val data          = validData + ("name" -> "")
       val expectedError = error("name", "aboutYourChild.name.error.required")
       checkForError(form, data, expectedError)
     }
 
     "fail to bind when name is more than 35 chars" in {
-      val data = validData + ("name" -> "a" * 36)
+      val data          = validData + ("name" -> "a" * 36)
       val expectedError = error("name", "aboutYourChild.name.error.maxLength")
       checkForError(form, data, expectedError)
     }
@@ -73,14 +74,14 @@ class AboutYourChildFormSpec extends FormBehaviours {
     }
 
     "fail to bind when the date is omitted" in {
-      val data = Map("name" -> "Foo")
+      val data          = Map("name" -> "Foo")
       val expectedError = error("aboutYourChild.dob", "aboutYourChild.dob.error.required")
       checkForError(form, data, expectedError)
     }
 
     "fail to bind when the date is blank" in {
       val data = Map(
-        "name"      -> "Foo",
+        "name"                     -> "Foo",
         "aboutYourChild.dob.day"   -> "",
         "aboutYourChild.dob.month" -> "",
         "aboutYourChild.dob.year"  -> ""
@@ -91,7 +92,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
     "fail to bind when non numerics supplied" in {
       val data = Map(
-        "name"      -> "Foo",
+        "name"                     -> "Foo",
         "aboutYourChild.dob.day"   -> "not a number",
         "aboutYourChild.dob.month" -> "not a number",
         "aboutYourChild.dob.year"  -> "not a number"
@@ -103,7 +104,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
     "fail to bind when a fake date is supplied" in {
       val data = Map(
-        "name"      -> "Foo",
+        "name"                     -> "Foo",
         "aboutYourChild.dob.day"   -> "31",
         "aboutYourChild.dob.month" -> "2",
         "aboutYourChild.dob.year"  -> "2000"
@@ -116,7 +117,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
     "fail to bind when the date is more than 18 years in the past" in {
       val date = LocalDate.now.minusYears(18).minusDays(1)
       val data = Map(
-        "name"      -> "Foo",
+        "name"                     -> "Foo",
         "aboutYourChild.dob.day"   -> date.getDayOfMonth.toString,
         "aboutYourChild.dob.month" -> date.getMonthValue.toString,
         "aboutYourChild.dob.year"  -> date.getYear.toString
@@ -128,7 +129,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
     "fail to bind when the date is more than 1 day in the future" in {
       val date = LocalDate.now.plusDays(1)
       val data = Map(
-        "name"      -> "Foo",
+        "name"                     -> "Foo",
         "aboutYourChild.dob.day"   -> date.getDayOfMonth.toString,
         "aboutYourChild.dob.month" -> date.getMonthValue.toString,
         "aboutYourChild.dob.year"  -> date.getYear.toString
@@ -137,4 +138,5 @@ class AboutYourChildFormSpec extends FormBehaviours {
       checkForError(form, data, expectedError)
     }
   }
+
 }
