@@ -46,9 +46,9 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
     mockView(form, NormalMode)(fakeRequest, messages)
 
   "ChildrenAgeGroupsView" must {
-    behave like normalPage(() => createView(), messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix)
 
-    behave like pageWithBackLink(() => createView())
+    behave like pageWithBackLink(createView)
 
     behave like checkboxPage()
 

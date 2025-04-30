@@ -36,8 +36,6 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
 
   def form: Form[Set[DisabilityBenefits.Value]] = WhichDisabilityBenefitsForm("Foo")
 
-  override def createView(): Html = createView(form)
-
   def createView(form: Form[Set[DisabilityBenefits.Value]]): Html = createView(form, 0, "Foo")
 
   def createView(
@@ -55,7 +53,7 @@ class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckbox
 
   "WhichDisabilityBenefits view" must {
 
-    behave like pageWithBackLink(() => createView())
+    behave like pageWithBackLink(createView)
 
     behave like checkboxPage(legend = Some(messages(s"$messageKeyPrefix.heading", "Foo")))
 

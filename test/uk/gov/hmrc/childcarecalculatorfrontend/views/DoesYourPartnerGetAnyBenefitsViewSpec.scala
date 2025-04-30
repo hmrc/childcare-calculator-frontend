@@ -47,9 +47,9 @@ class DoesYourPartnerGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCh
     testView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
 
   "DoYouGetAnyBenefits view" must {
-    behave like normalPage(() => createView(), messageKeyPrefix)
+    behave like normalPage(createView, messageKeyPrefix)
 
-    behave like pageWithBackLink(() => createView())
+    behave like pageWithBackLink(createView)
 
     behave like checkboxPage()
 
