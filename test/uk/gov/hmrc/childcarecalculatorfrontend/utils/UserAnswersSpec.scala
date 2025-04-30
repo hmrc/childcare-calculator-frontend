@@ -21,11 +21,6 @@ import org.scalatestplus.play.PlaySpec
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.{
-  CarersAllowance,
-  IncapacityBenefit,
-  SevereDisablementAllowance
-}
 import uk.gov.hmrc.childcarecalculatorfrontend.models._
 
 import java.time.LocalDate

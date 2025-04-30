@@ -33,7 +33,7 @@ class ChildAgedThreeOrFourViewSpec extends NewYesNoViewBehaviours {
 
   val location = Location.ENGLAND
 
-  def createView() = view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[Boolean]) =>
     view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)

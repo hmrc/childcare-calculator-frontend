@@ -38,8 +38,6 @@ class WhichDisabilityBenefitsViewSpec
 
   def form: Form[Set[DisabilityBenefits.Value]] = WhichDisabilityBenefitsForm("Foo")
 
-  override def createView(): Html = createView(form)
-
   def createView(form: Form[Set[DisabilityBenefits.Value]]): Html = createView(form, 0, "Foo")
 
   def createView(

@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.libs.json.{JsBoolean, JsNumber, JsString}
+import play.api.libs.json.{JsBoolean, JsString}
 import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{

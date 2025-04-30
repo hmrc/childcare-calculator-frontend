@@ -16,19 +16,19 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
 
 class ExpectedChildcareCostsFormSpec extends FormSpec {
 
-  val errorKeyBlank           = "expectedChildcareCosts.error.notCompleted"
-  val errorKeyInvalid         = "expectedChildcareCosts.error.invalid"
-  val firstName               = "name"
-  val frequency               = WEEKLY
-  implicit val messages       = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
-  val form                    = ExpectedChildcareCostsForm(frequency, firstName)
-  val frequencyString: String = messages(s"childcarePayFrequency.$frequency").toLowerCase
+  val errorKeyBlank                   = "expectedChildcareCosts.error.notCompleted"
+  val errorKeyInvalid                 = "expectedChildcareCosts.error.invalid"
+  val firstName                       = "name"
+  val frequency                       = WEEKLY
+  implicit val messages: MessagesImpl = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
+  val form                            = ExpectedChildcareCostsForm(frequency, firstName)
+  val frequencyString: String         = messages(s"childcarePayFrequency.$frequency").toLowerCase
 
   "ExpectedChildcareCosts Form" must {
 

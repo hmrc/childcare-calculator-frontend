@@ -17,12 +17,12 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, JsString}
+import play.api.libs.json.JsBoolean
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouLiveWithPartnerId, UniversalCreditId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.UniversalCreditId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap

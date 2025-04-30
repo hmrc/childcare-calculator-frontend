@@ -20,7 +20,6 @@ import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{EligibilityModel, SchemeResultModel}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents.scheme_result
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.ucSchemeGuidanceLinkUrl
 
 class SchemeResultViewSpec extends NewViewBehaviours {
 

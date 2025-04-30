@@ -45,7 +45,12 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
   implicit val req: Request[_]                                 = mock[Request[_]]
 
   override def beforeEach(): Unit = {
-    reset(firstParagraphBuilder, eligibilityService, freeHours, freeChildcareWorkingParents, taxFreeChildcare, util)
+    reset(firstParagraphBuilder)
+    reset(eligibilityService)
+    reset(freeHours)
+    reset(freeChildcareWorkingParents)
+    reset(taxFreeChildcare)
+    reset(util)
     super.beforeEach()
   }
 

@@ -40,7 +40,7 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
 
         navigator
           .nextPage(SurveyChildcareSupportId, NormalMode)
-          .value(answers) mustBe routes.SurveyDoNotUnderstandController.onPageLoad
+          .value(answers) mustBe routes.SurveyDoNotUnderstandController.onPageLoad()
       }
     }
 

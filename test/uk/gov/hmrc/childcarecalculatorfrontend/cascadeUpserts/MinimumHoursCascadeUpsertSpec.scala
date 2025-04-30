@@ -21,14 +21,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{
   SelfEmployedOrApprenticeOrNeitherEnum,
   YesNoNotYetEnum,
-  YesNoUnsureEnum,
-  YouPartnerBothEnum
+  YesNoUnsureEnum
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, SpecBase}
-
-import java.time.LocalDate
 
 class MinimumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   lazy val no: String = YesNoNotYetEnum.NO.toString

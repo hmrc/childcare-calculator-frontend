@@ -37,7 +37,8 @@ class FreeChildcareWorkingParentsSpec extends PlaySpec with Matchers with Before
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(freeChildcareEligibilityCalculator, userAnswers)
+    reset(freeChildcareEligibilityCalculator)
+    reset(userAnswers)
   }
 
   private val FreeChildcareEligibleBenefits: Set[ParentsBenefits] = Set(

@@ -18,8 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.libs.json._
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 
 class CacheMapClonerSpec extends SpecBase {
 

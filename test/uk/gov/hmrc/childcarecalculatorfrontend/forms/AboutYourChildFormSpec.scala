@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import java.time.LocalDate
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.Form
 import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
+
+import java.time.LocalDate
 
 class AboutYourChildFormSpec extends FormBehaviours {
 
@@ -32,7 +33,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
     "aboutYourChild.dob.year"  -> "2017"
   )
 
-  implicit val messages = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
+  implicit val messages: MessagesImpl = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
 
   val form: Form[AboutYourChild] = AboutYourChildForm()
 

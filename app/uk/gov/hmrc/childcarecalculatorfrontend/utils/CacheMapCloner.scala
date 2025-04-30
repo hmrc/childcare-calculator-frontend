@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json.{JsBoolean, JsString, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 
 object CacheMapCloner {

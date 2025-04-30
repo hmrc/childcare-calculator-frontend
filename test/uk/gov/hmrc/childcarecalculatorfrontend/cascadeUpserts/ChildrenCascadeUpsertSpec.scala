@@ -16,26 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
-import java.time.LocalDate
-
 import play.api.libs.json._
-import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{
-  ageExactly15Relative,
-  ageOf19YearsAgo,
-  ageOfOver16Relative
-}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, DisabilityBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, DataGenerator, SpecBase}
 
 class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
-  private val testDate: LocalDate = LocalDate.parse("2014-01-01")
-
-  private val ageOf19: LocalDate        = ageOf19YearsAgo(testDate)
-  private val ageOfOver16: LocalDate    = ageOfOver16Relative(testDate)
-  private val ageOfExactly15: LocalDate = ageExactly15Relative(testDate)
-
-  private val childStartEducationDate: LocalDate = LocalDate.of(2017, 2, 1)
 
   lazy val disabilityBenefits: String           = DisabilityBenefits.DISABILITY_BENEFITS.toString
   lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString
