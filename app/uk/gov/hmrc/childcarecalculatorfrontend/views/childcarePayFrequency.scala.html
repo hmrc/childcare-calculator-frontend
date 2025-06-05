@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 
 @this(
@@ -28,7 +27,7 @@
     inputRadio: playComponents.input_radio,
     submitButton: playComponents.submit_button,
 )
-@(appConfig: FrontendAppConfig, form: Form[ChildcarePayFrequency.Value], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[ChildcarePayFrequency.Value], index: Int, name: String)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("childcarePayFrequency.title", messages(s"nth.$index"))) else messages("childcarePayFrequency.title", messages(s"nth.$index"))
@@ -40,7 +39,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = ChildcarePayFrequencyController.onSubmit(mode, index), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = ChildcarePayFrequencyController.onSubmit(index), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("childcarePayFrequency.heading", name)),

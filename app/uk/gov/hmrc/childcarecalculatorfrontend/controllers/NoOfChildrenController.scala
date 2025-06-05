@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,12 +23,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.NoOfChildrenForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.NoOfChildrenId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class NoOfChildrenController @Inject() (
@@ -45,23 +44,23 @@ class NoOfChildrenController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.noOfChildren match {
       case None        => form()
       case Some(value) => form().fill(value)
     }
-    Ok(noOfChildren(appConfig, preparedForm, mode))
+    Ok(noOfChildren(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     form()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[Int]) => Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors, mode))),
+        (formWithErrors: Form[Int]) => Future.successful(BadRequest(noOfChildren(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[Int](request.sessionId, NoOfChildrenId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(NoOfChildrenId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(NoOfChildrenId)(new UserAnswers(cacheMap))))
       )
   }
 

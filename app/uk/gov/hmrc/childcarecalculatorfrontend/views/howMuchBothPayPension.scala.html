@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, HowMuchBothPayPension}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 
 
 @this(
@@ -28,7 +28,7 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[HowMuchBothPayPension], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[HowMuchBothPayPension])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages(s"howMuchBothPayPension.title")) else messages(s"howMuchBothPayPension.title")
@@ -40,7 +40,7 @@
 
     @errorSummary(form.errors)
     @heading(messages("howMuchBothPayPension.heading"))
-    @formWithCSRF(action = HowMuchBothPayPensionController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = HowMuchBothPayPensionController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputText(
             label = messages("howMuchBothPayPension.yourPension"),

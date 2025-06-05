@@ -18,15 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class FakeNavigator(
-    desiredRoute: Call,
-    mode: Mode = NormalMode
-) extends Navigator {
+class FakeNavigator(desiredRoute: Call) extends Navigator {
 
-  override def nextPage(controllerId: Identifier, mode: Mode): (UserAnswers) => Call =
+  override def nextPage(controllerId: Identifier): (UserAnswers) => Call =
     _ => desiredRoute
 
 }

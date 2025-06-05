@@ -16,14 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ResultsViewModelId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.services.ResultsService
@@ -32,6 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -51,7 +51,7 @@ class ResultController @Inject() (
   def onPageLoad: Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     request.userAnswers.location match {
       case Some(location) => renderResultsPage(location)
-      case None           => Future.successful(Redirect(routes.LocationController.onPageLoad(NormalMode)))
+      case None           => Future.successful(Redirect(routes.LocationController.onPageLoad()))
     }
   }
 

@@ -20,7 +20,6 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childDisabilityBenefits
 
 class ChildDisabilityBenefitsViewSpec extends NewYesNoViewBehaviours {
@@ -30,10 +29,9 @@ class ChildDisabilityBenefitsViewSpec extends NewYesNoViewBehaviours {
 
   val view = application.injector.instanceOf[childDisabilityBenefits]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), "Foo")(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, "Foo")(fakeRequest, messages)
 
   "ChildDisabilityBenefits view" must {
 
@@ -55,7 +53,7 @@ class ChildDisabilityBenefitsViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.ChildrenDisabilityBenefitsController.onSubmit(NormalMode).url,
+        routes.ChildrenDisabilityBenefitsController.onSubmit().url,
         legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
       )
     )

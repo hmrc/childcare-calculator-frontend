@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
@@ -36,7 +35,7 @@ class FreeHoursInfoController @Inject() (
   def onPageLoad: Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     request.userAnswers.location match {
       case Some(location) => Ok(freeHoursInfo(location))
-      case None           => Redirect(routes.LocationController.onPageLoad(NormalMode))
+      case None           => Redirect(routes.LocationController.onPageLoad())
     }
   }
 

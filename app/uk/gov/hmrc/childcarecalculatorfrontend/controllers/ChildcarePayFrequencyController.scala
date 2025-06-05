@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,12 +23,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcarePayFrequencyId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ChildcarePayFrequencyController @Inject() (
@@ -45,7 +45,7 @@ class ChildcarePayFrequencyController @Inject() (
     with I18nSupport
     with MapFormats {
 
-  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] =
+  def onPageLoad(childIndex: Int): Action[AnyContent] =
     getData.andThen(requireData).async { implicit request =>
       request.userAnswers.aboutYourChild(childIndex) match {
         case Some(child) =>
@@ -53,12 +53,12 @@ class ChildcarePayFrequencyController @Inject() (
             case None        => ChildcarePayFrequencyForm(child.name)
             case Some(value) => ChildcarePayFrequencyForm(child.name).fill(value)
           }
-          Future.successful(Ok(childcarePayFrequency(appConfig, preparedForm, childIndex, child.name, mode)))
+          Future.successful(Ok(childcarePayFrequency(appConfig, preparedForm, childIndex, child.name)))
         case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
       }
     }
 
-  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] =
+  def onSubmit(childIndex: Int): Action[AnyContent] =
     getData.andThen(requireData).async { implicit request =>
       request.userAnswers.aboutYourChild(childIndex) match {
         case Some(child) =>
@@ -67,7 +67,7 @@ class ChildcarePayFrequencyController @Inject() (
             .fold(
               (formWithErrors: Form[ChildcarePayFrequency.Value]) =>
                 Future.successful(
-                  BadRequest(childcarePayFrequency(appConfig, formWithErrors, childIndex, child.name, mode))
+                  BadRequest(childcarePayFrequency(appConfig, formWithErrors, childIndex, child.name))
                 ),
               value =>
                 dataCacheConnector
@@ -78,26 +78,11 @@ class ChildcarePayFrequencyController @Inject() (
                     value
                   )
                   .map { cacheMap =>
-                    Redirect(navigator.nextPage(ChildcarePayFrequencyId(childIndex), mode)(new UserAnswers(cacheMap)))
+                    Redirect(navigator.nextPage(ChildcarePayFrequencyId(childIndex))(new UserAnswers(cacheMap)))
                   }
             )
         case _ => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
       }
     }
-
-//  private def validateIndex[A](i: Int)(block: String => Future[Result])
-//                           (implicit request: DataRequest[A]): Future[Result] = {
-//
-//    for {
-//      model             <- request.userAnswers.aboutYourChild(i)
-//      childrenWithCosts <- request.userAnswers.childrenWithCosts
-//    } yield {
-//      if (childrenWithCosts.contains(i)) {
-//        block(model.name)
-//      } else {
-//        Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri)))
-//      }
-//    }
-//  }.getOrElse(Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName,"validateIndex",Some(request.userAnswers),request.uri))))
 
 }

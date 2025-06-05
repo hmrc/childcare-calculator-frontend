@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -24,13 +23,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenBlindForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichChildrenBlindId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhichChildrenBlindController @Inject() (
@@ -45,7 +44,7 @@ class WhichChildrenBlindController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] =
+  def onPageLoad(): Action[AnyContent] =
     getData.andThen(requireData).async { implicit request: DataRequest[_] =>
       withValues { values =>
         val answer = request.userAnswers.whichChildrenBlind
@@ -53,21 +52,21 @@ class WhichChildrenBlindController @Inject() (
           case None        => WhichChildrenBlindForm()
           case Some(value) => WhichChildrenBlindForm().fill(value)
         }
-        Future.successful(Ok(whichChildrenBlind(appConfig, preparedForm, mode, options(values).toSeq)))
+        Future.successful(Ok(whichChildrenBlind(appConfig, preparedForm, options(values).toSeq)))
       }
     }
 
-  def onSubmit(mode: Mode): Action[AnyContent] =
+  def onSubmit(): Action[AnyContent] =
     getData.andThen(requireData).async { implicit request: DataRequest[_] =>
       withValues { values =>
         WhichChildrenBlindForm(values.values.toSeq: _*)
           .bindFromRequest()
           .fold(
             (formWithErrors: Form[_]) =>
-              Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, mode, options(values).toSeq))),
+              Future.successful(BadRequest(whichChildrenBlind(appConfig, formWithErrors, options(values).toSeq))),
             value =>
               dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenBlindId.toString, value).map { cacheMap =>
-                Redirect(navigator.nextPage(WhichChildrenBlindId, mode)(new UserAnswers(cacheMap)))
+                Redirect(navigator.nextPage(WhichChildrenBlindId)(new UserAnswers(cacheMap)))
               }
           )
       }

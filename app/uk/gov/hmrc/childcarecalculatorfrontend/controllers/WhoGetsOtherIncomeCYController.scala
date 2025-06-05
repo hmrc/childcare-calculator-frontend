@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,12 +23,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsOtherIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGetsOtherIncomeCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsOtherIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhoGetsOtherIncomeCYController @Inject() (
@@ -44,24 +43,24 @@ class WhoGetsOtherIncomeCYController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.whoGetsOtherIncomeCY match {
       case None        => WhoGetsOtherIncomeCYForm()
       case Some(value) => WhoGetsOtherIncomeCYForm().fill(value)
     }
-    Ok(whoGetsOtherIncomeCY(appConfig, preparedForm, mode))
+    Ok(whoGetsOtherIncomeCY(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     WhoGetsOtherIncomeCYForm()
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(whoGetsOtherIncomeCY(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(whoGetsOtherIncomeCY(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[String](request.sessionId, WhoGetsOtherIncomeCYId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(WhoGetsOtherIncomeCYId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(WhoGetsOtherIncomeCYId)(new UserAnswers(cacheMap))))
       )
   }
 

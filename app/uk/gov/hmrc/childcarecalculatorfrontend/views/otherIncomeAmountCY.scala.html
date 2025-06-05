@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, OtherIncomeAmountCY}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 
 
 @this(
@@ -28,7 +28,7 @@
     inputText: playComponents.input_text
 )
 
-@(appConfig: FrontendAppConfig, form: Form[OtherIncomeAmountCY], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[OtherIncomeAmountCY])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("otherIncomeAmountCY.title")) else messages("otherIncomeAmountCY.title")
@@ -41,7 +41,7 @@
 
     @heading(messages("otherIncomeAmountCY.heading"))
 
-    @formWithCSRF(action = OtherIncomeAmountCYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = OtherIncomeAmountCYController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
         @inputText(
             label = messages("otherIncomeAmountCY.parentOtherIncome"),
             currency = true,

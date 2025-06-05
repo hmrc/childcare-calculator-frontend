@@ -32,7 +32,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
   WhichChildrenDisabilityId,
   WhoHasChildcareCostsId
 }
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
@@ -51,7 +51,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
   "WhoHasChildcareCosts Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller(getRequiredData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRequiredData).onPageLoad()(fakeRequest)
 
       status(result) mustEqual OK
       contentAsString(result) mustEqual viewAsString()
@@ -77,7 +77,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       val getRelevantData =
         new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)), Some(testDate))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustEqual viewAsString(
         WhoHasChildcareCostsForm().fill(Set(0)),
@@ -98,7 +98,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
         )
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
 
-        val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+        val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
         contentAsString(result) mustEqual viewAsString(WhoHasChildcareCostsForm().fill(Set(value.toInt)), values)
       }
@@ -106,7 +106,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       s"redirect to the next page when valid data is submitted $i" in {
         val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> value).withMethod("POST")
 
-        val result = controller(getRequiredData(values)).onSubmit(NormalMode)(postRequest)
+        val result = controller(getRequiredData(values)).onSubmit()(postRequest)
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
@@ -118,14 +118,14 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value")).withMethod("POST")
       val boundForm   = WhoHasChildcareCostsForm().bind(Map("value[0]" -> "invalid value"))
 
-      val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRequiredData).onSubmit()(postRequest)
 
       status(result) mustEqual BAD_REQUEST
       contentAsString(result) mustEqual viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -133,14 +133,14 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> "0").withMethod("POST")
-      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if required data is missing" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad()(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -148,7 +148,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
 
     "redirect to Session Expired for a POST if required data is missing" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> "0").withMethod("POST")
-      val result      = controller().onSubmit(NormalMode)(postRequest)
+      val result      = controller().onSubmit()(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -175,7 +175,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       form: Form[_] = WhoHasChildcareCostsForm(0, 1),
       values: Map[String, String] = defaultValues
   ): String =
-    view(frontendAppConfig, form, NormalMode, values.toSeq)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, values.toSeq)(fakeRequest, messages).toString
 
   def requiredData(values: Map[String, String]): Map[String, JsValue] = Map(
     AboutYourChildId.toString -> Json.obj(

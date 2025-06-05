@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
@@ -43,27 +42,27 @@ class OtherIncomeNavigator @Inject() (utils: Utils, tfc: TaxFreeChildcare) exten
   private def yourOtherIncomeRouteCY(answers: UserAnswers) =
 
     utils.getCall(answers.yourOtherIncomeThisYear) {
-      case true  => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case true  => routes.YourOtherIncomeAmountCYController.onPageLoad()
       case false => routes.ResultController.onPageLoad()
     }
 
   private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
-      case true  => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case true  => routes.PartnerOtherIncomeAmountCYController.onPageLoad()
       case false => routes.ResultController.onPageLoad()
     }
 
   private def bothOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.bothOtherIncomeThisYear) {
-      case true  => routes.WhoGetsOtherIncomeCYController.onPageLoad(NormalMode)
+      case true  => routes.WhoGetsOtherIncomeCYController.onPageLoad()
       case false => routes.ResultController.onPageLoad()
     }
 
   private def whoGetsOtherIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.whoGetsOtherIncomeCY) {
-      case `you`     => routes.YourOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case `partner` => routes.PartnerOtherIncomeAmountCYController.onPageLoad(NormalMode)
-      case `both`    => routes.OtherIncomeAmountCYController.onPageLoad(NormalMode)
+      case `you`     => routes.YourOtherIncomeAmountCYController.onPageLoad()
+      case `partner` => routes.PartnerOtherIncomeAmountCYController.onPageLoad()
+      case `both`    => routes.OtherIncomeAmountCYController.onPageLoad()
     }
 
   private def howMuchYourOtherIncomeRouteCY(answers: UserAnswers) =

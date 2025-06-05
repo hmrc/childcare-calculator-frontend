@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 
 @this(
@@ -30,8 +29,7 @@
 
 @(
         appConfig: FrontendAppConfig,
-        form: Form[Boolean],
-        mode: Mode
+        form: Form[Boolean]
 )(
         implicit request: Request[_],
         messages: Messages
@@ -48,7 +46,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = AreYouInPaidWorkController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = AreYouInPaidWorkController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("areYouInPaidWork.heading"))),

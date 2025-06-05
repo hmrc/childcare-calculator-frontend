@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
         layout: Layout,
@@ -31,7 +30,6 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[Boolean],
-        mode: Mode,
         amount: BigDecimal
 )(implicit request: Request[_], messages: Messages)
 
@@ -45,7 +43,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YourMinimumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = YourMinimumEarningsController.onSubmit(), Symbol("autoComplete") -> "off") {
         @inputYesNo(
             label = HtmlContent(heading(messages("yourMinimumEarnings.heading", amount))),
             field = form("value"),

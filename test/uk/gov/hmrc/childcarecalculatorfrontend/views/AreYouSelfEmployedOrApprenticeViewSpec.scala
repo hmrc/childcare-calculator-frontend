@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AreYouSelfEmployedOrApprenticeForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouSelfEmployedOrApprentice
 
@@ -27,10 +26,9 @@ class AreYouSelfEmployedOrApprenticeViewSpec extends NewViewBehaviours {
   val messageKeyPrefix = "areYouSelfEmployedOrApprentice"
   val view             = application.injector.instanceOf[areYouSelfEmployedOrApprentice]
 
-  def createView = () =>
-    view(frontendAppConfig, AreYouSelfEmployedOrApprenticeForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, AreYouSelfEmployedOrApprenticeForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "AreYouSelfEmployedOrApprentice view" must {
     behave.like(normalPage(createView, messageKeyPrefix))

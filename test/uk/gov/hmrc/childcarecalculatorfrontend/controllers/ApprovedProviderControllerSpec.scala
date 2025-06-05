@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ApprovedProviderId, ChildcareCostsId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
@@ -46,12 +46,12 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     )
 
   def viewAsString(form: Form[String] = ApprovedProviderForm()) =
-    view(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, false)(fakeRequest, messages).toString
 
   "ApprovedProvider Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -61,7 +61,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
       val validData       = Map(ApprovedProviderId.toString -> JsString(ApprovedProviderForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(ApprovedProviderForm().fill(ApprovedProviderForm.options.head.value))
     }
@@ -70,9 +70,9 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
       val validData       = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.NOTYET.toString))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(
+      contentAsString(result) mustBe view(frontendAppConfig, ApprovedProviderForm(), true)(
         fakeRequest,
         messages
       ).toString
@@ -82,9 +82,9 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
       val validData       = Map(ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(
+      contentAsString(result) mustBe view(frontendAppConfig, ApprovedProviderForm(), false)(
         fakeRequest,
         messages
       ).toString
@@ -94,7 +94,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
       val postRequest =
         fakeRequest.withFormUrlEncodedBody(("value", ApprovedProviderForm.options.head.value)).withMethod("POST")
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -104,14 +104,14 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm   = ApprovedProviderForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -120,7 +120,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest =
         fakeRequest.withFormUrlEncodedBody(("value", ApprovedProviderForm.options.head.value)).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)

@@ -16,17 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SessionDataClearId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class SessionManagementController @Inject() (
@@ -48,7 +47,7 @@ class SessionManagementController @Inject() (
     // value has been hard coded as "sessionData" as there is no form associated with this controller
     dataCacheConnector
       .save[String](request.sessionId, SessionDataClearId.toString, "sessionData")
-      .map(cacheMap => Redirect(navigator.nextPage(SessionDataClearId, NormalMode)(new UserAnswers(cacheMap))))
+      .map(cacheMap => Redirect(navigator.nextPage(SessionDataClearId)(new UserAnswers(cacheMap))))
   }
 
 }

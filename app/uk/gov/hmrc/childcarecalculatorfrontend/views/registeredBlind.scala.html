@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -26,7 +25,7 @@
     inputYesNo: playComponents.input_yes_no
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean])(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle= if(form.errors.nonEmpty) {
@@ -37,7 +36,7 @@
 ) {
     @error_summary(form.errors)
 
-    @formWithCSRF(action = RegisteredBlindController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = RegisteredBlindController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("registeredBlind.heading"))),

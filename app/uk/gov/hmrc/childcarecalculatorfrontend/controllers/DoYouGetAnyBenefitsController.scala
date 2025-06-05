@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouGetAnyBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -43,23 +43,23 @@ class DoYouGetAnyBenefitsController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.doYouGetAnyBenefits match {
       case None        => DoYouGetAnyBenefitsForm()
       case Some(value) => DoYouGetAnyBenefitsForm().fill(value)
     }
-    Ok(doYouGetAnyBenefits(appConfig, preparedForm, mode))
+    Ok(doYouGetAnyBenefits(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     DoYouGetAnyBenefitsForm()
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(doYouGetAnyBenefits(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[Set[ParentsBenefits]](request.sessionId, DoYouGetAnyBenefitsId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(DoYouGetAnyBenefitsId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(DoYouGetAnyBenefitsId)(new UserAnswers(cacheMap))))
       )
   }
 

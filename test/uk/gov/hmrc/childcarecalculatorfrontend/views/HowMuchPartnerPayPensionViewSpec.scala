@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchPartnerPayPensionForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchPartnerPayPension
 
@@ -28,9 +27,9 @@ class HowMuchPartnerPayPensionViewSpec extends NewBigDecimalViewBehaviours {
   val view             = application.injector.instanceOf[howMuchPartnerPayPension]
   val messageKeyPrefix = "howMuchPartnerPayPension"
 
-  def createView = () => view(frontendAppConfig, HowMuchPartnerPayPensionForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, HowMuchPartnerPayPensionForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   val form = HowMuchPartnerPayPensionForm()
 
@@ -43,7 +42,7 @@ class HowMuchPartnerPayPensionViewSpec extends NewBigDecimalViewBehaviours {
       bigDecimalPage(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.HowMuchPartnerPayPensionController.onSubmit(NormalMode).url,
+        routes.HowMuchPartnerPayPensionController.onSubmit().url,
         Some(messages(s"$messageKeyPrefix.heading"))
       )
     )

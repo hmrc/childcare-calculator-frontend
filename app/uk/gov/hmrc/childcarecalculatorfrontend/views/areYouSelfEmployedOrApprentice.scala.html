@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.AreYouSelfEmployedOrApprenticeForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
     layout: Layout,
@@ -28,7 +27,7 @@
     submitButton: playComponents.submit_button
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String])(implicit request: Request[_], messages: Messages)
 
 @title = @{if(form.errors.nonEmpty) messages("site.title.error", messages("areYouSelfEmployedOrApprentice.title")) else messages("areYouSelfEmployedOrApprentice.title")}
 
@@ -37,7 +36,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = AreYouSelfEmployedOrApprenticeController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = AreYouSelfEmployedOrApprenticeController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
             legend = heading(messages("areYouSelfEmployedOrApprentice.heading")),

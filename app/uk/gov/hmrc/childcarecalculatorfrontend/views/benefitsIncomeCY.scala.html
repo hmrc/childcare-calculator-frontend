@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, BenefitsIncomeCY}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
 
 @this(
     layout: Layout,
@@ -27,7 +27,7 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[BenefitsIncomeCY], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[BenefitsIncomeCY])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("benefitsIncomeCY.title")) else messages("benefitsIncomeCY.title")
@@ -39,7 +39,7 @@
     @errorSummary(form.errors)
 
     @heading(messages("benefitsIncomeCY.heading"))
-    @formWithCSRF(action = BenefitsIncomeCYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = BenefitsIncomeCYController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputText(
             label = messages("benefitsIncomeCY.parentBenefitsIncome"),

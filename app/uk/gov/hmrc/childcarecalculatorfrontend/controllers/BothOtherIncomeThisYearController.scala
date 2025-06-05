@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,12 +23,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothOtherIncomeThisYearId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothOtherIncomeThisYear
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class BothOtherIncomeThisYearController @Inject() (
@@ -45,24 +44,24 @@ class BothOtherIncomeThisYearController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.bothOtherIncomeThisYear match {
       case None        => BooleanForm()
       case Some(value) => BooleanForm().fill(value)
     }
-    Ok(bothOtherIncomeThisYear(appConfig, preparedForm, mode, taxYearInfo))
+    Ok(bothOtherIncomeThisYear(appConfig, preparedForm, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     BooleanForm("bothOtherIncomeThisYear.error.notCompleted")
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(bothOtherIncomeThisYear(appConfig, formWithErrors, mode, taxYearInfo))),
+          Future.successful(BadRequest(bothOtherIncomeThisYear(appConfig, formWithErrors, taxYearInfo))),
         value =>
           dataCacheConnector
             .save[Boolean](request.sessionId, BothOtherIncomeThisYearId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(BothOtherIncomeThisYearId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(BothOtherIncomeThisYearId)(new UserAnswers(cacheMap))))
       )
   }
 

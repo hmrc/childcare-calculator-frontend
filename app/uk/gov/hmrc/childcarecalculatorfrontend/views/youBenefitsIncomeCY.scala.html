@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 
 @this(
@@ -27,7 +26,7 @@
     inputNumber: playComponents.input_number
 )
 
-@(appConfig: FrontendAppConfig, form: Form[BigDecimal], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[BigDecimal])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("youBenefitsIncomeCY.title")) else messages("youBenefitsIncomeCY.title")
@@ -38,7 +37,7 @@
 ) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = YouBenefitsIncomeCYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = YouBenefitsIncomeCYController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("youBenefitsIncomeCY.heading")),

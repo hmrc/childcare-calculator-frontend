@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,12 +23,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildAgedThreeOrFourId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ChildAgedThreeOrFourController @Inject() (
@@ -44,35 +43,35 @@ class ChildAgedThreeOrFourController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     request.userAnswers.location match {
       case None =>
-        Redirect(routes.LocationController.onPageLoad(mode))
+        Redirect(routes.LocationController.onPageLoad())
 
       case Some(location) =>
         val preparedForm = request.userAnswers.childAgedThreeOrFour match {
           case None        => BooleanForm()
           case Some(value) => BooleanForm().fill(value)
         }
-        Ok(childAgedThreeOrFour(appConfig, preparedForm, mode, location))
+        Ok(childAgedThreeOrFour(appConfig, preparedForm, location))
     }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     if (request.userAnswers.location.isEmpty) {
-      Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      Future.successful(Redirect(routes.LocationController.onPageLoad()))
     } else {
       BooleanForm("childAgedThreeOrFour.error.notCompleted")
         .bindFromRequest()
         .fold(
           (formWithErrors: Form[Boolean]) =>
             Future.successful(
-              BadRequest(childAgedThreeOrFour(appConfig, formWithErrors, mode, request.userAnswers.location.get))
+              BadRequest(childAgedThreeOrFour(appConfig, formWithErrors, request.userAnswers.location.get))
             ),
           value =>
             dataCacheConnector
               .save[Boolean](request.sessionId, ChildAgedThreeOrFourId.toString, value)
-              .map(cacheMap => Redirect(navigator.nextPage(ChildAgedThreeOrFourId, mode)(new UserAnswers(cacheMap))))
+              .map(cacheMap => Redirect(navigator.nextPage(ChildAgedThreeOrFourId)(new UserAnswers(cacheMap))))
         )
     }
   }

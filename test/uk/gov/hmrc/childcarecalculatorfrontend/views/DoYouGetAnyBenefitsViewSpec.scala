@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, ParentsBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 
@@ -51,7 +51,7 @@ class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxView
     )
 
   override def createView(form: Form[Set[ParentsBenefits]] = form): Html =
-    testView(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+    testView(frontendAppConfig, form)(fakeRequest, messages)
 
   "DoYouGetAnyBenefits view" must {
     behave.like(normalPage(createView, messageKeyPrefix))

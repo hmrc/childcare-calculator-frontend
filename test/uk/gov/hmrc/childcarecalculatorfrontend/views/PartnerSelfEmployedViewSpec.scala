@@ -20,7 +20,6 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerSelfEmployed
 
 class PartnerSelfEmployedViewSpec extends NewYesNoViewBehaviours {
@@ -28,9 +27,9 @@ class PartnerSelfEmployedViewSpec extends NewYesNoViewBehaviours {
   val view             = application.injector.instanceOf[partnerSelfEmployed]
   val messageKeyPrefix = "partnerSelfEmployed"
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "PartnerSelfEmployed view" must {
 
@@ -39,7 +38,7 @@ class PartnerSelfEmployedViewSpec extends NewYesNoViewBehaviours {
     behave.like(pageWithBackLink(createView))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerSelfEmployedController.onSubmit(NormalMode).url)
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.PartnerSelfEmployedController.onSubmit().url)
     )
   }
 

@@ -20,8 +20,8 @@ import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, _}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
+import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 
@@ -39,9 +39,9 @@ class MaximumHoursNavigator @Inject() (
     DoYouLiveWithPartnerId            -> doYouLiveRoute,
     AreYouInPaidWorkId                -> areYouInPaidWorkRoute,
     WhoIsInPaidEmploymentId           -> whoIsInPaidWorkRoute,
-    YourChildcareVouchersId           -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
-    PartnerChildcareVouchersId        -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
-    WhoGetsVouchersId                 -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)),
+    YourChildcareVouchersId           -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad()),
+    PartnerChildcareVouchersId        -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad()),
+    WhoGetsVouchersId                 -> (_ => routes.DoYouGetAnyBenefitsController.onPageLoad()),
     DoYouGetAnyBenefitsId             -> doYouGetAnyBenefitsRoute,
     DoesYourPartnerGetAnyBenefitsId   -> doesYourPartnerGetAnyBenefitsRoute,
     YourAgeId                         -> yourAgeRoute,
@@ -62,23 +62,23 @@ class MaximumHoursNavigator @Inject() (
 
   private def doYouLiveRoute(answers: UserAnswers): Call =
     if (answers.doYouLiveWithPartner.contains(true)) {
-      routes.WhoIsInPaidEmploymentController.onPageLoad(NormalMode)
+      routes.WhoIsInPaidEmploymentController.onPageLoad()
     } else {
-      routes.AreYouInPaidWorkController.onPageLoad(NormalMode)
+      routes.AreYouInPaidWorkController.onPageLoad()
     }
 
   private def areYouInPaidWorkRoute(answers: UserAnswers): Call =
     if (answers.areYouInPaidWork.contains(true)) {
-      routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+      routes.YourChildcareVouchersController.onPageLoad()
     } else {
       routes.ResultController.onPageLoad()
     }
 
   private def whoIsInPaidWorkRoute(answers: UserAnswers): Call =
     answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment) match {
-      case `you`     => routes.YourChildcareVouchersController.onPageLoad(NormalMode)
-      case `partner` => routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
-      case `both`    => routes.WhoGetsVouchersController.onPageLoad(NormalMode)
+      case `you`     => routes.YourChildcareVouchersController.onPageLoad()
+      case `partner` => routes.PartnerChildcareVouchersController.onPageLoad()
+      case `both`    => routes.WhoGetsVouchersController.onPageLoad()
       case `neither` => routes.ResultController.onPageLoad()
       case _         => SessionExpiredRouter.route(getClass.getName, "whoIsInPaidWorkRoute", Some(answers))
     }
@@ -91,8 +91,8 @@ class MaximumHoursNavigator @Inject() (
 
     answers.doYouLiveWithPartner match {
       case Some(true) if shouldRedirectToResults => routes.ResultController.onPageLoad()
-      case Some(true)  => routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
-      case Some(false) => routes.YourAgeController.onPageLoad(NormalMode)
+      case Some(true)                            => routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad()
+      case Some(false)                           => routes.YourAgeController.onPageLoad()
 
       case None => SessionExpiredRouter.route(getClass.getName, "doYouGetAnyBenefitsRoute", Some(answers))
     }
@@ -105,8 +105,8 @@ class MaximumHoursNavigator @Inject() (
 
     answers.whoIsInPaidEmployment match {
       case Some(`you`) if shouldRedirectToResults => routes.ResultController.onPageLoad()
-      case Some(`you` | `both`)                   => routes.YourAgeController.onPageLoad(NormalMode)
-      case Some(`partner`)                        => routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      case Some(`you` | `both`)                   => routes.YourAgeController.onPageLoad()
+      case Some(`partner`)                        => routes.YourPartnersAgeController.onPageLoad()
 
       case _ => SessionExpiredRouter.route(getClass.getName, "doesYourPartnerGetAnyBenefitsRoute", Some(answers))
     }
@@ -114,74 +114,74 @@ class MaximumHoursNavigator @Inject() (
 
   private def yourAgeRoute(answers: UserAnswers): Call =
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
+      routes.AverageWeeklyEarningController.onPageLoad()
     } else {
-      routes.YourPartnersAgeController.onPageLoad(NormalMode)
+      routes.YourPartnersAgeController.onPageLoad()
     }
 
   private def yourPartnerAgeRoute(answers: UserAnswers): Call =
-    routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
+    routes.AverageWeeklyEarningController.onPageLoad()
 
   private def yourMinimumEarningsRoute(answers: UserAnswers): Call =
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
-      routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+      routes.PartnerMinimumEarningsController.onPageLoad()
     } else if (answers.yourMinimumEarnings.contains(true)) {
-      routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      routes.YourMaximumEarningsController.onPageLoad()
     } else {
-      routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
     }
 
   private def partnerMinimumEarningsRoute(answers: UserAnswers): Call =
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(partner)) {
       if (answers.partnerMinimumEarnings.contains(true)) {
-        routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+        routes.PartnerMaximumEarningsController.onPageLoad()
       } else {
-        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
       }
     } else if (answers.yourMinimumEarnings.contains(false)) {
-      routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
     } else {
       if (answers.partnerMinimumEarnings.contains(true)) {
-        routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
+        routes.EitherOfYouMaximumEarningsController.onPageLoad()
       } else {
-        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
       }
     }
 
   private def areYouSelfEmployedOrApprenticeRoute(answers: UserAnswers): Call =
     if (answers.areYouSelfEmployedOrApprentice.contains(SelfEmployed)) {
-      routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      routes.YourSelfEmployedController.onPageLoad()
     } else if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.UniversalCreditController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad()
     } else if (answers.partnerMinimumEarnings.contains(false)) {
-      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
     } else {
-      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      routes.PartnerMaximumEarningsController.onPageLoad()
     }
 
   private def partnerSelfEmployedOrApprenticeRoute(answers: UserAnswers): Call =
     if (answers.partnerSelfEmployedOrApprentice.contains(SelfEmployed)) {
-      routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+      routes.PartnerSelfEmployedController.onPageLoad()
     } else if (answers.yourMinimumEarnings.contains(true)) {
-      routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      routes.YourMaximumEarningsController.onPageLoad()
     } else {
-      routes.UniversalCreditController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad()
     }
 
   private def yourSelfEmployedRoute(answers: UserAnswers): Call =
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.UniversalCreditController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad()
     } else if (answers.partnerMinimumEarnings.contains(true)) {
-      routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      routes.PartnerMaximumEarningsController.onPageLoad()
     } else {
-      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
     }
 
   private def partnerSelfEmployedRoute(answers: UserAnswers): Call =
     if (answers.yourMinimumEarnings.contains(true)) {
-      routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      routes.YourMaximumEarningsController.onPageLoad()
     } else {
-      routes.UniversalCreditController.onPageLoad(NormalMode)
+      routes.UniversalCreditController.onPageLoad()
     }
 
   private def yourMaximumEarningsRoute(answers: UserAnswers): Call = {
@@ -208,7 +208,7 @@ class MaximumHoursNavigator @Inject() (
       if (!voucherValue && maxEarnings) {
         routes.ResultController.onPageLoad()
       } else {
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+        routes.UniversalCreditController.onPageLoad()
       }
 
     (answers.yourChildcareVouchers, answers.partnerChildcareVouchers) match {
@@ -217,7 +217,7 @@ class MaximumHoursNavigator @Inject() (
       case _ =>
         answers.whoGetsVouchers.fold(
           SessionExpiredRouter.route(getClass.getName, "maximumEarningsRedirection", Some(answers))
-        )(_ => routes.UniversalCreditController.onPageLoad(NormalMode))
+        )(_ => routes.UniversalCreditController.onPageLoad())
     }
   }
 
@@ -231,7 +231,7 @@ class MaximumHoursNavigator @Inject() (
 
       (isNotEligibleForBothTfcAndEsc, answers.hasApprovedCosts, isFreeChildcareEligible) match {
         case (true, Some(true), true)  => routes.MaxFreeHoursInfoController.onPageLoad()
-        case (true, Some(true), false) => routes.NoOfChildrenController.onPageLoad(NormalMode)
+        case (true, Some(true), false) => routes.NoOfChildrenController.onPageLoad()
         case _                         => routes.ResultController.onPageLoad()
       }
 

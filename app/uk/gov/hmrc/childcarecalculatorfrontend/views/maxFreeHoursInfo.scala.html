@@ -16,10 +16,9 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, _}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup._
 
 @this(
         layout: Layout,
@@ -108,6 +107,6 @@
 
     }
 
-    @buttonLink(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad(NormalMode))
+    @buttonLink(messageKey = messages("site.save_and_continue"), href = NoOfChildrenController.onPageLoad())
 
 }

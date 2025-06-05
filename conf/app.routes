@@ -10,205 +10,205 @@ GET         /session-clear-data                                uk.gov.hmrc.child
 
 GET         /                                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhatToTellTheCalculatorController.onPageLoad
 
-GET         /location                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /location                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit(mode: Mode ?= NormalMode)
+GET         /location                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onPageLoad()
+POST        /location                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.LocationController.onSubmit()
 
-GET         /child-aged-two                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /child-aged-two                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit(mode: Mode ?= NormalMode)
+GET         /child-aged-two                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onPageLoad()
+POST        /child-aged-two                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedTwoController.onSubmit()
 
-GET         /child-aged-three-or-four                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /child-aged-three-or-four                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit(mode: Mode ?= NormalMode)
+GET         /child-aged-three-or-four                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onPageLoad()
+POST        /child-aged-three-or-four                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildAgedThreeOrFourController.onSubmit()
 
-GET         /children-age-groups                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenAgeGroupsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /children-age-groups                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenAgeGroupsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /children-age-groups                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenAgeGroupsController.onPageLoad()
+POST        /children-age-groups                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenAgeGroupsController.onSubmit()
 
-GET         /childcare-costs                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /childcare-costs                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /childcare-costs                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onPageLoad()
+POST        /childcare-costs                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcareCostsController.onSubmit()
 
-GET         /approved-provider                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /approved-provider                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit(mode: Mode ?= NormalMode)
+GET         /approved-provider                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onPageLoad()
+POST        /approved-provider                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.ApprovedProviderController.onSubmit()
 
 GET         /free-hours-info                                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.FreeHoursInfoController.onPageLoad
 
 
-GET         /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit(mode: Mode ?= NormalMode)
+GET         /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onPageLoad()
+POST        /do-you-live-with-partner                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouLiveWithPartnerController.onSubmit()
 
-GET         /are-you-in-paid-work                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /are-you-in-paid-work                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit(mode: Mode ?= NormalMode)
+GET         /are-you-in-paid-work                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onPageLoad()
+POST        /are-you-in-paid-work                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouInPaidWorkController.onSubmit()
 
-GET         /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onSubmit(mode: Mode ?= NormalMode)
+GET         /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onPageLoad()
+POST        /who-is-in-paid-employment                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoIsInPaidEmploymentController.onSubmit()
 
-GET         /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onPageLoad()
+POST        /your-childcare-vouchers                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourChildcareVouchersController.onSubmit()
 
-GET         /partner-childcare-vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-childcare-vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-childcare-vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onPageLoad()
+POST        /partner-childcare-vouchers                        uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerChildcareVouchersController.onSubmit()
 
-GET         /who-gets-vouchers                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /who-gets-vouchers                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit(mode: Mode ?= NormalMode)
+GET         /who-gets-vouchers                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onPageLoad()
+POST        /who-gets-vouchers                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsVouchersController.onSubmit()
 
-GET         /do-you-get-any-benefits                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /do-you-get-any-benefits                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /do-you-get-any-benefits                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onPageLoad()
+POST        /do-you-get-any-benefits                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoYouGetAnyBenefitsController.onSubmit()
 
-GET         /does-your-partner-get-any-benefits                uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourPartnerGetAnyBenefitsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /does-your-partner-get-any-benefits                uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourPartnerGetAnyBenefitsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /does-your-partner-get-any-benefits                uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourPartnerGetAnyBenefitsController.onPageLoad()
+POST        /does-your-partner-get-any-benefits                uk.gov.hmrc.childcarecalculatorfrontend.controllers.DoesYourPartnerGetAnyBenefitsController.onSubmit()
 
-GET         /your-age                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-age                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-age                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onPageLoad()
+POST        /your-age                                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourAgeController.onSubmit()
 
-GET         /your-partners-age                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-partners-age                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-partners-age                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onPageLoad()
+POST        /your-partners-age                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourPartnersAgeController.onSubmit()
 
-GET         /your-minimum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-minimum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-minimum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onPageLoad()
+POST        /your-minimum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMinimumEarningsController.onSubmit()
 
-GET         /partner-minimum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMinimumEarningsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-minimum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMinimumEarningsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-minimum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMinimumEarningsController.onPageLoad()
+POST        /partner-minimum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMinimumEarningsController.onSubmit()
 
-GET         /you-self-employed-or-apprentice                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /you-self-employed-or-apprentice                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onSubmit(mode: Mode ?= NormalMode)
+GET         /you-self-employed-or-apprentice                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onPageLoad()
+POST        /you-self-employed-or-apprentice                   uk.gov.hmrc.childcarecalculatorfrontend.controllers.AreYouSelfEmployedOrApprenticeController.onSubmit()
 
-GET         /partner-self-employed-or-apprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-self-employed-or-apprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-self-employed-or-apprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onPageLoad()
+POST        /partner-self-employed-or-apprentice               uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedOrApprenticeController.onSubmit()
 
-GET         /you-self-employed                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourSelfEmployedController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /you-self-employed                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourSelfEmployedController.onSubmit(mode: Mode ?= NormalMode)
+GET         /you-self-employed                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourSelfEmployedController.onPageLoad()
+POST        /you-self-employed                                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourSelfEmployedController.onSubmit()
 
-GET         /partner-self-employed                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-self-employed                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-self-employed                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedController.onPageLoad()
+POST        /partner-self-employed                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerSelfEmployedController.onSubmit()
 
-GET         /your-maximum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-maximum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-maximum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onPageLoad()
+POST        /your-maximum-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourMaximumEarningsController.onSubmit()
 
-GET         /partner-maximum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-maximum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-maximum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onPageLoad()
+POST        /partner-maximum-earnings                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerMaximumEarningsController.onSubmit()
 
-GET         /either-maximum-earnings                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /either-maximum-earnings                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /either-maximum-earnings                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onPageLoad()
+POST        /either-maximum-earnings                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.EitherOfYouMaximumEarningsController.onSubmit()
 
-GET         /universal-credits                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.UniversalCreditController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /universal-credits                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.UniversalCreditController.onSubmit(mode: Mode ?= NormalMode)
+GET         /universal-credits                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.UniversalCreditController.onPageLoad()
+POST        /universal-credits                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.UniversalCreditController.onSubmit()
 
-GET         /no-of-children                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /no-of-children                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onSubmit(mode: Mode ?= NormalMode)
+GET         /no-of-children                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onPageLoad()
+POST        /no-of-children                                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.NoOfChildrenController.onSubmit()
 
 GET         /max-free-hours-info                               uk.gov.hmrc.childcarecalculatorfrontend.controllers.MaxFreeHoursInfoController.onPageLoad()
 
 GET         /result                                            uk.gov.hmrc.childcarecalculatorfrontend.controllers.ResultController.onPageLoad()
 
-GET         /your-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onPageLoad()
+POST        /your-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeThisYearController.onSubmit()
 
 GET         /your-income-info-current-year                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourIncomeInfoController.onPageLoad()
 GET         /both-income-info-current-year                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerIncomeInfoController.onPageLoad()
 
-GET         /your-employment-income-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-employment-income-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-employment-income-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomeCYController.onPageLoad()
+POST        /your-employment-income-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentEmploymentIncomeCYController.onSubmit()
 
-GET         /partner-employment-income-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-employment-income-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-employment-income-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomeCYController.onPageLoad()
+POST        /partner-employment-income-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerEmploymentIncomeCYController.onSubmit()
 
-GET         /your-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onPageLoad()
+POST        /your-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ParentPaidWorkCYController.onSubmit()
 
-GET         /partner-paid-work-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-paid-work-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-paid-work-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onPageLoad()
+POST        /partner-paid-work-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onSubmit()
 
-GET         /both-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /both-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onPageLoad()
+POST        /both-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onSubmit()
 
-GET         /who-pays-into-pension                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /who-pays-into-pension                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onSubmit(mode: Mode ?= NormalMode)
+GET         /who-pays-into-pension                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onPageLoad()
+POST        /who-pays-into-pension                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onSubmit()
 
-GET         /who-gets-other-income-current-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /who-gets-other-income-current-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /who-gets-other-income-current-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onPageLoad()
+POST        /who-gets-other-income-current-year                uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoGetsOtherIncomeCYController.onSubmit()
 
-GET         /you-paid-pension-current-year                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /you-paid-pension-current-year                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /you-paid-pension-current-year                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionCYController.onPageLoad()
+POST        /you-paid-pension-current-year                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouPaidPensionCYController.onSubmit()
 
-GET         /partner-paid-pension-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-paid-pension-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-paid-pension-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionCYController.onPageLoad()
+POST        /partner-paid-pension-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidPensionCYController.onSubmit()
 
-GET         /both-paid-pension-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-paid-pension-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /both-paid-pension-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionCYController.onPageLoad()
+POST        /both-paid-pension-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionCYController.onSubmit()
 
-GET         /partner-other-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-other-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-other-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onPageLoad()
+POST        /partner-other-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onSubmit()
 
-GET         /both-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onSubmit(mode: Mode ?= NormalMode)
+GET         /both-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onPageLoad()
+POST        /both-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onSubmit()
 
-GET         /you-any-these-benefits-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /you-any-these-benefits-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /you-any-these-benefits-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onPageLoad()
+POST        /you-any-these-benefits-current-year               uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouAnyTheseBenefitsCYController.onSubmit()
 
-GET         /both-any-these-benefits-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /both-any-these-benefits-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /both-any-these-benefits-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onPageLoad()
+POST        /both-any-these-benefits-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothAnyTheseBenefitsCYController.onSubmit()
 
-GET         /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onPageLoad()
+POST        /whos-had-benefits-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhosHadBenefitsController.onSubmit()
 
-GET         /partner-benefits-income-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-benefits-income-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-benefits-income-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onPageLoad()
+POST        /partner-benefits-income-current-year              uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerBenefitsIncomeCYController.onSubmit()
 
-GET         /your-benefits-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-benefits-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-benefits-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomeCYController.onPageLoad()
+POST        /your-benefits-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.YouBenefitsIncomeCYController.onSubmit()
 
-GET         /benefits-income-current-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /benefits-income-current-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /benefits-income-current-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onPageLoad()
+POST        /benefits-income-current-year                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.BenefitsIncomeCYController.onSubmit()
 
-GET         /how-much-you-pay-pension-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /how-much-you-pay-pension-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onSubmit(mode: Mode ?= NormalMode)
+GET         /how-much-you-pay-pension-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onPageLoad()
+POST        /how-much-you-pay-pension-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchYouPayPensionController.onSubmit()
 
-GET         /how-much-partner-pay-pension-current-year         uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /how-much-partner-pay-pension-current-year         uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onSubmit(mode: Mode ?= NormalMode)
+GET         /how-much-partner-pay-pension-current-year         uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onPageLoad()
+POST        /how-much-partner-pay-pension-current-year         uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchPartnerPayPensionController.onSubmit()
 
-GET         /how-much-both-pay-pension-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /how-much-both-pay-pension-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionController.onSubmit(mode: Mode ?= NormalMode)
+GET         /how-much-both-pay-pension-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionController.onPageLoad()
+POST        /how-much-both-pay-pension-current-year            uk.gov.hmrc.childcarecalculatorfrontend.controllers.HowMuchBothPayPensionController.onSubmit()
 
-GET         /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onPageLoad()
+POST        /other-income-amount-current-year                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.OtherIncomeAmountCYController.onSubmit()
 
-GET         /your-other-income-amount-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /your-other-income-amount-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /your-other-income-amount-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onPageLoad()
+POST        /your-other-income-amount-current-year             uk.gov.hmrc.childcarecalculatorfrontend.controllers.YourOtherIncomeAmountCYController.onSubmit()
 
-GET         /partner-other-income-amount-current-year          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /partner-other-income-amount-current-year          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /partner-other-income-amount-current-year          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onPageLoad()
+POST        /partner-other-income-amount-current-year          uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerOtherIncomeAmountCYController.onSubmit()
 
-GET         /employment-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /employment-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit(mode: Mode ?= NormalMode)
+GET         /employment-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onPageLoad()
+POST        /employment-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.EmploymentIncomeCYController.onSubmit()
 
-GET         /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit(mode: Mode ?= NormalMode)
+GET         /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onPageLoad()
+POST        /registered-blind                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.RegisteredBlindController.onSubmit()
 
-GET         /childcare-pay-frequency                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
-GET         /childcare-pay-frequency/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
-POST        /childcare-pay-frequency/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onSubmit(mode: Mode ?= NormalMode, id: Int)
+GET         /childcare-pay-frequency                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(id: Int = 0)
+GET         /childcare-pay-frequency/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onPageLoad(id: Int)
+POST        /childcare-pay-frequency/:id                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildcarePayFrequencyController.onSubmit(id: Int)
 
-GET         /children-disability-benefits                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /children-disability-benefits                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /children-disability-benefits                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onPageLoad()
+POST        /children-disability-benefits                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ChildrenDisabilityBenefitsController.onSubmit()
 
-GET         /about-your-child                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
-GET         /about-your-child/:id                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
-POST        /about-your-child/:id                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(mode: Mode ?= NormalMode, id: Int)
+GET         /about-your-child                                  uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(id: Int = 0)
+GET         /about-your-child/:id                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onPageLoad(id: Int)
+POST        /about-your-child/:id                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.AboutYourChildController.onSubmit(id: Int)
 
-GET         /which-children-disability                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /which-children-disability                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onSubmit(mode: Mode ?= NormalMode)
+GET         /which-children-disability                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onPageLoad()
+POST        /which-children-disability                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenDisabilityController.onSubmit()
 
-GET         /which-children-blind                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /which-children-blind                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onSubmit(mode: Mode ?= NormalMode)
+GET         /which-children-blind                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onPageLoad()
+POST        /which-children-blind                              uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichChildrenBlindController.onSubmit()
 
-GET         /who-has-childcare-costs                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /who-has-childcare-costs                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onSubmit(mode: Mode ?= NormalMode)
+GET         /who-has-childcare-costs                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onPageLoad()
+POST        /who-has-childcare-costs                           uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoHasChildcareCostsController.onSubmit()
 
-GET         /which-disability-benefits                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
-GET         /which-disability-benefits/:id                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
-POST        /which-disability-benefits/:id                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onSubmit(mode: Mode ?= NormalMode, id: Int)
+GET         /which-disability-benefits                         uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onPageLoad(id: Int = 0)
+GET         /which-disability-benefits/:id                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onPageLoad(id: Int)
+POST        /which-disability-benefits/:id                     uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhichDisabilityBenefitsController.onSubmit(id: Int)
 
-GET         /expected-childcare-costs                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode ?= NormalMode, id: Int = 0)
-GET         /expected-childcare-costs/:id                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(mode: Mode ?= NormalMode, id: Int)
-POST        /expected-childcare-costs/:id                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(mode: Mode ?= NormalMode, id: Int)
+GET         /expected-childcare-costs                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(id: Int = 0)
+GET         /expected-childcare-costs/:id                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onPageLoad(id: Int)
+POST        /expected-childcare-costs/:id                      uk.gov.hmrc.childcarecalculatorfrontend.controllers.ExpectedChildcareCostsController.onSubmit(id: Int)
 
 GET         /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onPageLoad()
 POST        /survey/childcare-support                          uk.gov.hmrc.childcarecalculatorfrontend.controllers.SurveyChildcareSupportController.onSubmit()
@@ -218,4 +218,4 @@ POST        /survey/do-not-understand                          uk.gov.hmrc.child
 
 GET         /surveyClick                                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.FeedbackSurveyController.loadFeedbackSurvey
 
-GET        /average-weekly-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.AverageWeeklyEarningController.onPageLoad(mode: Mode ?= NormalMode)
+GET        /average-weekly-earnings                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.AverageWeeklyEarningController.onPageLoad()

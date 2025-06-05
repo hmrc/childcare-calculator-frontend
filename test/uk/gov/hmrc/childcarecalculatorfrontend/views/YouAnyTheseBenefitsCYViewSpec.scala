@@ -19,9 +19,9 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youAnyTheseBenefitsCY
 
 class YouAnyTheseBenefitsCYViewSpec extends NewYesNoViewBehaviours {
@@ -33,10 +33,10 @@ class YouAnyTheseBenefitsCYViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix = "youAnyTheseBenefitsCY"
 
   def createView(location: Location.Value) = () =>
-    view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo, location)(fakeRequest, messages)
+    view(frontendAppConfig, BooleanForm(), taxYearInfo, location)(fakeRequest, messages)
 
   def createViewUsingForm(location: Location.Value) = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, NormalMode, taxYearInfo, location)(fakeRequest, messages)
+    view(frontendAppConfig, form, taxYearInfo, location)(fakeRequest, messages)
 
   "YouAnyTheseBenefits view for non scottish users" must {
     val location: Location.Value = Location.ENGLAND
@@ -59,7 +59,7 @@ class YouAnyTheseBenefitsCYViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm(location: Location.Value),
         messageKeyPrefix,
-        routes.YouAnyTheseBenefitsCYController.onSubmit(NormalMode).url
+        routes.YouAnyTheseBenefitsCYController.onSubmit().url
       )
     )
 
@@ -93,7 +93,7 @@ class YouAnyTheseBenefitsCYViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm(location: Location.Value),
         messageKeyPrefix,
-        routes.YouAnyTheseBenefitsCYController.onSubmit(NormalMode).url
+        routes.YouAnyTheseBenefitsCYController.onSubmit().url
       )
     )
 

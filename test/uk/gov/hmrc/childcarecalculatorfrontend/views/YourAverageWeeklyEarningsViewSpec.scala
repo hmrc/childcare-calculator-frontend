@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAverageWeeklyEarnings
 
@@ -61,7 +60,7 @@ class YourAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
       val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))
-      continueLink.attr("href") mustBe routes.YourMinimumEarningsController.onPageLoad(NormalMode).url
+      continueLink.attr("href") mustBe routes.YourMinimumEarningsController.onPageLoad().url
 
     }
   }

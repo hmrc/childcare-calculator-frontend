@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{DisabilityBenefits, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefits
 
@@ -45,7 +45,7 @@ class WhichDisabilityBenefitsViewSpec
       index: Int,
       name: String
   ): Html =
-    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages)
+    view(frontendAppConfig, form, index, name)(fakeRequest, messages)
 
   lazy val cases: Seq[(Int, String)] = {
     val names: LazyList[String]     = LazyList.continually(Random.alphanumeric.take(5).mkString)

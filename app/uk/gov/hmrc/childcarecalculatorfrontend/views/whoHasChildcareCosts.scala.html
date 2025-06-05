@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
         layout: Layout,
@@ -30,7 +29,7 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[_],
-        mode: Mode,
+
         inputs: Seq[(String, String)]
 )(
         implicit request: Request[_],
@@ -45,7 +44,7 @@
     pageTitle = title
 ){
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoHasChildcareCostsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = WhoHasChildcareCostsController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputCheckBox(
             field = form("value"),

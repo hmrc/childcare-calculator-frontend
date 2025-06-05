@@ -20,7 +20,6 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMaximumEarnings
 
 class YourMaximumEarningsViewSpec extends NewYesNoViewBehaviours {
@@ -29,9 +28,9 @@ class YourMaximumEarningsViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix             = "yourMaximumEarnings"
   override val form: Form[Boolean] = BooleanForm()
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "YourMaximumEarnings view" must {
     behave.like(normalPage(createView, messageKeyPrefix))
@@ -42,7 +41,7 @@ class YourMaximumEarningsViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.YourMaximumEarningsController.onSubmit(NormalMode).url,
+        routes.YourMaximumEarningsController.onSubmit().url,
         legend = Some(messages(s"$messageKeyPrefix.form"))
       )
     )

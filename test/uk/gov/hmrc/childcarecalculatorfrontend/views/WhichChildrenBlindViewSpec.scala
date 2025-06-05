@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenBlindForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 
@@ -43,7 +42,6 @@ class WhichChildrenBlindViewSpec extends NewViewBehaviours with NewCheckboxViewB
     view(
       frontendAppConfig,
       form,
-      NormalMode,
       strValues
     )(fakeRequest, messages)
 

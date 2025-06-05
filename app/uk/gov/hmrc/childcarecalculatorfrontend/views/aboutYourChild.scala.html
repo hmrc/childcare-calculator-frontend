@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, AboutYourChild}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
 
 @this(
@@ -32,7 +32,6 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[AboutYourChild],
-        mode: Mode,
         index: Int,
         total: Int
 )(
@@ -88,7 +87,7 @@
         </div>
     }
 
-    @formWithCSRF(action = AboutYourChildController.onSubmit(mode, index), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = AboutYourChildController.onSubmit(index), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputText(
             label = nameText,

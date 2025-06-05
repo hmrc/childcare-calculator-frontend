@@ -22,7 +22,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoesYourPartnerGetAnyBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoesYourPartnerGetAnyBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Mode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doesYourPartnerGetAnyBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
@@ -43,25 +43,23 @@ class DoesYourPartnerGetAnyBenefitsController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.doesYourPartnerGetAnyBenefits match {
       case None        => DoesYourPartnerGetAnyBenefitsForm()
       case Some(value) => DoesYourPartnerGetAnyBenefitsForm().fill(value)
     }
-    Ok(doesYourPartnerGetAnyBenefits(appConfig, preparedForm, mode))
+    Ok(doesYourPartnerGetAnyBenefits(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     DoesYourPartnerGetAnyBenefitsForm()
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(doesYourPartnerGetAnyBenefits(appConfig, formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(doesYourPartnerGetAnyBenefits(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[Set[ParentsBenefits]](request.sessionId, DoesYourPartnerGetAnyBenefitsId.toString, value)
-            .map(cacheMap =>
-              Redirect(navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, mode)(new UserAnswers(cacheMap)))
-            )
+            .map(cacheMap => Redirect(navigator.nextPage(DoesYourPartnerGetAnyBenefitsId)(new UserAnswers(cacheMap))))
       )
   }
 

@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
 
@@ -38,7 +37,7 @@ class WhichChildrenDisabilityViewSpec extends NewViewBehaviours with NewCheckbox
   def form: Form[Set[Int]] = WhichChildrenDisabilityForm(0, 1)
 
   def createView(form: Form[Set[Int]] = form): Html =
-    view(frontendAppConfig, form, strValues, NormalMode)(fakeRequest, messages)
+    view(frontendAppConfig, form, strValues)(fakeRequest, messages)
 
   "WhichChildrenDisability view" must {
 

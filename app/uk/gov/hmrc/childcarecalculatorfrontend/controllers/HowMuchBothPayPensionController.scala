@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,12 +23,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchBothPayPensionForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HowMuchBothPayPensionId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchBothPayPension
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class HowMuchBothPayPensionController @Inject() (
@@ -44,24 +44,24 @@ class HowMuchBothPayPensionController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.howMuchBothPayPension match {
       case None        => HowMuchBothPayPensionForm()
       case Some(value) => HowMuchBothPayPensionForm().fill(value)
     }
-    Ok(howMuchBothPayPension(appConfig, preparedForm, mode))
+    Ok(howMuchBothPayPension(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     HowMuchBothPayPensionForm()
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[HowMuchBothPayPension]) =>
-          Future.successful(BadRequest(howMuchBothPayPension(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(howMuchBothPayPension(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[HowMuchBothPayPension](request.sessionId, HowMuchBothPayPensionId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(HowMuchBothPayPensionId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(HowMuchBothPayPensionId)(new UserAnswers(cacheMap))))
       )
   }
 

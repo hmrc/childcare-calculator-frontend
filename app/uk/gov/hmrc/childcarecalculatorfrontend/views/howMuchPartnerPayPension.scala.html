@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
         layout: Layout,
@@ -28,8 +27,7 @@
 
 @(
         appConfig: FrontendAppConfig,
-        form: Form[BigDecimal],
-        mode: Mode
+        form: Form[BigDecimal]
 )(
         implicit request: Request[_],
         messages: Messages
@@ -44,7 +42,7 @@
 ) {
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = HowMuchPartnerPayPensionController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = HowMuchPartnerPayPensionController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages("howMuchPartnerPayPension.heading")),

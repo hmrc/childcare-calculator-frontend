@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(layout: Layout,
     formWithCSRF: FormWithCSRF,
@@ -24,7 +23,7 @@
     submit_button: playComponents.submit_button,
     input_number: playComponents.input_number)
 
-@(appConfig: FrontendAppConfig, form: Form[Int], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Int])(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle= if(form.errors.nonEmpty) {
@@ -36,7 +35,7 @@
 
     @error_summary(form.errors)
 
-    @formWithCSRF(action = NoOfChildrenController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = NoOfChildrenController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @input_number(label = Text(messages("noOfChildren.heading")),
             isPageHeading = true,

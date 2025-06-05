@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, DisabilityBenefits}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefits
@@ -48,7 +48,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
     cases.foreach { case (index, name) =>
 
       s"return OK and the correct view for a GET, for index: $index, name: $name" in {
-        val result = controller(getRequiredData(cases: _*)).onPageLoad(NormalMode, index)(fakeRequest)
+        val result = controller(getRequiredData(cases: _*)).onPageLoad(index)(fakeRequest)
         status(result) mustEqual OK
         contentAsString(result) mustEqual viewAsString(index = index, name = name)
       }
@@ -63,7 +63,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
         )
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-        val result = controller(getRelevantData).onPageLoad(NormalMode, index)(fakeRequest)
+        val result = controller(getRelevantData).onPageLoad(index)(fakeRequest)
 
         contentAsString(result) mustEqual viewAsString(
           WhichDisabilityBenefitsForm(name).fill(Set(DisabilityBenefits(0))),
@@ -76,7 +76,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
         val postRequest =
           fakeRequest.withFormUrlEncodedBody("value[0]" -> DisabilityBenefits(0).toString).withMethod("POST")
 
-        val result = controller(getRequiredData(cases: _*)).onSubmit(NormalMode, index)(postRequest)
+        val result = controller(getRequiredData(cases: _*)).onSubmit(index)(postRequest)
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
@@ -87,14 +87,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "invalid value")).withMethod("POST")
       val boundForm   = WhichDisabilityBenefitsForm("Foo").bind(Map("value[0]" -> "invalid value"))
 
-      val result = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller(getRequiredData(0 -> "Foo")).onSubmit(0)(postRequest)
 
       status(result) mustEqual BAD_REQUEST
       contentAsString(result) mustEqual viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(0)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -102,14 +102,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if no existing cacheMap is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result      = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit(0)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if required cacheMap is missing" in {
-      val result = controller().onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller().onPageLoad(0)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -117,14 +117,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if required data is missing" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result      = controller().onSubmit(NormalMode, 0)(postRequest)
+      val result      = controller().onSubmit(0)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if index is negative" in {
-      val result = controller(getRequiredData(0 -> "Foo")).onPageLoad(NormalMode, -1)(fakeRequest)
+      val result = controller(getRequiredData(0 -> "Foo")).onPageLoad(-1)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -132,14 +132,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if index is negative" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result      = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, -1)(postRequest)
+      val result      = controller(getRequiredData(0 -> "Foo")).onSubmit(-1)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if index is out of bounds" in {
-      val result = controller(getRequiredData(0 -> "Foo")).onPageLoad(NormalMode, 1)(fakeRequest)
+      val result = controller(getRequiredData(0 -> "Foo")).onPageLoad(1)(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -147,7 +147,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if index is out of bounds" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value" -> DisabilityBenefits(0).toString).withMethod("POST")
-      val result      = controller(getRequiredData(0 -> "Foo")).onSubmit(NormalMode, 1)(postRequest)
+      val result      = controller(getRequiredData(0 -> "Foo")).onSubmit(1)(postRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -180,7 +180,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       index: Int,
       name: String
   ): String =
-    view(frontendAppConfig, form, index, name, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, index, name)(fakeRequest, messages).toString
 
   def requiredData(cases: Seq[(Int, String)]): Map[String, JsValue] =
     if (cases.size == 1) {

@@ -28,8 +28,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{
   FakeDataRetrievalAction
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, ResultsService}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
@@ -92,7 +92,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
       val result          = controller(getRelevantData, resultService).onPageLoad(fakeRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result).get mustBe routes.LocationController.onPageLoad(NormalMode).url
+      redirectLocation(result).get mustBe routes.LocationController.onPageLoad().url
     }
 
     "redirect to Session Expired" when {

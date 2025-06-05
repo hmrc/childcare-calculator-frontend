@@ -26,7 +26,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourAgeId, YourMinimumEarningsId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
@@ -52,7 +52,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
     )
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, 0)(fakeRequest, messages).toString
 
   "YourMinimumEarnings Controller" must {
 
@@ -61,7 +61,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       setUpMock()
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -76,7 +76,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       setUpMock()
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(BooleanForm("yourMinimumEarnings.error.notCompleted", 0).fill(true))
     }
@@ -85,7 +85,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       setUpMock()
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -97,14 +97,14 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
       val boundForm   = BooleanForm("yourMinimumEarnings.error.notCompleted", 0).bind(Map("value" -> "invalid value"))
       setUpMock()
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
       setUpMock()
 
       status(result) mustBe SEE_OTHER
@@ -113,7 +113,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit()(postRequest)
       setUpMock()
 
       status(result) mustBe SEE_OTHER
@@ -121,7 +121,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
     }
 
     "redirect to the 'your age' view when session data does not hold this value" in {
-      val result = controller(getEmptyCacheMap).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getEmptyCacheMap).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.YourAgeController.onPageLoad().url)

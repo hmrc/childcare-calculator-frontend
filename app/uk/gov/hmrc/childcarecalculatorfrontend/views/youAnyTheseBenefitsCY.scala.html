@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -31,7 +31,7 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[Boolean],
-        mode: Mode,
+
         taxYearInfo: TaxYearInfo,
         location : Location.Value
 )(
@@ -65,7 +65,7 @@
         messages("youAnyTheseBenefitsCY.li.pensions"),
         messages("youAnyTheseBenefitsCY.li.disability")
     ))
-    @formWithCSRF(action = YouAnyTheseBenefitsCYController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = YouAnyTheseBenefitsCYController.onSubmit(), Symbol("autoComplete") -> "off") {
 
     @inputYesNo(
         label = Text(messages("youAnyTheseBenefitsCY.heading")),

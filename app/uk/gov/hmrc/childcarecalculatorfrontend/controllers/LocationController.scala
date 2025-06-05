@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,12 +23,13 @@ import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class LocationController @Inject() (
@@ -44,23 +44,23 @@ class LocationController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData { implicit request =>
     val preparedForm = request.userAnswers.flatMap(x => x.location) match {
       case None        => LocationForm()
       case Some(value) => LocationForm().fill(value)
     }
-    Ok(location(appConfig, preparedForm, mode))
+    Ok(location(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.async { implicit request =>
     LocationForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(location(appConfig, formWithErrors, mode))),
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(location(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[Location.Value](request.sessionId, LocationId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(LocationId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(LocationId)(new UserAnswers(cacheMap))))
       )
   }
 

@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerIncomeInfoId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class PartnerIncomeInfoController @Inject() (
@@ -43,7 +43,7 @@ class PartnerIncomeInfoController @Inject() (
     Ok(
       partnerIncomeInfo(
         appConfig,
-        navigator.nextPage(PartnerIncomeInfoId, NormalMode)(request.userAnswers),
+        navigator.nextPage(PartnerIncomeInfoId)(request.userAnswers),
         taxYearInfo
       )
     )

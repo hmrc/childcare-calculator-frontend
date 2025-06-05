@@ -71,59 +71,59 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   "go to are you in paid work from do you live with partner when user selects No" in {
     val answers = spy(userAnswers())
     when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-    navigator.nextPage(DoYouLiveWithPartnerId, NormalMode).value(answers) mustBe routes.AreYouInPaidWorkController
-      .onPageLoad(NormalMode)
+    navigator.nextPage(DoYouLiveWithPartnerId).value(answers) mustBe routes.AreYouInPaidWorkController
+      .onPageLoad()
   }
 
   "Go to free hours results" when {
     "user selects 'No' from are you in paid work" in {
       val answers = spy(userAnswers())
       when(answers.areYouInPaidWork).thenReturn(Some(false))
-      navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.ResultController.onPageLoad()
+      navigator.nextPage(AreYouInPaidWorkId).value(answers) mustBe routes.ResultController.onPageLoad()
     }
 
     "user selects 'Neither' from who is in paid employment" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeitherEnum.NEITHER.toString))
-      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.ResultController.onPageLoad()
+      navigator.nextPage(WhoIsInPaidEmploymentId).value(answers) mustBe routes.ResultController.onPageLoad()
     }
   }
 
   "go to who is in paid employment from do you live with partner when user selects yes" in {
     val answers = spy(userAnswers())
     when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-    navigator.nextPage(DoYouLiveWithPartnerId, NormalMode).value(answers) mustBe routes.WhoIsInPaidEmploymentController
-      .onPageLoad(NormalMode)
+    navigator.nextPage(DoYouLiveWithPartnerId).value(answers) mustBe routes.WhoIsInPaidEmploymentController
+      .onPageLoad()
   }
 
   "Go to childcare vouchers" when {
     "user selects 'Yes' from are you in paid work" in {
       val answers = spy(userAnswers())
       when(answers.areYouInPaidWork).thenReturn(Some(true))
-      navigator.nextPage(AreYouInPaidWorkId, NormalMode).value(answers) mustBe routes.YourChildcareVouchersController
-        .onPageLoad(NormalMode)
+      navigator.nextPage(AreYouInPaidWorkId).value(answers) mustBe routes.YourChildcareVouchersController
+        .onPageLoad()
     }
     "user selects 'you' from who is in paid employment" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment).thenReturn(Some(you))
       navigator
-        .nextPage(WhoIsInPaidEmploymentId, NormalMode)
-        .value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad(NormalMode)
+        .nextPage(WhoIsInPaidEmploymentId)
+        .value(answers) mustBe routes.YourChildcareVouchersController.onPageLoad()
     }
 
     "user selects 'partner' from who is in paid employment" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment).thenReturn(Some(partner))
       navigator
-        .nextPage(WhoIsInPaidEmploymentId, NormalMode)
-        .value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad(NormalMode)
+        .nextPage(WhoIsInPaidEmploymentId)
+        .value(answers) mustBe routes.PartnerChildcareVouchersController.onPageLoad()
     }
 
     "when user selects 'both' on paid employment and coming from partner work hours" in {
       val answers = spy(userAnswers())
       when(answers.whoIsInPaidEmployment).thenReturn(Some(both))
-      navigator.nextPage(WhoIsInPaidEmploymentId, NormalMode).value(answers) mustBe routes.WhoGetsVouchersController
-        .onPageLoad(NormalMode)
+      navigator.nextPage(WhoIsInPaidEmploymentId).value(answers) mustBe routes.WhoGetsVouchersController
+        .onPageLoad()
     }
   }
 
@@ -131,8 +131,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "always go to 'do you get any of these benefits'" in {
       val answers = spy(userAnswers())
 
-      navigator.nextPage(YourChildcareVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourChildcareVouchersId).value(answers) mustBe
+        routes.DoYouGetAnyBenefitsController.onPageLoad()
     }
   }
 
@@ -140,8 +140,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "always go to 'do you get any of these benefits'" in {
       val answers = spy(userAnswers())
 
-      navigator.nextPage(PartnerChildcareVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerChildcareVouchersId).value(answers) mustBe
+        routes.DoYouGetAnyBenefitsController.onPageLoad()
     }
   }
 
@@ -149,8 +149,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "always go to 'do you get any of these benefits'" in {
       val answers = spy(userAnswers())
 
-      navigator.nextPage(WhoGetsVouchersId, NormalMode).value(answers) mustBe
-        routes.DoYouGetAnyBenefitsController.onPageLoad(NormalMode)
+      navigator.nextPage(WhoGetsVouchersId).value(answers) mustBe
+        routes.DoYouGetAnyBenefitsController.onPageLoad()
     }
   }
 
@@ -161,9 +161,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = mock[UserAnswers]
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-        val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoYouGetAnyBenefitsId).value(answers)
 
-        result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+        result mustEqual routes.YourAgeController.onPageLoad()
       }
     }
 
@@ -177,7 +177,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerChildcareVouchers).thenReturn(Some(false))
           when(answers.doYouGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.NoneOfThese)))
 
-          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId).value(answers)
 
           result mustEqual routes.ResultController.onPageLoad()
         }
@@ -193,9 +193,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerChildcareVouchers).thenReturn(Some(false))
             when(answers.doYouGetAnyBenefits).thenReturn(Some(Set(benefits)))
 
-            val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+            val result = navigator.nextPage(DoYouGetAnyBenefitsId).value(answers)
 
-            result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+            result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad()
           }
         }
 
@@ -205,9 +205,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.whoIsInPaidEmployment).thenReturn(Some(partner))
           when(answers.partnerChildcareVouchers).thenReturn(Some(true))
 
-          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId).value(answers)
 
-          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad()
         }
 
         "whoIsInPaidEmployment is you" in {
@@ -215,9 +215,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
           when(answers.whoIsInPaidEmployment).thenReturn(Some(you))
 
-          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId).value(answers)
 
-          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad()
         }
 
         "whoIsInPaidEmployment is both" in {
@@ -225,9 +225,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
           when(answers.whoIsInPaidEmployment).thenReturn(Some(both))
 
-          val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+          val result = navigator.nextPage(DoYouGetAnyBenefitsId).value(answers)
 
-          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+          result mustEqual routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad()
         }
       }
     }
@@ -237,7 +237,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = mock[UserAnswers]
         when(answers.doYouLiveWithPartner).thenReturn(None)
 
-        val result = navigator.nextPage(DoYouGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoYouGetAnyBenefitsId).value(answers)
 
         result mustEqual routes.SessionExpiredController.onPageLoad
       }
@@ -252,9 +252,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = mock[UserAnswers]
         when(answers.whoIsInPaidEmployment).thenReturn(Some(both))
 
-        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId).value(answers)
 
-        result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+        result mustEqual routes.YourAgeController.onPageLoad()
       }
 
       "whoIsInPaidEmployment is you and you receive childcare vouchers" in {
@@ -262,7 +262,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment).thenReturn(Some(you))
         when(answers.yourChildcareVouchers).thenReturn(Some(true))
 
-        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId).value(answers)
 
         result mustEqual routes.YourAgeController.onPageLoad()
       }
@@ -274,9 +274,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourChildcareVouchers).thenReturn(Some(false))
           when(answers.doesYourPartnerGetAnyBenefits).thenReturn(Some(Set(benefits)))
 
-          val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+          val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId).value(answers)
 
-          result mustEqual routes.YourAgeController.onPageLoad(NormalMode)
+          result mustEqual routes.YourAgeController.onPageLoad()
         }
       }
     }
@@ -286,9 +286,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = mock[UserAnswers]
         when(answers.whoIsInPaidEmployment).thenReturn(Some(partner))
 
-        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId).value(answers)
 
-        result mustEqual routes.YourPartnersAgeController.onPageLoad(NormalMode)
+        result mustEqual routes.YourPartnersAgeController.onPageLoad()
       }
     }
 
@@ -299,7 +299,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.yourChildcareVouchers).thenReturn(Some(false))
         when(answers.doesYourPartnerGetAnyBenefits).thenReturn(Some(Set(ParentsBenefits.NoneOfThese)))
 
-        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId).value(answers)
 
         result mustEqual routes.ResultController.onPageLoad()
       }
@@ -310,7 +310,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = mock[UserAnswers]
         when(answers.whoIsInPaidEmployment).thenReturn(None)
 
-        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId, NormalMode).value(answers)
+        val result = navigator.nextPage(DoesYourPartnerGetAnyBenefitsId).value(answers)
 
         result mustEqual routes.SessionExpiredController.onPageLoad
       }
@@ -326,8 +326,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
         when(answers.yourMinimumEarnings).thenReturn(Some(true))
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+        navigator.nextPage(YourMinimumEarningsId).value(answers) mustBe
+          routes.YourMaximumEarningsController.onPageLoad()
 
       }
 
@@ -337,8 +337,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.areYouInPaidWork).thenReturn(Some(true))
         when(answers.yourMinimumEarnings).thenReturn(Some(false))
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        navigator.nextPage(YourMinimumEarningsId).value(answers) mustBe
+          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
       }
 
       "parent with partner, both in paid work, will be redirected to you and your average earnings page" in {
@@ -346,8 +346,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
         when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.BOTH.toString))
 
-        navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe
-          routes.AverageWeeklyEarningController.onPageLoad(NormalMode)
+        navigator.nextPage(YourPartnersAgeId).value(answers) mustBe
+          routes.AverageWeeklyEarningController.onPageLoad()
       }
 
       "redirect to your max earnings page when there is a partner, only parent is in paid work and parent earns more than NMW" in {
@@ -356,8 +356,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.YOU.toString))
         when(answers.yourMinimumEarnings).thenReturn(Some(true))
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+        navigator.nextPage(YourMinimumEarningsId).value(answers) mustBe
+          routes.YourMaximumEarningsController.onPageLoad()
       }
 
       "redirect to your self employed or apprentice page when there is a partner, only parent is in paid work and parent earns less than NMW" in {
@@ -366,8 +366,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.YOU.toString))
         when(answers.yourMinimumEarnings).thenReturn(Some(false))
 
-        navigator.nextPage(YourMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        navigator.nextPage(YourMinimumEarningsId).value(answers) mustBe
+          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
       }
 
     }
@@ -382,8 +382,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings).thenReturn(Some(true))
         when(answers.partnerMinimumEarnings).thenReturn(Some(true))
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.EitherOfYouMaximumEarningsController.onPageLoad(NormalMode)
+        navigator.nextPage(PartnerMinimumEarningsId).value(answers) mustBe
+          routes.EitherOfYouMaximumEarningsController.onPageLoad()
       }
 
       "redirect to your self employed or apprentice page if partner earns more than NMW but parent doesn't" in {
@@ -391,8 +391,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings).thenReturn(Some(false))
         when(answers.partnerMinimumEarnings).thenReturn(Some(true))
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        navigator.nextPage(PartnerMinimumEarningsId).value(answers) mustBe
+          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
       }
 
       "redirect to your self employed or apprentice page if parent and partner do not earn more than NMW" in {
@@ -401,8 +401,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings).thenReturn(Some(false))
         when(answers.partnerMinimumEarnings).thenReturn(Some(false))
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        navigator.nextPage(PartnerMinimumEarningsId).value(answers) mustBe
+          routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
 
       }
 
@@ -411,8 +411,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.yourMinimumEarnings).thenReturn(Some(true))
         when(answers.partnerMinimumEarnings).thenReturn(Some(false))
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        navigator.nextPage(PartnerMinimumEarningsId).value(answers) mustBe
+          routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
       }
 
       "redirect to partner max earnings page when there is a partner, only partner is in paid work and partner earns more than NMW" in {
@@ -421,8 +421,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.PARTNER.toString))
         when(answers.partnerMinimumEarnings).thenReturn(Some(true))
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+        navigator.nextPage(PartnerMinimumEarningsId).value(answers) mustBe
+          routes.PartnerMaximumEarningsController.onPageLoad()
       }
 
       "redirect to partner self employed or apprentice page when there is a partner, only partner is in paid work and parent earns less than NMW" in {
@@ -431,8 +431,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.PARTNER.toString))
         when(answers.partnerMinimumEarnings).thenReturn(Some(false))
 
-        navigator.nextPage(PartnerMinimumEarningsId, NormalMode).value(answers) mustBe
-          routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+        navigator.nextPage(PartnerMinimumEarningsId).value(answers) mustBe
+          routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
       }
     }
   }
@@ -441,8 +441,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "single user will be taken to your average earnings page when user selects any age option " in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
-      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(
-        NormalMode
+      navigator.nextPage(YourAgeId).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(
       )
     }
 
@@ -450,8 +449,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       when(answers.whoIsInPaidEmployment).thenReturn(Some("both"))
-      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.YourPartnersAgeController.onPageLoad(
-        NormalMode
+      navigator.nextPage(YourAgeId).value(answers) mustBe routes.YourPartnersAgeController.onPageLoad(
       )
     }
 
@@ -459,8 +457,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       when(answers.whoIsInPaidEmployment).thenReturn(Some("you"))
-      navigator.nextPage(YourAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(
-        NormalMode
+      navigator.nextPage(YourAgeId).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(
       )
     }
   }
@@ -470,16 +467,16 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       when(answers.whoIsInPaidEmployment).thenReturn(Some("partner"))
-      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController
-        .onPageLoad(NormalMode)
+      navigator.nextPage(YourPartnersAgeId).value(answers) mustBe routes.AverageWeeklyEarningController
+        .onPageLoad()
     }
 
     "both in paid work, selecting any age option redirect to parent's average earnings page" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       when(answers.whoIsInPaidEmployment).thenReturn(Some("both"))
-      navigator.nextPage(YourPartnersAgeId, NormalMode).value(answers) mustBe routes.AverageWeeklyEarningController
-        .onPageLoad(NormalMode)
+      navigator.nextPage(YourPartnersAgeId).value(answers) mustBe routes.AverageWeeklyEarningController
+        .onPageLoad()
     }
   }
 
@@ -489,8 +486,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
       when(answers.yourSelfEmployed).thenReturn(Some(true)).thenReturn(Some(false))
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(YourSelfEmployedId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
 
     "parent with partner, both in paid work, no minimum earnings will be redirected to Is your partner self employed or apprentice" in {
@@ -500,8 +497,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
-        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      navigator.nextPage(YourSelfEmployedId).value(answers) mustBe
+        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
     }
 
     "parent with partner, both in paid work, parent not satisfying minimum earnings but is self employed, redirect to partner self employed or apprentice page" in {
@@ -512,8 +509,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
       when(answers.yourSelfEmployed).thenReturn(Some(true))
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
-        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad(NormalMode)
+      navigator.nextPage(YourSelfEmployedId).value(answers) mustBe
+        routes.PartnerSelfEmployedOrApprenticeController.onPageLoad()
     }
 
     "parent with partner, both in paid work, partner is satisfying minimum earnings will be redirected to partner max earnings" in {
@@ -524,8 +521,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(true))
       when(answers.yourSelfEmployed).thenReturn(Some(true))
 
-      navigator.nextPage(YourSelfEmployedId, NormalMode).value(answers) mustBe
-        routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(YourSelfEmployedId).value(answers) mustBe
+        routes.PartnerMaximumEarningsController.onPageLoad()
     }
   }
 
@@ -538,8 +535,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
 
-      navigator.nextPage(PartnerSelfEmployedId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
 
     "parent with partner, both in paid work, parent is satisfying minimum earnings will be redirected to parent max earnings" in {
@@ -550,8 +547,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerSelfEmployed).thenReturn(Some(true))
 
-      navigator.nextPage(PartnerSelfEmployedId, NormalMode).value(answers) mustBe
-        routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedId).value(answers) mustBe
+        routes.YourMaximumEarningsController.onPageLoad()
     }
 
     "Parent with partner, partner in paid work, partner min earnings is not satisfied will be redirected to Tax or Universal Credits" in {
@@ -561,8 +558,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerSelfEmployed).thenReturn(Some(true))
 
-      navigator.nextPage(PartnerSelfEmployedId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
   }
 
@@ -574,8 +571,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings).thenReturn(Some(false))
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(selfEmployed))
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.YourSelfEmployedController.onPageLoad()
     }
 
     "navigate to uc page when user select apprentice or neither" in {
@@ -585,10 +582,10 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings).thenReturn(Some(false))
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(apprentice)).thenReturn(Some(neither))
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
 
     "navigate to prent self employed 12 months page when user have partner and select self employed" in {
@@ -598,8 +595,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings).thenReturn(Some(false))
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(selfEmployed))
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.YourSelfEmployedController.onPageLoad()
     }
 
     "navigate to partner max earning page when user have partner and partner satisfy minimum earning and parent select apprentice or neither" in {
@@ -609,11 +606,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.yourMinimumEarnings).thenReturn(Some(false))
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(apprentice)).thenReturn(Some(neither))
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
 
     "navigate to parent self employed 12 months page when user have partner and partner satisfy minimum earning and parent select self employed" in {
@@ -624,8 +621,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(true))
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(selfEmployed))
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.YourSelfEmployedController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.YourSelfEmployedController.onPageLoad()
     }
 
     "navigate to partner self employed or apprentice page when user have partner and parent select apprentice or neither" in {
@@ -636,11 +633,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(true))
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(apprentice)).thenReturn(Some(neither))
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.PartnerMaximumEarningsController.onPageLoad()
 
-      navigator.nextPage(AreYouSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.PartnerMaximumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(AreYouSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.PartnerMaximumEarningsController.onPageLoad()
     }
 
   }
@@ -653,8 +650,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(selfEmployed))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.PartnerSelfEmployedController.onPageLoad()
     }
 
     "navigate to uc page when user select apprentice or neither on partner self employed or apprentice page" in {
@@ -664,11 +661,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(apprentice)).thenReturn(Some(neither))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
 
     "navigate to partner self employed 12 months page when user have partner and parent satisfy minimum earning and partner select self employed" in {
@@ -679,8 +676,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(selfEmployed))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.PartnerSelfEmployedController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.PartnerSelfEmployedController.onPageLoad()
     }
 
     "navigate to parent max earnings page when user have partner and parent satisfy minimum earning and partner select apprentice or neither" in {
@@ -691,11 +688,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.partnerMinimumEarnings).thenReturn(Some(false))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(apprentice)).thenReturn(Some(neither))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.YourMaximumEarningsController.onPageLoad()
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.YourMaximumEarningsController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.YourMaximumEarningsController.onPageLoad()
     }
 
     "navigate to uc page when user have partner and both doesn't satisfy minimum earning and both select apprentice" in {
@@ -707,8 +704,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(apprentice))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(apprentice))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
 
     }
 
@@ -721,8 +718,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(neither))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(neither))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
 
     }
 
@@ -735,8 +732,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(selfEmployed))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(apprentice))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
 
     }
 
@@ -749,8 +746,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(apprentice))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(neither))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
 
     "navigate to uc page when user have partner, parent select neither and partner select apprentice" in {
@@ -762,8 +759,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.areYouSelfEmployedOrApprentice).thenReturn(Some(neither))
       when(answers.partnerSelfEmployedOrApprentice).thenReturn(Some(apprentice))
 
-      navigator.nextPage(PartnerSelfEmployedOrApprenticeId, NormalMode).value(answers) mustBe
-        routes.UniversalCreditController.onPageLoad(NormalMode)
+      navigator.nextPage(PartnerSelfEmployedOrApprenticeId).value(answers) mustBe
+        routes.UniversalCreditController.onPageLoad()
     }
 
   }
@@ -779,11 +776,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourChildcareVouchers).thenReturn(Some(true))
           when(answers.yourMaximumEarnings).thenReturn(Some(true)).thenReturn(Some(false))
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.UniversalCreditController.onPageLoad(NormalMode)
+          navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad()
 
-          navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.UniversalCreditController.onPageLoad(NormalMode)
+          navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad()
         }
 
         "single user where yourChildcareVouchers is yes and partnerChildcareVouchers is no" +
@@ -793,11 +790,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourChildcareVouchers).thenReturn(Some(true))
             when(answers.yourMaximumEarnings).thenReturn(Some(true)).thenReturn(Some(false))
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
           }
 
         "user with partner redirects to Do you get universal credit page where " +
@@ -808,11 +805,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerMinimumEarnings).thenReturn(Some(false))
             when(answers.yourMaximumEarnings).thenReturn(Some(true)).thenReturn(Some(false))
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
           }
 
         // TODO :NEED TO WRITE A SCENARIO WHEN BOTH NOT GETTING VOUCHERS
@@ -825,8 +822,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.partnerMinimumEarnings).thenReturn(Some(false))
             when(answers.yourMaximumEarnings).thenReturn(Some(false))
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
           }
 
         "user with partner redirects to Do you get universal credit page " +
@@ -836,11 +833,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourChildcareVouchers).thenReturn(Some(true))
             when(answers.yourMaximumEarnings).thenReturn(Some(true)).thenReturn(Some(false))
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
           }
 
         "single user redirects to free hours result pages when Childcare vouchers selection is NO " +
@@ -850,7 +847,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourChildcareVouchers).thenReturn(Some(false))
             when(answers.yourMaximumEarnings).thenReturn(Some(true))
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
               routes.ResultController.onPageLoad()
 
           }
@@ -862,8 +859,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourChildcareVouchers).thenReturn(Some(false))
             when(answers.yourMaximumEarnings).thenReturn(Some(false))
 
-            navigator.nextPage(YourMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(YourMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
           }
       }
 
@@ -874,11 +871,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerChildcareVouchers).thenReturn(Some(true))
           when(answers.partnerMaximumEarnings).thenReturn(Some(true)).thenReturn(Some(false))
 
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.UniversalCreditController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerMaximumEarningsId).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad()
 
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.UniversalCreditController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerMaximumEarningsId).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad()
         }
 
         "user with partner redirects to your FreeHoursResult page where partnerChildcareVouchers is NO" in {
@@ -887,7 +884,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerChildcareVouchers).thenReturn(Some(false))
           when(answers.partnerMaximumEarnings).thenReturn(Some(true))
 
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
+          navigator.nextPage(PartnerMaximumEarningsId).value(answers) mustBe
             routes.ResultController.onPageLoad()
 
         }
@@ -898,8 +895,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerChildcareVouchers).thenReturn(Some(false))
           when(answers.partnerMaximumEarnings).thenReturn(Some(false))
 
-          navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.UniversalCreditController.onPageLoad(NormalMode)
+          navigator.nextPage(PartnerMaximumEarningsId).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad()
         }
 
         "user with partner redirects to Do you get universal credit page where " +
@@ -910,11 +907,11 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourMinimumEarnings).thenReturn(Some(false))
             when(answers.partnerMaximumEarnings).thenReturn(Some(true)).thenReturn(Some(false))
 
-            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(PartnerMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
 
-            navigator.nextPage(PartnerMaximumEarningsId, NormalMode).value(answers) mustBe
-              routes.UniversalCreditController.onPageLoad(NormalMode)
+            navigator.nextPage(PartnerMaximumEarningsId).value(answers) mustBe
+              routes.UniversalCreditController.onPageLoad()
           }
         // TODO :: Need to write a scenario for neither in  gets vouchers
       }
@@ -926,7 +923,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourChildcareVouchers).thenReturn(Some(false))
           when(answers.eitherOfYouMaximumEarnings).thenReturn(Some(true))
 
-          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
+          navigator.nextPage(EitherOfYouMaximumEarningsId).value(answers) mustBe
             routes.ResultController.onPageLoad()
         }
 
@@ -936,8 +933,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourChildcareVouchers).thenReturn(Some(true))
           when(answers.eitherOfYouMaximumEarnings).thenReturn(Some(true))
 
-          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.UniversalCreditController.onPageLoad(NormalMode)
+          navigator.nextPage(EitherOfYouMaximumEarningsId).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad()
         }
 
         "redirect to Tax or Universal Credits page when partner selects no to vouchers and false to maximum earnings" in {
@@ -946,8 +943,8 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.partnerChildcareVouchers).thenReturn(Some(true))
           when(answers.eitherOfYouMaximumEarnings).thenReturn(Some(false))
 
-          navigator.nextPage(EitherOfYouMaximumEarningsId, NormalMode).value(answers) mustBe
-            routes.UniversalCreditController.onPageLoad(NormalMode)
+          navigator.nextPage(EitherOfYouMaximumEarningsId).value(answers) mustBe
+            routes.UniversalCreditController.onPageLoad()
         }
       }
     }
@@ -968,7 +965,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(esc.eligibility(any())).thenReturn(NotEligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.ResultController.onPageLoad()
       }
@@ -985,7 +982,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.hasApprovedCosts).thenReturn(Some(false))
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.ResultController.onPageLoad()
       }
@@ -1002,7 +999,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.hasApprovedCosts).thenReturn(Some(false))
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.ResultController.onPageLoad()
       }
@@ -1019,7 +1016,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.hasApprovedCosts).thenReturn(Some(false))
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.ResultController.onPageLoad()
       }
@@ -1040,7 +1037,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(Eligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
       }
@@ -1058,7 +1055,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(Eligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
       }
@@ -1076,7 +1073,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(Eligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
       }
@@ -1094,7 +1091,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(Eligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
       }
@@ -1112,7 +1109,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(Eligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
       }
@@ -1130,7 +1127,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(Eligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
         result mustEqual routes.MaxFreeHoursInfoController.onPageLoad()
       }
@@ -1151,9 +1148,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(NotEligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
-        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+        result mustEqual routes.NoOfChildrenController.onPageLoad()
       }
 
       "the user is eligible for TFC but not for ESC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
@@ -1169,9 +1166,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(NotEligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
-        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+        result mustEqual routes.NoOfChildrenController.onPageLoad()
       }
 
       "the user is eligible for ESC but not for TFC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
@@ -1187,9 +1184,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(NotEligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
-        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+        result mustEqual routes.NoOfChildrenController.onPageLoad()
       }
 
       "the user is NotDetermined for both TFC and ESC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
@@ -1205,9 +1202,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(NotEligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
-        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+        result mustEqual routes.NoOfChildrenController.onPageLoad()
       }
 
       "the user is NotDetermined for TFC and NOT eligible for ESC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
@@ -1223,9 +1220,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(NotEligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
-        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+        result mustEqual routes.NoOfChildrenController.onPageLoad()
       }
 
       "the user is NotDetermined for ESC and NOT eligible for TFC, have approved childcare costs, but is NOT eligible for Free Childcare" in {
@@ -1241,9 +1238,9 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
         when(freeChildcareWorkingParents.eligibility(any())).thenReturn(NotEligible)
 
         val result = navigator(schemes, freeChildcareWorkingParents, tfc, esc)
-          .nextPage(UniversalCreditId, NormalMode)
+          .nextPage(UniversalCreditId)
           .value(answers)
-        result mustEqual routes.NoOfChildrenController.onPageLoad(NormalMode)
+        result mustEqual routes.NoOfChildrenController.onPageLoad()
       }
     }
 
@@ -1252,7 +1249,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       val schemes = mock[Schemes]
       when(schemes.allSchemesDetermined(any())).thenReturn(false)
 
-      val result = navigator(schemes).nextPage(UniversalCreditId, NormalMode).value(answers)
+      val result = navigator(schemes).nextPage(UniversalCreditId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
   }

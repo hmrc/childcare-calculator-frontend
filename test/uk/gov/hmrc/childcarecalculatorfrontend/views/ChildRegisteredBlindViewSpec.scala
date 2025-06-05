@@ -20,7 +20,6 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childRegisteredBlind
 
 class ChildRegisteredBlindViewSpec extends NewYesNoViewBehaviours {
@@ -29,10 +28,9 @@ class ChildRegisteredBlindViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix = "childRegisteredBlind"
   val view             = application.injector.instanceOf[childRegisteredBlind]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), "Foo", NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), "Foo")(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, "Foo")(fakeRequest, messages)
 
   "ChildRegisteredBlind view" must {
 
@@ -54,7 +52,7 @@ class ChildRegisteredBlindViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.RegisteredBlindController.onSubmit(NormalMode).url,
+        routes.RegisteredBlindController.onSubmit().url,
         legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))
       )
     )

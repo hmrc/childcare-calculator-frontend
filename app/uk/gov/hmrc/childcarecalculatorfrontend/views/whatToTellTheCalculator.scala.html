@@ -15,8 +15,6 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.ucSchemeGuidanceLinkUrl
 
 @this(
@@ -52,6 +50,6 @@
 
     @buttonLink(
         messageKey = "site.save_and_continue",
-        href= routes.LocationController.onPageLoad(NormalMode)
+        href= routes.LocationController.onPageLoad()
     )
 }

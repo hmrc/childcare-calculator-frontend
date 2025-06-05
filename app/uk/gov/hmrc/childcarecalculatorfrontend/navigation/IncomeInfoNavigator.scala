@@ -16,16 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Singleton
-
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, PartnerIncomeInfoId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
-import javax.inject.Inject
+
+import javax.inject.{Inject, Singleton}
 
 /** Contains the navigation for current and previous year employment income pages
   */
@@ -41,9 +39,9 @@ class IncomeInfoNavigator @Inject() (utils: Utils) extends SubNavigator {
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
     if (hasPartner) {
       utils.getCall(userAnswers.whoIsInPaidEmployment) {
-        case `you`     => routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
-        case `partner` => routes.ParentPaidWorkCYController.onPageLoad(NormalMode)
-        case `both`    => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
+        case `you`     => routes.PartnerPaidWorkCYController.onPageLoad()
+        case `partner` => routes.ParentPaidWorkCYController.onPageLoad()
+        case `both`    => routes.EmploymentIncomeCYController.onPageLoad()
       }
     } else {
       SessionExpiredRouter.route(getClass.getName, "nextPageUrlCY", Some(userAnswers))

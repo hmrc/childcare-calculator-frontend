@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouGetAnyBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
@@ -31,7 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
   val view        = application.injector.instanceOf[doYouGetAnyBenefits]
-  def onwardRoute = routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad(NormalMode)
+  def onwardRoute = routes.DoesYourPartnerGetAnyBenefitsController.onPageLoad()
 
   val cacheMapWithPreviousAnswers = new CacheMap("id", Map.empty)
 
@@ -49,12 +49,12 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
     )
 
   def viewAsString(form: Form[Set[ParentsBenefits]] = DoYouGetAnyBenefitsForm()) =
-    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form)(fakeRequest, messages).toString
 
   "DoYouGetAnyBenefits Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -66,7 +66,7 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(DoYouGetAnyBenefitsForm().fill(Set(ParentsBenefits.CarersCredit)))
     }
@@ -76,7 +76,7 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
         .withFormUrlEncodedBody((s"${DoYouGetAnyBenefitsForm.formId}[0]", ParentsBenefits.CarersAllowance.toString))
         .withMethod("POST")
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -88,14 +88,14 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
         .withMethod("POST")
       val boundForm = DoYouGetAnyBenefitsForm().bind(Map(s"${DoYouGetAnyBenefitsForm.formId}[0]" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -103,7 +103,7 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)

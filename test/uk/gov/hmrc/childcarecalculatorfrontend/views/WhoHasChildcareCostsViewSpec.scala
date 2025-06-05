@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
 
@@ -40,7 +39,7 @@ class WhoHasChildcareCostsViewSpec extends NewViewBehaviours with NewCheckboxVie
   def form: Form[Set[Int]] = WhoHasChildcareCostsForm(0, 1)
 
   def createView(form: Form[Set[Int]] = form): Html =
-    view(frontendAppConfig, form, NormalMode, strValues)(fakeRequest, messages)
+    view(frontendAppConfig, form, strValues)(fakeRequest, messages)
 
   "WhoHasChildcareCosts view" must {
 

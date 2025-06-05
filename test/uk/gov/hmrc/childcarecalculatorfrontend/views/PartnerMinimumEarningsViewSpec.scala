@@ -20,7 +20,6 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 
 class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
@@ -29,12 +28,11 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix             = "partnerMinimumEarnings"
   val view                         = application.injector.instanceOf[partnerMinimumEarnings]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, 0)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), 0)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode, 0)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, 0)(fakeRequest, messages)
 
-  def createViewWithAmount = (amount: BigDecimal) =>
-    view(frontendAppConfig, form, NormalMode, amount)(fakeRequest, messages)
+  def createViewWithAmount = (amount: BigDecimal) => view(frontendAppConfig, form, amount)(fakeRequest, messages)
 
   "PartnerMinimumEarnings view" must {
     behave.like(
@@ -55,7 +53,7 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.PartnerMinimumEarningsController.onSubmit(NormalMode).url,
+        routes.PartnerMinimumEarningsController.onSubmit().url,
         legend = Some(messages(s"$messageKeyPrefix.heading", 0))
       )
     )
