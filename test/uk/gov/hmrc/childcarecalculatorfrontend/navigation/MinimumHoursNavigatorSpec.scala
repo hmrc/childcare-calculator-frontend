@@ -82,15 +82,14 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `expect approved childcare cost` when you have childcare cost or not yet decided" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.childcareCosts)
         .thenReturn(Some(YesNoNotYetEnum.YES.toString))
         .thenReturn(Some(YesNoNotYetEnum.NOTYET.toString))
       when(freeHours.eligibility(any())).thenReturn(NotDetermined)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ChildcareCostsId, NormalMode)
         .value(answers) mustEqual routes.ApprovedProviderController.onPageLoad(NormalMode)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ChildcareCostsId, NormalMode)
         .value(answers) mustEqual routes.ApprovedProviderController.onPageLoad(NormalMode)
     }
@@ -98,10 +97,9 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours results page` when user is not eligible for free hours and selects NO" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.NO.toString))
       when(freeHours.eligibility(any())).thenReturn(NotEligible)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ChildcareCostsId, NormalMode)
         .value(answers) mustEqual routes.ResultController.onPageLoad()
     }
@@ -109,10 +107,9 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours result page` if you are eligible for free hours and selects NO" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.NO.toString))
       when(freeHours.eligibility(any())).thenReturn(Eligible)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ChildcareCostsId, NormalMode)
         .value(answers) mustEqual routes.ResultController.onPageLoad()
     }
@@ -120,11 +117,10 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours info page` if you are eligible for free hours, in England and select NO" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.NO.toString))
       when(answers.location).thenReturn(Some(Location.ENGLAND))
       when(freeHours.eligibility(any())).thenReturn(Eligible)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ChildcareCostsId, NormalMode)
         .value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad
     }
@@ -135,10 +131,9 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours results page` when user's eligibility for all schemes is determined" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.approvedProvider).thenReturn(Some(YesNoUnsureEnum.NO.toString))
       when(freeHours.eligibility(any())).thenReturn(NotEligible)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.ResultController.onPageLoad()
     }
@@ -146,11 +141,10 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours info page` if you are eligible for free hours but not all schemes have been determined" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.approvedProvider).thenReturn(Some(YesNoUnsureEnum.NO.toString))
       when(answers.location).thenReturn(Some(Location.ENGLAND))
       when(freeHours.eligibility(any())).thenReturn(Eligible)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad
     }
@@ -158,16 +152,15 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours info` if you are eligible for free hours and in England and not all schemes have been determined" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.approvedProvider)
         .thenReturn(Some(YesNoUnsureEnum.YES.toString))
         .thenReturn(Some(YesNoUnsureEnum.NOTSURE.toString))
       when(answers.location).thenReturn(Some(Location.ENGLAND))
       when(freeHours.eligibility(any())).thenReturn(Eligible)
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.FreeHoursInfoController.onPageLoad
     }
@@ -175,7 +168,6 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours result` if user lives in England, not eligible for min free hours, have childcare cost but no approved provider" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.approvedProvider).thenReturn(Some(YesNoUnsureEnum.NO.toString))
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.YES.toString))
       when(answers.location).thenReturn(Some(Location.ENGLAND))
@@ -183,7 +175,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.childAgedThreeOrFour).thenReturn(Some(false))
       when(freeHours.eligibility(any())).thenReturn(NotEligible)
 
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.ResultController.onPageLoad()
     }
@@ -191,7 +183,6 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `do you live with partner` if user lives in England, has 2 year old, not eligible for min free hours, have childcare cost but no approved provider" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.approvedProvider).thenReturn(Some(YesNoUnsureEnum.NO.toString))
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.YES.toString))
       when(answers.location).thenReturn(Some(Location.ENGLAND))
@@ -199,7 +190,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.childAgedThreeOrFour).thenReturn(Some(false))
       when(freeHours.eligibility(any())).thenReturn(NotEligible)
 
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad()
     }
@@ -207,7 +198,6 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `do you live with partner` if user lives in England, has 9 to 22 month old, not eligible for min free hours, have childcare cost but no approved provider" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.approvedProvider).thenReturn(Some(YesNoUnsureEnum.NO.toString))
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.YES.toString))
       when(answers.location).thenReturn(Some(Location.ENGLAND))
@@ -216,7 +206,7 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       when(answers.childAgedThreeOrFour).thenReturn(Some(false))
       when(freeHours.eligibility(any())).thenReturn(NotEligible)
 
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad()
     }
@@ -224,14 +214,13 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `do you live with partner` if user lives in England, has 9 to 22 month old and 2 year old, not eligible for min free hours, has no childcare cost" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.NO.toString))
       when(answers.location).thenReturn(Some(Location.ENGLAND))
       when(answers.childrenAgeGroups).thenReturn(Some(Set(NineTo23Months, TwoYears)))
       when(answers.childAgedThreeOrFour).thenReturn(Some(false))
       when(freeHours.eligibility(any())).thenReturn(NotEligible)
 
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.DoYouLiveWithPartnerController.onPageLoad()
     }
@@ -239,14 +228,13 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
     "go to `free hours result` if user lives in NI, not eligible for min free hours, have childcare cost but no approved provider" in {
       val answers   = spy(userAnswers())
       val freeHours = mock[FreeHours]
-      val schemes   = mock[Schemes]
       when(answers.approvedProvider).thenReturn(Some(YesNoUnsureEnum.NO.toString))
       when(answers.childcareCosts).thenReturn(Some(YesNoNotYetEnum.YES.toString))
       when(answers.location).thenReturn(Some(Location.NORTHERN_IRELAND))
       when(answers.childAgedThreeOrFour).thenReturn(Some(false))
       when(freeHours.eligibility(any())).thenReturn(NotEligible)
 
-      navigator(freeHours, schemes)
+      navigator(freeHours)
         .nextPage(ApprovedProviderId, NormalMode)
         .value(answers) mustEqual routes.ResultController.onPageLoad()
     }
@@ -255,6 +243,6 @@ class MinimumHoursNavigatorSpec extends SpecBase with MockitoSugar {
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
-  def navigator(freeHours: FreeHours, schemes: Schemes): SubNavigator = new MinimumHoursNavigator(freeHours, schemes)
+  def navigator(freeHours: FreeHours): SubNavigator = new MinimumHoursNavigator(freeHours)
   def navigator: SubNavigator                                         = new MinimumHoursNavigator(new FreeHours)
 }

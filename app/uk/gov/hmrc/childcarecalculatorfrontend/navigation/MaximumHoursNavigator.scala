@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{ParentsBenefits, _}
@@ -28,13 +29,11 @@ import javax.inject.Inject
 
 // scalastyle:off number.of.methods
 class MaximumHoursNavigator @Inject() (
-    override val schemes: Schemes,
+    schemes: Schemes,
     freeChildcareWorkingParents: FreeChildcareWorkingParents,
     tfc: TaxFreeChildcare,
     esc: EmploymentSupportedChildcare
-) extends ResultsNavigator {
-
-  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
+) extends SubNavigator {
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     DoYouLiveWithPartnerId            -> doYouLiveRoute,
