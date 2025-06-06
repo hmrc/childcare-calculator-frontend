@@ -30,10 +30,9 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class IncomeInfoNavigator @Inject() (utils: Utils) extends SubNavigator {
 
-  override protected val routeMap: Map[Identifier, UserAnswers => Call] =
-    Map(
-      PartnerIncomeInfoId -> nextPageUrlCY
-    )
+  override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
+    PartnerIncomeInfoId -> nextPageUrlCY
+  )
 
   private def nextPageUrlCY(userAnswers: UserAnswers) = {
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)

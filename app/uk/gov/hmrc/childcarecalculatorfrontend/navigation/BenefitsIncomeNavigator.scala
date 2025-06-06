@@ -29,7 +29,7 @@ import javax.inject.Inject
   */
 class BenefitsIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
-  override protected def routeMap = Map(
+  override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     YouAnyTheseBenefitsIdCY   -> yourBenefitsRouteCY,
     BothAnyTheseBenefitsCYId  -> bothBenefitsRouteCY,
     WhosHadBenefitsId         -> whosHadBenefitsRouteCY,

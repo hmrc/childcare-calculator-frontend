@@ -16,18 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Inject
-
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, SubNavigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{SurveyChildcareSupportId, SurveyDoNotUnderstandId}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
+  Identifier,
+  SurveyChildcareSupportId,
+  SurveyDoNotUnderstandId
+}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, SubNavigator}
+
+import javax.inject.Inject
 
 class SurveyNavigator @Inject() (utils: Utils, appConfig: FrontendAppConfig) extends SubNavigator {
 
-  override protected def routeMap =
-    Map(SurveyChildcareSupportId -> doNotUnderstandRoute, SurveyDoNotUnderstandId -> reasonsForNotUnderstanding)
+  override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
+    SurveyChildcareSupportId -> doNotUnderstandRoute,
+    SurveyDoNotUnderstandId  -> reasonsForNotUnderstanding
+  )
 
   private def doNotUnderstandRoute(answers: UserAnswers) =
     utils.getCall(answers.surveyChildcareSupport) {

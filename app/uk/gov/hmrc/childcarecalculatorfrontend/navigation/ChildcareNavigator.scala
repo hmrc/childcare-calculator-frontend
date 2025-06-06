@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with DateTimeUtils {
 
-  override protected lazy val routeMap: PartialFunction[Identifier, UserAnswers => Call] = {
+  override protected val routeMap: PartialFunction[Identifier, UserAnswers => Call] = {
     case NoOfChildrenId                => _ => routes.AboutYourChildController.onPageLoad(0)
     case AboutYourChildId(id)          => aboutYourChildRoutes(id)
     case ChildrenDisabilityBenefitsId  => childrenDisabilityBenefitsRoutes

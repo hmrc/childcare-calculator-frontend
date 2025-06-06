@@ -30,8 +30,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Uti
 
 class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
-  val tfc: TaxFreeChildcare                        = mock[TaxFreeChildcare]
-  def navigator(tfcScheme: TaxFreeChildcare = tfc) = new OtherIncomeNavigator(new Utils(), tfcScheme)
+  val tfc: TaxFreeChildcare = mock[TaxFreeChildcare]
+  def navigator()           = new OtherIncomeNavigator(new Utils())
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
