@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import com.google.inject.ImplementedBy
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
@@ -24,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 import javax.inject.Inject
 
-class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
+class Navigator(navigators: SubNavigator*) {
 
   @Inject()
   def this(
@@ -40,27 +39,10 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
   ) =
     this(Seq(minHours, maxHours, pensions, employment, benefitsIncome, otherIncome, incomeInfo, childcare, survey): _*)
 
-  override def nextPage(id: Identifier): UserAnswers => Call =
+  def nextPage(id: Identifier): UserAnswers => Call =
     navigators
       .map(_.nextPage(id))
       .reduce(_ orElse _)
       .getOrElse(_ => routes.WhatToTellTheCalculatorController.onPageLoad)
-
-}
-
-@ImplementedBy(classOf[NavigatorImpl])
-trait Navigator {
-
-  protected def routeMap: Map[Identifier, UserAnswers => Call] = Map.empty
-
-  def nextPage(id: Identifier): UserAnswers => Call
-
-}
-
-trait SubNavigator {
-
-  protected def routeMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
-
-  def nextPage(id: Identifier): Option[UserAnswers => Call] = routeMap.lift(id)
 
 }

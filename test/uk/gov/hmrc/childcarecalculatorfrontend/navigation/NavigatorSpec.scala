@@ -43,7 +43,7 @@ class NavigatorSpec extends PlaySpec with OptionValues {
         )
       )
 
-      val navigator = new NavigatorImpl(instance1, instance2)
+      val navigator = new Navigator(instance1, instance2)
 
       "return the default route when no route exists in the navigator" in {
         val result = navigator.nextPage(ApprovedProviderId)

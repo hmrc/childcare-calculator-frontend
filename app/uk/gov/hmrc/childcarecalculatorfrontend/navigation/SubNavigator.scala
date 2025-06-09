@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
-import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+trait SubNavigator {
 
-  override def nextPage(controllerId: Identifier): UserAnswers => Call =
-    _ => desiredRoute
+  protected def routeMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
+
+  final def nextPage(id: Identifier): Option[UserAnswers => Call] = routeMap.lift(id)
 
 }
