@@ -22,11 +22,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
 /** Contains the navigation for current and previous year benefits pages
   */
-class BenefitsIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
+@Singleton
+private[navigation] class BenefitsIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     YouAnyTheseBenefitsIdCY   -> yourBenefitsRouteCY,

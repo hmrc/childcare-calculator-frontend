@@ -23,9 +23,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-class MinimumHoursNavigator @Inject() (freeHours: FreeHours) extends SubNavigator {
+@Singleton
+private[navigation] class MinimumHoursNavigator @Inject() (freeHours: FreeHours) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId             -> locationRoute,

@@ -22,11 +22,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
 /** Contains the navigation for current and previous year pension pages
   */
-class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
+@Singleton
+private[navigation] class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     YouPaidPensionCYId         -> yourPensionRouteCY,

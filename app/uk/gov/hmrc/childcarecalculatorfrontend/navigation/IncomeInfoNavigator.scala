@@ -27,7 +27,7 @@ import javax.inject.{Inject, Singleton}
 /** Contains the navigation for current and previous year employment income pages
   */
 @Singleton
-class IncomeInfoNavigator @Inject() (utils: Utils) extends SubNavigator {
+private[navigation] class IncomeInfoNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     PartnerIncomeInfoId -> nextPageUrlCY

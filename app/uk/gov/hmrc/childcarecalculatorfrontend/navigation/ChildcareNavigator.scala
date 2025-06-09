@@ -21,9 +21,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{DateTimeUtils, SessionExpiredRouter, UserAnswers, Utils}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with DateTimeUtils {
+@Singleton
+private[navigation] class ChildcareNavigator @Inject() (utils: Utils) extends SubNavigator with DateTimeUtils {
 
   override protected val routeMap: PartialFunction[Identifier, UserAnswers => Call] = {
     case NoOfChildrenId                => _ => routes.AboutYourChildController.onPageLoad(0)

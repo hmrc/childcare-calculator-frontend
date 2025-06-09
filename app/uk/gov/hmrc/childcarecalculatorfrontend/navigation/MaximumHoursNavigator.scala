@@ -24,9 +24,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-class MaximumHoursNavigator @Inject() (
+@Singleton
+private[navigation] class MaximumHoursNavigator @Inject() (
     schemes: Schemes,
     freeChildcareWorkingParents: FreeChildcareWorkingParents,
     tfc: TaxFreeChildcare,

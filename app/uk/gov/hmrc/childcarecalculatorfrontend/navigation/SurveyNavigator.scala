@@ -26,9 +26,10 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-class SurveyNavigator @Inject() (utils: Utils, appConfig: FrontendAppConfig) extends SubNavigator {
+@Singleton
+private[navigation] class SurveyNavigator @Inject() (utils: Utils, appConfig: FrontendAppConfig) extends SubNavigator {
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     SurveyChildcareSupportId -> doNotUnderstandRoute,
