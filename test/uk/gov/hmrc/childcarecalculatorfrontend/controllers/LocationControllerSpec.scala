@@ -40,7 +40,6 @@ class LocationControllerSpec extends ControllerSpecBase {
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction,
-      new DataRequiredAction,
       view
     )
 

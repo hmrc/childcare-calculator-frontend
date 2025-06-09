@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._

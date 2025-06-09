@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
   Identifier,
@@ -24,7 +25,6 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
   SurveyDoNotUnderstandId
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, SubNavigator}
 
 import javax.inject.Inject
 
