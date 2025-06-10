@@ -102,7 +102,7 @@
             @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tfc")))
         }
 
-        @if(userAnswers.universalCredit.getOrElse("") != universalCredits) {
+        @if(userAnswers.universalCredit.map(_.toString).getOrElse("") != universalCredits) {
             @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tax_credits")))
         }
 

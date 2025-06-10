@@ -62,6 +62,7 @@ trait FormErrorHelper extends Mappings {
           lastTwoChar
         }
       case `taxCodeLength_four` => lastOneChar
+      case _                    => value
     }
   }
 

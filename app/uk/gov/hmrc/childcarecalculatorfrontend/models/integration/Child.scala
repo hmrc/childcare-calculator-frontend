@@ -81,6 +81,7 @@ object Disability {
     val disabilities = disabilityType match {
       case DISABILITY_BENEFITS        => childDisabilities.copy(disabled = true)
       case HIGHER_DISABILITY_BENEFITS => childDisabilities.copy(severelyDisabled = true)
+      case _                          => childDisabilities
     }
 
     blindChildren match {

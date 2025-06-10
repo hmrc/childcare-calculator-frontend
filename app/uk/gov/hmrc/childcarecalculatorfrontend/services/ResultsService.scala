@@ -120,6 +120,7 @@ class ResultsService @Inject() (
         case TCELIGIBILITY  => resultViewModel
         case TFCELIGIBILITY => resultViewModel.copy(tfc = Some(scheme.amount))
         case ESCELIGIBILITY => resultViewModel.copy(esc = Some(scheme.amount))
+        case _              => resultViewModel
       }
     } else {
       resultViewModel
@@ -156,6 +157,7 @@ class ResultsService @Inject() (
       case SCOTLAND         => resultViewModel.copy(freeHours = Some(freeHoursForScotland))
       case WALES            => resultViewModel.copy(freeHours = Some(freeHoursForWales))
       case NORTHERN_IRELAND => resultViewModel.copy(freeHours = Some(freeHoursForNI))
+      case _                => resultViewModel
     }
 
   private def tfcEligibilityMessage(answers: UserAnswers)(implicit messages: Messages): Option[String] = {
