@@ -17,11 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerChildcareVouchers
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerChildcareVouchers
 
 class PartnerChildcareVouchersViewSpec extends NewYesNoViewBehaviours {
 
@@ -29,9 +28,9 @@ class PartnerChildcareVouchersViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix             = "partnerChildcareVouchers"
   val view                         = application.injector.instanceOf[partnerChildcareVouchers]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "PartnerChildcareVouchers view" must {
     behave.like(normalPage(createView, messageKeyPrefix, "heading"))
@@ -42,7 +41,7 @@ class PartnerChildcareVouchersViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.PartnerChildcareVouchersController.onSubmit(NormalMode).url
+        routes.PartnerChildcareVouchersController.onSubmit().url
       )
     )
 

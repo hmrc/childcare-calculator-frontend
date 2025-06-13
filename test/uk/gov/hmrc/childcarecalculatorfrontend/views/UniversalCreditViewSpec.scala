@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.universalCredit
 
@@ -32,11 +31,10 @@ class UniversalCreditViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix        = "universalCredit"
   val messageKeyPartnerPrefix = "universalCreditPartner"
 
-  def createView(isPartner: Option[Boolean]) = () =>
-    view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
+  def createView(isPartner: Option[Boolean]) = () => view(frontendAppConfig, form, isPartner)(fakeRequest, messages)
 
   def createViewUsingForm(isPartner: Option[Boolean]) = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, NormalMode, isPartner)(fakeRequest, messages)
+    view(frontendAppConfig, form, isPartner)(fakeRequest, messages)
 
   "UniversalCredit view when there is partner" must {
 
@@ -48,7 +46,7 @@ class UniversalCreditViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm(Some(true)),
         messageKeyPartnerPrefix,
-        routes.UniversalCreditController.onSubmit(NormalMode).url
+        routes.UniversalCreditController.onSubmit().url
       )
     )
   }
@@ -63,7 +61,7 @@ class UniversalCreditViewSpec extends NewYesNoViewBehaviours {
       yesNoPage(
         createViewUsingForm(Some(false)),
         messageKeyPrefix,
-        routes.UniversalCreditController.onSubmit(NormalMode).url
+        routes.UniversalCreditController.onSubmit().url
       )
     )
   }

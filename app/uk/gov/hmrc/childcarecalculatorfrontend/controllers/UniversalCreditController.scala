@@ -16,24 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.UniversalCreditId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{
   universalCreditErrorKey,
   universalCreditPartnerErrorKey
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.universalCredit
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class UniversalCreditController @Inject() (
@@ -48,16 +48,16 @@ class UniversalCreditController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val havePartner = request.userAnswers.doYouLiveWithPartner
     val preparedForm = request.userAnswers.universalCredit match {
       case None        => BooleanForm()
       case Some(value) => BooleanForm().fill(value)
     }
-    Ok(universalCredit(appConfig, preparedForm, mode, havePartner))
+    Ok(universalCredit(appConfig, preparedForm, havePartner))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     val havePartner = request.userAnswers.doYouLiveWithPartner
     val errorMsgKey = havePartner match {
       case Some(true) => universalCreditPartnerErrorKey
@@ -68,11 +68,11 @@ class UniversalCreditController @Inject() (
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(universalCredit(appConfig, formWithErrors, mode, havePartner))),
+          Future.successful(BadRequest(universalCredit(appConfig, formWithErrors, havePartner))),
         value =>
           dataCacheConnector
             .save[Boolean](request.sessionId, UniversalCreditId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(UniversalCreditId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(UniversalCreditId)(new UserAnswers(cacheMap))))
       )
   }
 

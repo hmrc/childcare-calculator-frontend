@@ -22,9 +22,7 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Utils}
 
 class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
   val navigator = new SurveyNavigator(new Utils(), appConfig = frontendAppConfig)
@@ -39,7 +37,7 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
         when(answers.surveyChildcareSupport).thenReturn(Some(false))
 
         navigator
-          .nextPage(SurveyChildcareSupportId, NormalMode)
+          .nextPage(SurveyChildcareSupportId)
           .value(answers) mustBe routes.SurveyDoNotUnderstandController.onPageLoad()
       }
     }
@@ -49,7 +47,7 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = spy(userAnswers())
         when(answers.surveyChildcareSupport).thenReturn(Some(true))
 
-        val result = navigator.nextPage(SurveyChildcareSupportId, NormalMode).value(answers)
+        val result = navigator.nextPage(SurveyChildcareSupportId).value(answers)
 
         result.url mustBe frontendAppConfig.surveyThankYouUrl
       }
@@ -58,7 +56,7 @@ class SurveyNavigatorSpec extends SpecBase with MockitoSugar {
         val answers = spy(userAnswers())
         when(answers.surveyDoNotUnderstand).thenReturn(Some("I don't understand."))
 
-        val result = navigator.nextPage(SurveyDoNotUnderstandId, NormalMode).value(answers)
+        val result = navigator.nextPage(SurveyDoNotUnderstandId).value(answers)
 
         result.url mustBe frontendAppConfig.surveyThankYouUrl
       }

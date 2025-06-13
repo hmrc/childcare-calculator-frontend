@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Inject
-
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
+import javax.inject.{Inject, Singleton}
+
 /** Contains the navigation for current and previous year pension pages
   */
-class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
+@Singleton
+private[navigation] class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     YouPaidPensionCYId         -> yourPensionRouteCY,
@@ -42,42 +41,42 @@ class PensionNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def yourPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.YouPaidPensionCY) {
-      case true => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
+      case true => routes.HowMuchYouPayPensionController.onPageLoad()
       case false =>
         utils.getCall(answers.doYouLiveWithPartner) {
-          case true  => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-          case false => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+          case true  => routes.BothAnyTheseBenefitsCYController.onPageLoad()
+          case false => routes.YouAnyTheseBenefitsCYController.onPageLoad()
         }
     }
 
   private def partnerPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.PartnerPaidPensionCY) {
-      case true  => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case false => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case true  => routes.HowMuchPartnerPayPensionController.onPageLoad()
+      case false => routes.BothAnyTheseBenefitsCYController.onPageLoad()
     }
 
   private def bothPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.bothPaidPensionCY) {
-      case true  => routes.WhoPaysIntoPensionController.onPageLoad(NormalMode)
-      case false => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+      case true  => routes.WhoPaysIntoPensionController.onPageLoad()
+      case false => routes.BothAnyTheseBenefitsCYController.onPageLoad()
     }
 
   private def whoPaysPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.whoPaysIntoPension) {
-      case `you`     => routes.HowMuchYouPayPensionController.onPageLoad(NormalMode)
-      case `partner` => routes.HowMuchPartnerPayPensionController.onPageLoad(NormalMode)
-      case `both`    => routes.HowMuchBothPayPensionController.onPageLoad(NormalMode)
+      case `you`     => routes.HowMuchYouPayPensionController.onPageLoad()
+      case `partner` => routes.HowMuchPartnerPayPensionController.onPageLoad()
+      case `both`    => routes.HowMuchBothPayPensionController.onPageLoad()
     }
 
   private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call = utils.getCall(answers.doYouLiveWithPartner) {
-    case true  => routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
-    case false => routes.YouAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+    case true  => routes.BothAnyTheseBenefitsCYController.onPageLoad()
+    case false => routes.YouAnyTheseBenefitsCYController.onPageLoad()
   }
 
   private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
-    routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+    routes.BothAnyTheseBenefitsCYController.onPageLoad()
 
   private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
-    routes.BothAnyTheseBenefitsCYController.onPageLoad(NormalMode)
+    routes.BothAnyTheseBenefitsCYController.onPageLoad()
 
 }

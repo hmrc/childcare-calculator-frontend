@@ -19,9 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothPaidWorkCY
 
 class BothPaidWorkCYViewSpec extends NewYesNoViewBehaviours {
@@ -33,10 +32,9 @@ class BothPaidWorkCYViewSpec extends NewYesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), taxYearInfo)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages)
 
   "BothPaidWorkCY view" must {
 
@@ -45,7 +43,7 @@ class BothPaidWorkCYViewSpec extends NewYesNoViewBehaviours {
     behave.like(pageWithBackLink(createView))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothPaidWorkCYController.onSubmit(NormalMode).url)
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.BothPaidWorkCYController.onSubmit().url)
     )
 
     "contain tax year info" in {

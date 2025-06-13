@@ -19,16 +19,17 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BothAnyTheseBenefitsCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits.CarersAllowance
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.bothAnyTheseBenefitsCY
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject
@@ -47,36 +48,36 @@ class BothAnyTheseBenefitsCYController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     request.userAnswers.location match {
       case None =>
-        Redirect(routes.LocationController.onPageLoad(mode))
+        Redirect(routes.LocationController.onPageLoad())
 
       case Some(location) =>
         val preparedForm = request.userAnswers.bothAnyTheseBenefitsCY match {
           case None        => BooleanForm()
           case Some(value) => BooleanForm().fill(value)
         }
-        Ok(bothAnyTheseBenefitsCY(appConfig, preparedForm, mode, taxYearInfo, location))
+        Ok(bothAnyTheseBenefitsCY(appConfig, preparedForm, taxYearInfo, location))
     }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     val boundForm = BooleanForm(bothAnyTheseBenefitsCYErrorKey).bindFromRequest()
     if (request.userAnswers.location.isEmpty) {
-      Future.successful(Redirect(routes.LocationController.onPageLoad(mode)))
+      Future.successful(Redirect(routes.LocationController.onPageLoad()))
     } else {
       validateCarersAllowance(boundForm, request.userAnswers).fold(
         (formWithErrors: Form[Boolean]) =>
           Future.successful(
             BadRequest(
-              bothAnyTheseBenefitsCY(appConfig, formWithErrors, mode, taxYearInfo, request.userAnswers.location.get)
+              bothAnyTheseBenefitsCY(appConfig, formWithErrors, taxYearInfo, request.userAnswers.location.get)
             )
           ),
         value =>
           dataCacheConnector
             .save[Boolean](request.sessionId, BothAnyTheseBenefitsCYId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(BothAnyTheseBenefitsCYId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(BothAnyTheseBenefitsCYId)(new UserAnswers(cacheMap))))
       )
     }
   }

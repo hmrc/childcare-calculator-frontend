@@ -16,8 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
 
 @this(
@@ -30,7 +28,7 @@
     submitButton: playComponents.submit_button
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Set[DisabilityBenefits.Value]], index: Int, name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Set[DisabilityBenefits.Value]], index: Int, name: String)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if (form.errors.nonEmpty) messages("site.title.error", messages("whichDisabilityBenefits.title", messages(s"nth.$index"))) else messages("whichDisabilityBenefits.title", messages(s"nth.$index"))
@@ -40,7 +38,7 @@
     pageTitle = title,
 ) {
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhichDisabilityBenefitsController.onSubmit(mode, index), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = WhichDisabilityBenefitsController.onSubmit(index), Symbol("autoComplete") -> "off") {
 
         @inputCheckBox(
             field = form("value"),

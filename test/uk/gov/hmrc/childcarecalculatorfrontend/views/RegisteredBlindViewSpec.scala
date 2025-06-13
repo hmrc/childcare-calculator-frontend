@@ -20,7 +20,6 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.registeredBlind
 
 class RegisteredBlindViewSpec extends NewYesNoViewBehaviours {
@@ -31,9 +30,9 @@ class RegisteredBlindViewSpec extends NewYesNoViewBehaviours {
 
   val view = application.injector.instanceOf[registeredBlind]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "RegisteredBlind view" must {
 
@@ -42,7 +41,7 @@ class RegisteredBlindViewSpec extends NewYesNoViewBehaviours {
     behave.like(pageWithBackLink(createView))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.RegisteredBlindController.onSubmit(NormalMode).url)
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.RegisteredBlindController.onSubmit().url)
     )
   }
 

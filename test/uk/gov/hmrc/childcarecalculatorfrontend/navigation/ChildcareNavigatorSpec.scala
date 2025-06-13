@@ -29,7 +29,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.{
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Utils}
 
 import java.time.LocalDate
@@ -63,8 +63,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
   "Number of children" must {
     "redirect to `About your child`" in {
-      val result = navigator.nextPage(NoOfChildrenId, NormalMode).value(mock[UserAnswers])
-      result mustEqual routes.AboutYourChildController.onPageLoad(NormalMode, 0)
+      val result = navigator.nextPage(NoOfChildrenId).value(mock[UserAnswers])
+      result mustEqual routes.AboutYourChildController.onPageLoad(0)
     }
   }
 
@@ -82,8 +82,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             bar -> dob
           )
         )(testDate)
-        val result = navigator.nextPage(AboutYourChildId(0), NormalMode).value(answers)
-        result mustEqual routes.AboutYourChildController.onPageLoad(NormalMode, 1)
+        val result = navigator.nextPage(AboutYourChildId(0)).value(answers)
+        result mustEqual routes.AboutYourChildController.onPageLoad(1)
       }
     }
 
@@ -97,8 +97,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             bar -> dob
           )
         )(testDate)
-        val result = navigator.nextPage(AboutYourChildId(1), NormalMode).value(answers)
-        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
+        val result = navigator.nextPage(AboutYourChildId(1)).value(answers)
+        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad()
       }
 
       "redirect to `Do any children get disability benefits` for all the child below 18" in {
@@ -109,8 +109,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             bar -> ageOfExactly15
           )
         )(testDate)
-        val result = navigator.nextPage(AboutYourChildId(1), NormalMode).value(answers)
-        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad(NormalMode)
+        val result = navigator.nextPage(AboutYourChildId(1)).value(answers)
+        result mustEqual routes.ChildrenDisabilityBenefitsController.onPageLoad()
       }
     }
 
@@ -121,7 +121,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           "bar" -> dob
         )
       )
-      val result = navigator.nextPage(AboutYourChildId(0), NormalMode).value(answers)
+      val result = navigator.nextPage(AboutYourChildId(0)).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
   }
@@ -133,8 +133,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
         NoOfChildrenId.toString               -> JsNumber(1)
       )
-      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
-      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad()
     }
 
     "redirect to `Any children blind` when the user answers `No` when the user has more than 1 child" in {
@@ -142,8 +142,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(false),
         NoOfChildrenId.toString               -> JsNumber(2)
       )
-      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
-      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad()
     }
 
     "redirect to `Which disability benefits` when the user answers `Yes` and has 1 child" in {
@@ -151,8 +151,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
         NoOfChildrenId.toString               -> JsNumber(1)
       )
-      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
-      result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, 0)
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
+      result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(0)
     }
 
     "redirect to `Which of your children get disability benefits` when the user answers `Yes` and has more than 1 child" in {
@@ -160,15 +160,15 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
         NoOfChildrenId.toString               -> JsNumber(2)
       )
-      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
-      result mustEqual routes.WhichChildrenDisabilityController.onPageLoad(NormalMode)
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
+      result mustEqual routes.WhichChildrenDisabilityController.onPageLoad()
     }
 
     "redirect to `SessionExpired` when the user has no answer for `Do any of your children get disability benefits`" in {
       val answers: UserAnswers = userAnswers(
         NoOfChildrenId.toString -> JsNumber(1)
       )
-      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
 
@@ -176,7 +176,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       val answers: UserAnswers = userAnswers(
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(true)
       )
-      val result = navigator.nextPage(ChildrenDisabilityBenefitsId, NormalMode).value(answers)
+      val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
   }
@@ -188,13 +188,13 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         val answers: UserAnswers = userAnswers(
           WhichChildrenDisabilityId.toString -> Json.toJson(Seq(id))
         )
-        val result = navigator.nextPage(WhichChildrenDisabilityId, NormalMode).value(answers)
-        result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, id)
+        val result = navigator.nextPage(WhichChildrenDisabilityId).value(answers)
+        result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(id)
       }
     }
 
     "redirect to `SessionExpired` when there is no answer for `WhichChildrenDisability`" in {
-      val result = navigator.nextPage(WhichChildrenDisabilityId, NormalMode).value(userAnswers())
+      val result = navigator.nextPage(WhichChildrenDisabilityId).value(userAnswers())
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
   }
@@ -205,16 +205,16 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       val answers: UserAnswers = userAnswers(
         WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2))
       )
-      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
-      result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(NormalMode, 2)
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0)).value(answers)
+      result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(2)
     }
 
     "redirect to `Any children blind` when this is the last applicable child" in {
       val answers: UserAnswers = userAnswers(
         WhichChildrenDisabilityId.toString -> Json.toJson(Seq(0, 2))
       )
-      val result = navigator.nextPage(WhichDisabilityBenefitsId(2), NormalMode).value(answers)
-      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(2)).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad()
     }
 
     "redirect to `Any children blind` when this is the only child" in {
@@ -222,12 +222,12 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         NoOfChildrenId.toString               -> JsNumber(1),
         ChildrenDisabilityBenefitsId.toString -> JsBoolean(true)
       )
-      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(answers)
-      result mustEqual routes.RegisteredBlindController.onPageLoad(NormalMode)
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0)).value(answers)
+      result mustEqual routes.RegisteredBlindController.onPageLoad()
     }
 
     "redirect to `SessionExpired` when there is no answer for `WhichChildrenDisability`" in {
-      val result = navigator.nextPage(WhichDisabilityBenefitsId(0), NormalMode).value(userAnswers())
+      val result = navigator.nextPage(WhichDisabilityBenefitsId(0)).value(userAnswers())
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
   }
@@ -247,8 +247,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
         when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOf16Before31Aug))))
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(0)
       }
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `No` and child age below 16" in {
@@ -261,8 +261,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
         when(answers.now).thenReturn(testDate)
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(0)
       }
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `No, disable child age 16 and dob before august" in {
@@ -275,8 +275,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.registeredBlind).thenReturn(Some(false))
         when(answers.now).thenReturn(testDate)
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(0)
       }
 
       "redirect to `How often do you expect to pay for childcare` when the user answers `No, blind child age 16 and dob before august" in {
@@ -289,8 +289,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.registeredBlind).thenReturn(Some(true))
         when(answers.now).thenReturn(testDate)
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(0)
       }
 
       "redirect to  Your Income This Year" when {
@@ -303,7 +303,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          val result = navigator.nextPage(RegisteredBlindId).value(answers)
           result mustEqual routes.YourIncomeInfoController.onPageLoad()
         }
       }
@@ -318,7 +318,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.registeredBlind).thenReturn(Some(false))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
 
-          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          val result = navigator.nextPage(RegisteredBlindId).value(answers)
           result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
         }
       }
@@ -344,8 +344,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.registeredBlind).thenReturn(Some(false))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-            result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 1)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
+            result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(1)
           }
 
         "redirect to Childcare Pay Frequency if the user answers 'No' to " +
@@ -369,8 +369,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.registeredBlind).thenReturn(Some(false))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-            result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 0)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
+            result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(0)
           }
 
         "redirect to Partner Income Info when user answers 'No' to registered blind and " +
@@ -394,7 +394,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
             result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
           }
 
@@ -419,7 +419,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(false))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
             result mustEqual routes.YourIncomeInfoController.onPageLoad()
           }
 
@@ -444,7 +444,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
             result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
           }
 
@@ -470,7 +470,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
             result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
           }
 
@@ -496,7 +496,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.childrenWithCosts).thenReturn(Some(Set(0)))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
             result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
           }
 
@@ -523,7 +523,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(false))
             when(answers.now).thenReturn(testDate)
 
-            val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+            val result = navigator.nextPage(RegisteredBlindId).value(answers)
             result mustEqual routes.YourIncomeInfoController.onPageLoad()
           }
       }
@@ -537,7 +537,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.doYouLiveWithPartner).thenReturn(Some(false))
           when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16))))
 
-          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          val result = navigator.nextPage(RegisteredBlindId).value(answers)
           result mustEqual routes.YourIncomeInfoController.onPageLoad()
         }
       }
@@ -551,7 +551,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
           when(answers.aboutYourChild).thenReturn(Some(Map(0 -> AboutYourChild("Test", ageOfOver16))))
 
-          val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+          val result = navigator.nextPage(RegisteredBlindId).value(answers)
           result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
         }
       }
@@ -564,8 +564,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.noOfChildren).thenReturn(Some(2))
         when(answers.childrenWithCosts).thenReturn(None)
         when(answers.registeredBlind).thenReturn(Some(true))
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.WhichChildrenBlindController.onPageLoad(NormalMode)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
+        result mustEqual routes.WhichChildrenBlindController.onPageLoad()
       }
 
       "redirect to `Your Income This Year` when the user answers `No` and all the children aged above 16, single user" in {
@@ -578,7 +578,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           Some(Map(0 -> AboutYourChild("Test", ageOfOver16), 1 -> AboutYourChild("Dan", ageOfOver16)))
         )
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
         result mustEqual routes.YourIncomeInfoController.onPageLoad()
       }
 
@@ -592,7 +592,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           Some(Map(0 -> AboutYourChild("Test", ageOfOver16), 1 -> AboutYourChild("Dan", ageOfOver16)))
         )
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
         result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
       }
 
@@ -611,7 +611,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           )
         )
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
         result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
       }
 
@@ -624,8 +624,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           Some(Map(0 -> AboutYourChild("Test", ageOfOver16), 1 -> AboutYourChild("Dan", dob)))
         )
 
-        val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
-        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 1)
+        val result = navigator.nextPage(RegisteredBlindId).value(answers)
+        result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(1)
       }
     }
 
@@ -634,7 +634,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.noOfChildren).thenReturn(Some(1))
       when(answers.childrenWithCosts).thenReturn(None)
       when(answers.registeredBlind).thenReturn(Some(false))
-      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(RegisteredBlindId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
 
@@ -643,7 +643,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.registeredBlind).thenReturn(None)
       when(answers.noOfChildren).thenReturn(Some(2))
       when(answers.childrenWithCosts).thenReturn(Some(Set(2, 5)))
-      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(RegisteredBlindId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
 
@@ -652,7 +652,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
       when(answers.registeredBlind).thenReturn(None)
       when(answers.noOfChildren).thenReturn(None)
       when(answers.childrenWithCosts).thenReturn(Some(Set(2, 5)))
-      val result = navigator.nextPage(RegisteredBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(RegisteredBlindId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
   }
@@ -676,9 +676,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         )
       )
 
-      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(WhichChildrenBlindId).value(answers)
 
-      result mustEqual routes.WhoHasChildcareCostsController.onPageLoad(NormalMode)
+      result mustEqual routes.WhoHasChildcareCostsController.onPageLoad()
     }
 
     "redirect to `Childcare Pay Frequency` for single parent and 1 child age below 16" in {
@@ -699,9 +699,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         )
       )
 
-      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(WhichChildrenBlindId).value(answers)
 
-      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 1)
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(1)
     }
 
     "redirect to 'Your Income This Year' when single user with multiple children and all above 16" in {
@@ -715,7 +715,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         Some(Map(0 -> AboutYourChild("Test", ageOfOver16), 1 -> AboutYourChild("Dan", ageOfOver16)))
       )
 
-      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(WhichChildrenBlindId).value(answers)
       result mustEqual routes.YourIncomeInfoController.onPageLoad()
     }
 
@@ -730,7 +730,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         Some(Map(0 -> AboutYourChild("Test", ageOfOver16), 1 -> AboutYourChild("Dan", ageOfOver16)))
       )
 
-      val result = navigator.nextPage(WhichChildrenBlindId, NormalMode).value(answers)
+      val result = navigator.nextPage(WhichChildrenBlindId).value(answers)
       result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
     }
   }
@@ -740,21 +740,21 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     "redirect to `How often do you expect to pay for childcare` when `childrenWithCosts` returns a non empty `Set`" in {
       val answers = mock[UserAnswers]
       when(answers.childrenWithCosts).thenReturn(Some(Set(2, 5)))
-      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(answers)
-      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 2)
+      val result = navigator.nextPage(WhoHasChildcareCostsId).value(answers)
+      result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(2)
     }
 
     "redirect to `Session Expired` when `childrenWithCosts` returns an empty `Set`" in {
       val answers = mock[UserAnswers]
       when(answers.childrenWithCosts).thenReturn(Some(Set.empty[Int]))
-      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(answers)
+      val result = navigator.nextPage(WhoHasChildcareCostsId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
 
     "redirect to `Session Expired` when `childrenWithCosts` is undefined" in {
       val answers = mock[UserAnswers]
       when(answers.childrenWithCosts).thenReturn(None)
-      val result = navigator.nextPage(WhoHasChildcareCostsId, NormalMode).value(answers)
+      val result = navigator.nextPage(WhoHasChildcareCostsId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
     }
   }
@@ -762,8 +762,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
   "How often do you expect to pay for childcare" must
     Seq(0, 1, 2).foreach { id =>
       s"redirect to `What are your expected childcare costs` for the current child, for id: $id" in {
-        val result = navigator.nextPage(ChildcarePayFrequencyId(id), NormalMode).value(userAnswers())
-        result mustEqual routes.ExpectedChildcareCostsController.onPageLoad(NormalMode, id)
+        val result = navigator.nextPage(ChildcarePayFrequencyId(id)).value(userAnswers())
+        result mustEqual routes.ExpectedChildcareCostsController.onPageLoad(id)
       }
     }
 
@@ -779,9 +779,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.childrenWithCosts).thenReturn(Some(Set(0, 2)))
           when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
-          val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId), NormalMode).value(answers)
+          val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId)).value(answers)
 
-          result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 2)
+          result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(2)
         }
 
         "there is partner" in {
@@ -790,9 +790,9 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
           when(answers.childrenWithCosts).thenReturn(Some(Set(0, 2)))
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
 
-          val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId), NormalMode).value(answers)
+          val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId)).value(answers)
 
-          result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(NormalMode, 2)
+          result mustEqual routes.ChildcarePayFrequencyController.onPageLoad(2)
         }
       }
     }
@@ -809,7 +809,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(false))
             when(answers.hasVouchers).thenReturn(true)
 
-            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId), NormalMode).value(answers)
+            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId)).value(answers)
 
             result mustEqual routes.YourIncomeInfoController.onPageLoad()
           }
@@ -823,7 +823,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(false))
             when(answers.hasVouchers).thenReturn(false)
 
-            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId), NormalMode).value(answers)
+            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId)).value(answers)
 
             result mustEqual routes.ResultController.onPageLoad()
           }
@@ -840,7 +840,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
             when(answers.hasVouchers).thenReturn(true)
 
-            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId), NormalMode).value(answers)
+            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId)).value(answers)
 
             result mustEqual routes.PartnerIncomeInfoController.onPageLoad()
           }
@@ -854,7 +854,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
             when(answers.hasVouchers).thenReturn(false)
 
-            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId), NormalMode).value(answers)
+            val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId)).value(answers)
 
             result mustEqual routes.ResultController.onPageLoad()
           }
@@ -870,7 +870,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
         when(answers.hasVouchers).thenReturn(true)
         when(answers.doYouLiveWithPartner).thenReturn(None)
 
-        val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId), NormalMode).value(answers)
+        val result = navigator.nextPage(ExpectedChildcareCostsId(currentChildId)).value(answers)
 
         result mustEqual routes.SessionExpiredController.onPageLoad
       }

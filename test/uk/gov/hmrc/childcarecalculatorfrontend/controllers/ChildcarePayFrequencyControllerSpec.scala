@@ -28,7 +28,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
   ChildcarePayFrequencyId,
   WhoHasChildcareCostsId
 }
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcarePayFrequency
@@ -56,7 +56,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
       id: Int = 0,
       name: String = "Foo"
   ) =
-    view(frontendAppConfig, form, id, name, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, id, name)(fakeRequest, messages).toString
 
   val requiredData: Map[String, JsValue] = Map(
     WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 1)),
@@ -76,7 +76,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     )
 
     "redirect to session expired if we can't find name" in {
-      val result = controller(getRequiredData).onPageLoad(NormalMode, 4)(fakeRequest)
+      val result = controller(getRequiredData).onPageLoad(4)(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
@@ -84,7 +84,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     cases.foreach { case (id, name) =>
 
       s"return OK and the correct view for a GET, for id: $id" in {
-        val result = controller(getRequiredData).onPageLoad(NormalMode, id)(fakeRequest)
+        val result = controller(getRequiredData).onPageLoad(id)(fakeRequest)
         status(result) mustEqual OK
         contentAsString(result) mustBe viewAsString(name = name, id = id)
       }
@@ -94,7 +94,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
           id.toString -> JsString(ChildcarePayFrequency(0).toString)
         ))
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-        val result          = controller(getRelevantData).onPageLoad(NormalMode, id)(fakeRequest)
+        val result          = controller(getRelevantData).onPageLoad(id)(fakeRequest)
         contentAsString(result) mustEqual viewAsString(
           ChildcarePayFrequencyForm(name).fill(ChildcarePayFrequency(0)),
           id,
@@ -105,7 +105,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
       s"return a Bad Request and errors when invalid data is submitted, for id: $id" in {
         val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
         val boundForm   = ChildcarePayFrequencyForm(name).bind(Map("value" -> "invalid value"))
-        val result      = controller(getRequiredData).onSubmit(NormalMode, id)(postRequest)
+        val result      = controller(getRequiredData).onSubmit(id)(postRequest)
         status(result) mustBe BAD_REQUEST
         contentAsString(result) mustBe viewAsString(boundForm, id, name)
       }
@@ -114,7 +114,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     "redirect to the next page when valid data is submitted" in {
       val postRequest =
         fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value)).withMethod("POST")
-      val result = controller(getRequiredData).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller(getRequiredData).onSubmit(0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual onwardRoute.url
     }
@@ -122,13 +122,13 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     "redirect to Session Expired if we can't find the name on submission" in {
       val postRequest =
         fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value)).withMethod("POST")
-      val result = controller(getRequiredData).onSubmit(NormalMode, 4)(postRequest)
+      val result = controller(getRequiredData).onSubmit(4)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(0)(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
@@ -136,7 +136,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest =
         fakeRequest.withFormUrlEncodedBody(("value", ChildcarePayFrequencyForm.options.head.value)).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller(dontGetAnyData).onSubmit(0)(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }

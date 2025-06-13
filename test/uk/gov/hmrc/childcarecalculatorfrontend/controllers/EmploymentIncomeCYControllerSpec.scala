@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
@@ -52,12 +52,12 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     )
 
   def viewAsString(form: Form[EmploymentIncomeCY] = form) =
-    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages).toString
 
   "EmploymentIncomeCY Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -67,7 +67,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val validData       = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(form.fill(EmploymentIncomeCY(1, 2)))
     }
@@ -77,7 +77,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
         .withFormUrlEncodedBody(("parentEmploymentIncomeCY", "1"), ("partnerEmploymentIncomeCY", "2"))
         .withMethod("POST")
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -87,14 +87,14 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm   = form.bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -104,7 +104,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest
         .withFormUrlEncodedBody(("parentEmploymentIncomeCY", "value 1"), ("partnerEmploymentIncomeCY", "value 2"))
         .withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -124,7 +124,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) contains messages(parentEmploymentIncomeInvalidMaxEarningsErrorKey)
@@ -145,7 +145,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) contains messages(parentEmploymentIncomeInvalidErrorKey)

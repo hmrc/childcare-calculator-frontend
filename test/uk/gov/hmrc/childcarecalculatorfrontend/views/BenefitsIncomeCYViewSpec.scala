@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BenefitsIncomeCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{BenefitsIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefitsIncomeCY
 
@@ -28,10 +28,9 @@ class BenefitsIncomeCYViewSpec extends NewQuestionViewBehaviours[BenefitsIncomeC
   val messageKeyPrefix = "benefitsIncomeCY"
   val view             = application.injector.instanceOf[benefitsIncomeCY]
 
-  def createView = () => view(frontendAppConfig, BenefitsIncomeCYForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BenefitsIncomeCYForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BenefitsIncomeCY]) =>
-    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BenefitsIncomeCY]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   override val form = BenefitsIncomeCYForm()
 
@@ -45,7 +44,7 @@ class BenefitsIncomeCYViewSpec extends NewQuestionViewBehaviours[BenefitsIncomeC
       pageWithTextFields(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.BenefitsIncomeCYController.onSubmit(NormalMode).url,
+        routes.BenefitsIncomeCYController.onSubmit().url,
         "parentBenefitsIncome",
         "partnerBenefitsIncome"
       )

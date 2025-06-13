@@ -17,15 +17,15 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.Logging
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{
   SplunkSubmissionServiceInterface,
   SubmissionFailed,
@@ -33,9 +33,9 @@ import uk.gov.hmrc.childcarecalculatorfrontend.services.{
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class SurveyDoNotUnderstandController @Inject() (
@@ -77,9 +77,7 @@ class SurveyDoNotUnderstandController @Inject() (
 
           dataCacheConnector
             .save[String](request.sessionId, SurveyDoNotUnderstandId.toString, value)
-            .map(cacheMap =>
-              Redirect(navigator.nextPage(SurveyDoNotUnderstandId, NormalMode)(new UserAnswers(cacheMap)))
-            )
+            .map(cacheMap => Redirect(navigator.nextPage(SurveyDoNotUnderstandId)(new UserAnswers(cacheMap))))
         }
       )
   }

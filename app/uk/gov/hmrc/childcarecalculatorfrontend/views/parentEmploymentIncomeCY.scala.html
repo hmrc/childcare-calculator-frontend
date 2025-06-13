@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -28,7 +27,7 @@
     inputNumber: playComponents.input_number
 )
 
-@(appConfig: FrontendAppConfig, form: Form[BigDecimal], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[BigDecimal], taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("parentEmploymentIncomeCY.title")) else messages("parentEmploymentIncomeCY.title")
@@ -42,7 +41,7 @@
     @heading(messages("parentEmploymentIncomeCY.heading"))
     <p class="govuk-body">@messages("employmentIncomeCY.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
     <p class="govuk-body">@messages("parentEmploymentIncomeCY.hint")</p>
-    @formWithCSRF(action = ParentEmploymentIncomeCYController.onSubmit(mode), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = ParentEmploymentIncomeCYController.onSubmit(), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
         @inputNumber(
             label = Text(messages("parentEmploymentIncomeCY.heading")),
             labelClass = Some("govuk-visually-hidden"),

@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, Mode}
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoesYourPartnerGetAnyBenefitsForm
@@ -32,8 +31,7 @@
 
 @(
   appConfig: FrontendAppConfig,
-  form: Form[Set[ParentsBenefits]],
-  mode: Mode
+  form: Form[Set[ParentsBenefits]]
 )(implicit request: Request[_], messages: Messages)
 
 @title = @{
@@ -44,7 +42,7 @@
 
     @error_summary(form.errors)
 
-    @formWithCSRF(action = DoesYourPartnerGetAnyBenefitsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = DoesYourPartnerGetAnyBenefitsController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputCheckBox(
             field = form(DoesYourPartnerGetAnyBenefitsForm.formId),

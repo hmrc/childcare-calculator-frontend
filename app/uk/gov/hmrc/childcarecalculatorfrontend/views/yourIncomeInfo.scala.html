@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -58,6 +57,6 @@
 
     @buttonLink(
         messageKey = "site.save_and_continue",
-        href = routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
+        href = routes.ParentEmploymentIncomeCYController.onPageLoad()
     )
 }

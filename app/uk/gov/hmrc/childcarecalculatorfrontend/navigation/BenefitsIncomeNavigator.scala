@@ -16,21 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Inject
-
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
+import javax.inject.{Inject, Singleton}
+
 /** Contains the navigation for current and previous year benefits pages
   */
-class BenefitsIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
+@Singleton
+private[navigation] class BenefitsIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
-  override protected def routeMap = Map(
+  override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
     YouAnyTheseBenefitsIdCY   -> yourBenefitsRouteCY,
     BothAnyTheseBenefitsCYId  -> bothBenefitsRouteCY,
     WhosHadBenefitsId         -> whosHadBenefitsRouteCY,
@@ -41,38 +40,38 @@ class BenefitsIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def yourBenefitsRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.youAnyTheseBenefits) {
-      case true => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
+      case true => routes.YouBenefitsIncomeCYController.onPageLoad()
       case false =>
         utils.getCall(answers.doYouLiveWithPartner) {
-          case true  => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-          case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+          case true  => routes.BothOtherIncomeThisYearController.onPageLoad()
+          case false => routes.YourOtherIncomeThisYearController.onPageLoad()
         }
     }
 
   private def bothBenefitsRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.bothAnyTheseBenefitsCY) {
-      case true  => routes.WhosHadBenefitsController.onPageLoad(NormalMode)
-      case false => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+      case true  => routes.WhosHadBenefitsController.onPageLoad()
+      case false => routes.BothOtherIncomeThisYearController.onPageLoad()
     }
 
   private def whosHadBenefitsRouteCY(answers: UserAnswers) =
     utils.getCall(answers.whosHadBenefits) {
-      case YOU     => routes.YouBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case PARTNER => routes.PartnerBenefitsIncomeCYController.onPageLoad(NormalMode)
-      case BOTH    => routes.BenefitsIncomeCYController.onPageLoad(NormalMode)
+      case YOU     => routes.YouBenefitsIncomeCYController.onPageLoad()
+      case PARTNER => routes.PartnerBenefitsIncomeCYController.onPageLoad()
+      case BOTH    => routes.BenefitsIncomeCYController.onPageLoad()
     }
 
   private def yourBenefitsIncomeRouteCY(answers: UserAnswers) = utils.getCall(answers.doYouLiveWithPartner) {
-    case true  => routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
-    case false => routes.YourOtherIncomeThisYearController.onPageLoad(NormalMode)
+    case true  => routes.BothOtherIncomeThisYearController.onPageLoad()
+    case false => routes.YourOtherIncomeThisYearController.onPageLoad()
   }
 
   private def partnerBenefitsIncomeRouteCY(answers: UserAnswers) =
-    routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+    routes.BothOtherIncomeThisYearController.onPageLoad()
 
   private def bothBenefitsIncomeRouteCY(answers: UserAnswers) =
     utils.getCall(answers.benefitsIncomeCY) { case _ =>
-      routes.BothOtherIncomeThisYearController.onPageLoad(NormalMode)
+      routes.BothOtherIncomeThisYearController.onPageLoad()
     }
 
 }

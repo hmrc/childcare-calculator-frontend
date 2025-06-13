@@ -16,21 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, RequestHeader, Result}
+import play.api.mvc._
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.AboutYourChildId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, Mode}
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AboutYourChildController @Inject() (
@@ -64,7 +65,7 @@ class AboutYourChildController @Inject() (
       }
       .getOrElse(sessionExpired("validateIndex", None))
 
-  def onPageLoad(mode: Mode, childIndex: Int): Action[AnyContent] =
+  def onPageLoad(childIndex: Int): Action[AnyContent] =
     getData.andThen(requireData).async { implicit request =>
       validateIndex(childIndex) { noOfChildren =>
         val preparedForm = request.userAnswers.aboutYourChild(childIndex) match {
@@ -72,17 +73,17 @@ class AboutYourChildController @Inject() (
           case Some(value) =>
             AboutYourChildForm(childIndex, noOfChildren, request.userAnswers.aboutYourChild).fill(value)
         }
-        Future.successful(Ok(aboutYourChild(appConfig, preparedForm, mode, childIndex, noOfChildren)))
+        Future.successful(Ok(aboutYourChild(appConfig, preparedForm, childIndex, noOfChildren)))
       }
     }
 
-  def onSubmit(mode: Mode, childIndex: Int): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(childIndex: Int): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     validateIndex(childIndex) { noOfChildren =>
       AboutYourChildForm(childIndex, noOfChildren, request.userAnswers.aboutYourChild)
         .bindFromRequest()
         .fold(
           (formWithErrors: Form[AboutYourChild]) =>
-            Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, mode, childIndex, noOfChildren))),
+            Future.successful(BadRequest(aboutYourChild(appConfig, formWithErrors, childIndex, noOfChildren))),
           value =>
             dataCacheConnector
               .saveInMap[Int, AboutYourChild](
@@ -91,9 +92,7 @@ class AboutYourChildController @Inject() (
                 childIndex,
                 value
               )
-              .map { cacheMap =>
-                Redirect(navigator.nextPage(AboutYourChildId(childIndex), mode)(new UserAnswers(cacheMap)))
-              }
+              .map(cacheMap => Redirect(navigator.nextPage(AboutYourChildId(childIndex))(new UserAnswers(cacheMap))))
         )
     }
   }

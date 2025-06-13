@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{EmploymentIncomeCY, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
@@ -33,10 +33,10 @@ class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentInc
 
   override val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
-  def createView = () => view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages)
 
   def createViewUsingForm = (form: Form[EmploymentIncomeCY]) =>
-    view(frontendAppConfig, form, NormalMode, taxYearInfo)(fakeRequest, messages)
+    view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages)
 
   "EmploymentIncomeCY view" must {
 
@@ -48,7 +48,7 @@ class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentInc
       pageWithTextFields(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.EmploymentIncomeCYController.onSubmit(NormalMode).url,
+        routes.EmploymentIncomeCYController.onSubmit().url,
         "parentEmploymentIncomeCY",
         "partnerEmploymentIncomeCY"
       )

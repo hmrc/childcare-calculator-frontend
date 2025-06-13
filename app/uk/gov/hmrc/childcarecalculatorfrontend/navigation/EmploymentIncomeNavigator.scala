@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Inject
-
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.SubNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+
+import javax.inject.{Inject, Singleton}
 
 /** Contains the navigation for current and previous year employment income pages
   */
-class EmploymentIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
+@Singleton
+private[navigation] class EmploymentIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     PartnerPaidWorkCYId         -> partnerPaidWorkCYRoute,
@@ -40,32 +39,32 @@ class EmploymentIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   private def partnerPaidWorkCYRoute(answers: UserAnswers) =
     utils.getCall(answers.partnerPaidWorkCY) {
-      case false => routes.ParentEmploymentIncomeCYController.onPageLoad(NormalMode)
-      case true  => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
+      case false => routes.ParentEmploymentIncomeCYController.onPageLoad()
+      case true  => routes.EmploymentIncomeCYController.onPageLoad()
     }
 
   private def parentPaidWorkCYRoute(answers: UserAnswers) =
     utils.getCall(answers.parentPaidWorkCY) {
-      case false => routes.PartnerEmploymentIncomeCYController.onPageLoad(NormalMode)
-      case true  => routes.EmploymentIncomeCYController.onPageLoad(NormalMode)
+      case false => routes.PartnerEmploymentIncomeCYController.onPageLoad()
+      case true  => routes.EmploymentIncomeCYController.onPageLoad()
     }
 
   private def parentEmploymentIncomeCYRoute(answers: UserAnswers) =
     utils.getCall(answers.doYouLiveWithPartner) {
       case true =>
         utils.getCall(answers.whoIsInPaidEmployment) {
-          case You => routes.YouPaidPensionCYController.onPageLoad(NormalMode)
-          case _   => routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+          case You => routes.YouPaidPensionCYController.onPageLoad()
+          case _   => routes.BothPaidPensionCYController.onPageLoad()
         }
-      case false => routes.YouPaidPensionCYController.onPageLoad(NormalMode)
+      case false => routes.YouPaidPensionCYController.onPageLoad()
     }
 
   private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) =
     utils.getCall(answers.whoIsInPaidEmployment) {
-      case Partner => routes.PartnerPaidPensionCYController.onPageLoad(NormalMode)
-      case _       => routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+      case Partner => routes.PartnerPaidPensionCYController.onPageLoad()
+      case _       => routes.BothPaidPensionCYController.onPageLoad()
     }
 
-  private def employmentIncomeCYRoute(answers: UserAnswers) = routes.BothPaidPensionCYController.onPageLoad(NormalMode)
+  private def employmentIncomeCYRoute(answers: UserAnswers) = routes.BothPaidPensionCYController.onPageLoad()
 
 }

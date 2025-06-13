@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerSelfEmployedId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.partnerSelfEmployedErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerSelfEmployed
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PartnerSelfEmployedController @Inject() (
@@ -45,24 +45,24 @@ class PartnerSelfEmployedController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.partnerSelfEmployed match {
       case None        => BooleanForm()
       case Some(value) => BooleanForm().fill(value)
     }
-    Ok(partnerSelfEmployed(appConfig, preparedForm, mode))
+    Ok(partnerSelfEmployed(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     BooleanForm(partnerSelfEmployedErrorKey)
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(partnerSelfEmployed(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(partnerSelfEmployed(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[Boolean](request.sessionId, PartnerSelfEmployedId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(PartnerSelfEmployedId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(PartnerSelfEmployedId)(new UserAnswers(cacheMap))))
       )
   }
 

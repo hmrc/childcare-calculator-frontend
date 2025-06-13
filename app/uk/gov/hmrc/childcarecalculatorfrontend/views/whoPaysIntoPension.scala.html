@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoPaysIntoPensionForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
         layout: Layout,
@@ -30,8 +29,7 @@
 
 @(
         appConfig: FrontendAppConfig,
-        form: Form[String],
-        mode: Mode
+        form: Form[String]
 )(
         implicit request: Request[_],
         messages: Messages
@@ -44,7 +42,7 @@
 @layout(pageTitle = title) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = WhoPaysIntoPensionController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = WhoPaysIntoPensionController.onSubmit(), Symbol("autoComplete") -> "off") {
 
 
     @inputRadio(

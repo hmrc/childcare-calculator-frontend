@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.OtherIncomeAmountCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, OtherIncomeAmountCY}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountCY
 
@@ -30,10 +30,9 @@ class OtherIncomeAmountCYViewSpec extends NewQuestionViewBehaviours[OtherIncomeA
 
   override val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
 
-  def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[OtherIncomeAmountCY]) =>
-    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[OtherIncomeAmountCY]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "OtherIncomeAmountCY view" must {
 
@@ -45,7 +44,7 @@ class OtherIncomeAmountCYViewSpec extends NewQuestionViewBehaviours[OtherIncomeA
       pageWithTextFields(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.OtherIncomeAmountCYController.onSubmit(NormalMode).url,
+        routes.OtherIncomeAmountCYController.onSubmit().url,
         "parentOtherIncome",
         "partnerOtherIncome"
       )

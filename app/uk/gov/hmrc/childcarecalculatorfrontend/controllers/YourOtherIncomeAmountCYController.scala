@@ -16,20 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourOtherIncomeAmountCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourOtherIncomeAmountCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourOtherIncomeAmountCY
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class YourOtherIncomeAmountCYController @Inject() (
@@ -45,24 +45,24 @@ class YourOtherIncomeAmountCYController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.yourOtherIncomeAmountCY match {
       case None        => form()
       case Some(value) => form().fill(value)
     }
-    Ok(yourOtherIncomeAmountCY(appConfig, preparedForm, mode))
+    Ok(yourOtherIncomeAmountCY(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     form()
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[BigDecimal]) =>
-          Future.successful(BadRequest(yourOtherIncomeAmountCY(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(yourOtherIncomeAmountCY(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[BigDecimal](request.sessionId, YourOtherIncomeAmountCYId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(YourOtherIncomeAmountCYId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(YourOtherIncomeAmountCYId)(new UserAnswers(cacheMap))))
       )
   }
 

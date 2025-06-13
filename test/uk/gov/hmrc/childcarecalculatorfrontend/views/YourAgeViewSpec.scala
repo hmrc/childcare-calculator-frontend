@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourAgeForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAge
 
@@ -27,9 +26,9 @@ class YourAgeViewSpec extends NewViewBehaviours {
   val view             = application.injector.instanceOf[yourAge]
   val messageKeyPrefix = "yourAge"
 
-  def createView = () => view(frontendAppConfig, YourAgeForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, YourAgeForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "YourAge view" must {
     behave.like(normalPage(createView, messageKeyPrefix))

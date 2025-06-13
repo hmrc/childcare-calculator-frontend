@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, WhichChildrenDisabilityId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
@@ -63,12 +63,12 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
   )
 
   def viewAsString(form: Form[_] = WhichChildrenDisabilityForm()): String =
-    view(frontendAppConfig, form, options, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, options)(fakeRequest, messages).toString
 
   "WhichChildrenDisability Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller(getRequiredData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRequiredData).onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustEqual viewAsString()
     }
@@ -77,14 +77,14 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
       val validData       = requiredData + (WhichChildrenDisabilityId.toString -> JsArray(Seq(JsNumber(0))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustEqual viewAsString(WhichChildrenDisabilityForm(0, 1).fill(Set(0)))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "0").withMethod("POST")
-      val result      = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(getRequiredData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual onwardRoute.url
@@ -94,14 +94,14 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
       val postRequest = fakeRequest.withFormUrlEncodedBody("value[0]" -> "invalid value").withMethod("POST")
       val boundForm   = WhichChildrenDisabilityForm().bind(Map("value[0]" -> "invalid value"))
 
-      val result = controller(getRequiredData).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRequiredData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustEqual viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -109,14 +109,14 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0")).withMethod("POST")
-      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
 
     "redirect to Session Expired for a GET if no required data is found" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad()(fakeRequest)
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
@@ -124,7 +124,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
 
     "redirect to Session Expired for a POST if no required data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value[0]", "0")).withMethod("POST")
-      val result      = controller().onSubmit(NormalMode)(postRequest)
+      val result      = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url

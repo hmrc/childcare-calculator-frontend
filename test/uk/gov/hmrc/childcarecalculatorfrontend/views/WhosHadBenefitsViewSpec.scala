@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whosHadBenefits
 
@@ -27,9 +26,9 @@ class WhosHadBenefitsViewSpec extends NewViewBehaviours {
   val view             = application.injector.instanceOf[whosHadBenefits]
   val messageKeyPrefix = "whosHadBenefits"
 
-  def createView = () => view(frontendAppConfig, WhosHadBenefitsForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, WhosHadBenefitsForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[_]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[_]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "WhosHadBenefits view" must {
     behave.like(normalPage(createView, messageKeyPrefix))

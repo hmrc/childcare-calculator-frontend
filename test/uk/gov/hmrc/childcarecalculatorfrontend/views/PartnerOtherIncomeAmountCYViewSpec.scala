@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerOtherIncomeAmountCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerOtherIncomeAmountCY
 
@@ -29,9 +28,9 @@ class PartnerOtherIncomeAmountCYViewSpec extends NewBigDecimalViewBehaviours {
   val messageKeyPrefix = "partnerOtherIncomeAmountCY"
   val view             = application.injector.instanceOf[partnerOtherIncomeAmountCY]
 
-  def createView = () => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, form)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[BigDecimal]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "PartnerOtherIncomeAmountCY view" must {
     behave.like(normalPage(createView, messageKeyPrefix))
@@ -42,7 +41,7 @@ class PartnerOtherIncomeAmountCYViewSpec extends NewBigDecimalViewBehaviours {
       bigDecimalPage(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.PartnerOtherIncomeAmountCYController.onSubmit(NormalMode).url,
+        routes.PartnerOtherIncomeAmountCYController.onSubmit().url,
         Some(messages(s"$messageKeyPrefix.heading"))
       )
     )

@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @this(
@@ -28,7 +27,7 @@
     submitButton: playComponents.submit_button
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, location: Location.Value)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("childAgedThreeOrFour.title")) else messages("childAgedThreeOrFour.title")
@@ -39,7 +38,7 @@
 ) {
 
     @errorSummary(form.errors)
-    @formWithCSRF(action = ChildAgedThreeOrFourController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = ChildAgedThreeOrFourController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = HtmlContent(heading(messages("childAgedThreeOrFour.heading"))),

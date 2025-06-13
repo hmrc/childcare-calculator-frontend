@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoHasChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoHasChildcareCostsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoHasChildcareCosts
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhoHasChildcareCostsController @Inject() (
@@ -45,7 +45,7 @@ class WhoHasChildcareCostsController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     withValues { values =>
       val answer               = request.userAnswers.whoHasChildcareCosts
       val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
@@ -54,12 +54,12 @@ class WhoHasChildcareCostsController @Inject() (
         case Some(value) => WhoHasChildcareCostsForm().fill(value)
       }
       Future.successful(
-        Ok(whoHasChildcareCosts(appConfig, preparedForm, mode, options(values, childrenUnderSixteen).toSeq))
+        Ok(whoHasChildcareCosts(appConfig, preparedForm, options(values, childrenUnderSixteen).toSeq))
       )
     }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     withValues { values =>
       val childrenUnderSixteen = request.userAnswers.childrenBelow16AndExactly16Disabled
       WhoHasChildcareCostsForm(values.values.toSeq: _*)
@@ -68,12 +68,12 @@ class WhoHasChildcareCostsController @Inject() (
           (formWithErrors: Form[_]) =>
             Future.successful(
               BadRequest(
-                whoHasChildcareCosts(appConfig, formWithErrors, mode, options(values, childrenUnderSixteen).toSeq)
+                whoHasChildcareCosts(appConfig, formWithErrors, options(values, childrenUnderSixteen).toSeq)
               )
             ),
           value =>
             dataCacheConnector.save[Set[Int]](request.sessionId, WhoHasChildcareCostsId.toString, value).map { cacheMap =>
-              Redirect(navigator.nextPage(WhoHasChildcareCostsId, mode)(new UserAnswers(cacheMap)))
+              Redirect(navigator.nextPage(WhoHasChildcareCostsId)(new UserAnswers(cacheMap)))
             }
         )
     }

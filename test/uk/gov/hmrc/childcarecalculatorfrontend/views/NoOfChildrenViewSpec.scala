@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.NoOfChildrenForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewIntViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 
@@ -30,9 +29,9 @@ class NoOfChildrenViewSpec extends NewIntViewBehaviours {
 
   val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
 
-  def createView = () => view(frontendAppConfig, NoOfChildrenForm, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, NoOfChildrenForm)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Int]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Int]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   val form = NoOfChildrenForm
 
@@ -41,7 +40,7 @@ class NoOfChildrenViewSpec extends NewIntViewBehaviours {
 
     behave.like(pageWithBackLink(createView))
 
-    behave.like(intPage(createViewUsingForm, messageKeyPrefix, routes.NoOfChildrenController.onSubmit(NormalMode).url))
+    behave.like(intPage(createViewUsingForm, messageKeyPrefix, routes.NoOfChildrenController.onSubmit().url))
   }
 
 }

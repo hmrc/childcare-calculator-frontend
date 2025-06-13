@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
         layout: Layout,
@@ -28,7 +27,7 @@
         inputRadio: playComponents.input_radio
 )
 
-@(appConfig: FrontendAppConfig, form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[_])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("location.title")) else messages("location.title")
@@ -37,7 +36,7 @@
 @layout(
     pageTitle = title
 ) {
-    @formWithCSRF(action = LocationController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = LocationController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors)
 

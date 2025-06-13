@@ -15,9 +15,6 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 
 @this(
 layout: Layout,
@@ -61,7 +58,7 @@ pageTitle = messages("partnerAverageWeeklyEarnings.title")
 
 @buttonLink(
 messageKey = "site.save_and_continue",
-href= routes.PartnerMinimumEarningsController.onPageLoad(NormalMode)
+href= routes.PartnerMinimumEarningsController.onPageLoad()
 )
 
 

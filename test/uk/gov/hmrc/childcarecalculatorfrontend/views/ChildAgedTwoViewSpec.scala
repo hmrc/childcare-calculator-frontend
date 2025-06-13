@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 
@@ -30,10 +30,9 @@ class ChildAgedTwoViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix = "childAgedTwo"
   val location         = Location.ENGLAND
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), location)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, location)(fakeRequest, messages)
 
   "ChildAgedTwo view" must {
 
@@ -42,7 +41,7 @@ class ChildAgedTwoViewSpec extends NewYesNoViewBehaviours {
     behave.like(pageWithBackLink(createView))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedTwoController.onSubmit(NormalMode).url, None)
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedTwoController.onSubmit().url, None)
     )
   }
 

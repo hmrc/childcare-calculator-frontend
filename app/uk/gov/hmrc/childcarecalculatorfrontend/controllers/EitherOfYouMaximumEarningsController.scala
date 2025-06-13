@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EitherOfYouMaximumEarningsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.eitherOfYouMaximumEarningsErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.eitherOfYouMaximumEarnings
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EitherOfYouMaximumEarningsController @Inject() (
@@ -45,26 +45,24 @@ class EitherOfYouMaximumEarningsController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.eitherOfYouMaximumEarnings match {
       case None        => BooleanForm()
       case Some(value) => BooleanForm().fill(value)
     }
-    Ok(eitherOfYouMaximumEarnings(appConfig, preparedForm, mode))
+    Ok(eitherOfYouMaximumEarnings(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     BooleanForm(eitherOfYouMaximumEarningsErrorKey)
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(eitherOfYouMaximumEarnings(appConfig, formWithErrors, mode))),
+          Future.successful(BadRequest(eitherOfYouMaximumEarnings(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[Boolean](request.sessionId, EitherOfYouMaximumEarningsId.toString, value)
-            .map(cacheMap =>
-              Redirect(navigator.nextPage(EitherOfYouMaximumEarningsId, mode)(new UserAnswers(cacheMap)))
-            )
+            .map(cacheMap => Redirect(navigator.nextPage(EitherOfYouMaximumEarningsId)(new UserAnswers(cacheMap))))
       )
   }
 

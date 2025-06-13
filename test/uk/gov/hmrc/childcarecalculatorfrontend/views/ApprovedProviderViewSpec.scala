@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 
@@ -27,10 +26,9 @@ class ApprovedProviderViewSpec extends NewViewBehaviours {
   val messageKeyPrefix = "approvedProvider"
   val view             = application.injector.instanceOf[approvedProvider]
 
-  def createView = () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, ApprovedProviderForm(), false)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[String]) =>
-    view(frontendAppConfig, form, false, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form, false)(fakeRequest, messages)
 
   "ApprovedProvider view" must {
     behave.like(normalPage(createView, messageKeyPrefix, "hint"))
@@ -49,7 +47,7 @@ class ApprovedProviderViewSpec extends NewViewBehaviours {
       "contain right title" when {
         "we have selected 'Not Yet but maybe in the furure'" in {
           val createView =
-            () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
+            () => view(frontendAppConfig, ApprovedProviderForm(), true)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(
@@ -61,7 +59,7 @@ class ApprovedProviderViewSpec extends NewViewBehaviours {
 
         "we have selected 'Yes'" in {
           val createView =
-            () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+            () => view(frontendAppConfig, ApprovedProviderForm(), false)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(
@@ -75,7 +73,7 @@ class ApprovedProviderViewSpec extends NewViewBehaviours {
       "contain right heading" when {
         "we have selected 'Not Yet but maybe in the future'" in {
           val createView =
-            () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
+            () => view(frontendAppConfig, ApprovedProviderForm(), true)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "h1", messages(s"$messageKeyPrefix.heading.future"))
@@ -83,7 +81,7 @@ class ApprovedProviderViewSpec extends NewViewBehaviours {
 
         "we have selected 'Yes'" in {
           val createView =
-            () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+            () => view(frontendAppConfig, ApprovedProviderForm(), false)(fakeRequest, messages)
           val doc = asDocument(createView())
 
           assertEqualsValue(doc, "h1", messages(s"$messageKeyPrefix.heading"))
@@ -93,7 +91,7 @@ class ApprovedProviderViewSpec extends NewViewBehaviours {
       "contain right legend" when {
         "we have selected 'Not Yet but maybe in the future'" in {
           val createView =
-            () => view(frontendAppConfig, ApprovedProviderForm(), true, NormalMode)(fakeRequest, messages)
+            () => view(frontendAppConfig, ApprovedProviderForm(), true)(fakeRequest, messages)
           val doc  = asDocument(createView())
           val text = messages(s"$messageKeyPrefix.heading.future")
           assertEqualsValue(
@@ -105,7 +103,7 @@ class ApprovedProviderViewSpec extends NewViewBehaviours {
 
         "we have selected 'Yes'" in {
           val createView =
-            () => view(frontendAppConfig, ApprovedProviderForm(), false, NormalMode)(fakeRequest, messages)
+            () => view(frontendAppConfig, ApprovedProviderForm(), false)(fakeRequest, messages)
           val doc  = asDocument(createView())
           val text = messages(s"$messageKeyPrefix.heading")
           assertEqualsValue(

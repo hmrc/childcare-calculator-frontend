@@ -17,7 +17,6 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcareCostsForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
     layout: Layout,
@@ -28,7 +27,7 @@
     inputRadio: playComponents.input_radio
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("childcareCosts.title")) else messages("childcareCosts.title")
@@ -37,7 +36,7 @@
 @layout(
     pageTitle = title,
 ){
-    @formWithCSRF(action = ChildcareCostsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = ChildcareCostsController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors)
 

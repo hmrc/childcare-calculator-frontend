@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
@@ -40,17 +40,16 @@ class LocationControllerSpec extends ControllerSpecBase {
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction,
-      new DataRequiredAction,
       view
     )
 
   def viewAsString(form: Form[_] = LocationForm()) =
-    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+    view(frontendAppConfig, form)(fakeRequest, messages).toString
 
   "Location Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -60,7 +59,7 @@ class LocationControllerSpec extends ControllerSpecBase {
       val validData       = Map(LocationId.toString -> JsString(LocationForm.options.head.value))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(LocationForm().fill(Location(0)))
     }
@@ -69,7 +68,7 @@ class LocationControllerSpec extends ControllerSpecBase {
       val postRequest =
         fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -79,14 +78,14 @@ class LocationControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm   = LocationForm().bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "return OK and the correct view for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -95,7 +94,7 @@ class LocationControllerSpec extends ControllerSpecBase {
     "redirect to the next page when valid data is submitted and no existing data is found" in {
       val postRequest =
         fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)

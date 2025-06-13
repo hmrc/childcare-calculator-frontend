@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
     layout: Layout,
@@ -27,7 +26,7 @@
     inputYesNo: playComponents.input_yes_no,
     submitButton: playComponents.submit_button,
 )
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, havePartner: Option[Boolean])(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean],  havePartner: Option[Boolean])(implicit request: Request[_], messages: Messages)
 
 @getMessageKeys(keys: String) = @{
     havePartner match {
@@ -48,7 +47,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = UniversalCreditController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = UniversalCreditController.onSubmit(), Symbol("autoComplete") -> "off") {
 
     @inputYesNo(
         label = HtmlContent(heading(getMessageKeys("heading"))),

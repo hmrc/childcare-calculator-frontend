@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 
 @this(
         layout: Layout,
@@ -31,8 +30,7 @@
 
 @(
         appConfig: FrontendAppConfig,
-        form: Form[Boolean],
-        mode: Mode
+        form: Form[Boolean]
 )(implicit request: Request[_], messages: Messages)
 
 @title = @{
@@ -53,7 +51,7 @@
         isExternal = true
     ). }
 
-    @formWithCSRF(action = PartnerMaximumEarningsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = PartnerMaximumEarningsController.onSubmit(), Symbol("autoComplete") -> "off") {
         @inputYesNo(
             label = Text(messages("partnerMaximumEarnings.form")),
             field = form("value"),

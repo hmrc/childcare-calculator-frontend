@@ -16,45 +16,34 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Inject
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
-  ApprovedProviderId,
-  ChildAgedThreeOrFourId,
-  ChildAgedTwoId,
-  ChildcareCostsId,
-  ChildrenAgeGroupsId,
-  Identifier,
-  LocationId
-}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, NormalMode, YesNoNotYetEnum, YesNoUnsureEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.{FreeHours, Scheme, Schemes}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, YesNoNotYetEnum, YesNoUnsureEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val schemes: Schemes) extends ResultsNavigator {
+import javax.inject.{Inject, Singleton}
 
-  def this(freeHours: FreeHours, schemes: Scheme*) =
-    this(freeHours, new Schemes(schemes: _*))
-
-  override protected lazy val resultLocation: Call = routes.ResultController.onPageLoad()
+@Singleton
+private[navigation] class MinimumHoursNavigator @Inject() (freeHours: FreeHours) extends SubNavigator {
 
   override protected val routeMap: Map[Identifier, UserAnswers => Call] = Map(
     LocationId             -> locationRoute,
-    ChildrenAgeGroupsId    -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
-    ChildAgedTwoId         -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)),
-    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad(NormalMode)),
+    ChildrenAgeGroupsId    -> (_ => routes.ChildcareCostsController.onPageLoad()),
+    ChildAgedTwoId         -> (_ => routes.ChildAgedThreeOrFourController.onPageLoad()),
+    ChildAgedThreeOrFourId -> (_ => routes.ChildcareCostsController.onPageLoad()),
     ChildcareCostsId       -> costRoute,
     ApprovedProviderId     -> approvedChildCareRoute
   )
 
   private def locationRoute(answers: UserAnswers): Call =
     if (answers.location.contains(Location.ENGLAND)) {
-      routes.ChildrenAgeGroupsController.onPageLoad(NormalMode)
+      routes.ChildrenAgeGroupsController.onPageLoad()
     } else if (answers.location.contains(Location.NORTHERN_IRELAND) || answers.location.contains(Location.WALES)) {
-      routes.ChildAgedThreeOrFourController.onPageLoad(NormalMode)
+      routes.ChildAgedThreeOrFourController.onPageLoad()
     } else {
-      routes.ChildAgedTwoController.onPageLoad(NormalMode)
+      routes.ChildAgedTwoController.onPageLoad()
     }
 
   private def costRoute(answers: UserAnswers): Call = {
@@ -67,12 +56,12 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
           false
         )) && answers.location.contains(Location.ENGLAND)
       ) {
-        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+        routes.DoYouLiveWithPartnerController.onPageLoad()
       } else {
         routes.ResultController.onPageLoad()
       }
     } else {
-      routes.ApprovedProviderController.onPageLoad(NormalMode)
+      routes.ApprovedProviderController.onPageLoad()
     }
   }
 
@@ -87,7 +76,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
           false
         )) && answers.location.contains(Location.ENGLAND)
       ) {
-        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+        routes.DoYouLiveWithPartnerController.onPageLoad()
       } else {
         routes.ResultController.onPageLoad()
       }
@@ -95,7 +84,7 @@ class MinimumHoursNavigator @Inject() (freeHours: FreeHours, override val scheme
       if (freeHours.eligibility(answers) == Eligible) {
         routes.FreeHoursInfoController.onPageLoad
       } else {
-        routes.DoYouLiveWithPartnerController.onPageLoad(NormalMode)
+        routes.DoYouLiveWithPartnerController.onPageLoad()
       }
     }
   }

@@ -16,8 +16,8 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildrenAgeGroupsForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, Mode}
 
 @this(
         layout: Layout,
@@ -29,7 +29,7 @@
         appConfig: FrontendAppConfig
 )
 
-@(form: Form[Set[ChildAgeGroup]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[Set[ChildAgeGroup]])(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("childrenAgeGroups.title")) else messages("childrenAgeGroups.title")
@@ -41,7 +41,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = routes.ChildrenAgeGroupsController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = routes.ChildrenAgeGroupsController.onSubmit(), Symbol("autoComplete") -> "off") {
         @inputCheckBox(
             field = form(ChildrenAgeGroupsForm.formId),
             legend = messages("childrenAgeGroups.heading"),

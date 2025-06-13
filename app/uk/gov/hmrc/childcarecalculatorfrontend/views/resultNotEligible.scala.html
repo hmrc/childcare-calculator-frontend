@@ -15,7 +15,6 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models._
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{ResultsViewModel, SchemeResultModel}
 
 @this(
@@ -51,11 +50,11 @@
     <p class="govuk-body">
         @if(!model.hasChildcareCosts) {
             @messages("freeHoursResult.toBeEligible.childcare.cost.start")
-            <a class="govuk-link" id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
+            <a class="govuk-link" id="free-hours-results-childCare-cost-link" href="@routes.ChildcareCostsController.onPageLoad()">@messages("freeHoursResult.toBeEligible.childcare.cost.link.text")</a>.
             @messages("freeHoursResult.toBeEligible.childcare.cost.end")
         } else {
             @messages("freeHoursResult.toBeEligible.approved.provider.start")
-            <a class="govuk-link" id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad(NormalMode)">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
+            <a class="govuk-link" id="free-hours-results-approved-provider-link" href="@routes.ApprovedProviderController.onPageLoad()">@messages("freeHoursResult.toBeEligible.approved.provider.link.text")</a>.
             @messages("freeHoursResult.toBeEligible.approved.provider.end")
         }
     </p>

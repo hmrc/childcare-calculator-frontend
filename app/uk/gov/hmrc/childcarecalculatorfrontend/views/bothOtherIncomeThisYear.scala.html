@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 
@@ -29,7 +28,7 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[Boolean], mode: Mode, taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[Boolean], taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("bothOtherIncomeThisYear.title")) else messages("bothOtherIncomeThisYear.title")
@@ -45,7 +44,7 @@
 
     <p class="govuk-body">@messages("bothOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
 
-    @formWithCSRF(action = BothOtherIncomeThisYearController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formWithCSRF(action = BothOtherIncomeThisYearController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("bothOtherIncomeThisYear.heading")),

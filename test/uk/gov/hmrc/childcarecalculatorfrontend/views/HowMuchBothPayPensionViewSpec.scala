@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchBothPayPensionForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{HowMuchBothPayPension, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewQuestionViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchBothPayPension
 
@@ -28,10 +28,9 @@ class HowMuchBothPayPensionViewSpec extends NewQuestionViewBehaviours[HowMuchBot
   val view             = application.injector.instanceOf[howMuchBothPayPension]
   val messageKeyPrefix = "howMuchBothPayPension"
 
-  def createView = () => view(frontendAppConfig, HowMuchBothPayPensionForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, HowMuchBothPayPensionForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[HowMuchBothPayPension]) =>
-    view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[HowMuchBothPayPension]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   override val form = HowMuchBothPayPensionForm()
 
@@ -45,7 +44,7 @@ class HowMuchBothPayPensionViewSpec extends NewQuestionViewBehaviours[HowMuchBot
       pageWithTextFields(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.HowMuchBothPayPensionController.onSubmit(NormalMode).url,
+        routes.HowMuchBothPayPensionController.onSubmit().url,
         "howMuchYouPayPension",
         "howMuchPartnerPayPension"
       )

@@ -27,7 +27,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
   ChildrenDisabilityBenefitsId,
   NoOfChildrenId
 }
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childDisabilityBenefits, childrenDisabilityBenefits}
@@ -53,10 +53,10 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     )
 
   def singleViewAsString(form: Form[Boolean] = BooleanForm()): String =
-    view1(frontendAppConfig, form, "Foo", NormalMode)(fakeRequest, messages).toString
+    view1(frontendAppConfig, form, "Foo")(fakeRequest, messages).toString
 
   def viewAsString(form: Form[Boolean] = BooleanForm()): String =
-    view2(frontendAppConfig, form, NormalMode)(fakeRequest, messages).toString
+    view2(frontendAppConfig, form)(fakeRequest, messages).toString
 
   def requiredData(number: Int): Map[String, JsValue] = Map(
     NoOfChildrenId.toString -> JsNumber(number),
@@ -71,13 +71,13 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
   "ChildrenDisabilityBenefits Controller" must {
 
     "return OK and the correct view for a GET when the user has a single child" in {
-      val result = controller(getRequiredData()).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRequiredData()).onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe singleViewAsString()
     }
 
     "return OK and the correct view for a GET when the user has multiple children" in {
-      val result = controller(getRequiredData(2)).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRequiredData(2)).onPageLoad()(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
@@ -85,21 +85,21 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     "populate the view correctly on a GET for a user with a single child when the question has previously been answered" in {
       val validData       = requiredData(1) + (ChildrenDisabilityBenefitsId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result          = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result          = controller(getRelevantData).onPageLoad()(fakeRequest)
       contentAsString(result) mustBe singleViewAsString(BooleanForm().fill(true))
     }
 
     "populate the view correctly on a GET for a user with multiple children when the question has previously been answered" in {
       val validData       = requiredData(2) + (ChildrenDisabilityBenefitsId.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
-      val result          = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result          = controller(getRelevantData).onPageLoad()(fakeRequest)
       contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
-      val result = controller(getRequiredData()).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRequiredData()).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -108,7 +108,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     "return a Bad Request and errors when invalid data is submitted for a user with a single child" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = BooleanForm("childrenDisabilityBenefits.error.notCompleted").bind(Map("value" -> "invalid value"))
-      val result    = controller(getRequiredData()).onSubmit(NormalMode)(postRequest)
+      val result    = controller(getRequiredData()).onSubmit()(postRequest)
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe singleViewAsString(boundForm)
     }
@@ -116,20 +116,20 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     "return a Bad Request and errors when invalid data is submitted for a user with multiple children" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = BooleanForm("childrenDisabilityBenefits.error.notCompleted").bind(Map("value" -> "invalid value"))
-      val result    = controller(getRequiredData(2)).onSubmit(NormalMode)(postRequest)
+      val result    = controller(getRequiredData(2)).onSubmit()(postRequest)
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit()(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
@@ -141,7 +141,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
         )
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
-      val result  = controller(getData).onPageLoad(NormalMode)(fakeRequest)
+      val result  = controller(getData).onPageLoad()(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
@@ -154,7 +154,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
       )
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result      = controller(getData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(getData).onSubmit()(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
@@ -162,7 +162,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
     "redirect to Session Expired for a GET if there is no answer for `about your child`" in {
       val data    = Map(NoOfChildrenId.toString -> JsNumber(1))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
-      val result  = controller(getData).onPageLoad(NormalMode)(fakeRequest)
+      val result  = controller(getData).onPageLoad()(fakeRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }
@@ -171,7 +171,7 @@ class ChildrenDisabilityBenefitsControllerSpec extends ControllerSpecBase {
       val data        = Map(NoOfChildrenId.toString -> JsNumber(1))
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result      = controller(getData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(getData).onSubmit()(postRequest)
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
     }

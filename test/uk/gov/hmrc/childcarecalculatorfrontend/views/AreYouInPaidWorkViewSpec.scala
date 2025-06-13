@@ -20,7 +20,6 @@ import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
 class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours {
@@ -29,9 +28,9 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours {
   val messageKeyPrefix = "areYouInPaidWork"
   val view             = application.injector.instanceOf[areYouInPaidWork]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, NormalMode)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form)(fakeRequest, messages)
 
   "AreYouInPaidWork view" must {
 
@@ -40,7 +39,7 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours {
     behave.like(pageWithBackLink(createView))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit(NormalMode).url)
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit().url)
     )
   }
 

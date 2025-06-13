@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, NoOfChildrenId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
@@ -49,7 +49,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     )
 
   def viewAsString(form: Form[AboutYourChild] = AboutYourChildForm()): String =
-    aboutYourChild(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages).toString
+    aboutYourChild(frontendAppConfig, form, 0, 1)(fakeRequest, messages).toString
 
   val requiredData: Map[String, JsNumber] = Map(
     NoOfChildrenId.toString -> JsNumber(1)
@@ -60,7 +60,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     "return OK and the correct view for a GET" in {
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(0)(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -71,7 +71,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
         requiredData + (AboutYourChildId.toString -> Json.obj("0" -> AboutYourChild("Foo", LocalDate.of(2016, 2, 1))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad(0)(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(
         AboutYourChildForm().fill(AboutYourChild("Foo", LocalDate.of(2016, 2, 1)))
@@ -90,7 +90,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
         )
         .withMethod("POST")
 
-      val result = controller(getRelevantData).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller(getRelevantData).onSubmit(0)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -101,14 +101,14 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
       val boundForm       = AboutYourChildForm().bind(Map("value" -> "invalid value"))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
-      val result = controller(getRelevantData).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller(getRelevantData).onSubmit(0)(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad(0)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -124,7 +124,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
           "aboutYourChild.dob.year"  -> date.getYear.toString
         )
         .withMethod("POST")
-      val result = controller(dontGetAnyData).onSubmit(NormalMode, 0)(postRequest)
+      val result = controller(dontGetAnyData).onSubmit(0)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -132,7 +132,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if the user hasn't said how many children they have" in {
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map.empty)))
-      val result  = controller(getData).onPageLoad(NormalMode, 0)(fakeRequest)
+      val result  = controller(getData).onPageLoad(0)(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -149,7 +149,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
         )
         .withMethod("POST")
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map.empty)))
-      val result  = controller(getData).onSubmit(NormalMode, 0)(postRequest)
+      val result  = controller(getData).onSubmit(0)(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)

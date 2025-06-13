@@ -16,22 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import play.twirl.api.Html
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.RegisteredBlindId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childRegisteredBlind, registeredBlind}
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RegisteredBlindController @Inject() (
@@ -47,27 +47,27 @@ class RegisteredBlindController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     withData { case (noOfChildren, name) =>
       val preparedForm = request.userAnswers.registeredBlind match {
         case None        => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Future.successful(Ok(view(appConfig, preparedForm, name, mode, noOfChildren)))
+      Future.successful(Ok(view(appConfig, preparedForm, name, noOfChildren)))
     }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     withData { case (noOfChildren, name) =>
       BooleanForm("registeredBlind.error.notCompleted")
         .bindFromRequest()
         .fold(
           (formWithErrors: Form[Boolean]) =>
-            Future.successful(BadRequest(view(appConfig, formWithErrors, name, mode, noOfChildren))),
+            Future.successful(BadRequest(view(appConfig, formWithErrors, name, noOfChildren))),
           value =>
             dataCacheConnector
               .save[Boolean](request.sessionId, RegisteredBlindId.toString, value)
-              .map(cacheMap => Redirect(navigator.nextPage(RegisteredBlindId, mode)(new UserAnswers(cacheMap))))
+              .map(cacheMap => Redirect(navigator.nextPage(RegisteredBlindId)(new UserAnswers(cacheMap))))
         )
     }
   }
@@ -83,13 +83,13 @@ class RegisteredBlindController @Inject() (
     )
   )
 
-  private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, mode: Mode, noOfChildren: Int)(
+  private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, noOfChildren: Int)(
       implicit request: Request[_]
   ): Html =
     if (noOfChildren == 1) {
-      childRegisteredBlind(appConfig, form, name, mode)
+      childRegisteredBlind(appConfig, form, name)
     } else {
-      registeredBlind(appConfig, form, mode)
+      registeredBlind(appConfig, form)
     }
 
 }

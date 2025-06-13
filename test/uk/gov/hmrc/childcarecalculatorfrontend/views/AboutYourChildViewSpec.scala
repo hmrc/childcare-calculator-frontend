@@ -20,7 +20,7 @@ import play.api.data.Form
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewDateViewBehaviours, NewQuestionViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.aboutYourChild
 
@@ -35,10 +35,10 @@ class AboutYourChildViewSpec
   def createView: () => Html = () => createView(0, 1)
 
   def createViewUsingForm: Form[AboutYourChild] => HtmlFormat.Appendable = (form: Form[AboutYourChild]) =>
-    view(frontendAppConfig, form, NormalMode, 0, 1)(fakeRequest, messages)
+    view(frontendAppConfig, form, 0, 1)(fakeRequest, messages)
 
   def createView(index: Int, total: Int): Html =
-    view(frontendAppConfig, AboutYourChildForm(), NormalMode, index, total)(fakeRequest, messages)
+    view(frontendAppConfig, AboutYourChildForm(), index, total)(fakeRequest, messages)
 
   override val form: Form[AboutYourChild] = AboutYourChildForm()
 
@@ -52,7 +52,7 @@ class AboutYourChildViewSpec
       pageWithTextFields(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.AboutYourChildController.onSubmit(NormalMode, 0).url,
+        routes.AboutYourChildController.onSubmit(0).url,
         "name"
       )
     )
@@ -61,7 +61,7 @@ class AboutYourChildViewSpec
       pageWithDateFields(
         createViewUsingForm,
         messageKeyPrefix,
-        routes.AboutYourChildController.onSubmit(NormalMode, 0).url,
+        routes.AboutYourChildController.onSubmit(0).url,
         "aboutYourChild.dob"
       )
     )

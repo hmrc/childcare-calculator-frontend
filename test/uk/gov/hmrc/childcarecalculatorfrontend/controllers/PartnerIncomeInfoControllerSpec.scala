@@ -25,7 +25,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{
   FakeDataRetrievalAction
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{NormalMode, YouPartnerBothEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 
@@ -34,7 +34,7 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
   val view        = application.injector.instanceOf[partnerIncomeInfo]
   val taxYearInfo = new TaxYearInfo
 
-  def onwardRoute = routes.PartnerPaidWorkCYController.onPageLoad(NormalMode)
+  def onwardRoute = routes.PartnerPaidWorkCYController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerIncomeInfoController(
@@ -60,7 +60,7 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
-        view(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(NormalMode), taxYearInfo)(
+        view(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(), taxYearInfo)(
           fakeRequest,
           messages
         ).toString

@@ -19,8 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildrenAgeGroupsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, NormalMode}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenAgeGroups
 
@@ -43,7 +43,7 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
     )
 
   override def createView(form: Form[Set[ChildAgeGroup]] = form): Html =
-    mockView(form, NormalMode)(fakeRequest, messages)
+    mockView(form)(fakeRequest, messages)
 
   "ChildrenAgeGroupsView" must {
     behave.like(normalPage(createView, messageKeyPrefix))
@@ -53,7 +53,7 @@ class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBe
     behave.like(checkboxPage())
 
     "display correct content when loaded" in {
-      val view = mockView(form, NormalMode)(fakeRequest, messages)
+      val view = mockView(form)(fakeRequest, messages)
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.hint"))
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.or"))
     }

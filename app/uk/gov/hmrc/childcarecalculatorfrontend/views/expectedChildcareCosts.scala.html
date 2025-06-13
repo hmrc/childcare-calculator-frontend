@@ -16,7 +16,6 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
 
@@ -34,7 +33,7 @@
         hasCosts: YesNoNotYetEnum.Value,
         childIndex: Int,
         frequency: ChildcarePayFrequency.Value,
-        name: String, mode: Mode
+        name: String
 )(
         implicit request: Request[_],
         messages: Messages
@@ -59,7 +58,7 @@
 
     @errorSummary(form.errors)
 
-    @formWithCSRF(action = ExpectedChildcareCostsController.onSubmit(mode, childIndex), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
+    @formWithCSRF(action = ExpectedChildcareCostsController.onSubmit(childIndex), Symbol("autoComplete") -> "off", Symbol("novalidate") -> "") {
 
         @inputNumber(
             label = Text(messages(s"expectedChildcareCosts.heading$suffix", messages(s"childcarePayFrequency.$frequency").toLowerCase, name)),

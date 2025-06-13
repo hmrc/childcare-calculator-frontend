@@ -20,7 +20,6 @@ import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{
   partnerAverageWeeklyEarnings,
@@ -42,7 +41,7 @@ class AverageWeeklyEarningController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val whoIsInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
     if (request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).equalsIgnoreCase(ChildcareConstants.you)) {
       Ok(yourAverageWeeklyEarnings())

@@ -19,9 +19,8 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NormalMode
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 
 class ChildAgedThreeOrFourViewSpec extends NewYesNoViewBehaviours {
@@ -33,10 +32,9 @@ class ChildAgedThreeOrFourViewSpec extends NewYesNoViewBehaviours {
 
   val location = Location.ENGLAND
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), NormalMode, location)(fakeRequest, messages)
+  def createView = () => view(frontendAppConfig, BooleanForm(), location)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, NormalMode, location)(fakeRequest, messages)
+  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, location)(fakeRequest, messages)
 
   "ChildAgedThreeOrFour view" must {
 
@@ -45,7 +43,7 @@ class ChildAgedThreeOrFourViewSpec extends NewYesNoViewBehaviours {
     behave.like(pageWithBackLink(createView))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedThreeOrFourController.onSubmit(NormalMode).url)
+      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedThreeOrFourController.onSubmit().url)
     )
   }
 

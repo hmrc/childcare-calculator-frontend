@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{DoYouGetAnyBenefitsId, LocationId, YouAnyTheseBenefitsIdCY}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, NormalMode}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
@@ -52,12 +52,12 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     )
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form, NormalMode, taxYearInfo, location)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, taxYearInfo, location)(fakeRequest, messages).toString
 
   "YouAnyTheseBenefits Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val result = controller().onPageLoad(NormalMode)(fakeRequest)
+      val result = controller().onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
@@ -68,7 +68,7 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
         Map(LocationId.toString -> JsString(location.toString), YouAnyTheseBenefitsIdCY.toString -> JsBoolean(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      val result = controller(getRelevantData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
@@ -76,7 +76,7 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -92,7 +92,7 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
 
-      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) contains messages("youAnyTheseBenefitsCY.error.carers.allowance")
@@ -110,7 +110,7 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
         )
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
 
-        val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+        val result = controller(getRelevantData).onSubmit()(postRequest)
 
         status(result) mustBe BAD_REQUEST
         contentAsString(result) contains messages("youAnyTheseBenefitsCY.error.scottishCarers.allowance")
@@ -120,7 +120,7 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm   = BooleanForm(youAnyTheseBenefitsCYErrorKey).bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit(NormalMode)(postRequest)
+      val result = controller().onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)
@@ -136,7 +136,7 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
 
-      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
@@ -152,14 +152,14 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
 
-      val result = controller(getRelevantData).onSubmit(NormalMode)(postRequest)
+      val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
-      val result = controller(dontGetAnyData).onPageLoad(NormalMode)(fakeRequest)
+      val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -167,7 +167,7 @@ class YouAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      val result      = controller(dontGetAnyData).onSubmit(NormalMode)(postRequest)
+      val result      = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)

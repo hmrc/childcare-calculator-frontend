@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend
+package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import javax.inject.Inject
-
-import com.google.inject.ImplementedBy
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.navigation._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
+import javax.inject.Inject
+
+class Navigator(navigators: SubNavigator*) {
 
   @Inject()
   def this(
@@ -42,37 +39,10 @@ class NavigatorImpl(navigators: SubNavigator*) extends Navigator {
   ) =
     this(Seq(minHours, maxHours, pensions, employment, benefitsIncome, otherIncome, incomeInfo, childcare, survey): _*)
 
-  override def nextPage(id: Identifier, mode: Mode): UserAnswers => Call =
+  def nextPage(id: Identifier): UserAnswers => Call =
     navigators
-      .map(_.nextPage(id, mode))
+      .map(_.nextPage(id))
       .reduce(_ orElse _)
       .getOrElse(_ => routes.WhatToTellTheCalculatorController.onPageLoad)
-
-}
-
-@ImplementedBy(classOf[NavigatorImpl])
-trait Navigator {
-
-  protected def routeMap: Map[Identifier, UserAnswers => Call]     = Map.empty
-  protected def editRouteMap: Map[Identifier, UserAnswers => Call] = Map.empty
-
-  def nextPage(id: Identifier, mode: Mode): UserAnswers => Call = { answers =>
-    routeMap.getOrElse(id, (_: UserAnswers) => routes.WhatToTellTheCalculatorController.onPageLoad)(answers)
-  }
-
-}
-
-trait SubNavigator {
-
-  protected def routeMap: PartialFunction[Identifier, UserAnswers => Call]     = Map.empty
-  protected def editRouteMap: PartialFunction[Identifier, UserAnswers => Call] = Map.empty
-
-  def nextPage(id: Identifier, mode: Mode): Option[UserAnswers => Call] =
-    mode match {
-      case NormalMode =>
-        routeMap.lift(id)
-      case CheckMode =>
-        editRouteMap.lift(id)
-    }
 
 }

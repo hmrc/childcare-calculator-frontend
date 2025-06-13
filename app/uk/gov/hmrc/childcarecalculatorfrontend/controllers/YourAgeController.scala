@@ -16,20 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourAgeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourAgeId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAge
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class YourAgeController @Inject() (
@@ -44,23 +44,23 @@ class YourAgeController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.yourAge match {
       case None        => YourAgeForm()
       case Some(value) => YourAgeForm().fill(value)
     }
-    Ok(yourAge(appConfig, preparedForm, mode))
+    Ok(yourAge(appConfig, preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     YourAgeForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[String]) => Future.successful(BadRequest(yourAge(appConfig, formWithErrors, mode))),
+        (formWithErrors: Form[String]) => Future.successful(BadRequest(yourAge(appConfig, formWithErrors))),
         value =>
           dataCacheConnector
             .save[String](request.sessionId, YourAgeId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(YourAgeId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(YourAgeId)(new UserAnswers(cacheMap))))
       )
   }
 

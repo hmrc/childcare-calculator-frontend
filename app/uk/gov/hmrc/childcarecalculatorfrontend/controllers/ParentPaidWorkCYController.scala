@@ -16,21 +16,21 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentPaidWorkCYId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Mode
+import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.parentPaidWorkCYErrorKey
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentPaidWorkCY
-import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, Navigator}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ParentPaidWorkCYController @Inject() (
@@ -46,24 +46,24 @@ class ParentPaidWorkCYController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val preparedForm = request.userAnswers.parentPaidWorkCY match {
       case None        => BooleanForm()
       case Some(value) => BooleanForm().fill(value)
     }
-    Ok(parentPaidWorkCY(appConfig, preparedForm, mode, taxYearInfo))
+    Ok(parentPaidWorkCY(appConfig, preparedForm, taxYearInfo))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
     BooleanForm(parentPaidWorkCYErrorKey)
       .bindFromRequest()
       .fold(
         (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(parentPaidWorkCY(appConfig, formWithErrors, mode, taxYearInfo))),
+          Future.successful(BadRequest(parentPaidWorkCY(appConfig, formWithErrors, taxYearInfo))),
         value =>
           dataCacheConnector
             .save[Boolean](request.sessionId, ParentPaidWorkCYId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(ParentPaidWorkCYId, mode)(new UserAnswers(cacheMap))))
+            .map(cacheMap => Redirect(navigator.nextPage(ParentPaidWorkCYId)(new UserAnswers(cacheMap))))
       )
   }
 
