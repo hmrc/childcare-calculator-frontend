@@ -34,7 +34,8 @@ lazy val microservice = Project(appName, file("."))
     scalacOptions ++= Seq(
       "-feature",
       "-Wconf:cat=unused-imports&src=routes/.*:s",
-      "-Wconf:cat=unused-imports&src=html/.*:s"
+      "-Wconf:cat=unused-imports&src=html/.*:s",
+      "-Wconf:cat=unused&src=routes/.*:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged                 := true,

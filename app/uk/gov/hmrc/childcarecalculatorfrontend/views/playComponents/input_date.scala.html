@@ -38,4 +38,4 @@
             classes = if(smallText) "govuk-body" else s"""${if(largeText) "govuk-label--xl" else "govuk-label--m"} ${labelClass.getOrElse("")}""",
             isPageHeading = true))
     ))
-).withFormField(field))
+).withDayMonthYearFormField(field))

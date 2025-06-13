@@ -50,7 +50,7 @@ object AboutYourChildForm extends Mappings {
               optMaxDate = Some(maxDate)
             )
           )
-        )((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
+        )((name, date) => AboutYourChild(name, date))(model => Some((model.name, model.dob)))
       )
     }
 
@@ -73,7 +73,7 @@ object AboutYourChildForm extends Mappings {
             args = Seq(indexMessage)
           )
         )
-      )((name, date) => AboutYourChild(name, date))(model => Some(model.name, model.dob))
+      )((name, date) => AboutYourChild(name, date))(model => Some((model.name, model.dob)))
     )
   }
 

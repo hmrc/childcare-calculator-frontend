@@ -80,7 +80,7 @@
                     <p class="govuk-body">@messages("result.more.info.para")</p>
                     @list(bulletList = moreInfoBulletList)
                 } else {
-                    @p() { @{moreInfoBulletList.head.head.toUpper + moreInfoBulletList.head.tail}. }
+                    @p() { @{s"${moreInfoBulletList.head.head.toUpper}${moreInfoBulletList.head.tail}"}. }
                 }
             }
         }
@@ -152,6 +152,8 @@
                 linkList(Seq(
                     (messages("freeHoursResult.info.extraHelp.northern-ireland.li.1"), northernIrelandExtraHelpLink)
                 ))
+            case _ =>
+                linkList(Seq.empty)
         }
     }
 }
