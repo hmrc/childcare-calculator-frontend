@@ -35,3 +35,6 @@ bin
 .bsp
 .metals/
 .vscode
+.bloop/
+project/.bloop/
+project/metals.sbt
