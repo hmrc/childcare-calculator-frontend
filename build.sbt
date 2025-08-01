@@ -38,8 +38,9 @@ lazy val microservice = Project(appName, file("."))
       "-Wconf:cat=unused&src=routes/.*:s"
     ),
     libraryDependencies ++= AppDependencies(),
-    retrieveManaged                 := true,
-    update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
+    retrieveManaged := true,
+    (update / evictionWarningOptions).withRank(KeyRanks.Invisible) := EvictionWarningOptions.default
+      .withWarnScalaVersionEviction(false)
   )
   .settings(
     pipelineStages := Seq(digest)
