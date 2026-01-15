@@ -63,7 +63,8 @@ class FrontendAppConfig @Inject() (config: ServicesConfig, val configuration: Co
   lazy val maxAmountChildren: Int = config.getInt("amountChildren.max")
   lazy val minAmountChildren: Int = config.getInt("amountChildren.min")
 
-  lazy val navigationAudit: Boolean = config.getBoolean("feature.navigationAudit")
+  lazy val navigationAudit: Boolean    = config.getBoolean("feature.navigationAudit")
+  lazy val bpplContentEnabled: Boolean = config.getBoolean("feature.bpplContentEnabled")
 
   lazy val maxFreeHoursCutoff: LocalDate = LocalDate.parse(config.getString("freeHours.maxFreeHoursCutoff"))
 
