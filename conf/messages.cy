@@ -251,7 +251,8 @@ paidEmployment.error.notCompleted=Dewiswch ‘ydw’ os ydych chi, eich partner,
 
 whoIsInPaidEmployment.title=Pwy sydd mewn gwaith taledig?
 whoIsInPaidEmployment.heading=Pwy sydd mewn gwaith taledig?
-whoIsInPaidEmployment.para1=Mae gwaith taledig yn cynnwys absenoldeb mabwysiadu, absenoldeb mamolaeth, gofal newydd-enedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni ac absenoldeb salwch.
+whoIsInPaidEmployment.para1=Mae gwaith am gyflog yn cynnwys absenoldeb salwch, mabwysiadu, absenoldeb tadolaeth partner mewn profedigaeth, mamolaeth, gofal newyddenedigol, tadolaeth, ac ar y cyd i rieni.
+whoIsInPaidEmployment.northernIreland.para1=Mae gwaith taledig yn cynnwys absenoldeb mabwysiadu, absenoldeb mamolaeth, gofal newydd-enedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni ac absenoldeb salwch.
 whoIsInPaidEmployment.you=Chi
 whoIsInPaidEmployment.partner=Partner
 whoIsInPaidEmployment.neither=Dim un
