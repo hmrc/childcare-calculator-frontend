@@ -255,7 +255,8 @@ doYouLiveWithPartner.error.notCompleted = Select yes if you have a partner that 
 
 areYouInPaidWork.title = Are you in paid work?
 areYouInPaidWork.heading = Are you in paid work?
-areYouInPaidWork.para1 = Paid work includes adoption, maternity, neonatal care, paternity, shared parental and sick leave.
+areYouInPaidWork.para1 = Paid work includes adoption, bereaved partner''s parental leave, maternity, neonatal care, paternity, shared parental and sick leave.
+areYouInPaidWork.northernIreland.para1 = Paid work includes adoption, maternity, neonatal care, paternity, shared parental and sick leave.
 areYouInPaidWork.checkYourAnswersLabel = Are you in paid work?
 areYouInPaidWork.error.notCompleted = Select yes if you are in paid work
 

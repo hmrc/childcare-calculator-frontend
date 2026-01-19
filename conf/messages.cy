@@ -239,7 +239,8 @@ doYouLiveWithPartner.error.notCompleted=Dewiswch ‘Iawn’ os ydych yn byw gyda
 
 areYouInPaidWork.title=A ydych mewn gwaith taledig?
 areYouInPaidWork.heading=A ydych mewn gwaith taledig?
-areYouInPaidWork.para1=Mae gwaith taledig yn cynnwys absenoldeb mabwysiadu, absenoldeb mamolaeth, gofal newydd-enedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni ac absenoldeb salwch.
+areYouInPaidWork.para1=Mae gwaith am gyflog yn cynnwys absenoldeb salwch, mabwysiadu, absenoldeb tadolaeth partner mewn profedigaeth, mamolaeth, gofal newyddenedigol, tadolaeth, ac ar y cyd i rieni.
+areYouInPaidWork.northernIreland.para1=Mae gwaith taledig yn cynnwys absenoldeb mabwysiadu, absenoldeb mamolaeth, gofal newydd-enedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni ac absenoldeb salwch.
 areYouInPaidWork.checkYourAnswersLabel=A ydych mewn gwaith taledig?
 areYouInPaidWork.error.notCompleted=Dewiswch ‘Iawn’ os ydych mewn gwaith taledig
 
