@@ -19,13 +19,15 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAndPartnerAverageWeeklyEarnings
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "yourAndPartnerAverageWeeklyEarnings"
   val view             = application.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
+  val location         = Location.ENGLAND
 
-  def createView = () => view()(fakeRequest, messages)
+  def createView = () => view(location)(fakeRequest, messages)
 
   "YourAndPartnerAverageWeeklyEarnings view" must {
     behave.like(
@@ -43,7 +45,7 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
     behave.like(pageWithBackLink(createView))
 
     "display the correct guidance text " in {
-      val view1 = view()(fakeRequest, messages)
+      val view1 = view(location)(fakeRequest, messages)
       val doc   = asDocument(view1)
 
       assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
@@ -55,6 +57,40 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
       assertContainsText(doc, messages(s"$messageKeyPrefix.para4"))
 
     }
+
+    "display the correct bullet list" in {
+      val partnerAverageWeeklyEarningsView = view(location)(fakeRequest, messages)
+      val doc                              = asDocument(partnerAverageWeeklyEarningsView)
+      val bulletItemsSelector              = "ul.govuk-list--bullet li"
+
+      val expected = Seq(
+        "yourAndPartnerAverageWeeklyEarnings.li.adoption",
+        "yourAndPartnerAverageWeeklyEarnings.li.bereavedPartnersPaternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.maternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.neonatalCare",
+        "yourAndPartnerAverageWeeklyEarnings.li.paternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.sickLeave"
+      )
+
+      assertBulletListValues(doc, expected, bulletItemsSelector)
+    }
+
+    "display the correct bullet list when location is Northern Ireland" in {
+      val NIPartnerWeeklyEarningsView = view(Location.NORTHERN_IRELAND)(fakeRequest, messages)
+      val doc                         = asDocument(NIPartnerWeeklyEarningsView)
+      val bulletItemsSelector         = "ul.govuk-list--bullet li"
+
+      val expected = Seq(
+        "yourAndPartnerAverageWeeklyEarnings.li.adoption",
+        "yourAndPartnerAverageWeeklyEarnings.li.maternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.neonatalCare",
+        "yourAndPartnerAverageWeeklyEarnings.li.paternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.sickLeave"
+      )
+
+      assertBulletListValues(doc, expected, bulletItemsSelector)
+    }
+
     "contain the link for Your minimum earning" in {
       val doc          = asDocument(createView())
       val continueLink = doc.getElementsByClass("govuk-button")

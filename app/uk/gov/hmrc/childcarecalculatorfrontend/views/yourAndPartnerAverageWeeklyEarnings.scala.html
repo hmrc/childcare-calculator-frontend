@@ -15,52 +15,62 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @this(
-layout: Layout,
-formWithCSRF: FormWithCSRF,
-errorSummary: playComponents.error_summary,
-heading: playComponents.heading,
-submitButton: playComponents.submit_button,
-buttonLink: playComponents.button_link,
-p: playComponents.p,
-appConfig: FrontendAppConfig
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button,
+    buttonLink: playComponents.button_link,
+    p: playComponents.p,
+    appConfig: FrontendAppConfig
 )
 
-@()(implicit request: Request[_], messages: Messages)
 
+@(location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 
 @layout(
-pageTitle = messages("yourAndPartnerAverageWeeklyEarnings.title")
+    pageTitle = messages("yourAndPartnerAverageWeeklyEarnings.title")
 ) {
 
 
+    @heading(messages("yourAndPartnerAverageWeeklyEarnings.heading"))
 
-@heading(messages("yourAndPartnerAverageWeeklyEarnings.heading"))
+    @p() {
+        @messages("yourAndPartnerAverageWeeklyEarnings.para1")
+    }
 
-@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para1") }
+    <h2 class="govuk-heading-m">@messages("yourAndPartnerAverageWeeklyEarnings.heading2")</h2>
 
-<h2 class="govuk-heading-m">@messages("yourAndPartnerAverageWeeklyEarnings.heading2")</h2>
+    @p() {
+        @messages("yourAndPartnerAverageWeeklyEarnings.para2")
+    }
 
-@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para2") }
-
-<ul class="govuk-list govuk-list--bullet">
+    <ul class="govuk-list govuk-list--bullet">
         <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.adoption")</li>
-		<li>@messages("yourAndPartnerAverageWeeklyEarnings.li.maternity")</li>
+        @if(location != Location.NORTHERN_IRELAND && appConfig.bpplContentEnabled) {
+            <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.bereavedPartnersPaternity")</li>
+        }
+        <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.maternity")</li>
         <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.neonatalCare")</li>
-		<li>@messages("yourAndPartnerAverageWeeklyEarnings.li.paternity")</li>
-		<li>@messages("yourAndPartnerAverageWeeklyEarnings.li.sickLeave")</li>
-</ul>
-<h2 class="govuk-heading-m">@messages("yourAndPartnerAverageWeeklyEarnings.heading3")</h2>
-@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para3") }
-@p() { @messages("yourAndPartnerAverageWeeklyEarnings.para4") }
+        <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.paternity")</li>
+        <li>@messages("yourAndPartnerAverageWeeklyEarnings.li.sickLeave")</li>
+    </ul>
+    <h2 class="govuk-heading-m">@messages("yourAndPartnerAverageWeeklyEarnings.heading3")</h2>
+    @p() {
+        @messages("yourAndPartnerAverageWeeklyEarnings.para3")
+    }
+    @p() {
+        @messages("yourAndPartnerAverageWeeklyEarnings.para4")
+    }
 
-
-@buttonLink(
-messageKey = "site.save_and_continue",
-href= routes.YourMinimumEarningsController.onPageLoad()
-)
+    @buttonLink(
+        messageKey = "site.save_and_continue",
+        href = routes.YourMinimumEarningsController.onPageLoad()
+    )
 
 
 }

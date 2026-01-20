@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @this(
 layout: Layout,
@@ -28,7 +29,7 @@ p: playComponents.p,
 appConfig: FrontendAppConfig
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 
 
@@ -47,6 +48,9 @@ pageTitle = messages("yourAverageWeeklyEarnings.title")
 
 <ul class="govuk-list govuk-list--bullet">
         <li>@messages("yourAverageWeeklyEarnings.li.adoption")</li>
+        @if(location != Location.NORTHERN_IRELAND && appConfig.bpplContentEnabled){
+        <li>@messages("yourAverageWeeklyEarnings.li.bereavedPartnersPaternity")</li>
+        }
 		<li>@messages("yourAverageWeeklyEarnings.li.maternity")</li>
         <li>@messages("yourAverageWeeklyEarnings.li.neonatalCare")</li>
 		<li>@messages("yourAverageWeeklyEarnings.li.paternity")</li>

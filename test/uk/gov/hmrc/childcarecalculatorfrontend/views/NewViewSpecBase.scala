@@ -117,4 +117,13 @@ trait NewViewSpecBase extends SpecBase {
     }
   }
 
+  def assertBulletListValues(doc: Document, expected: Seq[String], selector: String) = {
+    val bulletItems        = doc.select(selector)
+    val expectedListValues = expected.map(messages(_))
+
+    bulletItems.size() mustBe expected.size
+    bulletItems.eachText().asScala.toList mustBe expectedListValues
+
+  }
+
 }
