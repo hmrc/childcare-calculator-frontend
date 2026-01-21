@@ -25,14 +25,13 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "yourAndPartnerAverageWeeklyEarnings"
   val view             = application.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
-  val location         = Location.ENGLAND
 
-  def createView = () => view(location)(fakeRequest, messages)
+  def createView(loc: Location.Value = Location.ENGLAND) = view(loc)(fakeRequest, messages)
 
   "YourAndPartnerAverageWeeklyEarnings view" must {
     behave.like(
       normalPageWithTitleAsString(
-        view = createView,
+        view = () => createView(),
         messageKeyPrefix = messageKeyPrefix,
         messageKeyPostfix = "",
         title = messages("yourAndPartnerAverageWeeklyEarnings.heading", 0),
@@ -42,10 +41,10 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
       )
     )
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => createView()))
 
     "display the correct guidance text " in {
-      val view1 = view(location)(fakeRequest, messages)
+      val view1 = createView()
       val doc   = asDocument(view1)
 
       assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
@@ -59,7 +58,7 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
     }
 
     "display the correct bullet list" in {
-      val partnerAverageWeeklyEarningsView = view(location)(fakeRequest, messages)
+      val partnerAverageWeeklyEarningsView = createView()
       val doc                              = asDocument(partnerAverageWeeklyEarningsView)
       val bulletItemsSelector              = "ul.govuk-list--bullet li"
 
@@ -76,7 +75,7 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
     }
 
     "display the correct bullet list when location is Northern Ireland" in {
-      val NIPartnerWeeklyEarningsView = view(Location.NORTHERN_IRELAND)(fakeRequest, messages)
+      val NIPartnerWeeklyEarningsView = createView(Location.NORTHERN_IRELAND)
       val doc                         = asDocument(NIPartnerWeeklyEarningsView)
       val bulletItemsSelector         = "ul.govuk-list--bullet li"
 

@@ -45,12 +45,10 @@ class AverageWeeklyEarningController @Inject() (
     val whoIsInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
     val location              = request.userAnswers.location
     (whoIsInPaidEmployment, location) match {
-      case (None, None) =>
+      case (None, _) =>
         Redirect(routes.SessionExpiredController.onPageLoad)
       case (Some(_), None) =>
         Redirect(routes.LocationController.onPageLoad())
-      case (None, Some(_)) =>
-        Redirect(routes.SessionExpiredController.onPageLoad)
       case (Some(whoAnswer), Some(location)) =>
         val who = request.userAnswers.isYouPartnerOrBoth(Some(whoAnswer)).toLowerCase
         who match {
