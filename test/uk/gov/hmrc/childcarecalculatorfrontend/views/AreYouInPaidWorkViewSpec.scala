@@ -16,21 +16,43 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
-class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours {
+class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfterEach {
 
-  override val form    = BooleanForm()
-  val messageKeyPrefix = "areYouInPaidWork"
-  val view             = application.injector.instanceOf[areYouInPaidWork]
+  override val form: Form[Boolean] = BooleanForm()
+  val messageKeyPrefix             = "areYouInPaidWork"
+  val view: areYouInPaidWork       = application.injector.instanceOf[areYouInPaidWork]
 
-  def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
+  def constructView(
+      appConfig: FrontendAppConfig = frontendAppConfig,
+      form: Form[Boolean] = BooleanForm(),
+      location: Location.Value = Location.ENGLAND
+  ): HtmlFormat.Appendable = view(appConfig, form, location)(fakeRequest, messages)
 
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def createView = () => constructView()
+
+  def createViewUsingForm = (form: Form[Boolean]) => constructView(form = form)
+
+  val appConfigBpllEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
+  val appConfigBpllDisabled: FrontendAppConfig = mock[FrontendAppConfig]
+
+  override def beforeEach(): Unit = {
+    when(appConfigBpllEnabled.bpplContentEnabled).thenReturn(true)
+    when(appConfigBpllDisabled.bpplContentEnabled).thenReturn(false)
+  }
+
+  val bereavedPartnersParentalLeave = "bereaved partner&#x27;s parental leave"
 
   "AreYouInPaidWork view" must {
 
@@ -41,6 +63,56 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours {
     behave.like(
       yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit().url)
     )
+
+    "include bereaved partner's parental leave on page" when {
+      "the bpllContentEnabled flag is set to true" when {
+        "the location is England" in {
+          constructView(appConfigBpllEnabled, location = Location.ENGLAND).toString must include(
+            bereavedPartnersParentalLeave
+          )
+        }
+
+        "the location is Scotland" in {
+          constructView(appConfigBpllEnabled, location = Location.SCOTLAND).toString must include(
+            bereavedPartnersParentalLeave
+          )
+        }
+
+        "the location is Wales" in {
+          constructView(appConfigBpllEnabled, location = Location.WALES).toString must include(
+            bereavedPartnersParentalLeave
+          )
+        }
+      }
+    }
+
+    "NOT include bereaved partner's parental leave on page" when {
+      "the bpllContentEnabled flag is set to false" when {
+        "the location is England" in
+          (constructView(appConfigBpllDisabled, location = Location.ENGLAND).toString must not)
+            .include(bereavedPartnersParentalLeave)
+
+        "the location is Scotland" in
+          (constructView(appConfigBpllDisabled, location = Location.SCOTLAND).toString must not)
+            .include(bereavedPartnersParentalLeave)
+
+        "the location is Wales" in
+          (constructView(appConfigBpllDisabled, location = Location.WALES).toString must not)
+            .include(bereavedPartnersParentalLeave)
+
+        "the location is Northern Ireland" in
+          (constructView(appConfigBpllDisabled, location = Location.NORTHERN_IRELAND).toString must not)
+            .include(bereavedPartnersParentalLeave)
+
+      }
+
+      "the bpllContentEnabledFlag is set to true" when {
+        "the location is Northern Ireland" in
+          (constructView(appConfigBpllEnabled, location = Location.NORTHERN_IRELAND).toString must not)
+            .include(bereavedPartnersParentalLeave)
+      }
+    }
+
   }
 
 }

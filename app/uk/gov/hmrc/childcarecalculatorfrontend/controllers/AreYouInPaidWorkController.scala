@@ -46,23 +46,34 @@ class AreYouInPaidWorkController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
-    val preparedForm = request.userAnswers.areYouInPaidWork match {
-      case None        => BooleanForm()
-      case Some(value) => BooleanForm().fill(value)
+    request.userAnswers.location match {
+      case None =>
+        Redirect(routes.LocationController.onPageLoad())
+
+      case Some(location) =>
+        val preparedForm = request.userAnswers.areYouInPaidWork match {
+          case None        => BooleanForm()
+          case Some(value) => BooleanForm().fill(value)
+        }
+        Ok(areYouInPaidWork(appConfig, preparedForm, location))
     }
-    Ok(areYouInPaidWork(appConfig, preparedForm))
   }
 
   def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
-    BooleanForm(areYouInPaidWorkErrorKey)
-      .bindFromRequest()
-      .fold(
-        (formWithErrors: Form[Boolean]) => Future.successful(BadRequest(areYouInPaidWork(appConfig, formWithErrors))),
-        value =>
-          dataCacheConnector
-            .save[Boolean](request.sessionId, AreYouInPaidWorkId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(AreYouInPaidWorkId)(new UserAnswers(cacheMap))))
-      )
+    request.userAnswers.location match {
+      case None => Future.successful(Redirect(routes.LocationController.onPageLoad()))
+      case Some(location) =>
+        BooleanForm(areYouInPaidWorkErrorKey)
+          .bindFromRequest()
+          .fold(
+            (formWithErrors: Form[Boolean]) =>
+              Future.successful(BadRequest(areYouInPaidWork(appConfig, formWithErrors, location))),
+            value =>
+              dataCacheConnector
+                .save[Boolean](request.sessionId, AreYouInPaidWorkId.toString, value)
+                .map(cacheMap => Redirect(navigator.nextPage(AreYouInPaidWorkId)(new UserAnswers(cacheMap))))
+          )
+    }
   }
 
 }

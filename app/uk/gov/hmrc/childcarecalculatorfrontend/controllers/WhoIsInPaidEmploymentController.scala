@@ -45,24 +45,34 @@ class WhoIsInPaidEmploymentController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
-    val preparedForm = request.userAnswers.whoIsInPaidEmployment match {
-      case None        => WhoIsInPaidEmploymentForm()
-      case Some(value) => WhoIsInPaidEmploymentForm().fill(value)
+    request.userAnswers.location match {
+      case None =>
+        Redirect(routes.LocationController.onPageLoad())
+      case Some(location) =>
+        val preparedForm = request.userAnswers.whoIsInPaidEmployment match {
+          case None        => WhoIsInPaidEmploymentForm()
+          case Some(value) => WhoIsInPaidEmploymentForm().fill(value)
+        }
+        Ok(whoIsInPaidEmployment(appConfig, preparedForm, location))
     }
-    Ok(whoIsInPaidEmployment(appConfig, preparedForm))
   }
 
   def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
-    WhoIsInPaidEmploymentForm()
-      .bindFromRequest()
-      .fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(whoIsInPaidEmployment(appConfig, formWithErrors))),
-        value =>
-          dataCacheConnector
-            .save[String](request.sessionId, WhoIsInPaidEmploymentId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(WhoIsInPaidEmploymentId)(new UserAnswers(cacheMap))))
-      )
+    request.userAnswers.location match {
+      case None =>
+        Future.successful(Redirect(routes.LocationController.onPageLoad()))
+      case Some(location) =>
+        WhoIsInPaidEmploymentForm()
+          .bindFromRequest()
+          .fold(
+            (formWithErrors: Form[String]) =>
+              Future.successful(BadRequest(whoIsInPaidEmployment(appConfig, formWithErrors, location))),
+            value =>
+              dataCacheConnector
+                .save[String](request.sessionId, WhoIsInPaidEmploymentId.toString, value)
+                .map(cacheMap => Redirect(navigator.nextPage(WhoIsInPaidEmploymentId)(new UserAnswers(cacheMap))))
+          )
+    }
   }
 
 }

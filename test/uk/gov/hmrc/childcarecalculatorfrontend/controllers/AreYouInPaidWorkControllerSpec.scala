@@ -17,12 +17,13 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
+import play.api.libs.json.{JsBoolean, JsString}
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.AreYouInPaidWorkId
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AreYouInPaidWorkId, LocationId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
@@ -44,20 +45,32 @@ class AreYouInPaidWorkControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm(), location: Location.Value = Location.ENGLAND) =
+    view(frontendAppConfig, form, location)(fakeRequest, messages).toString
+
+  val location = LocationId.toString -> JsString(Location.ENGLAND.toString)
 
   "AreYouInPaidWork Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return 303 redirect to location page for a GET if location does not exist in user answers" in {
       val result = controller().onPageLoad()(fakeRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad().url)
+    }
+
+    "return OK and the correct view for a GET if location does exist in user answers" in {
+      val validData       = Map(location)
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       status(result) mustBe OK
       contentAsString(result) mustBe viewAsString()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(AreYouInPaidWorkId.toString -> JsBoolean(true))
+      val validData       = Map(AreYouInPaidWorkId.toString -> JsBoolean(true), location)
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -65,20 +78,35 @@ class AreYouInPaidWorkControllerSpec extends ControllerSpecBase {
       contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to the location page when data is submitted if no location exists in user answers" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
 
       val result = controller().onSubmit()(postRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad().url)
+    }
+
+    "redirect to the next page when valid data is submitted" in {
+      val validData       = Map(location)
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
+      val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
+
+      val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(onwardRoute.url)
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
+      val validData       = Map(location)
+      val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
+
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm   = BooleanForm("areYouInPaidWork.error.notCompleted").bind(Map("value" -> "invalid value"))
 
-      val result = controller().onSubmit()(postRequest)
+      val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
       contentAsString(result) mustBe viewAsString(boundForm)

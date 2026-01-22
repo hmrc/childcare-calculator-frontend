@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 
 @this(
@@ -29,7 +30,8 @@
 
 @(
         appConfig: FrontendAppConfig,
-        form: Form[Boolean]
+        form: Form[Boolean],
+        location: Location.Value
 )(
         implicit request: Request[_],
         messages: Messages
@@ -38,6 +40,12 @@
 
     @title = @{
         if(form.errors.nonEmpty) messages("site.title.error", messages(s"areYouInPaidWork.title")) else messages(s"areYouInPaidWork.title")
+    }
+
+    @hintPara = @{if (appConfig.bpplContentEnabled && location != Location.NORTHERN_IRELAND)
+        "areYouInPaidWork.para1"
+    else
+        "areYouInPaidWork.northernIreland.para1"
     }
 
     @layout(
@@ -50,7 +58,7 @@
 
         @inputYesNo(
             label = HtmlContent(heading(messages("areYouInPaidWork.heading"))),
-            hint = Some(messages("areYouInPaidWork.para1")),
+            hint = Some(messages(hintPara)),
             field = form("value")
         )
 

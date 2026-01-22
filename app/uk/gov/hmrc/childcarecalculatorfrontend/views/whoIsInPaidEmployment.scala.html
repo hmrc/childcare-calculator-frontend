@@ -17,6 +17,7 @@
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoIsInPaidEmploymentForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @this(
     layout: Layout,
@@ -27,10 +28,16 @@
     submitButton: playComponents.submit_button
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String])(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, form: Form[String], location: Location.Value)(implicit request: Request[_], messages: Messages)
 
 @title = @{
     if(form.errors.nonEmpty) messages("site.title.error", messages("whoIsInPaidEmployment.title")) else messages("whoIsInPaidEmployment.title")
+}
+
+@hintPara = @{if (appConfig.bpplContentEnabled && location != Location.NORTHERN_IRELAND)
+  "whoIsInPaidEmployment.para1"
+else
+  "whoIsInPaidEmployment.northernIreland.para1"
 }
 
 @layout(
@@ -41,7 +48,7 @@
 
         @inputRadio(
             legend = heading(messages("whoIsInPaidEmployment.heading")),
-            hint = Some(messages("whoIsInPaidEmployment.para1")),
+            hint = Some(messages(hintPara)),
             inputs = WhoIsInPaidEmploymentForm.options map { radioOptions =>
                 RadioItem (
                     value = Some(radioOptions.value),
