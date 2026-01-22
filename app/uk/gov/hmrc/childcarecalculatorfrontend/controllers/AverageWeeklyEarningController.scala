@@ -44,18 +44,15 @@ class AverageWeeklyEarningController @Inject() (
   def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
     val whoIsInPaidEmployment = request.userAnswers.whoIsInPaidEmployment
     val location              = request.userAnswers.location
-    (whoIsInPaidEmployment, location) match {
-      case (None, _) =>
-        Redirect(routes.SessionExpiredController.onPageLoad)
-      case (Some(_), None) =>
+    location match {
+      case None =>
         Redirect(routes.LocationController.onPageLoad())
-      case (Some(whoAnswer), Some(location)) =>
-        val who = request.userAnswers.isYouPartnerOrBoth(Some(whoAnswer)).toLowerCase
+      case Some(location) =>
+        val who = request.userAnswers.isYouPartnerOrBoth(whoIsInPaidEmployment).toLowerCase
         who match {
           case ChildcareConstants.you     => Ok(yourAverageWeeklyEarnings(location))
           case ChildcareConstants.both    => Ok(yourAndPartnerAverageWeeklyEarnings(location))
           case ChildcareConstants.partner => Ok(partnerAverageWeeklyEarnings(location))
-          case _                          => Redirect(routes.SessionExpiredController.onPageLoad)
         }
     }
 
