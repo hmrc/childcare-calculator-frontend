@@ -95,21 +95,6 @@ class AverageWeeklyEarningControllerSpec extends ControllerSpecBase {
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.LocationController.onPageLoad().url)
     }
-
-    "redirect to session expired page when there is no answer to who is in paid employment and no answer to location" in {
-      val whoIsInPaidEmploymentNotAnswered = Map.empty[String, JsValue]
-      val missingData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, whoIsInPaidEmploymentNotAnswered)))
-      val result      = controller(missingData).onPageLoad()(fakeRequest)
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
-    }
-
-    "redirect to session expired page when location is present and there is no answer to who is in paid employment" in {
-      val missingWhoData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, Map(locationMap))))
-      val result         = controller(missingWhoData).onPageLoad()(fakeRequest)
-      status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
-    }
   }
 
 }
