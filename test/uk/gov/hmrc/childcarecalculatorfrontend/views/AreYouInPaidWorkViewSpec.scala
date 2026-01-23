@@ -52,7 +52,7 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
     when(appConfigBpllDisabled.bpplContentEnabled).thenReturn(false)
   }
 
-  val bereavedPartnersParentalLeave = "bereaved partner&#x27;s parental leave"
+  val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
 
   "AreYouInPaidWork view" must {
 
@@ -64,52 +64,52 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
       yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit().url)
     )
 
-    "include bereaved partner's parental leave on page" when {
+    "include bereaved partner's paternity leave on page" when {
       "the bpllContentEnabled flag is set to true" when {
         "the location is England" in {
           constructView(appConfigBpllEnabled, location = Location.ENGLAND).toString must include(
-            bereavedPartnersParentalLeave
+            bereavedPartnersPaternityLeave
           )
         }
 
         "the location is Scotland" in {
           constructView(appConfigBpllEnabled, location = Location.SCOTLAND).toString must include(
-            bereavedPartnersParentalLeave
+            bereavedPartnersPaternityLeave
           )
         }
 
         "the location is Wales" in {
           constructView(appConfigBpllEnabled, location = Location.WALES).toString must include(
-            bereavedPartnersParentalLeave
+            bereavedPartnersPaternityLeave
           )
         }
       }
     }
 
-    "NOT include bereaved partner's parental leave on page" when {
+    "NOT include bereaved partner's paternity leave on page" when {
       "the bpllContentEnabled flag is set to false" when {
         "the location is England" in
           (constructView(appConfigBpllDisabled, location = Location.ENGLAND).toString must not)
-            .include(bereavedPartnersParentalLeave)
+            .include(bereavedPartnersPaternityLeave)
 
         "the location is Scotland" in
           (constructView(appConfigBpllDisabled, location = Location.SCOTLAND).toString must not)
-            .include(bereavedPartnersParentalLeave)
+            .include(bereavedPartnersPaternityLeave)
 
         "the location is Wales" in
           (constructView(appConfigBpllDisabled, location = Location.WALES).toString must not)
-            .include(bereavedPartnersParentalLeave)
+            .include(bereavedPartnersPaternityLeave)
 
         "the location is Northern Ireland" in
           (constructView(appConfigBpllDisabled, location = Location.NORTHERN_IRELAND).toString must not)
-            .include(bereavedPartnersParentalLeave)
+            .include(bereavedPartnersPaternityLeave)
 
       }
 
       "the bpllContentEnabledFlag is set to true" when {
         "the location is Northern Ireland" in
           (constructView(appConfigBpllEnabled, location = Location.NORTHERN_IRELAND).toString must not)
-            .include(bereavedPartnersParentalLeave)
+            .include(bereavedPartnersPaternityLeave)
       }
     }
 
