@@ -16,13 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.libs.json.{JsString, JsValue}
+import play.api.libs.json.JsString
 import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{
   partnerAverageWeeklyEarnings,
   yourAndPartnerAverageWeeklyEarnings,
