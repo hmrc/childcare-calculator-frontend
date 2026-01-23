@@ -22,7 +22,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, YouPartnerBothEnum}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{partnerAverageWeeklyEarnings, yourAndPartnerAverageWeeklyEarnings, yourAverageWeeklyEarnings}
+import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{
+  partnerAverageWeeklyEarnings,
+  yourAndPartnerAverageWeeklyEarnings,
+  yourAverageWeeklyEarnings
+}
 
 class AverageWeeklyEarningControllerSpec extends ControllerSpecBase {
 
