@@ -34,8 +34,6 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
 
   private val appConfig: FrontendAppConfig = mock[FrontendAppConfig]
 
-  private def bpplEnabled: Boolean = appConfig.bpplContentEnabled
-
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
 
@@ -52,7 +50,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
     mock[FreeChildcareWorkingParents],
     mock[TaxFreeChildcare],
     mock[EmploymentSupportedChildcare],
-    mock[FrontendAppConfig]
+    appConfig
   )
 
   def navigator: SubNavigator = navigator(new Schemes())
@@ -347,16 +345,52 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
           routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
       }
 
-      "parent with partner, both in paid work, will be redirected to you and your average earnings page" in {
+      "parent with partner, both in paid work, will be redirected to you and your average earnings guidance page" +
+                                                                "when the bpplContentEnabled flag is set to false" in {
+        print("CHeck appConfig.bpplContentEnabled", appConfig.bpplContentEnabled)
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+        when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.BOTH.toString))
+        when(appConfig.bpplContentEnabled).thenReturn(false)
+
+        navigator.nextPage(YourPartnersAgeId).value(answers) mustBe
+          routes.AverageWeeklyEarningController.onPageLoad()
+      }
+
+      "parent with partner, both in paid work, will be redirected to your average earnings question page " +
+                                                                "when the bpplContentEnabled flag is set to true" in {
         print("CHeck appConfig.bpplContentEnabled", appConfig.bpplContentEnabled)
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
         when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.BOTH.toString))
         when(appConfig.bpplContentEnabled).thenReturn(true)
-        val result = navigator(appConfig = appConfig.bpplContentEnabled)
-          .nextPage(YourPartnersAgeId)
-          .value(answers)
-        result mustBe routes.AverageWeeklyEarningController.onPageLoad()
+
+        navigator.nextPage(YourPartnersAgeId).value(answers) mustBe
+          routes.YourMinimumEarningsController.onPageLoad()
+      }
+
+      "when partner in paid work, will be redirected to partner's average earnings question page " +
+                                                                "when the bpplContentEnabled flag is set to true" in {
+        print("CHeck appConfig.bpplContentEnabled", appConfig.bpplContentEnabled)
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+        when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.PARTNER.toString))
+        when(appConfig.bpplContentEnabled).thenReturn(true)
+
+        navigator.nextPage(YourPartnersAgeId).value(answers) mustBe
+          routes.PartnerMinimumEarningsController.onPageLoad()
+      }
+
+      "when partner in paid work, will be redirected to partner's average earnings guidance page " +
+                                                              "when the bpplContentEnabled flag is set to false" in {
+        print("CHeck appConfig.bpplContentEnabled", appConfig.bpplContentEnabled)
+        val answers = spy(userAnswers())
+        when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+        when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.PARTNER.toString))
+        when(appConfig.bpplContentEnabled).thenReturn(false)
+
+        navigator.nextPage(YourPartnersAgeId).value(answers) mustBe
+          routes.AverageWeeklyEarningController.onPageLoad()
       }
 
       "redirect to your max earnings page when there is a partner, only parent is in paid work and parent earns more than NMW" in {
@@ -447,10 +481,21 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
   }
 
   "Whats Your age" when {
-    "single user will be taken to your average earnings page when user selects any age option " in {
+    "single user will be taken to your average earnings guidance page when user selects any age option " +
+                                                                "and the bpplContentEnabled flag is set to false" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      when(appConfig.bpplContentEnabled).thenReturn(false)
       navigator.nextPage(YourAgeId).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(
+      )
+    }
+
+    "single user will be taken to your average earnings question page when user selects any age option " +
+                                                                "and the bpplContentEnabled flag is set to true" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner).thenReturn(Some(false))
+      when(appConfig.bpplContentEnabled).thenReturn(true)
+      navigator.nextPage(YourAgeId).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(
       )
     }
 
@@ -462,29 +507,65 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
       )
     }
 
-    "partner user with only user(You) in paid work will be taken to your average earnings page when user selects any age option " in {
+    "partner user with only user(You) in paid work will be taken to your average earnings guidance page when user " +
+                                        "selects any age option and the bpplContentEnabled flag is set to false" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       when(answers.whoIsInPaidEmployment).thenReturn(Some("you"))
+      when(appConfig.bpplContentEnabled).thenReturn(false)
       navigator.nextPage(YourAgeId).value(answers) mustBe routes.AverageWeeklyEarningController.onPageLoad(
+      )
+    }
+
+    "partner user with only user(You) in paid work will be taken to your average earnings question page when user" +
+                                          "selects any age option and the bpplContentEnabled flag is set to true" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+      when(answers.whoIsInPaidEmployment).thenReturn(Some("you"))
+      when(appConfig.bpplContentEnabled).thenReturn(true)
+      navigator.nextPage(YourAgeId).value(answers) mustBe routes.YourMinimumEarningsController.onPageLoad(
       )
     }
   }
 
   "Whats your partners age" when {
-    "user will be taken to partners average earnings page when user selects any age option" in {
+    "user will be taken to partners average earnings guidance page when user selects any age option " +
+                                                                "and the bpplContentEnabled flag is set to false" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       when(answers.whoIsInPaidEmployment).thenReturn(Some("partner"))
+      when(appConfig.bpplContentEnabled).thenReturn(false)
       navigator.nextPage(YourPartnersAgeId).value(answers) mustBe routes.AverageWeeklyEarningController
         .onPageLoad()
     }
 
-    "both in paid work, selecting any age option redirect to parent's average earnings page" in {
+    "user will be taken to partners average earning question page when user selects any age option " +
+                                                                  "and the bpplContentEnabled flag is set to true" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+      when(answers.whoIsInPaidEmployment).thenReturn(Some("partner"))
+      when(appConfig.bpplContentEnabled).thenReturn(true)
+      navigator.nextPage(YourPartnersAgeId).value(answers) mustBe routes.PartnerMinimumEarningsController
+        .onPageLoad()
+    }
+
+    "both in paid work, selecting any age option redirect to parent's average earnings guidance page " +
+                                                              "when the bpplContentEnabled flag is set to false" in {
       val answers = spy(userAnswers())
       when(answers.doYouLiveWithPartner).thenReturn(Some(true))
       when(answers.whoIsInPaidEmployment).thenReturn(Some("both"))
+      when(appConfig.bpplContentEnabled).thenReturn(false)
       navigator.nextPage(YourPartnersAgeId).value(answers) mustBe routes.AverageWeeklyEarningController
+        .onPageLoad()
+    }
+
+    "both in paid work, selecting any age option redirect to your average earnings question page " +
+                                                              "when the bpplContentEnabled flag is set to true" in {
+      val answers = spy(userAnswers())
+      when(answers.doYouLiveWithPartner).thenReturn(Some(true))
+      when(answers.whoIsInPaidEmployment).thenReturn(Some("both"))
+      when(appConfig.bpplContentEnabled).thenReturn(true)
+      navigator.nextPage(YourPartnersAgeId).value(answers) mustBe routes.YourMinimumEarningsController
         .onPageLoad()
     }
   }

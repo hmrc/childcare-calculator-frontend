@@ -131,7 +131,6 @@ private[navigation] class MaximumHoursNavigator @Inject() (
         routes.PartnerMinimumEarningsController.onPageLoad()
       }
     } else {
-      println("HIdds")
       routes.AverageWeeklyEarningController.onPageLoad()
     }
 

@@ -90,7 +90,7 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
       }
     }
 
-    "the bpplContentEnabled flag is set to true " must {
+    "the bpplContentEnabled flag is set to true" must {
 
       behave.like(
         normalPageWithTitleAsString(
