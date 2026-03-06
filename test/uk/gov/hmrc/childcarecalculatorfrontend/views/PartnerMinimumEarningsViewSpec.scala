@@ -42,14 +42,6 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
       location: Location.Value = Location.ENGLAND
   ) = view(appConfig, form, amount, location)(fakeRequest, messages)
 
-  val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
-  val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
-
-  override def beforeEach(): Unit = {
-    when(appConfigBpplEnabled.bpplContentEnabled).thenReturn(true)
-    when(appConfigBpplDisabled.bpplContentEnabled).thenReturn(false)
-  }
-
   def createView(appConfig: FrontendAppConfig = frontendAppConfig) = () => constructView(appConfig = appConfig)
 
   def createViewUsingForm(appConfig: FrontendAppConfig = frontendAppConfig) = (form: Form[Boolean]) =>
@@ -57,6 +49,14 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
 
   def createViewWithAmount(appConfig: FrontendAppConfig = frontendAppConfig) = (amount: BigDecimal) =>
     constructView(appConfig = appConfig, amount = amount)
+
+  val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
+  val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
+
+  override def beforeEach(): Unit = {
+    when(appConfigBpplEnabled.bpplContentEnabled).thenReturn(true)
+    when(appConfigBpplDisabled.bpplContentEnabled).thenReturn(false)
+  }
 
   "PartnerMinimumEarnings view" when {
     "the bpplContentEnabled flag is set to false " must {

@@ -345,7 +345,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
           routes.AreYouSelfEmployedOrApprenticeController.onPageLoad()
       }
 
-      "parent with partner, both in paid work, will be redirected to you and your average earnings guidance page" +
+      "parent with partner, both in paid work, will be redirected to you and your average earnings page" +
         "when the bpplContentEnabled flag is set to false" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -356,7 +356,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
             routes.AverageWeeklyEarningController.onPageLoad()
         }
 
-      "parent with partner, both in paid work, will be redirected to your average earnings question page " +
+      "parent with partner, both in paid work, will be redirected to your minimum earnings page " +
         "when the bpplContentEnabled flag is set to true" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -367,7 +367,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
             routes.YourMinimumEarningsController.onPageLoad()
         }
 
-      "when partner in paid work, will be redirected to partner's average earnings question page " +
+      "when partner in paid work, will be redirected to partner's minimum earnings page " +
         "when the bpplContentEnabled flag is set to true" in {
           val answers = spy(userAnswers())
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -378,7 +378,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
             routes.PartnerMinimumEarningsController.onPageLoad()
         }
 
-      "when partner in paid work, will be redirected to partner's average earnings guidance page " +
+      "when partner in paid work, will be redirected to partner's average earnings page " +
         "when the bpplContentEnabled flag is set to false" in {
 
           val answers = spy(userAnswers())
@@ -478,7 +478,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
   }
 
   "Whats Your age" when {
-    "single user will be taken to your average earnings guidance page when user selects any age option " +
+    "single user will be taken to your average earnings page when user selects any age option " +
       "and the bpplContentEnabled flag is set to false" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
@@ -487,7 +487,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
         )
       }
 
-    "single user will be taken to your average earnings question page when user selects any age option " +
+    "single user will be taken to your minimum earnings page when user selects any age option " +
       "and the bpplContentEnabled flag is set to true" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(false))
@@ -504,7 +504,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
       )
     }
 
-    "partner user with only user(You) in paid work will be taken to your average earnings guidance page when user " +
+    "partner user with only user(You) in paid work will be taken to your average earnings page when user " +
       "selects any age option and the bpplContentEnabled flag is set to false" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -514,7 +514,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
         )
       }
 
-    "partner user with only user(You) in paid work will be taken to your average earnings question page when user" +
+    "partner user with only user(You) in paid work will be taken to your minimum earnings page when user" +
       "selects any age option and the bpplContentEnabled flag is set to true" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -526,7 +526,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
   }
 
   "Whats your partners age" when {
-    "user will be taken to partners average earnings guidance page when user selects any age option " +
+    "user will be taken to partners average earnings page when user selects any age option " +
       "and the bpplContentEnabled flag is set to false" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -536,7 +536,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
           .onPageLoad()
       }
 
-    "user will be taken to partners average earning question page when user selects any age option " +
+    "user will be taken to partner minimum earnings page when user selects any age option " +
       "and the bpplContentEnabled flag is set to true" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -546,7 +546,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
           .onPageLoad()
       }
 
-    "both in paid work, selecting any age option redirect to parent's average earnings guidance page " +
+    "both in paid work, selecting any age option redirect to parent's average earnings page " +
       "when the bpplContentEnabled flag is set to false" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
@@ -556,7 +556,7 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAn
           .onPageLoad()
       }
 
-    "both in paid work, selecting any age option redirect to your average earnings question page " +
+    "both in paid work, selecting any age option redirect to your minimum earnings page " +
       "when the bpplContentEnabled flag is set to true" in {
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
