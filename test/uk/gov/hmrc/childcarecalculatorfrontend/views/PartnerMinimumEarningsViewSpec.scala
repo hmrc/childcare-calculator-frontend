@@ -106,6 +106,15 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
 
       behave.like(pageWithBackLink(createView(appConfig = appConfigBpplEnabled)))
 
+      behave.like(
+        yesNoPage(
+          createViewUsingForm(appConfig = appConfigBpplEnabled),
+          messageKeyPrefix,
+          routes.PartnerMinimumEarningsController.onSubmit().url,
+          legend = Some(messages(s"$messageKeyPrefix.heading", 0))
+        )
+      )
+
       "include bereaved partner's paternity leave on page" when {
         "the location is England" in {
           constructView(appConfigBpplEnabled, location = Location.ENGLAND).toString must include(
@@ -132,6 +141,37 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
             .include(bereavedPartnersPaternityLeave)
 
       }
+
+      "display the correct guidance text" when {
+        "the location is other than Northern Ireland" in {
+          val view1 = constructView(appConfigBpplEnabled)
+          val doc   = asDocument(view1)
+
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.para1"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.para2"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading2"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.para3"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.para4"))
+
+        }
+      }
+
+      "display the correct guidance text" when {
+        "the location is Northern Ireland" in {
+          val view1 = constructView(appConfigBpplEnabled, location = Location.NORTHERN_IRELAND)
+          val doc   = asDocument(view1)
+
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.para1"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.northern-ireland.para2"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading2"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.para3"))
+          assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.para4"))
+
+        }
+      }
+
     }
   }
 
