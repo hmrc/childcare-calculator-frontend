@@ -73,10 +73,11 @@
         @inputYesNo(
             label = (
                     if(appConfig.bpplContentEnabled)
-                        HtmlContent(s"""<h3 class="govuk-heading-m">${messages("yourMinimumEarnings.heading", amount)}</h3>""")
+                        Text(messages("yourMinimumEarnings.heading", amount))
                      else
                         HtmlContent(heading(messages("yourMinimumEarnings.heading", amount)))
                     ),
+            labelClass = ( if(appConfig.bpplContentEnabled) Some("govuk-fieldset__legend--m") else None ),
             field = form("value"),
         )
 
