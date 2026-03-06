@@ -18,9 +18,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+import uk.gov.hmrc.childcarecalculatorfrontend.{FrontendAppConfig, SpecBase}
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
@@ -29,7 +30,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{both, partner, you}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers}
 
-class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
+class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
+
+  private val appConfig: FrontendAppConfig = mock[FrontendAppConfig]
+
+  private def bpplEnabled: Boolean = appConfig.bpplContentEnabled
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers: _*)))
@@ -40,13 +45,14 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       tfc: TaxFreeChildcare,
       esc: EmploymentSupportedChildcare
   ): SubNavigator =
-    new MaximumHoursNavigator(schemes, freeChildcareWorkingParents, tfc, esc)
+    new MaximumHoursNavigator(schemes, freeChildcareWorkingParents, tfc, esc, appConfig)
 
   def navigator(schemes: Schemes): SubNavigator = new MaximumHoursNavigator(
     schemes,
     mock[FreeChildcareWorkingParents],
     mock[TaxFreeChildcare],
-    mock[EmploymentSupportedChildcare]
+    mock[EmploymentSupportedChildcare],
+    mock[FrontendAppConfig]
   )
 
   def navigator: SubNavigator = navigator(new Schemes())
@@ -342,12 +348,15 @@ class MaximumHoursNavigatorSpec extends SpecBase with MockitoSugar {
       }
 
       "parent with partner, both in paid work, will be redirected to you and your average earnings page" in {
+        print("CHeck appConfig.bpplContentEnabled", appConfig.bpplContentEnabled)
         val answers = spy(userAnswers())
         when(answers.doYouLiveWithPartner).thenReturn(Some(true))
         when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothEnum.BOTH.toString))
-
-        navigator.nextPage(YourPartnersAgeId).value(answers) mustBe
-          routes.AverageWeeklyEarningController.onPageLoad()
+        when(appConfig.bpplContentEnabled).thenReturn(true)
+        val result = navigator(appConfig = appConfig.bpplContentEnabled)
+          .nextPage(YourPartnersAgeId)
+          .value(answers)
+        result mustBe routes.AverageWeeklyEarningController.onPageLoad()
       }
 
       "redirect to your max earnings page when there is a partner, only parent is in paid work and parent earns more than NMW" in {

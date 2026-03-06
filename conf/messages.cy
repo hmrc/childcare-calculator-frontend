@@ -336,12 +336,28 @@ yourAge.error.notCompleted=Dewiswch eich oedran
 yourAge.checkYourAnswersLabel=Beth yw’ch oedran chi?
 
 yourMinimumEarnings.title = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
+yourMinimumEarnings.averageWeekly.title = Eich enillion wythnosol cyfartalog
 yourMinimumEarnings.heading = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
-yourMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os ydych yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
+yourMinimumEarnings.averageWeekly.heading = Eich enillion wythnosol cyfartalog
+yourMinimumEarnings.averageWeekly.para1 = Mae angen i ni wybod beth yw cyfanswm eich cyflog wythnosol neu’ch elw wythnosol o hunangyflogaeth am y 3 mis nesaf, cyn i dreth ac Yswiriant Gwladol gael eu tynnu.
+yourMinimumEarnings.averageWeekly.para2 = Os ydych ar absenoldeb mabwysiadu, absenoldeb tadolaeth partner mewn profedigaeth, absenoldeb mamolaeth, absenoldeb gofal newyddenedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni neu absenoldeb salwch, mae angen i chi ddewis ‘Iawn’
+yourMinimumEarnings.averageWeekly.northern-ireland.para2 = Os ydych ar absenoldeb mabwysiadu, absenoldeb mamolaeth, absenoldeb gofal newyddenedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni neu absenoldeb salwch, mae angen i chi ddewis ‘Iawn’
+yourMinimumEarnings.averageWeekly.heading2 = Gweithwyr ar gyfer rhan o’r flwyddyn
+yourMinimumEarnings.averageWeekly.para3 = Mae’n bosibl y byddwch yn parhau i fod yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch yn gweithio swm cyfartalog wythnosol sy’n 16 awr, a hynny dros y 3 mis nesaf.
+yourMinimumEarnings.averageWeekly.para4 = Os yw hyn yn berthnasol, dewiswch ‘Iawn’.
+yourMinimumEarnings.error.notCompleted = Dewiswch ‘Iawn’ os ydych yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
 partnerMinimumEarnings.title = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
+partnerMinimumEarnings.averageWeekly.title = Enillion wythnosol cyfartalog eich partner
 partnerMinimumEarnings.heading = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
-partnerMinimumEarnings.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch partner yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
+partnerMinimumEarnings.averageWeekly.heading = Enillion wythnosol cyfartalog eich partner
+partnerMinimumEarnings.averageWeekly.para1 = Mae angen i ni wybod beth yw cyfanswm cyflog wythnosol neu elw wythnosol o hunangyflogaeth eich partner am y 3 mis nesaf, cyn i dreth ac Yswiriant Gwladol gael eu tynnu.
+partnerMinimumEarnings.averageWeekly.para2 = Os ydy eich partner ar absenoldeb mabwysiadu, absenoldeb tadolaeth partner mewn profedigaeth, absenoldeb mamolaeth, absenoldeb gofal newyddenedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni neu absenoldeb salwch, mae angen i chi ddewis ‘Iawn’.
+partnerMinimumEarnings.averageWeekly.northern-ireland.para2 = Os ydy eich partner ar absenoldeb mabwysiadu, absenoldeb mamolaeth, absenoldeb gofal newyddenedigol, absenoldeb tadolaeth, absenoldeb ar y cyd i rieni neu absenoldeb salwch, mae angen i chi ddewis ‘Iawn’.
+partnerMinimumEarnings.averageWeekly.heading2 = Gweithwyr ar gyfer rhan o’r flwyddyn
+partnerMinimumEarnings.averageWeekly.para3 = Mae’n bosibl y bydd eich partner yn parhau i fod yn gymwys ar gyfer y cynllun os yw ei incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os bydd eich partner yn gweithio swm cyfartalog wythnosol sy’n 16 awr, a hynny dros y 3 mis nesaf.
+partnerMinimumEarnings.averageWeekly.para4 = Os yw hyn yn berthnasol, dewiswch ‘Iawn’.
+partnerMinimumEarnings.error.notCompleted = Dewiswch ‘Iawn’ os yw’ch partner yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
 areYouSelfEmployedOrApprentice.title=A ydych yn hunangyflogedig neu’n brentis?
 areYouSelfEmployedOrApprentice.heading=A ydych yn hunangyflogedig neu’n brentis?

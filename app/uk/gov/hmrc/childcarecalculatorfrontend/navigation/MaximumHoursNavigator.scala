@@ -23,6 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models._
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 
 import javax.inject.{Inject, Singleton}
 
@@ -31,7 +32,8 @@ private[navigation] class MaximumHoursNavigator @Inject() (
     schemes: Schemes,
     freeChildcareWorkingParents: FreeChildcareWorkingParents,
     tfc: TaxFreeChildcare,
-    esc: EmploymentSupportedChildcare
+    esc: EmploymentSupportedChildcare,
+    appConfig: FrontendAppConfig
 ) extends SubNavigator {
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
@@ -113,13 +115,25 @@ private[navigation] class MaximumHoursNavigator @Inject() (
 
   private def yourAgeRoute(answers: UserAnswers): Call =
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      routes.AverageWeeklyEarningController.onPageLoad()
+      if (appConfig.bpplContentEnabled) {
+        routes.YourMinimumEarningsController.onPageLoad()
+      } else
+        routes.AverageWeeklyEarningController.onPageLoad()
     } else {
       routes.YourPartnersAgeController.onPageLoad()
     }
 
   private def yourPartnerAgeRoute(answers: UserAnswers): Call =
-    routes.AverageWeeklyEarningController.onPageLoad()
+    if (appConfig.bpplContentEnabled) {
+      if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
+        routes.YourMinimumEarningsController.onPageLoad()
+      } else {
+        routes.PartnerMinimumEarningsController.onPageLoad()
+      }
+    } else {
+      println("HIdds")
+      routes.AverageWeeklyEarningController.onPageLoad()
+    }
 
   private def yourMinimumEarningsRoute(answers: UserAnswers): Call =
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
