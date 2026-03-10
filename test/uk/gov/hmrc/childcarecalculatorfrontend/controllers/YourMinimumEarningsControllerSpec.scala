@@ -25,8 +25,8 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{YourAgeId, YourMinimumEarningsId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, YourAgeId, YourMinimumEarningsId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
@@ -37,9 +37,14 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
   val mockUtils = mock[Utils]
 
+  val location               = Location.ENGLAND
+  val locationMap            = LocationId.toString -> JsString(location.toString)
+  val cacheMapWithLocation   = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+  val getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
+
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new YourMinimumEarningsController(
       frontendAppConfig,
       mcc,
@@ -52,12 +57,15 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
     )
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form, 0)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, 0, location)(fakeRequest, messages).toString
 
   "YourMinimumEarnings Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val validData       = Map(YourAgeId.toString -> JsString(AgeEnum.UNDER18.toString))
+      val validData = Map(
+        YourAgeId.toString  -> JsString(AgeEnum.UNDER18.toString),
+        LocationId.toString -> JsString(Location.ENGLAND.toString)
+      )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       setUpMock()
@@ -70,7 +78,8 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
         YourAgeId.toString             -> JsString(AgeEnum.UNDER18.toString),
-        YourMinimumEarningsId.toString -> JsBoolean(true)
+        YourMinimumEarningsId.toString -> JsBoolean(true),
+        LocationId.toString            -> JsString(Location.ENGLAND.toString)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -121,7 +130,7 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
     }
 
     "redirect to the 'your age' view when session data does not hold this value" in {
-      val result = controller(getEmptyCacheMap).onPageLoad()(fakeRequest)
+      val result = controller(getDataWithLocationSet).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.YourAgeController.onPageLoad().url)

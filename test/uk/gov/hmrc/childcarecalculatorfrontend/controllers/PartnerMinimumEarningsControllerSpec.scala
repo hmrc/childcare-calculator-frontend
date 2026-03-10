@@ -25,20 +25,24 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{PartnerMinimumEarningsId, YourPartnersAgeId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, PartnerMinimumEarningsId, YourPartnersAgeId}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 
 class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar {
 
-  val view      = application.injector.instanceOf[partnerMinimumEarnings]
-  val mockUtils = mock[Utils]
+  val view                   = application.injector.instanceOf[partnerMinimumEarnings]
+  val mockUtils              = mock[Utils]
+  val location               = Location.ENGLAND
+  val locationMap            = LocationId.toString -> JsString(location.toString)
+  val cacheMapWithLocation   = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+  val getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
+  def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new PartnerMinimumEarningsController(
       frontendAppConfig,
       mcc,
@@ -51,12 +55,15 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
     )
 
   def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form, 0)(fakeRequest, messages).toString
+    view(frontendAppConfig, form, 0, location)(fakeRequest, messages).toString
 
   "PartnerMinimumEarnings Controller" must {
 
     "return OK and the correct view for a GET" in {
-      val validData       = Map(YourPartnersAgeId.toString -> JsString(AgeEnum.UNDER18.toString))
+      val validData = Map(
+        YourPartnersAgeId.toString -> JsString(AgeEnum.UNDER18.toString),
+        LocationId.toString        -> JsString(Location.ENGLAND.toString)
+      )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       setUpMock()
@@ -71,7 +78,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
       val validData = Map(
         YourPartnersAgeId.toString        -> JsString(AgeEnum.UNDER18.toString),
-        PartnerMinimumEarningsId.toString -> JsBoolean(true)
+        PartnerMinimumEarningsId.toString -> JsBoolean(true),
+        LocationId.toString               -> JsString(Location.ENGLAND.toString)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -125,7 +133,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
     }
 
     "redirect to 'your partners age' view when session data does not hold this value" in {
-      val result = controller(getEmptyCacheMap).onPageLoad()(fakeRequest)
+      val result = controller(getDataWithLocationSet).onPageLoad()(fakeRequest)
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.YourPartnersAgeController.onPageLoad().url)
