@@ -40,7 +40,7 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
       location: Location.Value = Location.ENGLAND
   ): HtmlFormat.Appendable = view(appConfig, form, location)(fakeRequest, messages)
 
-  def createView = () => constructView()
+  def createView(appConfig: FrontendAppConfig = frontendAppConfig) = () => constructView(appConfig = appConfig)
 
   def createViewUsingForm = (form: Form[Boolean]) => constructView(form = form)
 
@@ -56,9 +56,9 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
 
   "AreYouInPaidWork view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix, "heading", "para1"))
+    behave.like(normalPage(createView(appConfig = appConfigBpplEnabled), messageKeyPrefix, "heading", "para1"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(createView(appConfig = appConfigBpplEnabled)))
 
     behave.like(
       yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit().url)

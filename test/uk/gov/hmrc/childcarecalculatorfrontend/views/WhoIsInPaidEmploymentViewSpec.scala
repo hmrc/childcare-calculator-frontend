@@ -37,7 +37,7 @@ class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours with BeforeAndAfte
       location: Location.Value = Location.ENGLAND
   ) = view(appConfig, form, location)(fakeRequest, messages)
 
-  def createView = () => constructView()
+  def createView(appConfig: FrontendAppConfig = frontendAppConfig) = () => constructView(appConfig = appConfig)
 
   def createViewUsingForm = (form: Form[String]) => constructView(form = form)
 
@@ -52,9 +52,9 @@ class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours with BeforeAndAfte
   val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
 
   "WhoIsInPaidEmployment view" must {
-    behave.like(normalPage(createView, messageKeyPrefix, "para1"))
+    behave.like(normalPage(createView(appConfig = appConfigBpplEnabled), messageKeyPrefix, "para1"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(createView(appConfig = appConfigBpplEnabled)))
 
     "include bereaved partner's paternity leave on page" when {
       "the bpplContentEnabled flag is set to true" when {
