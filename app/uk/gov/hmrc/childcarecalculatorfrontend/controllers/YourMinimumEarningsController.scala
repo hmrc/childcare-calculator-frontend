@@ -50,20 +50,26 @@ class YourMinimumEarningsController @Inject() (
     with Logging {
 
   def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
-    if (request.userAnswers.yourAge.isEmpty) {
-      logger.warn(
-        s"Arrived at ${request.uri} without an age value, redirecting to ${routes.YourAgeController.onPageLoad().url}"
-      )
-      Redirect(routes.YourAgeController.onPageLoad())
-    } else {
-      val earningsForAge =
-        utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourAge)
+    request.userAnswers.location match {
+      case None =>
+        Redirect(routes.LocationController.onPageLoad())
 
-      val preparedForm = request.userAnswers.yourMinimumEarnings match {
-        case None        => BooleanForm(yourMinimumEarningsErrorKey, earningsForAge)
-        case Some(value) => BooleanForm(yourMinimumEarningsErrorKey, earningsForAge).fill(value)
-      }
-      Ok(yourMinimumEarnings(appConfig, preparedForm, earningsForAge))
+      case Some(location) =>
+        if (request.userAnswers.yourAge.isEmpty) {
+          logger.warn(
+            s"Arrived at ${request.uri} without an age value, redirecting to ${routes.YourAgeController.onPageLoad().url}"
+          )
+          Redirect(routes.YourAgeController.onPageLoad())
+        } else {
+          val earningsForAge =
+            utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourAge)
+
+          val preparedForm = request.userAnswers.yourMinimumEarnings match {
+            case None        => BooleanForm(yourMinimumEarningsErrorKey, earningsForAge)
+            case Some(value) => BooleanForm(yourMinimumEarningsErrorKey, earningsForAge).fill(value)
+          }
+          Ok(yourMinimumEarnings(appConfig, preparedForm, earningsForAge, location))
+        }
     }
   }
 
@@ -71,16 +77,20 @@ class YourMinimumEarningsController @Inject() (
     val earningsForAge =
       utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourAge)
 
-    BooleanForm(yourMinimumEarningsErrorKey, earningsForAge)
-      .bindFromRequest()
-      .fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(yourMinimumEarnings(appConfig, formWithErrors, earningsForAge))),
-        value =>
-          dataCacheConnector
-            .save[Boolean](request.sessionId, YourMinimumEarningsId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(YourMinimumEarningsId)(new UserAnswers(cacheMap))))
-      )
+    request.userAnswers.location match {
+      case None => Future.successful(Redirect(routes.LocationController.onPageLoad()))
+      case Some(location) =>
+        BooleanForm(yourMinimumEarningsErrorKey, earningsForAge)
+          .bindFromRequest()
+          .fold(
+            (formWithErrors: Form[Boolean]) =>
+              Future.successful(BadRequest(yourMinimumEarnings(appConfig, formWithErrors, earningsForAge, location))),
+            value =>
+              dataCacheConnector
+                .save[Boolean](request.sessionId, YourMinimumEarningsId.toString, value)
+                .map(cacheMap => Redirect(navigator.nextPage(YourMinimumEarningsId)(new UserAnswers(cacheMap))))
+          )
+    }
   }
 
 }

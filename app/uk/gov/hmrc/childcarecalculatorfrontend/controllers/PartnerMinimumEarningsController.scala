@@ -50,20 +50,26 @@ class PartnerMinimumEarningsController @Inject() (
     with Logging {
 
   def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
-    if (request.userAnswers.yourPartnersAge.isEmpty) {
-      logger.warn(
-        s"Arrived at ${request.uri} without an age value, redirecting to ${routes.YourPartnersAgeController.onPageLoad().url}"
-      )
-      Redirect(routes.YourPartnersAgeController.onPageLoad())
-    } else {
-      val earningsForAge =
-        utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
+    request.userAnswers.location match {
+      case None =>
+        Redirect(routes.LocationController.onPageLoad())
 
-      val preparedForm = request.userAnswers.partnerMinimumEarnings match {
-        case None        => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
-        case Some(value) => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge).fill(value)
-      }
-      Ok(partnerMinimumEarnings(appConfig, preparedForm, earningsForAge))
+      case Some(location) =>
+        if (request.userAnswers.yourPartnersAge.isEmpty) {
+          logger.warn(
+            s"Arrived at ${request.uri} without an age value, redirecting to ${routes.YourPartnersAgeController.onPageLoad().url}"
+          )
+          Redirect(routes.YourPartnersAgeController.onPageLoad())
+        } else {
+          val earningsForAge =
+            utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
+
+          val preparedForm = request.userAnswers.partnerMinimumEarnings match {
+            case None        => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
+            case Some(value) => BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge).fill(value)
+          }
+          Ok(partnerMinimumEarnings(appConfig, preparedForm, earningsForAge, location))
+        }
     }
   }
 
@@ -71,16 +77,21 @@ class PartnerMinimumEarningsController @Inject() (
     val earningsForAge =
       utils.getEarningsForAgeRange(appConfig.configuration, LocalDate.now, request.userAnswers.yourPartnersAge)
 
-    BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
-      .bindFromRequest()
-      .fold(
-        (formWithErrors: Form[Boolean]) =>
-          Future.successful(BadRequest(partnerMinimumEarnings(appConfig, formWithErrors, earningsForAge))),
-        value =>
-          dataCacheConnector
-            .save[Boolean](request.sessionId, PartnerMinimumEarningsId.toString, value)
-            .map(cacheMap => Redirect(navigator.nextPage(PartnerMinimumEarningsId)(new UserAnswers(cacheMap))))
-      )
+    request.userAnswers.location match {
+      case None => Future.successful(Redirect(routes.LocationController.onPageLoad()))
+      case Some(location) =>
+        BooleanForm(partnerMinimumEarningsErrorKey, earningsForAge)
+          .bindFromRequest()
+          .fold(
+            (formWithErrors: Form[Boolean]) =>
+              Future
+                .successful(BadRequest(partnerMinimumEarnings(appConfig, formWithErrors, earningsForAge, location))),
+            value =>
+              dataCacheConnector
+                .save[Boolean](request.sessionId, PartnerMinimumEarningsId.toString, value)
+                .map(cacheMap => Redirect(navigator.nextPage(PartnerMinimumEarningsId)(new UserAnswers(cacheMap))))
+          )
+    }
   }
 
 }

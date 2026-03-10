@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 
 @this(
         layout: Layout,
@@ -30,22 +31,53 @@
 @(
         appConfig: FrontendAppConfig,
         form: Form[Boolean],
-        amount: BigDecimal
+        amount: BigDecimal,
+        location: Location.Value
 )(implicit request: Request[_], messages: Messages)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("partnerMinimumEarnings.title", amount)) else messages("partnerMinimumEarnings.title", amount)
+    val baseTitle = {
+        if(appConfig.bpplContentEnabled) messages("partnerMinimumEarnings.averageWeekly.title")
+        else messages("partnerMinimumEarnings.title", amount)
+    }
+
+    if (form.errors.nonEmpty) messages("site.title.error", baseTitle) else baseTitle
 }
 
 @layout(
     pageTitle = title
 ) {
 
+    @if(appConfig.bpplContentEnabled) {
+
+    @heading(messages("partnerMinimumEarnings.averageWeekly.heading"))
+    @p() { @messages("partnerMinimumEarnings.averageWeekly.para1") }
+
+    @p() {
+        @if(location != Location.NORTHERN_IRELAND) {
+            @messages("partnerMinimumEarnings.averageWeekly.para2")
+        } else {
+            @messages("partnerMinimumEarnings.averageWeekly.northern-ireland.para2")
+        }
+    }
+
+    <h2 class="govuk-heading-m">@messages("partnerMinimumEarnings.averageWeekly.heading2")</h2>
+    @p() { @messages("partnerMinimumEarnings.averageWeekly.para3") }
+    @p() { @messages("partnerMinimumEarnings.averageWeekly.para4") }<br>
+
+    }
+
     @errorSummary(form.errors)
 
     @formWithCSRF(action = PartnerMinimumEarningsController.onSubmit(), Symbol("autoComplete") -> "off") {
         @inputYesNo(
-            label = HtmlContent(heading(messages("partnerMinimumEarnings.heading", amount))),
+            label = (
+                    if(appConfig.bpplContentEnabled)
+                        Text(messages("partnerMinimumEarnings.heading", amount))
+                    else
+                        HtmlContent(heading(messages("partnerMinimumEarnings.heading", amount)))
+                    ),
+            labelClass = ( if(appConfig.bpplContentEnabled) Some("govuk-fieldset__legend--m") else None ),
             field = form("value"),
         )
 
