@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
@@ -35,27 +36,17 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
   override val form: Form[Boolean]   = BooleanForm()
   val bereavedPartnersPaternityLeave = "bereaved partner’s paternity leave"
 
+  val appConfig: FrontendAppConfig = mock[FrontendAppConfig]
+
   def constructView(
-      appConfig: FrontendAppConfig = frontendAppConfig,
       form: Form[Boolean] = this.form,
       amount: BigDecimal = 0,
       location: Location.Value = Location.ENGLAND
-  ) = view(appConfig, form, amount, location)(fakeRequest, messages)
-
-  def createView(appConfig: FrontendAppConfig = frontendAppConfig) = () => constructView(appConfig = appConfig)
-
-  def createViewUsingForm(appConfig: FrontendAppConfig = frontendAppConfig) = (form: Form[Boolean]) =>
-    constructView(appConfig = appConfig, form = form)
-
-  def createViewWithAmount(appConfig: FrontendAppConfig = frontendAppConfig) = (amount: BigDecimal) =>
-    constructView(appConfig = appConfig, amount = amount)
-
-  val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
-  val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
+  ): HtmlFormat.Appendable = view(appConfig, form, amount, location)(fakeRequest, messages)
 
   override def beforeEach(): Unit = {
-    when(appConfigBpplEnabled.bpplContentEnabled).thenReturn(true)
-    when(appConfigBpplDisabled.bpplContentEnabled).thenReturn(false)
+    super.beforeEach()
+    reset(appConfig)
   }
 
   "YourMinimumEarnings view" when {
@@ -63,7 +54,10 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
       behave.like(
         normalPageWithTitleAsString(
-          view = createView(appConfig = appConfigBpplDisabled),
+          view = () => {
+            when(appConfig.bpplContentEnabled).thenReturn(false)
+            constructView()
+          },
           messageKeyPrefix = messageKeyPrefix,
           messageKeyPostfix = "",
           title = messages("yourMinimumEarnings.title", 0),
@@ -72,11 +66,17 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
           args = 0
         )
       )
-      behave.like(pageWithBackLink(createView(appConfig = appConfigBpplDisabled)))
+      behave.like(pageWithBackLink { () =>
+        when(appConfig.bpplContentEnabled).thenReturn(false)
+        constructView()
+      })
 
       behave.like(
         yesNoPage(
-          createViewUsingForm(appConfig = appConfigBpplDisabled),
+          (form: Form[Boolean]) => {
+            when(appConfig.bpplContentEnabled).thenReturn(false)
+            constructView(form = form)
+          },
           messageKeyPrefix,
           routes.YourMinimumEarningsController.onSubmit().url,
           legend = Some(messages(s"$messageKeyPrefix.heading", 0))
@@ -85,7 +85,9 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
       "show correct guidance and value of minimum earnings" in {
         val amount = BigDecimal(40)
-        val doc    = asDocument(createViewWithAmount(appConfigBpplDisabled)(amount))
+
+        when(appConfig.bpplContentEnabled).thenReturn(false)
+        val doc = asDocument(constructView(amount = amount))
         assertContainsText(doc, messages(s"$messageKeyPrefix.heading", amount))
       }
     }
@@ -94,7 +96,10 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
       behave.like(
         normalPageWithTitleAsString(
-          view = createView(appConfig = appConfigBpplEnabled),
+          view = () => {
+            when(appConfig.bpplContentEnabled).thenReturn(true)
+            constructView()
+          },
           messageKeyPrefix = averageWeeklyEarningsKeyPrefix,
           messageKeyPostfix = "",
           title = messages("yourMinimumEarnings.averageWeekly.title", 0),
@@ -103,11 +108,17 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
           args = 0
         )
       )
-      behave.like(pageWithBackLink(createView(appConfig = appConfigBpplEnabled)))
+      behave.like(pageWithBackLink { () =>
+        when(appConfig.bpplContentEnabled).thenReturn(true)
+        constructView()
+      })
 
       behave.like(
         yesNoPage(
-          createViewUsingForm(appConfig = appConfigBpplEnabled),
+          (form: Form[Boolean]) => {
+            when(appConfig.bpplContentEnabled).thenReturn(true)
+            constructView(form = form)
+          },
           messageKeyPrefix,
           routes.YourMinimumEarningsController.onSubmit().url,
           legend = Some(messages(s"$messageKeyPrefix.heading", 0))
@@ -116,19 +127,22 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
       "include bereaved partner's paternity leave on page" when {
         "the location is England" in {
-          constructView(appConfigBpplEnabled, location = Location.ENGLAND).toString must include(
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          constructView(location = Location.ENGLAND).toString must include(
             bereavedPartnersPaternityLeave
           )
         }
 
         "the location is Scotland" in {
-          constructView(appConfigBpplEnabled, location = Location.SCOTLAND).toString must include(
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          constructView(location = Location.SCOTLAND).toString must include(
             bereavedPartnersPaternityLeave
           )
         }
 
         "the location is Wales" in {
-          constructView(appConfigBpplEnabled, location = Location.WALES).toString must include(
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          constructView(location = Location.WALES).toString must include(
             bereavedPartnersPaternityLeave
           )
         }
@@ -136,15 +150,18 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
       }
 
       "NOT include bereaved partner's paternity leave on page" when {
-        "the location is Northern Ireland" in
-          (constructView(appConfig = appConfigBpplEnabled, location = Location.NORTHERN_IRELAND).toString must not)
+        "the location is Northern Ireland" in {
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          (constructView(location = Location.NORTHERN_IRELAND).toString must not)
             .include(bereavedPartnersPaternityLeave)
+        }
 
       }
 
       "display the correct guidance text" when {
         "the location is other than Northern Ireland" in {
-          val view1 = constructView(appConfigBpplEnabled)
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          val view1 = constructView()
           val doc   = asDocument(view1)
 
           assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading"))
@@ -159,7 +176,8 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
       "display the correct guidance text" when {
         "the location is Northern Ireland" in {
-          val view1 = constructView(appConfigBpplEnabled, location = Location.NORTHERN_IRELAND)
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          val view1 = constructView(location = Location.NORTHERN_IRELAND)
           val doc   = asDocument(view1)
 
           assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading"))

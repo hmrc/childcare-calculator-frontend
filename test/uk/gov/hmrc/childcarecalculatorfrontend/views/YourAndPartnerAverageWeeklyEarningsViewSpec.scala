@@ -36,19 +36,23 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
   val viewBpplEnabled: yourAndPartnerAverageWeeklyEarnings =
     applicationBpplEnabled.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
 
+  val applicationBpplDisabled: Application =
+    new GuiceApplicationBuilder()
+      .configure("feature.bpplContentEnabled" -> false)
+      .build()
+
+  val viewBpplDisabled: yourAndPartnerAverageWeeklyEarnings =
+    applicationBpplDisabled.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
+
   def constructView(
       view: yourAndPartnerAverageWeeklyEarnings,
       location: Location.Value = Location.ENGLAND
   ): HtmlFormat.Appendable = view(location)(fakeRequest, messages)
 
-  def createView(
-      view: yourAndPartnerAverageWeeklyEarnings
-  ): () => HtmlFormat.Appendable = () => constructView(view)
-
   "YourAndPartnerAverageWeeklyEarnings view" must {
     behave.like(
       normalPageWithTitleAsString(
-        view = createView(viewBpplEnabled),
+        view = () => constructView(viewBpplEnabled),
         messageKeyPrefix = messageKeyPrefix,
         messageKeyPostfix = "",
         title = messages("yourAndPartnerAverageWeeklyEarnings.heading", 0),
@@ -58,7 +62,7 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
       )
     )
 
-    behave.like(pageWithBackLink(createView(viewBpplEnabled)))
+    behave.like(pageWithBackLink(() => constructView(viewBpplEnabled)))
 
     "display the correct guidance text " in {
       val view1 = constructView(viewBpplEnabled)
@@ -82,6 +86,22 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
       val expected = Seq(
         "yourAndPartnerAverageWeeklyEarnings.li.adoption",
         "yourAndPartnerAverageWeeklyEarnings.li.bereavedPartnersPaternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.maternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.neonatalCare",
+        "yourAndPartnerAverageWeeklyEarnings.li.paternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.sickLeave"
+      )
+
+      assertBulletListValues(doc, expected, bulletItemsSelector)
+    }
+
+    "display the correct bullet list when flag bpplContentEnabled is false" in {
+      val partnerAverageWeeklyEarningsView = constructView(viewBpplDisabled)
+      val doc                              = asDocument(partnerAverageWeeklyEarningsView)
+      val bulletItemsSelector              = "ul.govuk-list--bullet li"
+
+      val expected = Seq(
+        "yourAndPartnerAverageWeeklyEarnings.li.adoption",
         "yourAndPartnerAverageWeeklyEarnings.li.maternity",
         "yourAndPartnerAverageWeeklyEarnings.li.neonatalCare",
         "yourAndPartnerAverageWeeklyEarnings.li.paternity",

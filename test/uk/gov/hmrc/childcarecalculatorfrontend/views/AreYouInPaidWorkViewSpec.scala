@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.data.Form
@@ -30,56 +30,66 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
 class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfterEach {
 
-  override val form: Form[Boolean] = BooleanForm()
-  val messageKeyPrefix             = "areYouInPaidWork"
-  val view: areYouInPaidWork       = application.injector.instanceOf[areYouInPaidWork]
+  override val form: Form[Boolean]   = BooleanForm()
+  val messageKeyPrefix               = "areYouInPaidWork"
+  val view: areYouInPaidWork         = application.injector.instanceOf[areYouInPaidWork]
+  val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
+
+  val appConfig: FrontendAppConfig = mock[FrontendAppConfig]
 
   def constructView(
-      appConfig: FrontendAppConfig = frontendAppConfig,
       form: Form[Boolean] = BooleanForm(),
       location: Location.Value = Location.ENGLAND
   ): HtmlFormat.Appendable = view(appConfig, form, location)(fakeRequest, messages)
 
-  def createView(appConfig: FrontendAppConfig = frontendAppConfig) = () => constructView(appConfig = appConfig)
-
-  def createViewUsingForm = (form: Form[Boolean]) => constructView(form = form)
-
-  val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
-  val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
-
   override def beforeEach(): Unit = {
-    when(appConfigBpplEnabled.bpplContentEnabled).thenReturn(true)
-    when(appConfigBpplDisabled.bpplContentEnabled).thenReturn(false)
+    super.beforeEach()
+    reset(appConfig)
   }
-
-  val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
 
   "AreYouInPaidWork view" must {
 
-    behave.like(normalPage(createView(appConfig = appConfigBpplEnabled), messageKeyPrefix, "heading", "para1"))
+    behave.like(
+      normalPage(
+        () => {
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          constructView()
+        },
+        messageKeyPrefix,
+        "heading",
+        "para1"
+      )
+    )
 
-    behave.like(pageWithBackLink(createView(appConfig = appConfigBpplEnabled)))
+    behave.like(pageWithBackLink(() => constructView()))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit().url)
+      yesNoPage(
+        (form: Form[Boolean]) => constructView(form = form),
+        messageKeyPrefix,
+        routes.AreYouInPaidWorkController.onSubmit().url
+      )
     )
 
     "include bereaved partner's paternity leave on page" when {
       "the bpplContentEnabled flag is set to true" when {
         "the location is England" in {
-          constructView(appConfigBpplEnabled, location = Location.ENGLAND).toString must include(
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          constructView(location = Location.ENGLAND).toString must include(
             bereavedPartnersPaternityLeave
           )
         }
 
         "the location is Scotland" in {
-          constructView(appConfigBpplEnabled, location = Location.SCOTLAND).toString must include(
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          constructView(location = Location.SCOTLAND).toString must include(
             bereavedPartnersPaternityLeave
           )
         }
 
         "the location is Wales" in {
-          constructView(appConfigBpplEnabled, location = Location.WALES).toString must include(
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          constructView(location = Location.WALES).toString must include(
             bereavedPartnersPaternityLeave
           )
         }
@@ -88,28 +98,38 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
 
     "NOT include bereaved partner's paternity leave on page" when {
       "the bpplContentEnabled flag is set to false" when {
-        "the location is England" in
-          (constructView(appConfigBpplDisabled, location = Location.ENGLAND).toString must not)
+        "the location is England" in {
+          when(appConfig.bpplContentEnabled).thenReturn(false)
+          (constructView(location = Location.ENGLAND).toString must not)
             .include(bereavedPartnersPaternityLeave)
+        }
 
-        "the location is Scotland" in
-          (constructView(appConfigBpplDisabled, location = Location.SCOTLAND).toString must not)
+        "the location is Scotland" in {
+          when(appConfig.bpplContentEnabled).thenReturn(false)
+          (constructView(location = Location.SCOTLAND).toString must not)
             .include(bereavedPartnersPaternityLeave)
+        }
 
-        "the location is Wales" in
-          (constructView(appConfigBpplDisabled, location = Location.WALES).toString must not)
+        "the location is Wales" in {
+          when(appConfig.bpplContentEnabled).thenReturn(false)
+          (constructView(location = Location.WALES).toString must not)
             .include(bereavedPartnersPaternityLeave)
+        }
 
-        "the location is Northern Ireland" in
-          (constructView(appConfigBpplDisabled, location = Location.NORTHERN_IRELAND).toString must not)
+        "the location is Northern Ireland" in {
+          when(appConfig.bpplContentEnabled).thenReturn(false)
+          (constructView(location = Location.NORTHERN_IRELAND).toString must not)
             .include(bereavedPartnersPaternityLeave)
+        }
 
       }
 
       "the bpplContentEnabledFlag is set to true" when {
-        "the location is Northern Ireland" in
-          (constructView(appConfigBpplEnabled, location = Location.NORTHERN_IRELAND).toString must not)
+        "the location is Northern Ireland" in {
+          when(appConfig.bpplContentEnabled).thenReturn(true)
+          (constructView(location = Location.NORTHERN_IRELAND).toString must not)
             .include(bereavedPartnersPaternityLeave)
+        }
       }
     }
 
