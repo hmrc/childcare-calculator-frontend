@@ -28,21 +28,16 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "yourAndPartnerAverageWeeklyEarnings"
 
-  val applicationBpplEnabled: Application =
+  def applicationBpplEnabled(bpplContentEnabled: Boolean): Application =
     new GuiceApplicationBuilder()
-      .configure("feature.bpplContentEnabled" -> true)
+      .configure("feature.bpplContentEnabled" -> bpplContentEnabled)
       .build()
 
-  val viewBpplEnabled: yourAndPartnerAverageWeeklyEarnings =
-    applicationBpplEnabled.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
+  lazy val viewBpplEnabled: yourAndPartnerAverageWeeklyEarnings =
+    applicationBpplEnabled(true).injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
 
-  val applicationBpplDisabled: Application =
-    new GuiceApplicationBuilder()
-      .configure("feature.bpplContentEnabled" -> false)
-      .build()
-
-  val viewBpplDisabled: yourAndPartnerAverageWeeklyEarnings =
-    applicationBpplDisabled.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
+  lazy val viewBpplDisabled: yourAndPartnerAverageWeeklyEarnings =
+    applicationBpplEnabled(false).injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
 
   def constructView(
       view: yourAndPartnerAverageWeeklyEarnings,
