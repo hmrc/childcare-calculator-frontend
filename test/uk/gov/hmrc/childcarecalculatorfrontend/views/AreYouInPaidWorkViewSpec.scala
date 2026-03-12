@@ -30,19 +30,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
 class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfterEach {
 
-  override val form: Form[Boolean] = BooleanForm()
-  val messageKeyPrefix             = "areYouInPaidWork"
-  val view: areYouInPaidWork       = application.injector.instanceOf[areYouInPaidWork]
+  override val form: Form[Boolean]   = BooleanForm()
+  val messageKeyPrefix               = "areYouInPaidWork"
+  val view: areYouInPaidWork         = application.injector.instanceOf[areYouInPaidWork]
+  val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
 
   def constructView(
       appConfig: FrontendAppConfig = frontendAppConfig,
       form: Form[Boolean] = BooleanForm(),
       location: Location.Value = Location.ENGLAND
   ): HtmlFormat.Appendable = view(appConfig, form, location)(fakeRequest, messages)
-
-  def createView = () => constructView()
-
-  def createViewUsingForm = (form: Form[Boolean]) => constructView(form = form)
 
   val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
   val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
@@ -52,16 +49,18 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
     when(appConfigBpplDisabled.bpplContentEnabled).thenReturn(false)
   }
 
-  val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
-
   "AreYouInPaidWork view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix, "heading", "para1"))
+    behave.like(normalPage(() => constructView(appConfigBpplEnabled), messageKeyPrefix, "heading", "para1"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => constructView()))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.AreYouInPaidWorkController.onSubmit().url)
+      yesNoPage(
+        (form: Form[Boolean]) => constructView(form = form),
+        messageKeyPrefix,
+        routes.AreYouInPaidWorkController.onSubmit().url
+      )
     )
 
     "include bereaved partner's paternity leave on page" when {

@@ -16,6 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAndPartnerAverageWeeklyEarnings
@@ -24,14 +27,27 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
 
   val messageKeyPrefix = "yourAndPartnerAverageWeeklyEarnings"
-  val view             = application.injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
 
-  def createView(loc: Location.Value = Location.ENGLAND) = view(loc)(fakeRequest, messages)
+  def applicationBpplEnabled(bpplContentEnabled: Boolean): Application =
+    new GuiceApplicationBuilder()
+      .configure("feature.bpplContentEnabled" -> bpplContentEnabled)
+      .build()
+
+  lazy val viewBpplEnabled: yourAndPartnerAverageWeeklyEarnings =
+    applicationBpplEnabled(true).injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
+
+  lazy val viewBpplDisabled: yourAndPartnerAverageWeeklyEarnings =
+    applicationBpplEnabled(false).injector.instanceOf[yourAndPartnerAverageWeeklyEarnings]
+
+  def constructView(
+      view: yourAndPartnerAverageWeeklyEarnings,
+      location: Location.Value = Location.ENGLAND
+  ): HtmlFormat.Appendable = view(location)(fakeRequest, messages)
 
   "YourAndPartnerAverageWeeklyEarnings view" must {
     behave.like(
       normalPageWithTitleAsString(
-        view = () => createView(),
+        view = () => constructView(viewBpplEnabled),
         messageKeyPrefix = messageKeyPrefix,
         messageKeyPostfix = "",
         title = messages("yourAndPartnerAverageWeeklyEarnings.heading", 0),
@@ -41,10 +57,10 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
       )
     )
 
-    behave.like(pageWithBackLink(() => createView()))
+    behave.like(pageWithBackLink(() => constructView(viewBpplEnabled)))
 
     "display the correct guidance text " in {
-      val view1 = createView()
+      val view1 = constructView(viewBpplEnabled)
       val doc   = asDocument(view1)
 
       assertContainsText(doc, messages(s"$messageKeyPrefix.para1"))
@@ -58,7 +74,7 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
     }
 
     "display the correct bullet list" in {
-      val partnerAverageWeeklyEarningsView = createView()
+      val partnerAverageWeeklyEarningsView = constructView(viewBpplEnabled)
       val doc                              = asDocument(partnerAverageWeeklyEarningsView)
       val bulletItemsSelector              = "ul.govuk-list--bullet li"
 
@@ -74,8 +90,24 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
       assertBulletListValues(doc, expected, bulletItemsSelector)
     }
 
+    "display the correct bullet list when flag bpplContentEnabled is false" in {
+      val partnerAverageWeeklyEarningsView = constructView(viewBpplDisabled)
+      val doc                              = asDocument(partnerAverageWeeklyEarningsView)
+      val bulletItemsSelector              = "ul.govuk-list--bullet li"
+
+      val expected = Seq(
+        "yourAndPartnerAverageWeeklyEarnings.li.adoption",
+        "yourAndPartnerAverageWeeklyEarnings.li.maternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.neonatalCare",
+        "yourAndPartnerAverageWeeklyEarnings.li.paternity",
+        "yourAndPartnerAverageWeeklyEarnings.li.sickLeave"
+      )
+
+      assertBulletListValues(doc, expected, bulletItemsSelector)
+    }
+
     "display the correct bullet list when location is Northern Ireland" in {
-      val NIPartnerWeeklyEarningsView = createView(Location.NORTHERN_IRELAND)
+      val NIPartnerWeeklyEarningsView = constructView(viewBpplEnabled, Location.NORTHERN_IRELAND)
       val doc                         = asDocument(NIPartnerWeeklyEarningsView)
       val bulletItemsSelector         = "ul.govuk-list--bullet li"
 
@@ -91,7 +123,7 @@ class YourAndPartnerAverageWeeklyEarningsViewSpec extends NewViewBehaviours {
     }
 
     "contain the link for Your minimum earning" in {
-      val doc          = asDocument(createView())
+      val doc          = asDocument(constructView(viewBpplEnabled))
       val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))

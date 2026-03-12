@@ -20,6 +20,7 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoIsInPaidEmploymentForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
@@ -28,18 +29,15 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoIsInPaidEmployment
 
 class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours with BeforeAndAfterEach {
 
-  val view             = application.injector.instanceOf[whoIsInPaidEmployment]
-  val messageKeyPrefix = "whoIsInPaidEmployment"
+  val view: whoIsInPaidEmployment    = application.injector.instanceOf[whoIsInPaidEmployment]
+  val messageKeyPrefix               = "whoIsInPaidEmployment"
+  val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
 
   def constructView(
       appConfig: FrontendAppConfig = frontendAppConfig,
       form: Form[String] = WhoIsInPaidEmploymentForm(),
       location: Location.Value = Location.ENGLAND
   ) = view(appConfig, form, location)(fakeRequest, messages)
-
-  def createView = () => constructView()
-
-  def createViewUsingForm = (form: Form[String]) => constructView(form = form)
 
   val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
   val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
@@ -49,12 +47,10 @@ class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours with BeforeAndAfte
     when(appConfigBpplDisabled.bpplContentEnabled).thenReturn(false)
   }
 
-  val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
-
   "WhoIsInPaidEmployment view" must {
-    behave.like(normalPage(createView, messageKeyPrefix, "para1"))
+    behave.like(normalPage(() => constructView(appConfigBpplEnabled), messageKeyPrefix, "para1"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => constructView()))
 
     "include bereaved partner's paternity leave on page" when {
       "the bpplContentEnabled flag is set to true" when {
@@ -109,7 +105,7 @@ class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours with BeforeAndAfte
   "WhoIsInPaidEmployment view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(WhoIsInPaidEmploymentForm()))
+        val doc = asDocument(constructView(form = WhoIsInPaidEmploymentForm()))
         for (option <- WhoIsInPaidEmploymentForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
       }
@@ -119,7 +115,7 @@ class WhoIsInPaidEmploymentViewSpec extends NewViewBehaviours with BeforeAndAfte
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
           val doc =
-            asDocument(createViewUsingForm(WhoIsInPaidEmploymentForm().bind(Map("value" -> s"${option.value}"))))
+            asDocument(constructView(form = WhoIsInPaidEmploymentForm().bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
           for (unselectedOption <- WhoIsInPaidEmploymentForm.options.filterNot(o => o == option))

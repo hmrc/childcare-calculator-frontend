@@ -20,6 +20,7 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.data.Form
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
@@ -40,15 +41,7 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
       form: Form[Boolean] = this.form,
       amount: BigDecimal = 0,
       location: Location.Value = Location.ENGLAND
-  ) = view(appConfig, form, amount, location)(fakeRequest, messages)
-
-  def createView(appConfig: FrontendAppConfig = frontendAppConfig) = () => constructView(appConfig = appConfig)
-
-  def createViewUsingForm(appConfig: FrontendAppConfig = frontendAppConfig) = (form: Form[Boolean]) =>
-    constructView(appConfig = appConfig, form = form)
-
-  def createViewWithAmount(appConfig: FrontendAppConfig = frontendAppConfig) = (amount: BigDecimal) =>
-    constructView(appConfig = appConfig, amount = amount)
+  ): HtmlFormat.Appendable = view(appConfig, form, amount, location)(fakeRequest, messages)
 
   val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
   val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
@@ -63,7 +56,7 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
 
       behave.like(
         normalPageWithTitleAsString(
-          view = createView(appConfig = appConfigBpplDisabled),
+          view = () => constructView(appConfigBpplDisabled),
           messageKeyPrefix = messageKeyPrefix,
           messageKeyPostfix = "",
           title = messages("partnerMinimumEarnings.title", 0),
@@ -72,11 +65,11 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
           args = 0
         )
       )
-      behave.like(pageWithBackLink(createView(appConfig = appConfigBpplDisabled)))
+      behave.like(pageWithBackLink(() => constructView()))
 
       behave.like(
         yesNoPage(
-          createViewUsingForm(appConfig = appConfigBpplDisabled),
+          (form: Form[Boolean]) => constructView(appConfigBpplDisabled, form = form),
           messageKeyPrefix,
           routes.PartnerMinimumEarningsController.onSubmit().url,
           legend = Some(messages(s"$messageKeyPrefix.heading", 0))
@@ -85,7 +78,7 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
 
       "show correct guidance and value of minimum earnings" in {
         val amount = BigDecimal(40)
-        val doc    = asDocument(createViewWithAmount(appConfigBpplDisabled)(amount))
+        val doc    = asDocument(constructView(appConfigBpplDisabled, amount = amount))
         assertContainsText(doc, messages(s"$messageKeyPrefix.heading", amount))
       }
     }
@@ -94,7 +87,7 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
 
       behave.like(
         normalPageWithTitleAsString(
-          view = createView(appConfig = appConfigBpplEnabled),
+          view = () => constructView(appConfigBpplEnabled),
           messageKeyPrefix = averageWeeklyEarningsKeyPrefix,
           messageKeyPostfix = "",
           title = messages("partnerMinimumEarnings.averageWeekly.title", 0),
@@ -104,11 +97,11 @@ class PartnerMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeA
         )
       )
 
-      behave.like(pageWithBackLink(createView(appConfig = appConfigBpplEnabled)))
+      behave.like(pageWithBackLink(() => constructView()))
 
       behave.like(
         yesNoPage(
-          createViewUsingForm(appConfig = appConfigBpplEnabled),
+          (form: Form[Boolean]) => constructView(appConfigBpplEnabled, form = form),
           messageKeyPrefix,
           routes.PartnerMinimumEarningsController.onSubmit().url,
           legend = Some(messages(s"$messageKeyPrefix.heading", 0))
