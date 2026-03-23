@@ -528,12 +528,6 @@ partnerPaidWorkCY.checkYourAnswersLabel = Your partner isn’t working now, but 
 partnerPaidWorkCY.error.notCompleted = Select yes if your partner had any paid work this year
 partnerPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
 
-bothPaidWorkCY.title = You and your partner are not working now, but have you and your partner had any paid work this year?
-bothPaidWorkCY.heading = You and your partner are not working now, but have you and your partner had any paid work this year?
-bothPaidWorkCY.checkYourAnswersLabel = You and your partner are not working now, but have you and your partner had any paid work this year?
-bothPaidWorkCY.error.notCompleted = Select yes if you and your partner had any paid work this year
-bothPaidWorkCY.currentYear.startEndDate = This year is 6 April {0} to 5 April {1}.
-
 whoPaysIntoPension.title = Who’s paying into a pension?
 whoPaysIntoPension.heading = Who’s paying into a pension?
 whoPaysIntoPension.you = You
@@ -582,13 +576,6 @@ bothAnyTheseBenefitsCY.checkYourAnswersLabel = Have you or your partner had any 
 bothAnyTheseBenefitsCY.error.notCompleted = Select yes if you or your partner had any of these benefits this year
 bothAnyTheseBenefitsCY.error.carers.allowance = Select yes as you previously selected that you, your partner or both get Carer’s Allowance
 bothAnyTheseBenefitsCY.error.scottishCarers.allowance = Select yes as you previously selected that you, your partner or both receive either Carer’s Allowance or Carer Support Payment
-
-partnerAnyOtherIncomeThisYear.title = Will your partner get any other income this year?
-partnerAnyOtherIncomeThisYear.heading = Will your partner get any other income this year?
-partnerAnyOtherIncomeThisYear.year.start.end.date = This year is 6 April {0} to 5 April {1}.
-partnerAnyOtherIncomeThisYear.hint.text = Other income could be from investments, rental income, interest on savings or foreign income - not from State Pension, maintenance, student grants or loans.
-partnerAnyOtherIncomeThisYear.checkYourAnswersLabel = partnerAnyOtherIncomeThisYear
-partnerAnyOtherIncomeThisYear.error.notCompleted = Select yes if your partner will get any other income this year
 
 bothOtherIncomeThisYear.title = Will you, your partner, or both of you get any other income this year?
 bothOtherIncomeThisYear.heading = Will you, your partner, or both of you get any other income this year?

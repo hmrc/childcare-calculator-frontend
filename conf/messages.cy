@@ -510,12 +510,6 @@ partnerPaidWorkCY.checkYourAnswersLabel=Dydy eich partner ddim yn gweithio nawr,
 partnerPaidWorkCY.error.notCompleted=Dewiswch ‘Iawn’ os yw’ch partner wedi cael unrhyw waith taledig y flwyddyn hon
 partnerPaidWorkCY.currentYear.startEndDate=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
 
-bothPaidWorkCY.title=Dydych chi na’ch partner ddim yn gweithio nawr, ond a ydych chi neu’ch partner wedi cael unrhyw waith taledig y flwyddyn hon?
-bothPaidWorkCY.heading=Dydych chi na’ch partner ddim yn gweithio nawr, ond a ydych chi neu’ch partner wedi cael unrhyw waith taledig y flwyddyn hon?
-bothPaidWorkCY.checkYourAnswersLabel=Dydych chi na’ch partner ddim yn gweithio nawr, ond a ydych chi neu’ch partner wedi cael unrhyw waith taledig y flwyddyn hon?
-bothPaidWorkCY.error.notCompleted=Dewiswch ‘Iawn’ os ydych chi a’ch partner wedi cael unrhyw waith taledig y flwyddyn hon
-bothPaidWorkCY.currentYear.startEndDate=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-
 whoPaysIntoPension.title=Pwy sy’n talu i mewn i bensiwn?
 whoPaysIntoPension.heading=Pwy sy’n talu i mewn i bensiwn?
 whoPaysIntoPension.you=Chi
@@ -561,13 +555,6 @@ bothAnyTheseBenefitsCY.checkYourAnswersLabel=A ydych chi neu’ch partner wedi c
 bothAnyTheseBenefitsCY.error.notCompleted=Dewiswch ‘Iawn’ os ydych chi neu’ch partner wedi cael unrhyw un o’r budd-daliadau hyn y flwyddyn hon
 bothAnyTheseBenefitsCY.error.carers.allowance=Dewiswch ‘Iawn’ gan eich bod eisoes wedi dewis eich bod chi, eich partner neu’r ddau ohonoch yn cael Lwfans Gofalwr
 bothAnyTheseBenefitsCY.error.scottishCarers.allowance=Dewiswch ‘Iawn’ gan eich bod eisoes wedi nodi eich bod chi, eich partner, neu’r ddau ohonoch yn cael naill ai Lwfans Gofalwr neu Daliad Cymorth Gofalwr
-
-partnerAnyOtherIncomeThisYear.title=A fydd eich partner yn cael unrhyw incwm arall y flwyddyn hon?
-partnerAnyOtherIncomeThisYear.heading=A fydd eich partner yn cael unrhyw incwm arall y flwyddyn hon?
-partnerAnyOtherIncomeThisYear.year.start.end.date=Mae’r flwyddyn hon yn rhedeg o 6 Ebrill {0} i 5 Ebrill {1}.
-partnerAnyOtherIncomeThisYear.hint.text=Gallai incwm arall fod o fuddsoddiadau, incwm rhent, llog ar gynilion neu incwm tramor – nid o Bensiwn y Wladwriaeth, cynhaliaeth, grantiau myfyrwyr neu fenthyciadau.
-partnerAnyOtherIncomeThisYear.checkYourAnswersLabel=partnerAnyOtherIncomeThisYear
-partnerAnyOtherIncomeThisYear.error.notCompleted=Dewiswch ‘Iawn’ os bydd eich partner yn cael unrhyw incwm arall y flwyddyn hon
 
 bothOtherIncomeThisYear.title=A fyddwch chi, eich partner, neu’r ddau ohonoch yn cael unrhyw incwm arall y flwyddyn hon?
 bothOtherIncomeThisYear.heading=A fyddwch chi, eich partner, neu’r ddau ohonoch yn cael unrhyw incwm arall y flwyddyn hon?

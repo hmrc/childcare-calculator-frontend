@@ -30,25 +30,18 @@ import javax.inject.{Inject, Singleton}
 private[navigation] class OtherIncomeNavigator @Inject() (utils: Utils) extends SubNavigator {
 
   override protected def routeMap: Map[Identifier, UserAnswers => Call] = Map(
-    YourOtherIncomeThisYearId       -> yourOtherIncomeRouteCY,
-    PartnerAnyOtherIncomeThisYearId -> partnerOtherIncomeRouteCY,
-    BothOtherIncomeThisYearId       -> bothOtherIncomeRouteCY,
-    WhoGetsOtherIncomeCYId          -> whoGetsOtherIncomeRouteCY,
-    YourOtherIncomeAmountCYId       -> howMuchYourOtherIncomeRouteCY,
-    PartnerOtherIncomeAmountCYId    -> howMuchPartnerOtherIncomeRouteCY,
-    OtherIncomeAmountCYId           -> howMuchBothOtherIncomeRouteCY
+    YourOtherIncomeThisYearId    -> yourOtherIncomeRouteCY,
+    BothOtherIncomeThisYearId    -> bothOtherIncomeRouteCY,
+    WhoGetsOtherIncomeCYId       -> whoGetsOtherIncomeRouteCY,
+    YourOtherIncomeAmountCYId    -> howMuchYourOtherIncomeRouteCY,
+    PartnerOtherIncomeAmountCYId -> howMuchPartnerOtherIncomeRouteCY,
+    OtherIncomeAmountCYId        -> howMuchBothOtherIncomeRouteCY
   )
 
   private def yourOtherIncomeRouteCY(answers: UserAnswers) =
 
     utils.getCall(answers.yourOtherIncomeThisYear) {
       case true  => routes.YourOtherIncomeAmountCYController.onPageLoad()
-      case false => routes.ResultController.onPageLoad()
-    }
-
-  private def partnerOtherIncomeRouteCY(answers: UserAnswers) =
-    utils.getCall(answers.partnerAnyOtherIncomeThisYear) {
-      case true  => routes.PartnerOtherIncomeAmountCYController.onPageLoad()
       case false => routes.ResultController.onPageLoad()
     }
 

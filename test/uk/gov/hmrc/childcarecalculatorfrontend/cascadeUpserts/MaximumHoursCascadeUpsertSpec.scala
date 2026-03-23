@@ -173,7 +173,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
           PartnerEmploymentIncomeCYId.toString            -> JsBoolean(true),
           PartnerPaidPensionCYId.toString                 -> JsBoolean(true),
           HowMuchPartnerPayPensionId.toString             -> JsNumber(BigDecimal(20)),
-          PartnerAnyOtherIncomeThisYearId.toString        -> JsBoolean(true),
           PartnerBenefitsIncomeCYId.toString              -> JsNumber(BigDecimal(20))
         )
       )
@@ -230,7 +229,6 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
             PartnerEmploymentIncomeCYId.toString       -> JsBoolean(true),
             PartnerPaidPensionCYId.toString            -> JsBoolean(true),
             HowMuchPartnerPayPensionId.toString        -> JsNumber(BigDecimal(20)),
-            PartnerAnyOtherIncomeThisYearId.toString   -> JsBoolean(true),
             PartnerBenefitsIncomeCYId.toString         -> JsNumber(BigDecimal(20))
           )
         ) // TODO Add in Statutory Data
@@ -516,13 +514,12 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       val originalCacheMap = new CacheMap(
         "id",
         Map(
-          PartnerChildcareVouchersId.toString      -> JsString("yes"),
-          ParentPaidWorkCYId.toString              -> JsBoolean(true),
-          PartnerEmploymentIncomeCYId.toString     -> JsBoolean(true),
-          PartnerPaidPensionCYId.toString          -> JsBoolean(true),
-          HowMuchPartnerPayPensionId.toString      -> JsNumber(BigDecimal(20)),
-          PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(true),
-          PartnerBenefitsIncomeCYId.toString       -> JsNumber(BigDecimal(20))
+          PartnerChildcareVouchersId.toString  -> JsString("yes"),
+          ParentPaidWorkCYId.toString          -> JsBoolean(true),
+          PartnerEmploymentIncomeCYId.toString -> JsBoolean(true),
+          PartnerPaidPensionCYId.toString      -> JsBoolean(true),
+          HowMuchPartnerPayPensionId.toString  -> JsNumber(BigDecimal(20)),
+          PartnerBenefitsIncomeCYId.toString   -> JsNumber(BigDecimal(20))
         )
       )
 
