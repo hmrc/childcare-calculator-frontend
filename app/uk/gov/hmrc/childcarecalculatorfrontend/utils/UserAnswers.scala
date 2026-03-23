@@ -112,16 +112,11 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def whoGetsOtherIncomeCY: Option[String] = cacheMap.getEntry[String](WhoGetsOtherIncomeCYId.toString)
 
-  def bothPaidWorkCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidWorkCYId.toString)
-
   def partnerPaidWorkCY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerPaidWorkCYId.toString)
 
   def parentPaidWorkCY: Option[Boolean] = cacheMap.getEntry[Boolean](ParentPaidWorkCYId.toString)
 
   def whoPaysIntoPension: Option[String] = cacheMap.getEntry[String](WhoPaysIntoPensionId.toString)
-
-  def partnerAnyOtherIncomeThisYear: Option[Boolean] =
-    cacheMap.getEntry[Boolean](PartnerAnyOtherIncomeThisYearId.toString)
 
   def yourOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeThisYearId.toString)
 

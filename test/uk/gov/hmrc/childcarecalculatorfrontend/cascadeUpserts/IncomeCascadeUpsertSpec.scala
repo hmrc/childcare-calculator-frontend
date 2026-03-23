@@ -173,29 +173,6 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       }
     }
 
-    "Save PartnerAnyOtherIncomeThisYear data " must {
-      "remove partnerOtherIncomeAmountCY page data when user selects no option" in {
-        val originalCacheMap =
-          new CacheMap("id", Map(PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
-
-        val result = cascadeUpsert(PartnerAnyOtherIncomeThisYearId.toString, false, originalCacheMap)
-
-        result.data mustBe Map(PartnerAnyOtherIncomeThisYearId.toString -> JsBoolean(false))
-      }
-
-      "return original cache map when user selects yes option" in {
-        val originalCacheMap =
-          new CacheMap("id", Map(PartnerOtherIncomeAmountCYId.toString -> JsNumber(BigDecimal(20))))
-
-        val result = cascadeUpsert(PartnerAnyOtherIncomeThisYearId.toString, true, originalCacheMap)
-
-        result.data mustBe Map(
-          PartnerAnyOtherIncomeThisYearId.toString.toString -> JsBoolean(true),
-          PartnerOtherIncomeAmountCYId.toString             -> JsNumber(BigDecimal(20))
-        )
-      }
-    }
-
     "Save BothOtherIncomeThisYear data " must {
       "remove whoGetsOtherIncomeCY, yourOtherIncomeAmountCY, partnerOtherIncomeAmountCY and otherIncomeAmountCY pages data" +
         " when user selects no option" in {

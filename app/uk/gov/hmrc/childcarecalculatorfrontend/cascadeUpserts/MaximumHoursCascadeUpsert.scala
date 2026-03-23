@@ -88,7 +88,7 @@ class MaximumHoursCascadeUpsert @Inject() () extends SubCascadeUpsert {
               DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - PartnerChildcareVouchersId.toString -
               WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerSelfEmployedOrApprenticeId.toString -
               PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
-              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString -
+              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString -
               PartnerBenefitsIncomeCYId.toString -
               EmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
               BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString - BothAnyTheseBenefitsCYId.toString -
@@ -113,7 +113,7 @@ class MaximumHoursCascadeUpsert @Inject() () extends SubCascadeUpsert {
               PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString - HowMuchYouPayPensionId.toString -
               YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString - YouBenefitsIncomeCYId.toString -
               ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
-              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString -
+              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString -
               PartnerBenefitsIncomeCYId.toString
           )
 
@@ -132,7 +132,7 @@ class MaximumHoursCascadeUpsert @Inject() () extends SubCascadeUpsert {
               PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
               HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
               YouBenefitsIncomeCYId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
-              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString - PartnerAnyOtherIncomeThisYearId.toString -
+              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString -
               PartnerBenefitsIncomeCYId.toString - EmploymentIncomeCYId.toString -
               BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
               BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -

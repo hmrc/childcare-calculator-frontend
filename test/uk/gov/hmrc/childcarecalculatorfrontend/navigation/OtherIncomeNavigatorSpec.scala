@@ -106,24 +106,6 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
       }
 
-      "Partner Other Income CY Route" must {
-        "redirects to PartnerOtherIncomeAmountCY page when user selects yes" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyOtherIncomeThisYear).thenReturn(Some(true))
-
-          navigator().nextPage(PartnerAnyOtherIncomeThisYearId).value(answers) mustBe
-            routes.PartnerOtherIncomeAmountCYController.onPageLoad()
-        }
-
-        "redirects to sessionExpired page when there is no value for user selection" in {
-          val answers = spy(userAnswers())
-          when(answers.partnerAnyOtherIncomeThisYear).thenReturn(None)
-
-          navigator().nextPage(PartnerAnyOtherIncomeThisYearId).value(answers) mustBe
-            routes.SessionExpiredController.onPageLoad
-        }
-      }
-
       "Both Other Income CY Route" must {
         "redirects to WhoGetsOtherIncomeCY page when user selects yes" in {
           val answers = spy(userAnswers())
@@ -310,7 +292,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "redirects to results page when user is in receipt of UC, eligible for TFC " in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-            when(answers.partnerAnyOtherIncomeThisYear).thenReturn(Some(true))
+            when(answers.whoGetsOtherIncomeCY).thenReturn(Some("partner"))
             when(answers.partnerOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(true))
 
@@ -323,7 +305,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "redirects to BothIncomeInfoCY page when user is not in receipt of UC, eligible for TFC and " in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-            when(answers.partnerAnyOtherIncomeThisYear).thenReturn(Some(true))
+            when(answers.whoGetsOtherIncomeCY).thenReturn(Some("partner"))
             when(answers.partnerOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(false))
 

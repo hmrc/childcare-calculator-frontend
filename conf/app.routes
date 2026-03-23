@@ -116,9 +116,6 @@ POST        /your-paid-work-current-year                       uk.gov.hmrc.child
 GET         /partner-paid-work-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onPageLoad()
 POST        /partner-paid-work-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerPaidWorkCYController.onSubmit()
 
-GET         /both-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onPageLoad()
-POST        /both-paid-work-current-year                       uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidWorkCYController.onSubmit()
-
 GET         /who-pays-into-pension                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onPageLoad()
 POST        /who-pays-into-pension                             uk.gov.hmrc.childcarecalculatorfrontend.controllers.WhoPaysIntoPensionController.onSubmit()
 
@@ -133,9 +130,6 @@ POST        /partner-paid-pension-current-year                 uk.gov.hmrc.child
 
 GET         /both-paid-pension-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionCYController.onPageLoad()
 POST        /both-paid-pension-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothPaidPensionCYController.onSubmit()
-
-GET         /partner-other-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onPageLoad()
-POST        /partner-other-income-current-year                 uk.gov.hmrc.childcarecalculatorfrontend.controllers.PartnerAnyOtherIncomeThisYearController.onSubmit()
 
 GET         /both-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onPageLoad()
 POST        /both-other-income-current-year                    uk.gov.hmrc.childcarecalculatorfrontend.controllers.BothOtherIncomeThisYearController.onSubmit()
