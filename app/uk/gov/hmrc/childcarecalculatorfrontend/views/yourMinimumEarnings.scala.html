@@ -36,10 +36,7 @@
 )(implicit request: Request[_], messages: Messages)
 
 @title = @{
-    val baseTitle = {
-        if(appConfig.bpplContentEnabled) messages("yourMinimumEarnings.averageWeekly.title")
-        else messages("yourMinimumEarnings.title", amount)
-    }
+    val baseTitle = { messages("yourMinimumEarnings.averageWeekly.title") }
 
     if (form.errors.nonEmpty) messages("site.title.error", baseTitle) else baseTitle
 }
@@ -48,36 +45,28 @@
     pageTitle = title
 ) {
 
-    @if(appConfig.bpplContentEnabled) {
+    @heading(messages("yourMinimumEarnings.averageWeekly.heading"))
+    @p() { @messages("yourMinimumEarnings.averageWeekly.para1") }
 
-        @heading(messages("yourMinimumEarnings.averageWeekly.heading"))
-        @p() { @messages("yourMinimumEarnings.averageWeekly.para1") }
-
-        @p() {
-            @if(location != Location.NORTHERN_IRELAND) {
-                @messages("yourMinimumEarnings.averageWeekly.para2")
-            } else {
-                @messages("yourMinimumEarnings.averageWeekly.northern-ireland.para2")
-            }
+    @p() {
+        @if(location != Location.NORTHERN_IRELAND) {
+            @messages("yourMinimumEarnings.averageWeekly.para2")
+        } else {
+            @messages("yourMinimumEarnings.averageWeekly.northern-ireland.para2")
         }
+    }
 
-        <h2 class="govuk-heading-m">@messages("yourMinimumEarnings.averageWeekly.heading2")</h2>
-        @p() { @messages("yourMinimumEarnings.averageWeekly.para3") }
-        @p() { @messages("yourMinimumEarnings.averageWeekly.para4") }<br>
+    <h2 class="govuk-heading-m">@messages("yourMinimumEarnings.averageWeekly.heading2")</h2>
+    @p() { @messages("yourMinimumEarnings.averageWeekly.para3") }
+    @p() { @messages("yourMinimumEarnings.averageWeekly.para4") }<br>
 
-}
 
     @errorSummary(form.errors)
 
     @formWithCSRF(action = YourMinimumEarningsController.onSubmit(), Symbol("autoComplete") -> "off") {
         @inputYesNo(
-            label = (
-                    if(appConfig.bpplContentEnabled)
-                        Text(messages("yourMinimumEarnings.heading", amount))
-                     else
-                        HtmlContent(heading(messages("yourMinimumEarnings.heading", amount)))
-                    ),
-            labelClass = ( if(appConfig.bpplContentEnabled) Some("govuk-fieldset__legend--m") else None ),
+            label = Text(messages("yourMinimumEarnings.heading", amount)),
+            labelClass = Some("govuk-fieldset__legend--m"),
             field = form("value"),
         )
 

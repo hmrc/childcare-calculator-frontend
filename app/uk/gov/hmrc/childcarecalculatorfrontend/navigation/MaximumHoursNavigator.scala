@@ -115,23 +115,16 @@ private[navigation] class MaximumHoursNavigator @Inject() (
 
   private def yourAgeRoute(answers: UserAnswers): Call =
     if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(you)) {
-      if (appConfig.bpplContentEnabled) {
-        routes.YourMinimumEarningsController.onPageLoad()
-      } else
-        routes.AverageWeeklyEarningController.onPageLoad()
+      routes.YourMinimumEarningsController.onPageLoad()
     } else {
       routes.YourPartnersAgeController.onPageLoad()
     }
 
   private def yourPartnerAgeRoute(answers: UserAnswers): Call =
-    if (appConfig.bpplContentEnabled) {
-      if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
-        routes.YourMinimumEarningsController.onPageLoad()
-      } else {
-        routes.PartnerMinimumEarningsController.onPageLoad()
-      }
+    if (answers.isYouPartnerOrBoth(answers.whoIsInPaidEmployment).contains(both)) {
+      routes.YourMinimumEarningsController.onPageLoad()
     } else {
-      routes.AverageWeeklyEarningController.onPageLoad()
+      routes.PartnerMinimumEarningsController.onPageLoad()
     }
 
   private def yourMinimumEarningsRoute(answers: UserAnswers): Call =

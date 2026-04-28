@@ -335,7 +335,6 @@ yourAge.TWENTYONEOROVER=21 neu’n hŷn
 yourAge.error.notCompleted=Dewiswch eich oedran
 yourAge.checkYourAnswersLabel=Beth yw’ch oedran chi?
 
-yourMinimumEarnings.title = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
 yourMinimumEarnings.averageWeekly.title = Eich enillion wythnosol cyfartalog
 yourMinimumEarnings.heading = Ar gyfartaledd, a fyddwch yn ennill £{0} neu fwy yr wythnos?
 yourMinimumEarnings.averageWeekly.heading = Eich enillion wythnosol cyfartalog
@@ -347,7 +346,6 @@ yourMinimumEarnings.averageWeekly.para3 = Mae’n bosibl y byddwch yn parhau i f
 yourMinimumEarnings.averageWeekly.para4 = Os yw hyn yn berthnasol, dewiswch ‘Iawn’.
 yourMinimumEarnings.error.notCompleted = Dewiswch ‘Iawn’ os ydych yn ennill £{0} neu fwy yr wythnos ar gyfartaledd
 
-partnerMinimumEarnings.title = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
 partnerMinimumEarnings.averageWeekly.title = Enillion wythnosol cyfartalog eich partner
 partnerMinimumEarnings.heading = Ar gyfartaledd, a fydd eich partner yn ennill £{0} neu fwy’r wythnos?
 partnerMinimumEarnings.averageWeekly.heading = Enillion wythnosol cyfartalog eich partner
@@ -966,52 +964,6 @@ timeout.heading=Rydych ar fin cael eich allgofnodi
 timeout.message=Er eich diogelwch, byddwn yn clirio’r hyn rydych wedi’i nodi ymhen
 timeout.continue=Parhau â’r hyn yr oeddech yn ei wneud
 timeout.exit=Clirio’r hyn rydych wedi’i nodi nawr
-
-
-yourAverageWeeklyEarnings.title = Eich enillion wythnosol cyfartalog
-yourAverageWeeklyEarnings.heading = Eich enillion wythnosol cyfartalog
-yourAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm eich cyflog wythnosol neu elw o hunangyflogaeth am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-yourAverageWeeklyEarnings.heading2 = Os byddwch ar absenoldeb
-yourAverageWeeklyEarnings.para2 = Rydym ond eisiau gwybod faint a enilloch cyn i chi fynd ar unrhyw un o’r mathau hyn o absenoldeb:
-yourAverageWeeklyEarnings.li.maternity = mamolaeth
-yourAverageWeeklyEarnings.li.paternity = tadolaeth
-yourAverageWeeklyEarnings.li.adoption = mabwysiadu
-yourAverageWeeklyEarnings.li.bereavedPartnersPaternity = absenoldeb tadolaeth partner mewn profedigaeth
-yourAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
-yourAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
-yourAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
-yourAverageWeeklyEarnings.para3 = Mae’n bosibl y byddwch yn dal yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch yn gweithio o leiaf 16 awr yr wythnos ar gyfartaledd dros y 3 mis nesaf.
-yourAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol, dewiswch ‘Parhau’ ac yna dewiswch ‘Iawn’ ar y dudalen nesaf.
-
-partnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog eich partner
-partnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog eich partner
-partnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth eich partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-partnerAverageWeeklyEarnings.heading2 = Os aeth eich partner ar absenoldeb
-partnerAverageWeeklyEarnings.para2 = Does ond angen i ni wybod faint roedden nhw’n ei ennill cyn iddyn nhw fynd ar unrhyw un o’r mathau hyn o absenoldeb:
-partnerAverageWeeklyEarnings.li.maternity = mamolaeth
-partnerAverageWeeklyEarnings.li.paternity = tadolaeth
-partnerAverageWeeklyEarnings.li.adoption = mabwysiadu
-partnerAverageWeeklyEarnings.li.bereavedPartnersPaternity = absenoldeb tadolaeth partner mewn profedigaeth
-partnerAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
-partnerAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
-partnerAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
-partnerAverageWeeklyEarnings.para3 = Mae’n bosibl y bydd eich partner yn dal yn gymwys ar gyfer y cynllun os yw ei incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddant yn gweithio o leiaf 16 awr yr wythnos, ar gyfartaledd, dros y 3 mis nesaf.
-partnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol, dewiswch ‘Parhau’ ac yna dewiswch ‘Iawn’ ar y dudalen nesaf.
-
-yourAndPartnerAverageWeeklyEarnings.title = Enillion wythnosol cyfartalog chi a’ch partner
-yourAndPartnerAverageWeeklyEarnings.heading = Enillion wythnosol cyfartalog chi a’ch partner
-yourAndPartnerAverageWeeklyEarnings.para1 = Mae angen i ni wybod cyfanswm cyflog wythnosol neu elw o hunangyflogaeth chi a’ch partner am y 3 mis nesaf, cyn tynnu treth ac Yswiriant Gwladol.
-yourAndPartnerAverageWeeklyEarnings.heading2 = Os oeddech chi neu’ch partner yn mynd ar absenoldeb
-yourAndPartnerAverageWeeklyEarnings.para2 = Nid oes ond angen i ni wybod faint rydych chi neu’ch partner wedi’i ennill cyn mynd ar unrhyw un o’r mathau hyn o absenoldeb:
-yourAndPartnerAverageWeeklyEarnings.li.maternity = mamolaeth
-yourAndPartnerAverageWeeklyEarnings.li.paternity = tadolaeth
-yourAndPartnerAverageWeeklyEarnings.li.adoption = mabwysiadu
-yourAndPartnerAverageWeeklyEarnings.li.bereavedPartnersPaternity = absenoldeb tadolaeth partner mewn profedigaeth
-yourAndPartnerAverageWeeklyEarnings.li.neonatalCare = gofal newydd-enedigol
-yourAndPartnerAverageWeeklyEarnings.li.sickLeave = absenoldeb salwch
-yourAndPartnerAverageWeeklyEarnings.heading3 = Gweithwyr ar gyfer rhan o’r flwyddyn
-yourAndPartnerAverageWeeklyEarnings.para3 = Mae’n bosibl y byddwch chi neu’ch partner yn dal i fod yn gymwys ar gyfer y cynllun os yw’ch incwm yn is na’r trothwy isaf. Mae hyn yn berthnasol dim ond os byddwch chi neu’ch partner yn gweithio o leiaf 16 awr yr wythnos, ar gyfartaledd, dros y 3 mis nesaf.
-yourAndPartnerAverageWeeklyEarnings.para4 = Os yw hyn yn berthnasol, dewiswch ‘Parhau’ ac yna dewiswch ‘Iawn’ ar y dudalen nesaf.
 
 urBanner.title=Helpwch i wella GOV.UK
 urBanner.message=Gallwch fod yn rhan o wneud gwasanaethau’r llywodraeth yn well

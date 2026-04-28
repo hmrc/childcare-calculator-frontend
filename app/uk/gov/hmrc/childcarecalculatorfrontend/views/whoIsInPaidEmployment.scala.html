@@ -34,7 +34,7 @@
     if(form.errors.nonEmpty) messages("site.title.error", messages("whoIsInPaidEmployment.title")) else messages("whoIsInPaidEmployment.title")
 }
 
-@hintPara = @{if (appConfig.bpplContentEnabled && location != Location.NORTHERN_IRELAND)
+@hintPara = @{if (location != Location.NORTHERN_IRELAND)
   "whoIsInPaidEmployment.para1"
 else
   "whoIsInPaidEmployment.northernIreland.para1"
