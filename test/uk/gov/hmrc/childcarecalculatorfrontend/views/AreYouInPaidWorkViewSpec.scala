@@ -41,17 +41,9 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
       location: Location.Value = Location.ENGLAND
   ): HtmlFormat.Appendable = view(appConfig, form, location)(fakeRequest, messages)
 
-  val appConfigBpplEnabled: FrontendAppConfig  = mock[FrontendAppConfig]
-  val appConfigBpplDisabled: FrontendAppConfig = mock[FrontendAppConfig]
-
-  override def beforeEach(): Unit = {
-    when(appConfigBpplEnabled.bpplContentEnabled).thenReturn(true)
-    when(appConfigBpplDisabled.bpplContentEnabled).thenReturn(false)
-  }
-
   "AreYouInPaidWork view" must {
 
-    behave.like(normalPage(() => constructView(appConfigBpplEnabled), messageKeyPrefix, "heading", "para1"))
+    behave.like(normalPage(() => constructView(), messageKeyPrefix, "heading", "para1"))
 
     behave.like(pageWithBackLink(() => constructView()))
 
@@ -64,54 +56,30 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
     )
 
     "include bereaved partner's paternity leave on page" when {
-      "the bpplContentEnabled flag is set to true" when {
-        "the location is England" in {
-          constructView(appConfigBpplEnabled, location = Location.ENGLAND).toString must include(
-            bereavedPartnersPaternityLeave
-          )
-        }
+      "the location is England" in {
+        constructView(location = Location.ENGLAND).toString must include(
+          bereavedPartnersPaternityLeave
+        )
+      }
 
-        "the location is Scotland" in {
-          constructView(appConfigBpplEnabled, location = Location.SCOTLAND).toString must include(
-            bereavedPartnersPaternityLeave
-          )
-        }
+      "the location is Scotland" in {
+        constructView(location = Location.SCOTLAND).toString must include(
+          bereavedPartnersPaternityLeave
+        )
+      }
 
-        "the location is Wales" in {
-          constructView(appConfigBpplEnabled, location = Location.WALES).toString must include(
-            bereavedPartnersPaternityLeave
-          )
-        }
+      "the location is Wales" in {
+        constructView(location = Location.WALES).toString must include(
+          bereavedPartnersPaternityLeave
+        )
       }
     }
 
     "NOT include bereaved partner's paternity leave on page" when {
-      "the bpplContentEnabled flag is set to false" when {
-        "the location is England" in
-          (constructView(appConfigBpplDisabled, location = Location.ENGLAND).toString must not)
-            .include(bereavedPartnersPaternityLeave)
-
-        "the location is Scotland" in
-          (constructView(appConfigBpplDisabled, location = Location.SCOTLAND).toString must not)
-            .include(bereavedPartnersPaternityLeave)
-
-        "the location is Wales" in
-          (constructView(appConfigBpplDisabled, location = Location.WALES).toString must not)
-            .include(bereavedPartnersPaternityLeave)
-
-        "the location is Northern Ireland" in
-          (constructView(appConfigBpplDisabled, location = Location.NORTHERN_IRELAND).toString must not)
-            .include(bereavedPartnersPaternityLeave)
-
-      }
-
-      "the bpplContentEnabledFlag is set to true" when {
-        "the location is Northern Ireland" in
-          (constructView(appConfigBpplEnabled, location = Location.NORTHERN_IRELAND).toString must not)
-            .include(bereavedPartnersPaternityLeave)
-      }
+      "the location is Northern Ireland" in
+        (constructView(location = Location.NORTHERN_IRELAND).toString must not)
+          .include(bereavedPartnersPaternityLeave)
     }
-
   }
 
 }
