@@ -27,30 +27,31 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 @Singleton
 class PartnerOtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def partnerOtherIncomeAmountCYFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[BigDecimal] {
+  def partnerOtherIncomeAmountCYFormatter(errorKeyBlank: String, errorKeyInvalid: String): Formatter[BigDecimal] =
+    new Formatter[BigDecimal] {
 
-    val minValue: Double = appConfig.minIncome
-    val maxValue: Double = appConfig.maxIncome
+      val minValue: Double = appConfig.minIncome
+      val maxValue: Double = appConfig.maxIncome
 
-    val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
+      val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
 
-    def bind(key: String, data: Map[String, String]) =
-      data.get(key) match {
-        case None     => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, errorKeyBlank)
-        case Some(s) if s.matches(decimalRegex) =>
-          val value = BigDecimal(s)
+      def bind(key: String, data: Map[String, String]) =
+        data.get(key) match {
+          case None     => produceError(key, errorKeyBlank)
+          case Some("") => produceError(key, errorKeyBlank)
+          case Some(s) if s.matches(decimalRegex) =>
+            val value = BigDecimal(s)
 
-          if (validateInRange(value, minValue, maxValue)) {
-            Right(value)
-          } else {
-            produceError(key, errorKeyInvalid)
-          }
-        case _ => produceError(key, errorKeyInvalid)
-      }
+            if (validateInRange(value, minValue, maxValue)) {
+              Right(value)
+            } else {
+              produceError(key, errorKeyInvalid)
+            }
+          case _ => produceError(key, errorKeyInvalid)
+        }
 
-    def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-  }
+      def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
+    }
 
   def apply(
       errorKeyBlank: String = partnerOtherIncomeRequiredErrorKey,

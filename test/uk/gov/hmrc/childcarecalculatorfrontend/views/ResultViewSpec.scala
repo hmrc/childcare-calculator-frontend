@@ -599,7 +599,7 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
             livesWithPartner = true
           )
           val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsText(view, "Help make GOV.UK better")
+          assertContainsText(view, "This is a new service. Help us improve it")
 
         }
       }
