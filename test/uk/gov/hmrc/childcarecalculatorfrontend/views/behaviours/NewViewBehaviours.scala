@@ -26,9 +26,9 @@ trait NewViewBehaviours extends NewViewSpecBase {
     "behave like a normal page" when {
       "rendered" must {
         "have the correct banner title" in {
-          val doc = asDocument(view())
-          val nav = doc.getElementsByClass("govuk-header__service-name")
-          nav.text mustBe messages("site.service_name")
+          val doc         = asDocument(view())
+          val serviceName = doc.select(".govuk-service-navigation__service-name a").text()
+          serviceName mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
@@ -95,9 +95,9 @@ trait NewViewBehaviours extends NewViewSpecBase {
     "behave like a normal page" when {
       "rendered" must {
         "have the correct banner title" in {
-          val doc = asDocument(view())
-          val nav = doc.getElementsByClass("govuk-header__service-name")
-          nav.text mustBe messages("site.service_name")
+          val doc         = asDocument(view())
+          val serviceName = doc.select(".govuk-service-navigation__service-name a").text()
+          serviceName mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {
@@ -140,9 +140,9 @@ trait NewViewBehaviours extends NewViewSpecBase {
     "behave like a normal page" when {
       "rendered" must {
         "have the correct banner title" in {
-          val doc = asDocument(view())
-          val nav = doc.getElementsByClass("govuk-header__service-name")
-          nav.text mustBe messages("site.service_name")
+          val doc         = asDocument(view())
+          val serviceName = doc.select(".govuk-service-navigation__service-name a").text()
+          serviceName mustBe messages("site.service_name")
         }
 
         "display the correct browser title" in {

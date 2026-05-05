@@ -16,16 +16,14 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.{HmrcStandardPageParams, ServiceURLs, TemplateOverrides}
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
-    hmrcAccountMenu: HmrcAccountMenu,
     hmrcHead: HmrcHead,
     hmrcStandardBetaBanner: StandardBetaBanner,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
-    hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
     govukBackLink: GovukBackLink,
     appConfig: FrontendAppConfig,
 )
@@ -38,7 +36,6 @@
     urBanner: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @accountMenu = {
-    @Some(hmrcLanguageSelectHelper())
     @if(backLinkEnabled) {@govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)}
 }
 
