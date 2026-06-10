@@ -45,6 +45,8 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
     @heading(messages("yourMinimumEarnings.averageWeekly.heading"))
     @p() { @messages("yourMinimumEarnings.averageWeekly.para1") }
 
@@ -59,9 +61,6 @@
     <h2 class="govuk-heading-m">@messages("yourMinimumEarnings.averageWeekly.heading2")</h2>
     @p() { @messages("yourMinimumEarnings.averageWeekly.para3") }
     @p() { @messages("yourMinimumEarnings.averageWeekly.para4") }<br>
-
-
-    @errorSummary(form.errors)
 
     @formWithCSRF(action = YourMinimumEarningsController.onSubmit(), Symbol("autoComplete") -> "off") {
         @inputYesNo(

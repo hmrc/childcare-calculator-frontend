@@ -45,6 +45,8 @@
     pageTitle = title
 ) {
 
+    @errorSummary(form.errors)
+
     @heading(messages("partnerMinimumEarnings.averageWeekly.heading"))
     @p() { @messages("partnerMinimumEarnings.averageWeekly.para1") }
 
@@ -60,8 +62,6 @@
     @p() { @messages("partnerMinimumEarnings.averageWeekly.para4") }<br>
 
     }
-
-    @errorSummary(form.errors)
 
     @formWithCSRF(action = PartnerMinimumEarningsController.onSubmit(), Symbol("autoComplete") -> "off") {
         @inputYesNo(
