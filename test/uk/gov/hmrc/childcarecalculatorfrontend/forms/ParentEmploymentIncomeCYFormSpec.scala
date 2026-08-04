@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class ParentEmploymentIncomeCYFormSpec extends FormSpec {
 
@@ -31,12 +30,12 @@ class ParentEmploymentIncomeCYFormSpec extends FormSpec {
 
     "bind positive numbers" in {
       val form = parentEmpIncomeCYForm.bind(Map("value" -> "1.0"))
-      form.get shouldBe 1.0
+      form.get mustBe 1.0
     }
 
     "bind positive decimal number up to the threshold of 999999.99" in {
       val form = parentEmpIncomeCYForm.bind(Map("value" -> "999999.99"))
-      form.get shouldBe 999999.99
+      form.get mustBe 999999.99
     }
 
     "fail to bind numbers below the threshold" in {

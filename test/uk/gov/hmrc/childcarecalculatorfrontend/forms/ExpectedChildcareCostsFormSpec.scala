@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
 
@@ -34,27 +33,27 @@ class ExpectedChildcareCostsFormSpec extends FormSpec {
 
     "bind positive numbers" in {
       val result = form.bind(Map("value" -> "1.0"))
-      result.get shouldEqual 1.0
+      result.get mustEqual 1.0
     }
 
     "bind positive decimal number" in {
       val result = form.bind(Map("value" -> "10.80"))
-      result.get shouldEqual 10.80
+      result.get mustEqual 10.80
     }
 
     "bind negative decimal number" in {
       val result = form.bind(Map("value" -> "-2.00"))
-      result.errors.head.message shouldBe "expectedChildcareCosts.error.invalid"
+      result.errors.head.message mustBe "expectedChildcareCosts.error.invalid"
     }
 
     "bind zero decimal number" in {
       val result = form.bind(Map("value" -> "00.00"))
-      result.errors.head.message shouldBe "expectedChildcareCosts.error.invalid"
+      result.errors.head.message mustBe "expectedChildcareCosts.error.invalid"
     }
 
     "bind the upper bound" in {
       val result = form.bind(Map("value" -> "9999.99"))
-      result.get shouldEqual 9999.99
+      result.get mustEqual 9999.99
     }
 
     "fail to bind 0" in {

@@ -42,7 +42,7 @@ class OtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) extends F
         decimal("partnerOtherIncome.error.required", partnerIncomeInvalidKey)
           .verifying(minimumValue[BigDecimal](minValue, partnerIncomeInvalidKey))
           .verifying(maximumValue[BigDecimal](maxValue, partnerIncomeInvalidKey))
-    )(OtherIncomeAmountCY.apply)(OtherIncomeAmountCY.unapply)
+    )(OtherIncomeAmountCY.apply)(x => Some(Tuple.fromProductTyped(x)))
   )
 
 }

@@ -39,7 +39,7 @@ class EmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends Fo
         decimal("partnerEmploymentIncomeCY.error.blank", partnerEmploymentIncomeBlankErrorKey)
           .verifying(minimumValue[BigDecimal](minValue, partnerEmploymentIncomeInvalidErrorKey))
           .verifying(maximumValue[BigDecimal](maxValue, partnerEmploymentIncomeInvalidErrorKey))
-    )(EmploymentIncomeCY.apply)(EmploymentIncomeCY.unapply)
+    )(EmploymentIncomeCY.apply)(x => Some(Tuple.fromProductTyped(x)))
   )
 
 }

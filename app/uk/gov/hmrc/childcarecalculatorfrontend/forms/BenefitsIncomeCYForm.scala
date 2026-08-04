@@ -35,7 +35,7 @@ object BenefitsIncomeCYForm extends FormErrorHelper {
         decimal("partnerBenefitsIncome.error.required", partnerIncomeInvalidKey)
           .verifying(minimumValue[BigDecimal](1, partnerIncomeInvalidKey))
           .verifying(maximumValue[BigDecimal](9999.99, partnerIncomeInvalidKey))
-    )(BenefitsIncomeCY.apply)(BenefitsIncomeCY.unapply)
+    )(BenefitsIncomeCY.apply)(x => Some(Tuple.fromProductTyped(x)))
   )
 
 }

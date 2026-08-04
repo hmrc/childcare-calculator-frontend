@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
 import org.scalatestplus.play.PlaySpec
@@ -35,7 +34,7 @@ class EnumUtilsSpec extends PlaySpec {
         case JsSuccess(v, _) =>
           !v.isInstanceOf[Location.Value]
         case JsError(errors) =>
-          errors.head._2.head.message shouldBe "String value expected"
+          errors.head._2.head.message mustBe "String value expected"
       }
     }
 
@@ -47,7 +46,7 @@ class EnumUtilsSpec extends PlaySpec {
         case JsSuccess(v, _) =>
           !v.isInstanceOf[Location.Value]
         case JsError(errors) =>
-          errors.head._2.head.message shouldBe
+          errors.head._2.head.message mustBe
             "Enumeration expected of type: 'class uk.gov.hmrc.childcarecalculatorfrontend.models.Location$', but it does not appear to contain the value: 'something'"
       }
     }
@@ -58,15 +57,15 @@ class EnumUtilsSpec extends PlaySpec {
         """.stripMargin)
       json.validate[Location.Value] match {
         case JsSuccess(v, _) =>
-          v.isInstanceOf[Location.Value] shouldBe true
+          v.isInstanceOf[Location.Value] mustBe true
         case JsError(errors) =>
-          errors.head._2.head.message shouldBe ""
+          errors.head._2.head.message mustBe ""
       }
     }
 
     "return valid json when the object is written" in {
       val res: JsValue = Json.toJson(Location.ENGLAND)
-      res.toString() shouldBe "\"england\""
+      res.toString() mustBe "\"england\""
     }
 
   }

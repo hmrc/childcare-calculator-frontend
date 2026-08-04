@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class HowMuchPartnerPayPensionFormSpec extends FormSpec {
 
@@ -28,12 +27,12 @@ class HowMuchPartnerPayPensionFormSpec extends FormSpec {
 
     "bind positive numbers" in {
       val form = HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "1.0"))
-      form.get shouldBe 1.0
+      form.get mustBe 1.0
     }
 
     "bind positive decimal numbers up to the threshold of 9999.99" in {
       val form = HowMuchPartnerPayPensionForm(errorKeyBlank, errorKeyInvalid).bind(Map("value" -> "9999.99"))
-      form.get shouldBe 9999.99
+      form.get mustBe 9999.99
     }
 
     "fail to bind numbers below the threshold of 1" in {

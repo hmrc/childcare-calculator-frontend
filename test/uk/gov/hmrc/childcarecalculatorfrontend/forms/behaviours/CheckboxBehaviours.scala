@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours
 
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormSpec
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 trait CheckboxBehaviours[A] extends FormSpec {
 
@@ -34,7 +33,7 @@ trait CheckboxBehaviours[A] extends FormSpec {
       val data = Map(
         s"$fieldName[$i]" -> value.toString
       )
-      form.bind(data).get shouldEqual Set(value)
+      form.bind(data).get mustEqual Set(value)
     }
 
     "fail to bind when the answer is invalid" in {

@@ -38,7 +38,7 @@ object Location extends Enumeration {
 
   val enumReads: Reads[Location] = EnumUtils.enumReads(Location)
 
-  val enumWrites: Writes[Location] = EnumUtils.enumWrites
+  val enumWrites: Writes[Location] = EnumUtils.enumWrites(Location)
 
   implicit def enumFormats: Format[Location] = EnumUtils.enumFormat(Location)
 }
@@ -47,7 +47,7 @@ object YouPartnerBothEnum extends YouPartnerBothBaseEnumeration {
   type YouPartnerBothEnum = Value
 
   val enumReads: Reads[YouPartnerBothEnum]   = EnumUtils.enumReads(YouPartnerBothEnum)
-  val enumWrites: Writes[YouPartnerBothEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[YouPartnerBothEnum] = EnumUtils.enumWrites(YouPartnerBothEnum)
 
   implicit def enumFormats: Format[YouPartnerBothEnum] = EnumUtils.enumFormat(YouPartnerBothEnum)
 }
@@ -56,7 +56,7 @@ object YouPartnerBothNeitherEnum extends YouPartnerBothBaseEnumeration with Neit
   type YouPartnerBothNeitherEnum = Value
 
   val enumReads: Reads[YouPartnerBothNeitherEnum]   = EnumUtils.enumReads(YouPartnerBothNeitherEnum)
-  val enumWrites: Writes[YouPartnerBothNeitherEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[YouPartnerBothNeitherEnum] = EnumUtils.enumWrites(YouPartnerBothNeitherEnum)
 
   implicit def enumFormats: Format[YouPartnerBothNeitherEnum] = EnumUtils.enumFormat(YouPartnerBothNeitherEnum)
 }
@@ -67,7 +67,7 @@ object YouPartnerBothNeitherNotSureEnum extends YouPartnerBothBaseEnumeration wi
   val NOTSURE = Value("notSure")
 
   val enumReads: Reads[YouPartnerBothNeitherNotSureEnum]   = EnumUtils.enumReads(YouPartnerBothNeitherNotSureEnum)
-  val enumWrites: Writes[YouPartnerBothNeitherNotSureEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[YouPartnerBothNeitherNotSureEnum] = EnumUtils.enumWrites(YouPartnerBothNeitherNotSureEnum)
 
   implicit def enumFormats: Format[YouPartnerBothNeitherNotSureEnum] =
     EnumUtils.enumFormat(YouPartnerBothNeitherNotSureEnum)
@@ -79,7 +79,7 @@ object YesNoUnsureEnum extends Enumeration {
   val YES, NO, NOTSURE                  = Value
   val enumReads: Reads[YesNoUnsureEnum] = EnumUtils.enumReads(YesNoUnsureEnum)
 
-  val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[YesNoUnsureEnum] = EnumUtils.enumWrites(YesNoUnsureEnum)
 
   implicit def enumFormats: Format[YesNoUnsureEnum] = EnumUtils.enumFormat(YesNoUnsureEnum)
 }
@@ -89,7 +89,7 @@ object YesNoEnum extends Enumeration {
   val YES, NO                     = Value
   val enumReads: Reads[YesNoEnum] = EnumUtils.enumReads(YesNoEnum)
 
-  val enumWrites: Writes[YesNoEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[YesNoEnum] = EnumUtils.enumWrites(YesNoEnum)
 
   implicit def enumFormats: Format[YesNoEnum] = EnumUtils.enumFormat(YesNoEnum)
 }
@@ -101,7 +101,7 @@ object YesNoNotYetEnum extends Enumeration {
   val NOTYET = Value("notYet")
 
   val enumReads: Reads[YesNoNotYetEnum]   = EnumUtils.enumReads(YesNoNotYetEnum)
-  val enumWrites: Writes[YesNoNotYetEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[YesNoNotYetEnum] = EnumUtils.enumWrites(YesNoNotYetEnum)
 
   implicit def enumFormats: Format[YesNoNotYetEnum] = EnumUtils.enumFormat(YesNoNotYetEnum)
 }
@@ -114,7 +114,7 @@ object AgeEnum extends Enumeration {
   val TWENTYONEOROVER  = Value("TWENTYONEOROVER")
 
   val enumReads: Reads[AgeEnum]   = EnumUtils.enumReads(AgeEnum)
-  val enumWrites: Writes[AgeEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[AgeEnum] = EnumUtils.enumWrites(AgeEnum)
 
   implicit def enumFormats: Format[AgeEnum] = EnumUtils.enumFormat(AgeEnum)
 }
@@ -129,7 +129,8 @@ object SelfEmployedOrApprenticeOrNeitherEnum extends Enumeration {
   val enumReads: Reads[SelfEmployedOrApprenticeOrNeitherEnum] =
     EnumUtils.enumReads(SelfEmployedOrApprenticeOrNeitherEnum)
 
-  val enumWrites: Writes[SelfEmployedOrApprenticeOrNeitherEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[SelfEmployedOrApprenticeOrNeitherEnum] =
+    EnumUtils.enumWrites(SelfEmployedOrApprenticeOrNeitherEnum)
 
   implicit def enumFormats: Format[SelfEmployedOrApprenticeOrNeitherEnum] =
     EnumUtils.enumFormat(SelfEmployedOrApprenticeOrNeitherEnum)
@@ -142,7 +143,7 @@ object DisabilityBenefits extends Enumeration {
   val HIGHER_DISABILITY_BENEFITS = Value("higher-disability-benefit")
 
   val reads: Reads[Value]   = EnumUtils.enumReads(DisabilityBenefits)
-  val writes: Writes[Value] = EnumUtils.enumWrites
+  val writes: Writes[Value] = EnumUtils.enumWrites(DisabilityBenefits)
 
   implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(DisabilityBenefits)
 
@@ -158,7 +159,7 @@ object ChildcarePayFrequency extends Enumeration {
   val MONTHLY = Value("monthly")
 
   val reads: Reads[Value]   = EnumUtils.enumReads(ChildcarePayFrequency)
-  val writes: Writes[Value] = EnumUtils.enumWrites
+  val writes: Writes[Value] = EnumUtils.enumWrites(ChildcarePayFrequency)
 
   implicit def enumFormats: Format[Value] = EnumUtils.enumFormat(ChildcarePayFrequency)
 }
@@ -169,7 +170,7 @@ object CreditsEnum extends Enumeration {
 
   val enumReads: Reads[CreditsEnum] = EnumUtils.enumReads(CreditsEnum)
 
-  val enumWrites: Writes[CreditsEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[CreditsEnum] = EnumUtils.enumWrites(CreditsEnum)
 
   implicit def enumFormats: Format[CreditsEnum] = EnumUtils.enumFormat(CreditsEnum)
 }
@@ -180,7 +181,7 @@ object EmploymentStatusEnum extends Enumeration {
 
   val enumReads: Reads[EmploymentStatusEnum] = EnumUtils.enumReads(EmploymentStatusEnum)
 
-  val enumWrites: Writes[EmploymentStatusEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[EmploymentStatusEnum] = EnumUtils.enumWrites(EmploymentStatusEnum)
 
   implicit def enumFormats: Format[EmploymentStatusEnum] = EnumUtils.enumFormat(EmploymentStatusEnum)
 }
@@ -193,7 +194,7 @@ object SchemeEnum extends Enumeration {
 
   val enumReads: Reads[SchemeEnum] = EnumUtils.enumReads(SchemeEnum)
 
-  val enumWrites: Writes[SchemeEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[SchemeEnum] = EnumUtils.enumWrites(SchemeEnum)
 
   implicit def enumFormats: Format[SchemeEnum] = EnumUtils.enumFormat(SchemeEnum)
 }
@@ -203,7 +204,7 @@ object PeriodEnum extends Enumeration {
   val WEEKLY, FORTNIGHTLY, MONTHLY, QUARTERLY, YEARLY, INVALID = Value
   val enumReads: Reads[PeriodEnum]                             = EnumUtils.enumReads(PeriodEnum)
 
-  val enumWrites: Writes[PeriodEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[PeriodEnum] = EnumUtils.enumWrites(PeriodEnum)
 
   implicit def enumFormats: Format[PeriodEnum] = EnumUtils.enumFormat(PeriodEnum)
 }
@@ -215,7 +216,7 @@ object UniversalCreditEnum extends Enumeration {
   val NONE = Value("none")
 
   val enumReads: Reads[UniversalCreditEnum]   = EnumUtils.enumReads(UniversalCreditEnum)
-  val enumWrites: Writes[UniversalCreditEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[UniversalCreditEnum] = EnumUtils.enumWrites(UniversalCreditEnum)
 
   implicit def enumFormats: Format[UniversalCreditEnum] = EnumUtils.enumFormat(UniversalCreditEnum)
 }
@@ -228,7 +229,7 @@ object EarningsEnum extends Enumeration {
   val GreaterThanMaximum       = Value("greaterThanMaximum")
 
   val enumReads: Reads[EarningsEnum]   = EnumUtils.enumReads(EarningsEnum)
-  val enumWrites: Writes[EarningsEnum] = EnumUtils.enumWrites
+  val enumWrites: Writes[EarningsEnum] = EnumUtils.enumWrites(EarningsEnum)
 
   implicit def enumFormats: Format[EarningsEnum] = EnumUtils.enumFormat(EarningsEnum)
 }

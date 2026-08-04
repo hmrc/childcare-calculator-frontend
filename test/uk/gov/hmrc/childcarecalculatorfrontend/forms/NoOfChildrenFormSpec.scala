@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class NoOfChildrenFormSpec extends FormSpec {
 
@@ -29,7 +28,7 @@ class NoOfChildrenFormSpec extends FormSpec {
 
     "bind positive numbers" in {
       val form = NoOfChildrenForm.bind(Map("value" -> "1"))
-      form.get shouldBe 1
+      form.get mustBe 1
     }
 
     "bind positive, max number" in {

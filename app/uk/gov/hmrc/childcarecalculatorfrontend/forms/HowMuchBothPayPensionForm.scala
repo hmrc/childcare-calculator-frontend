@@ -35,7 +35,7 @@ object HowMuchBothPayPensionForm extends FormErrorHelper {
         decimal("howMuchPartnerPayPension.error.required", howMuchPartnerPayInvalidKey)
           .verifying(minimumValue[BigDecimal](1, howMuchPartnerPayInvalidKey))
           .verifying(maximumValue[BigDecimal](9999.99, howMuchPartnerPayInvalidKey))
-    )(HowMuchBothPayPension.apply)(HowMuchBothPayPension.unapply)
+    )(HowMuchBothPayPension.apply)(x => Some(Tuple.fromProductTyped(x)))
   )
 
 }
