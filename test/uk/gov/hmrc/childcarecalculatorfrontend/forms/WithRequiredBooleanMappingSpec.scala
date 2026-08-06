@@ -18,7 +18,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import play.api.data.Forms._
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class WithRequiredBooleanMappingSpec extends FormSpec {
 
@@ -34,12 +33,12 @@ class WithRequiredBooleanMappingSpec extends FormSpec {
 
     "bind true" in {
       val form = TestForm().bind(Map("value" -> "true"))
-      form.get shouldBe true
+      form.get mustBe true
     }
 
     "bind false" in {
       val form = TestForm().bind(Map("value" -> "false"))
-      form.get shouldBe false
+      form.get mustBe false
     }
 
     "fail to bind non-booleans" in {

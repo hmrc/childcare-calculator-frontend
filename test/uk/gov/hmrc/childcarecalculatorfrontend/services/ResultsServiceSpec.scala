@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.{reset, spy, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
@@ -636,11 +636,10 @@ class ResultsServiceSpec extends PlaySpec with MockitoSugar with SpecBase with B
           when(answers.whoIsInPaidEmployment).thenReturn(Some(ChildcareConstants.both))
           when(answers.yourMinimumEarnings).thenReturn(Some(false))
           when(answers.partnerMinimumEarnings).thenReturn(Some(true))
-          when(util.getEarningsForAgeRange(any(), any(), any()))
-            .thenReturn(150)
-            .thenReturn(125)
-            .thenReturn(150)
-            .thenReturn(125)
+          when(answers.yourAge).thenReturn(Some("TWENTYONEOROVER"))
+          when(answers.yourPartnersAge).thenReturn(Some("EIGHTEENTOTWENTYONE"))
+          when(util.getEarningsForAgeRange(any(), any(), eqTo(Some("TWENTYONEOROVER")))).thenReturn(150)
+          when(util.getEarningsForAgeRange(any(), any(), eqTo(Some("EIGHTEENTOTWENTYONE")))).thenReturn(125)
 
           val values = await(TestService.getResultsViewModel(answers, Location.ENGLAND))
 

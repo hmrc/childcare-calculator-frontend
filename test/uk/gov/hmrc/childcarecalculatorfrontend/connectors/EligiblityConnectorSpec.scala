@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import play.api.mvc.{AnyContent, Request}
@@ -75,7 +74,7 @@ class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutur
         )
       )
 
-      whenReady(res)(value => value shouldBe schemesResult)
+      whenReady(res)(value => value mustBe schemesResult)
 
     }
   }

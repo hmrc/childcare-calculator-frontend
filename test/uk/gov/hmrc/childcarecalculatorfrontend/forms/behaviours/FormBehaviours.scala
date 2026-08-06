@@ -19,7 +19,6 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours
 import org.scalatest.{Assertion, OptionValues}
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.FormSpec
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 trait FormBehaviours extends FormSpec with OptionValues {
 
@@ -40,7 +39,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
   def questionForm[A](expectedResult: A) =
     "bind valid values correctly" in {
       val boundForm = form.bind(validData)
-      boundForm.get shouldBe expectedResult
+      boundForm.get mustBe expectedResult
     }
 
   def formWithOptionalTextFields(fields: String*) =
@@ -48,7 +47,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
       s"bind when $field is omitted" in {
         val data      = validData - field
         val boundForm = form.bind(data)
-        boundForm.errors.isEmpty shouldBe true
+        boundForm.errors.isEmpty mustBe true
       }
 
   def formWithMandatoryTextFields(fields: String*) =
@@ -105,7 +104,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
     s"bind when $booleanField is false and $field is omitted" in {
       val data      = validData + (booleanField -> "false") - field
       val boundForm = form.bind(data)
-      boundForm.errors.isEmpty shouldBe true
+      boundForm.errors.isEmpty mustBe true
     }
 
     s"fail to bind when $booleanField is true and $field is omitted" in {
@@ -138,7 +137,7 @@ trait FormBehaviours extends FormSpec with OptionValues {
       s"bind when ${formError.key} is set to $validValue" in {
         val data      = validData + (formError.key -> validValue)
         val boundForm = form.bind(data)
-        boundForm.errors.isEmpty shouldBe true
+        boundForm.errors.isEmpty mustBe true
       }
 
     s"fail to bind when ${formError.key} is omitted" in {

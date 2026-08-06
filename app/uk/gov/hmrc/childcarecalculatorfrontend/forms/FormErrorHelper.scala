@@ -66,7 +66,7 @@ trait FormErrorHelper extends Mappings {
     }
   }
 
-  def returnOnFirstFailure[T](constraints: Constraint[T]*): Constraint[T] = Constraint { field: T =>
+  def returnOnFirstFailure[T](constraints: Constraint[T]*): Constraint[T] = Constraint { (field: T) =>
     constraints.toList.dropWhile(_(field) == Valid) match {
       case Nil             => Valid
       case constraint :: _ => constraint(field)

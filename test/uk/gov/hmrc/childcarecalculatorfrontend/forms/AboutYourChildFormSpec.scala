@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.Form
 import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
@@ -47,7 +46,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
 
     "bind when name is 35 chars long" in {
       val data = validData + ("name" -> "a" * 35)
-      form.bind(data).get shouldBe AboutYourChild("a" * 35, LocalDate.of(2017, 2, 1))
+      form.bind(data).get mustBe AboutYourChild("a" * 35, LocalDate.of(2017, 2, 1))
     }
 
     "fail to bind when name is omitted" in {
