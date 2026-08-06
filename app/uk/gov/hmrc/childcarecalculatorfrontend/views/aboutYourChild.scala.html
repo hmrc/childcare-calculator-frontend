@@ -92,14 +92,17 @@
         @inputText(
             label = nameText,
             smallText = true,
-            field = form("name")
+            field = form("name"),
+            autoComplete = Some("given-name")
+
         )
 
         @inputDate(
             content = dateText,
             hintContent = Some(messages("aboutYourChild.hint")),
             smallText = true,
-            field = form("aboutYourChild.dob")
+            field = form("aboutYourChild.dob"),
+            isPageHeading = false
         )
 
         @submitButton()

@@ -26,7 +26,8 @@
     hintContent: Option[String] = None,
     smallText: Boolean = false,
     largeText: Boolean = true,
-    labelClass: Option[String] = None
+    labelClass: Option[String] = None,
+    isPageHeading: Boolean = true
 )(implicit messages: Messages)
 
 @govukDateInput(DateInput(
@@ -36,6 +37,6 @@
         legend = Some(Legend(
             content = Text(content),
             classes = if(smallText) "govuk-body" else s"""${if(largeText) "govuk-label--xl" else "govuk-label--m"} ${labelClass.getOrElse("")}""",
-            isPageHeading = true))
+            isPageHeading = isPageHeading))
     ))
 ).withDayMonthYearFormField(field))
