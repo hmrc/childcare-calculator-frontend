@@ -17,7 +17,6 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.integration
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Credits
 import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.child.Child
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.claimant.Claimant

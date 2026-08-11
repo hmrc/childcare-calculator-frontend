@@ -25,8 +25,6 @@ trait EnumFormat[E] extends Logging {
 
   protected def values: Array[E]
 
-  protected val aliases: Map[String, E] = Map.empty
-
   private lazy val lookupMap: Map[String, E] =
     (
       values.map(value => value.toString -> value) ++
@@ -36,8 +34,7 @@ trait EnumFormat[E] extends Logging {
             case value: Product => Some(value.productPrefix -> value)
             case _              => None
           }
-    ).toMap ++
-      aliases
+    ).toMap
 
   def withName(string: String): Option[E] = lookupMap.get(string)
 

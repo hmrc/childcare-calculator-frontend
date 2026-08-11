@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
+package uk.gov.hmrc.childcarecalculatorfrontend.models.integration
 
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
@@ -23,12 +23,4 @@ enum Credits(override val toString: String) {
   case None            extends Credits("NONE")
 }
 
-object Credits extends EnumFormat[Credits] {
-
-  override protected val aliases: Map[String, Credits] =
-    Map(
-      "uc"   -> UniversalCredit,
-      "none" -> None
-    )
-
-}
+object Credits extends EnumFormat[Credits]
