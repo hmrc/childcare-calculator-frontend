@@ -114,7 +114,7 @@ class AboutYourChildFormSpec extends FormBehaviours[AboutYourChild] {
     }
 
     "fail to bind when the date is more than 18 years in the past" in {
-      val date = LocalDate.of(2026, 7, 27).minusYears(18).minusDays(1)
+      val date = LocalDate.now.minusYears(18).minusDays(1)
       val data = Map(
         "name"                     -> "Foo",
         "aboutYourChild.dob.day"   -> date.getDayOfMonth.toString,
