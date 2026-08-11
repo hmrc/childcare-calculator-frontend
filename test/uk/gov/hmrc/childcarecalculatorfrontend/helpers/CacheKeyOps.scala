@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.utils
+package uk.gov.hmrc.childcarecalculatorfrontend.helpers
 
-import scala.reflect.ClassTag
+import play.api.libs.json.{JsValue, Json, Writes}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
-trait CacheKey[A](using val classTag: ClassTag[A]) {
+trait CacheKeyOps {
 
-  def cacheKey: String
+  extension [A](cacheKey: CacheKey[A]) {
+
+    def withValue(value: A)(using Writes[A]): (String, JsValue) =
+      cacheKey.cacheKey -> Json.toJson[A](value)
+
+  }
 
 }

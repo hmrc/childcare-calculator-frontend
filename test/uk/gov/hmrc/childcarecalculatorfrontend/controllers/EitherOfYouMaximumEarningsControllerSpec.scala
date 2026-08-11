@@ -55,7 +55,7 @@ class EitherOfYouMaximumEarningsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(EitherOfYouMaximumEarningsId.of(true))
+      val validData       = Map(EitherOfYouMaximumEarningsId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

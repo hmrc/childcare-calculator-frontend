@@ -23,10 +23,11 @@ import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.childcarecalculatorfrontend.config.{FrontendAppConfig, NmwConfig}
+import uk.gov.hmrc.childcarecalculatorfrontend.helpers.CacheKeyOps
 
 import scala.concurrent.ExecutionContext
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with Injecting {
+trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with Injecting with CacheKeyOps {
 
   given application: Application = app
 

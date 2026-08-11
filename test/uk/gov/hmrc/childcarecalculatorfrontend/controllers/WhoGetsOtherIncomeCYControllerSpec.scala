@@ -57,7 +57,7 @@ class WhoGetsOtherIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(WhoGetsOtherIncomeCYId.of(YouPartnerBoth.You))
+      val validData       = Map(WhoGetsOtherIncomeCYId.withValue(YouPartnerBoth.You))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

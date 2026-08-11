@@ -55,7 +55,7 @@ class PartnerPaidPensionCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(PartnerPaidPensionCYId.of(true))
+      val validData       = Map(PartnerPaidPensionCYId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

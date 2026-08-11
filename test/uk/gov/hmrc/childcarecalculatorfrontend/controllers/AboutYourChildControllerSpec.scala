@@ -51,7 +51,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     aboutYourChild(form, 0, 1)(using fakeRequest, messages).toString
 
   val requiredData: Map[String, JsValue] = Map(
-    NoOfChildrenId.of(1)
+    NoOfChildrenId.withValue(1)
   )
 
   "AboutYourChild Controller" must {
@@ -67,7 +67,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = requiredData +
-        AboutYourChildId.of(Map(0 -> AboutYourChild("Foo", LocalDate.of(2016, 2, 1))))
+        AboutYourChildId.withValue(Map(0 -> AboutYourChild("Foo", LocalDate.of(2016, 2, 1))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(0)(fakeRequest)

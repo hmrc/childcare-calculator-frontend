@@ -40,8 +40,8 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
   override lazy val nmwConfig: NmwConfig = mock[NmwConfig]
 
   val location: Location             = Location.England
-  val locationMap: (String, JsValue) = LocationId.of(location)
-  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.of(location))
+  val locationMap: (String, JsValue) = LocationId.withValue(location)
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(location))
   val getDataWithLocationSet         = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
@@ -67,8 +67,8 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
     "return OK and the correct view for a GET" in {
       val validData = Map(
-        YourAgeId.of(Age.UnderEighteen),
-        LocationId.of(Location.England)
+        YourAgeId.withValue(Age.UnderEighteen),
+        LocationId.withValue(Location.England)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
@@ -82,9 +82,9 @@ class YourMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoS
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        YourAgeId.of(Age.UnderEighteen),
-        YourMinimumEarningsId.of(true),
-        LocationId.of(Location.England)
+        YourAgeId.withValue(Age.UnderEighteen),
+        YourMinimumEarningsId.withValue(true),
+        LocationId.withValue(Location.England)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))

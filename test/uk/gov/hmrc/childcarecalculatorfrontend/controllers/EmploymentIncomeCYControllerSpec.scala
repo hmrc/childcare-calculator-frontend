@@ -63,7 +63,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(EmploymentIncomeCYId.of(EmploymentIncomeCY(1, 2)))
+      val validData       = Map(EmploymentIncomeCYId.withValue(EmploymentIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -115,10 +115,10 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
         .withMethod("POST")
 
       val validData = Map(
-        EitherOfYouMaximumEarningsId.of(false),
-        ParentEmploymentIncomeCYId.of(100000),
-        PartnerEmploymentIncomeCYId.of(100000),
-        WhoIsInPaidEmploymentId.of(YouPartnerBothNeither.Both)
+        EitherOfYouMaximumEarningsId.withValue(false),
+        ParentEmploymentIncomeCYId.withValue(100000),
+        PartnerEmploymentIncomeCYId.withValue(100000),
+        WhoIsInPaidEmploymentId.withValue(YouPartnerBothNeither.Both)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -143,10 +143,10 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
         .withMethod("POST")
 
       val validData = Map(
-        EitherOfYouMaximumEarningsId.of(true),
-        ParentEmploymentIncomeCYId.of(1000000),
-        PartnerEmploymentIncomeCYId.of(1000000),
-        WhoIsInPaidEmploymentId.of(YouPartnerBothNeither.Both)
+        EitherOfYouMaximumEarningsId.withValue(true),
+        ParentEmploymentIncomeCYId.withValue(1000000),
+        PartnerEmploymentIncomeCYId.withValue(1000000),
+        WhoIsInPaidEmploymentId.withValue(YouPartnerBothNeither.Both)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))

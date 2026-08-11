@@ -61,7 +61,7 @@ class DoYouGetAnyBenefitsControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersCredit))
+        DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersCredit))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 

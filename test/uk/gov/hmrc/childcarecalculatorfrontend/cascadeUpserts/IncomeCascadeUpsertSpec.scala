@@ -28,56 +28,56 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     "save the data" must {
 
       "save the page data when user accesses the page first time and selects yes" in {
-        val originalCacheMap = CacheMap.of(LocationId.of(Location.NorthernIreland))
+        val originalCacheMap = CacheMap.of(LocationId.withValue(Location.NorthernIreland))
 
         val result = cascadeUpsert(ParentPaidWorkCYId, true, originalCacheMap)
 
         result.data mustBe Map(
-          ParentPaidWorkCYId.of(true),
-          LocationId.of(Location.NorthernIreland)
+          ParentPaidWorkCYId.withValue(true),
+          LocationId.withValue(Location.NorthernIreland)
         )
       }
 
       "save the data and remove PartnerEmploymentIncomeCY, BothPaidPensionCY, WhoPaysIntoPension  page data when user selects yes" in {
         val originalCacheMap = CacheMap.of(
-          EmploymentIncomeCYId.of(EmploymentIncomeCY(20, 20)),
-          PartnerEmploymentIncomeCYId.of(1200),
-          BothPaidPensionCYId.of(true),
-          ParentPaidWorkCYId.of(false),
-          WhoPaysIntoPensionId.of(YouPartnerBoth.You)
+          EmploymentIncomeCYId.withValue(EmploymentIncomeCY(20, 20)),
+          PartnerEmploymentIncomeCYId.withValue(1200),
+          BothPaidPensionCYId.withValue(true),
+          ParentPaidWorkCYId.withValue(false),
+          WhoPaysIntoPensionId.withValue(YouPartnerBoth.You)
         )
 
         val result = cascadeUpsert(ParentPaidWorkCYId, true, originalCacheMap)
 
         result.data mustBe Map(
-          ParentPaidWorkCYId.of(true),
-          EmploymentIncomeCYId.of(EmploymentIncomeCY(20, 20))
+          ParentPaidWorkCYId.withValue(true),
+          EmploymentIncomeCYId.withValue(EmploymentIncomeCY(20, 20))
         )
       }
 
       "save the page data when user accesses the page first time and select when user selects no " in {
-        val originalCacheMap = CacheMap.of(LocationId.of(Location.NorthernIreland))
+        val originalCacheMap = CacheMap.of(LocationId.withValue(Location.NorthernIreland))
 
         val result = cascadeUpsert(ParentPaidWorkCYId, false, originalCacheMap)
 
         result.data mustBe Map(
-          ParentPaidWorkCYId.of(false),
-          LocationId.of(Location.NorthernIreland)
+          ParentPaidWorkCYId.withValue(false),
+          LocationId.withValue(Location.NorthernIreland)
         )
       }
 
       "clear EmploymentIncomeCY, PartnerPaidPensionCY, HowMuchPartnerPayPension, HowMuchYouPayPensionId, HowMuchBothPayPensionId" +
         " page data when user change the selection from yes to no" in {
           val originalCacheMap = CacheMap.of(
-            EmploymentIncomeCYId.of(EmploymentIncomeCY(20, 20)),
-            ParentPaidWorkCYId.of(true),
-            HowMuchYouPayPensionId.of(2300),
-            HowMuchBothPayPensionId.of(HowMuchBothPayPension(23, 23))
+            EmploymentIncomeCYId.withValue(EmploymentIncomeCY(20, 20)),
+            ParentPaidWorkCYId.withValue(true),
+            HowMuchYouPayPensionId.withValue(2300),
+            HowMuchBothPayPensionId.withValue(HowMuchBothPayPension(23, 23))
           )
 
           val result = cascadeUpsert(ParentPaidWorkCYId, false, originalCacheMap)
 
-          result.data mustBe Map(ParentPaidWorkCYId.of(false))
+          result.data mustBe Map(ParentPaidWorkCYId.withValue(false))
         }
     }
   }
@@ -86,54 +86,54 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     "save the data" must {
 
       "save the page data when user accesses the page first time and selects yes" in {
-        val originalCacheMap = CacheMap.of(LocationId.of(Location.NorthernIreland))
+        val originalCacheMap = CacheMap.of(LocationId.withValue(Location.NorthernIreland))
 
         val result = cascadeUpsert(PartnerPaidWorkCYId, true, originalCacheMap)
 
         result.data mustBe Map(
-          PartnerPaidWorkCYId.of(true),
-          LocationId.of(Location.NorthernIreland)
+          PartnerPaidWorkCYId.withValue(true),
+          LocationId.withValue(Location.NorthernIreland)
         )
       }
 
       "save the data and remove ParentEmploymentIncomeCY, EmploymentIncomeCY, YouPaidPensionCYId page data when user changes" +
         "the selection from no to yes" in {
           val originalCacheMap = CacheMap.of(
-            ParentEmploymentIncomeCYId.of(1200),
-            YouPaidPensionCYId.of(true),
-            PartnerPaidWorkCYId.of(false)
+            ParentEmploymentIncomeCYId.withValue(1200),
+            YouPaidPensionCYId.withValue(true),
+            PartnerPaidWorkCYId.withValue(false)
           )
 
           val result = cascadeUpsert(PartnerPaidWorkCYId, true, originalCacheMap)
 
-          result.data mustBe Map(PartnerPaidWorkCYId.of(true))
+          result.data mustBe Map(PartnerPaidWorkCYId.withValue(true))
         }
 
       "save the page data when user accesses the page first time and select when user selects no " in {
-        val originalCacheMap = CacheMap.of(LocationId.of(Location.NorthernIreland))
+        val originalCacheMap = CacheMap.of(LocationId.withValue(Location.NorthernIreland))
 
         val result = cascadeUpsert(PartnerPaidWorkCYId, false, originalCacheMap)
 
         result.data mustBe Map(
-          PartnerPaidWorkCYId.of(false),
-          LocationId.of(Location.NorthernIreland)
+          PartnerPaidWorkCYId.withValue(false),
+          LocationId.withValue(Location.NorthernIreland)
         )
       }
 
       "clear EmploymentIncomeCY,BothPaidPensionCY, WhoPaysIntoPension, HowMuchPartnerPayPension, HowMuchBothPayPension" +
         " page data when user changes the selection from yes to no " in {
           val originalCacheMap = CacheMap.of(
-            EmploymentIncomeCYId.of(EmploymentIncomeCY(20, 20)),
-            BothPaidPensionCYId.of(true),
-            WhoPaysIntoPensionId.of(YouPartnerBoth.Both),
-            HowMuchPartnerPayPensionId.of(230),
-            HowMuchBothPayPensionId.of(HowMuchBothPayPension(230, 230)),
-            PartnerPaidWorkCYId.of(true)
+            EmploymentIncomeCYId.withValue(EmploymentIncomeCY(20, 20)),
+            BothPaidPensionCYId.withValue(true),
+            WhoPaysIntoPensionId.withValue(YouPartnerBoth.Both),
+            HowMuchPartnerPayPensionId.withValue(230),
+            HowMuchBothPayPensionId.withValue(HowMuchBothPayPension(230, 230)),
+            PartnerPaidWorkCYId.withValue(true)
           )
 
           val result = cascadeUpsert(PartnerPaidWorkCYId, false, originalCacheMap)
 
-          result.data mustBe Map(PartnerPaidWorkCYId.of(false))
+          result.data mustBe Map(PartnerPaidWorkCYId.withValue(false))
         }
     }
   }
@@ -141,21 +141,21 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   "Other Income CY" when {
     "Save YourOtherIncomeThisYear data " must {
       "remove yourOtherIncomeAmountCY page data when user selects no option" in {
-        val originalCacheMap = CacheMap.of(YourOtherIncomeAmountCYId.of(20))
+        val originalCacheMap = CacheMap.of(YourOtherIncomeAmountCYId.withValue(20))
 
         val result = cascadeUpsert(YourOtherIncomeThisYearId, false, originalCacheMap)
 
-        result.data mustBe Map(YourOtherIncomeThisYearId.of(false))
+        result.data mustBe Map(YourOtherIncomeThisYearId.withValue(false))
       }
 
       "return original cache map when user selects yes option" in {
-        val originalCacheMap = CacheMap.of(YourOtherIncomeAmountCYId.of(20))
+        val originalCacheMap = CacheMap.of(YourOtherIncomeAmountCYId.withValue(20))
 
         val result = cascadeUpsert(YourOtherIncomeThisYearId, true, originalCacheMap)
 
         result.data mustBe Map(
-          YourOtherIncomeThisYearId.of(true),
-          YourOtherIncomeAmountCYId.of(20)
+          YourOtherIncomeThisYearId.withValue(true),
+          YourOtherIncomeAmountCYId.withValue(20)
         )
       }
     }
@@ -164,29 +164,29 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       "remove whoGetsOtherIncomeCY, yourOtherIncomeAmountCY, partnerOtherIncomeAmountCY and otherIncomeAmountCY pages data" +
         " when user selects no option" in {
           val originalCacheMap = CacheMap.of(
-            YourOtherIncomeAmountCYId.of(20),
-            PartnerOtherIncomeAmountCYId.of(20),
-            OtherIncomeAmountCYId.of(OtherIncomeAmountCY(20, 20)),
-            WhoGetsOtherIncomeCYId.of(YouPartnerBoth.You)
+            YourOtherIncomeAmountCYId.withValue(20),
+            PartnerOtherIncomeAmountCYId.withValue(20),
+            OtherIncomeAmountCYId.withValue(OtherIncomeAmountCY(20, 20)),
+            WhoGetsOtherIncomeCYId.withValue(YouPartnerBoth.You)
           )
 
           val result = cascadeUpsert(BothOtherIncomeThisYearId, false, originalCacheMap)
 
-          result.data mustBe Map(BothOtherIncomeThisYearId.of(false))
+          result.data mustBe Map(BothOtherIncomeThisYearId.withValue(false))
         }
 
       "return original cache map when user selects yes option" in {
         val originalCacheMap = CacheMap.of(
-          WhoGetsOtherIncomeCYId.of(YouPartnerBoth.You),
-          YourOtherIncomeAmountCYId.of(20)
+          WhoGetsOtherIncomeCYId.withValue(YouPartnerBoth.You),
+          YourOtherIncomeAmountCYId.withValue(20)
         )
 
         val result = cascadeUpsert(BothOtherIncomeThisYearId, true, originalCacheMap)
 
         result.data mustBe Map(
-          BothOtherIncomeThisYearId.of(true),
-          WhoGetsOtherIncomeCYId.of(YouPartnerBoth.You),
-          YourOtherIncomeAmountCYId.of(20)
+          BothOtherIncomeThisYearId.withValue(true),
+          WhoGetsOtherIncomeCYId.withValue(YouPartnerBoth.You),
+          YourOtherIncomeAmountCYId.withValue(20)
         )
       }
     }
@@ -194,46 +194,46 @@ class IncomeCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     "Save WhoGetsOtherIncomeCY data " must {
       "remove PartnerOtherIncomeAmountCY and OtherIncomeAmountCY page data when user selects you option" in {
         val originalCacheMap = CacheMap.of(
-          YourOtherIncomeAmountCYId.of(20),
-          PartnerOtherIncomeAmountCYId.of(20),
-          OtherIncomeAmountCYId.of(OtherIncomeAmountCY(20, 20))
+          YourOtherIncomeAmountCYId.withValue(20),
+          PartnerOtherIncomeAmountCYId.withValue(20),
+          OtherIncomeAmountCYId.withValue(OtherIncomeAmountCY(20, 20))
         )
 
         val result = cascadeUpsert(WhoGetsOtherIncomeCYId, YouPartnerBoth.You, originalCacheMap)
 
         result.data mustBe Map(
-          WhoGetsOtherIncomeCYId.of(YouPartnerBoth.You),
-          YourOtherIncomeAmountCYId.of(20)
+          WhoGetsOtherIncomeCYId.withValue(YouPartnerBoth.You),
+          YourOtherIncomeAmountCYId.withValue(20)
         )
       }
 
       "remove YourOtherIncomeAmountCY and OtherIncomeAmountCY page data when user selects partner option" in {
         val originalCacheMap = CacheMap.of(
-          YourOtherIncomeAmountCYId.of(20),
-          PartnerOtherIncomeAmountCYId.of(20),
-          OtherIncomeAmountCYId.of(OtherIncomeAmountCY(20, 20))
+          YourOtherIncomeAmountCYId.withValue(20),
+          PartnerOtherIncomeAmountCYId.withValue(20),
+          OtherIncomeAmountCYId.withValue(OtherIncomeAmountCY(20, 20))
         )
 
         val result = cascadeUpsert(WhoGetsOtherIncomeCYId, YouPartnerBoth.Partner, originalCacheMap)
 
         result.data mustBe Map(
-          WhoGetsOtherIncomeCYId.of(YouPartnerBoth.Partner),
-          PartnerOtherIncomeAmountCYId.of(20)
+          WhoGetsOtherIncomeCYId.withValue(YouPartnerBoth.Partner),
+          PartnerOtherIncomeAmountCYId.withValue(20)
         )
       }
 
       "remove PartnerOtherIncomeAmountCY and YourOtherIncomeAmountCY page data when user selects both option" in {
         val originalCacheMap = CacheMap.of(
-          YourOtherIncomeAmountCYId.of(20),
-          PartnerOtherIncomeAmountCYId.of(20),
-          OtherIncomeAmountCYId.of(OtherIncomeAmountCY(20, 20))
+          YourOtherIncomeAmountCYId.withValue(20),
+          PartnerOtherIncomeAmountCYId.withValue(20),
+          OtherIncomeAmountCYId.withValue(OtherIncomeAmountCY(20, 20))
         )
 
         val result = cascadeUpsert(WhoGetsOtherIncomeCYId, YouPartnerBoth.Both, originalCacheMap)
 
         result.data mustBe Map(
-          WhoGetsOtherIncomeCYId.of(YouPartnerBoth.Both),
-          OtherIncomeAmountCYId.of(OtherIncomeAmountCY(20, 20))
+          WhoGetsOtherIncomeCYId.withValue(YouPartnerBoth.Both),
+          OtherIncomeAmountCYId.withValue(OtherIncomeAmountCY(20, 20))
         )
       }
     }

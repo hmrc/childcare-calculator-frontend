@@ -48,7 +48,7 @@ class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
   def viewAsString(form: Form[YouPartnerBothNeither] = WhoIsInPaidEmploymentForm()): String =
     view(form, Location.England)(using fakeRequest, messages).toString
 
-  val location: (String, JsValue) = LocationId.of(Location.England)
+  val location: (String, JsValue) = LocationId.withValue(Location.England)
 
   "WhoIsInPaidEmployment Controller" must {
 
@@ -71,7 +71,7 @@ class WhoIsInPaidEmploymentControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData =
-        Map(WhoIsInPaidEmploymentId.of(YouPartnerBothNeither.You), location)
+        Map(WhoIsInPaidEmploymentId.withValue(YouPartnerBothNeither.You), location)
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

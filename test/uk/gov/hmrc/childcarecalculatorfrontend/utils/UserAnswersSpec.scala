@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 import org.scalatest.OptionValues
 import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.childcarecalculatorfrontend.DataGenerator.*
+import uk.gov.hmrc.childcarecalculatorfrontend.helpers.CacheKeyOps
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.models.*
 import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{
@@ -30,7 +31,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{
 
 import java.time.LocalDate
 
-class UserAnswersSpec extends PlaySpec with OptionValues {
+class UserAnswersSpec extends PlaySpec with OptionValues with CacheKeyOps {
 
   private val testDate: LocalDate           = LocalDate.of(2026, 7, 27)
   private val ageOf19: LocalDate            = ageOf19YearsAgo(testDate)
@@ -59,7 +60,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return no children over 16" in {
       val answers: CacheMap = CacheMap.of(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild(foo, ageOfUnder16), 1 -> AboutYourChild("Baz", ageOfUnder16))
         )
       )
@@ -71,7 +72,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return any children who are over 16" in {
 
       val answers: CacheMap = CacheMap.of(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Over),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -97,7 +98,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   "extract16YearsOldWithBirthdayBefore31stAugust" must {
     "return the number of children of 16 years and dob before 31st August" in {
       val answers: CacheMap = CacheMap.of(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOfExactly16),
             1 -> AboutYourChild(bar, ageOfExactly16),
@@ -122,7 +123,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   "is16ThisYearAndDateOfBirthIsAfter31stAugust" must {
     "not return any children who are over 16 but Birthday is before 31st of August" in {
       val answers: CacheMap = CacheMap.of(
-        AboutYourChildId.of(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug)))
+        AboutYourChildId.withValue(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug)))
       )
       val result = userAnswers(answers).childrenOver16
       result.get.size mustBe 0
@@ -133,7 +134,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return the seq of child ids who are less than 16 years old and exactly 16 whose dob is before 31st of august " in {
 
       val answers: CacheMap = CacheMap.of(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Over),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -158,12 +159,12 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return false if 1 child that is over 11 and not disabled" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1),
-          AboutYourChildId.of(
+          NoOfChildrenId.withValue(1),
+          AboutYourChildId.withValue(
             Map(0 -> AboutYourChild(foo, ageOfExactly16))
           ),
-          ChildrenDisabilityBenefitsId.of(false),
-          RegisteredBlindId.of(false)
+          ChildrenDisabilityBenefitsId.withValue(false),
+          RegisteredBlindId.withValue(false)
         )
       )
 
@@ -173,16 +174,16 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return false if multiple children over 11 and not disabled" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(3),
-          AboutYourChildId.of(
+          NoOfChildrenId.withValue(3),
+          AboutYourChildId.withValue(
             Map(
               0 -> AboutYourChild(foo, ageOfExactly16),
               1 -> AboutYourChild(bar, ageOf19),
               2 -> AboutYourChild(quux, ageOf16Over)
             )
           ),
-          ChildrenDisabilityBenefitsId.of(false),
-          RegisteredBlindId.of(false)
+          ChildrenDisabilityBenefitsId.withValue(false),
+          RegisteredBlindId.withValue(false)
         )
       )
 
@@ -192,16 +193,16 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return true if there is a disabled child aged 16" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(3),
-          AboutYourChildId.of(
+          NoOfChildrenId.withValue(3),
+          AboutYourChildId.withValue(
             Map(
               0 -> AboutYourChild(foo, ageOfExactly16),
               1 -> AboutYourChild(bar, ageOf19),
               2 -> AboutYourChild(quux, ageOf16Over)
             )
           ),
-          WhichChildrenDisabilityId.of(Set(0)),
-          WhichChildrenBlindId.of(Set(0))
+          WhichChildrenDisabilityId.withValue(Set(0)),
+          WhichChildrenBlindId.withValue(Set(0))
         )
       )
 
@@ -210,12 +211,12 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return true when number of children is 1 and the child is disabled and 16" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(1),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(1),
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild(foo, ageOfUnder16))
         ),
-        ChildrenDisabilityBenefitsId.of(true),
-        RegisteredBlindId.of(false)
+        ChildrenDisabilityBenefitsId.withValue(true),
+        RegisteredBlindId.withValue(false)
       )
 
       val result: Boolean = userAnswers(answers).hasChildEligibleForTfc
@@ -224,12 +225,12 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return false when number of children is 1 and the child is 16 and not disabled" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(1),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(1),
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild(foo, ageOfExactly16))
         ),
-        ChildrenDisabilityBenefitsId.of(false),
-        RegisteredBlindId.of(false)
+        ChildrenDisabilityBenefitsId.withValue(false),
+        RegisteredBlindId.withValue(false)
       )
 
       val result: Boolean = userAnswers(answers).hasChildEligibleForTfc
@@ -238,8 +239,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return false when the children aged exactly 16 and birthday before 31st of August are disabled" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Before31Aug),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -247,7 +248,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOf16Before31Aug)
           )
         ),
-        WhichChildrenDisabilityId.of(Set(0, 2, 3))
+        WhichChildrenDisabilityId.withValue(Set(0, 2, 3))
       )
 
       val result: Boolean = userAnswers(answers).hasChildEligibleForTfc
@@ -256,11 +257,11 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return true when the children aged exactly 16 and birthday before 31st of August are blind" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild(foo, ageOf16Before31Aug), 1 -> AboutYourChild("Baz", ageOf16Before31Aug))
         ),
-        WhichChildrenBlindId.of(Set(0, 2, 3))
+        WhichChildrenBlindId.withValue(Set(0, 2, 3))
       )
 
       val result: Boolean = userAnswers(answers).hasChildEligibleForTfc
@@ -269,8 +270,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return true when there are children under 11" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Before31Aug),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -278,8 +279,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOf16Before31Aug)
           )
         ),
-        WhichChildrenDisabilityId.of(Set(1, 2)),
-        WhichChildrenBlindId.of(Set(2))
+        WhichChildrenDisabilityId.withValue(Set(1, 2)),
+        WhichChildrenBlindId.withValue(Set(2))
       )
 
       val result: Boolean = userAnswers(answers).hasChildEligibleForTfc
@@ -288,8 +289,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return false when there are 16 year olds that are not disabled" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild(foo, ageOf16Before31Aug), 1 -> AboutYourChild("Baz", ageOf16Before31Aug))
         )
       )
@@ -303,8 +304,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "returns list with children exactly 16 years with dob before august and blind" in {
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Before31Aug),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -312,8 +313,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOf16Before31Aug)
           )
         ),
-        WhichChildrenDisabilityId.of(Set(1, 2)),
-        WhichChildrenBlindId.of(Set(0, 2, 1, 3))
+        WhichChildrenDisabilityId.withValue(Set(1, 2)),
+        WhichChildrenBlindId.withValue(Set(0, 2, 1, 3))
       )
 
       val result: List[Int] = userAnswers(answers).childrenIdsForAgeExactly16AndDisabled
@@ -323,8 +324,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "returns list with children exactly 16 years with dob before august and disable " in {
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Before31Aug),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -332,8 +333,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOfUnder16)
           )
         ),
-        WhichChildrenDisabilityId.of(Set(0, 2, 3)),
-        WhichChildrenBlindId.of(Set(1, 3))
+        WhichChildrenDisabilityId.withValue(Set(0, 2, 3)),
+        WhichChildrenBlindId.withValue(Set(1, 3))
       )
 
       val result: List[Int] = userAnswers(answers).childrenIdsForAgeExactly16AndDisabled
@@ -344,8 +345,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
       val ageOfUnder16 = testDate.minusYears(1)
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Before31Aug),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -362,10 +363,10 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "returns list with single child exactly 16 years with dob before august and disabled" in {
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(1),
-        AboutYourChildId.of(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug))),
-        ChildrenDisabilityBenefitsId.of(true),
-        RegisteredBlindId.of(false)
+        NoOfChildrenId.withValue(1),
+        AboutYourChildId.withValue(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug))),
+        ChildrenDisabilityBenefitsId.withValue(true),
+        RegisteredBlindId.withValue(false)
       )
 
       val result: List[Int] = userAnswers(answers).childrenIdsForAgeExactly16AndDisabled
@@ -375,10 +376,10 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "returns list with single child exactly 16 years with dob before august and blind" in {
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(1),
-        AboutYourChildId.of(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug))),
-        ChildrenDisabilityBenefitsId.of(false),
-        RegisteredBlindId.of(true)
+        NoOfChildrenId.withValue(1),
+        AboutYourChildId.withValue(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug))),
+        ChildrenDisabilityBenefitsId.withValue(false),
+        RegisteredBlindId.withValue(true)
       )
 
       val result: List[Int] = userAnswers(answers).childrenIdsForAgeExactly16AndDisabled
@@ -388,10 +389,10 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "returns empty list for single child exactly 16 years with dob before august and not blind or disabled" in {
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(1),
-        AboutYourChildId.of(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug))),
-        ChildrenDisabilityBenefitsId.of(false),
-        RegisteredBlindId.of(false)
+        NoOfChildrenId.withValue(1),
+        AboutYourChildId.withValue(Map(0 -> AboutYourChild(foo, ageOf16Before31Aug))),
+        ChildrenDisabilityBenefitsId.withValue(false),
+        RegisteredBlindId.withValue(false)
       )
 
       val result: List[Int] = userAnswers(answers).childrenIdsForAgeExactly16AndDisabled
@@ -404,8 +405,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return the list of children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Before31Aug),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -413,7 +414,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOfUnder16)
           )
         ),
-        WhichChildrenDisabilityId.of(Set(0, 3))
+        WhichChildrenDisabilityId.withValue(Set(0, 3))
       )
 
       val result: List[Int] = userAnswers(answers).childrenBelow16AndExactly16Disabled
@@ -423,8 +424,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return empty list when children who are under 16 and exactly 16 with DOB before 31st of august and disable or blind" in {
 
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf16Before31Aug),
             1 -> AboutYourChild(bar, ageOf16Over),
@@ -432,7 +433,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOf16Over)
           )
         ),
-        WhichChildrenBlindId.of(Set(1, 3))
+        WhichChildrenBlindId.withValue(Set(1, 3))
       )
 
       val result: List[Int] = userAnswers(answers).childrenBelow16AndExactly16Disabled
@@ -443,8 +444,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   "childrenBelow16" must {
     "returns list of children id's whose age is less than 16" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf19),
             1 -> AboutYourChild(bar, ageOfUnder16),
@@ -452,7 +453,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOfUnder16)
           )
         ),
-        WhichChildrenDisabilityId.of(Set(0, 3))
+        WhichChildrenDisabilityId.withValue(Set(0, 3))
       )
 
       val result: List[Int] = userAnswers(answers).childrenBelow16
@@ -461,8 +462,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "returns empty list   when children are over or exactly 16" in {
       val answers: CacheMap = CacheMap.of(
-        NoOfChildrenId.of(4),
-        AboutYourChildId.of(
+        NoOfChildrenId.withValue(4),
+        AboutYourChildId.withValue(
           Map(
             0 -> AboutYourChild(foo, ageOf19),
             1 -> AboutYourChild(bar, ageOf19),
@@ -470,7 +471,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
             3 -> AboutYourChild("Baz", ageOf16Before31Aug)
           )
         ),
-        WhichChildrenDisabilityId.of(Set(0, 3))
+        WhichChildrenDisabilityId.withValue(Set(0, 3))
       )
 
       val result: List[Int] = userAnswers(answers).childrenBelow16
@@ -483,7 +484,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some` if `whichChildrenDisability` is defined" in {
       val answers = userAnswers(
         CacheMap.of(
-          WhichChildrenDisabilityId.of(Set(0, 2))
+          WhichChildrenDisabilityId.withValue(Set(0, 2))
         )
       )
       answers.childrenWithDisabilityBenefits.value mustEqual Set(0, 2)
@@ -492,8 +493,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some` if there is a single child with disability benefits" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1),
-          ChildrenDisabilityBenefitsId.of(true)
+          NoOfChildrenId.withValue(1),
+          ChildrenDisabilityBenefitsId.withValue(true)
         )
       )
       answers.childrenWithDisabilityBenefits.value mustEqual Set(0)
@@ -502,8 +503,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some(Set())` if there is a single child without disability benefits" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1),
-          ChildrenDisabilityBenefitsId.of(false)
+          NoOfChildrenId.withValue(1),
+          ChildrenDisabilityBenefitsId.withValue(false)
         )
       )
       answers.childrenWithDisabilityBenefits.value must be(empty)
@@ -512,8 +513,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some(Set())` if there are multiple children without disability benefits" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(2),
-          ChildrenDisabilityBenefitsId.of(false)
+          NoOfChildrenId.withValue(2),
+          ChildrenDisabilityBenefitsId.withValue(false)
         )
       )
       answers.childrenWithDisabilityBenefits.value must be(empty)
@@ -522,7 +523,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `None` if `noOfChildren` and `whichChildrenDisability` are both undefined" in {
       val answers = userAnswers(
         CacheMap.of(
-          ChildrenDisabilityBenefitsId.of(true)
+          ChildrenDisabilityBenefitsId.withValue(true)
         )
       )
       answers.childrenWithDisabilityBenefits mustNot be(defined)
@@ -531,7 +532,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `None` if there is a single child and `childrenDisabilityBenefits` is undefined" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1)
+          NoOfChildrenId.withValue(1)
         )
       )
       answers.childrenWithDisabilityBenefits mustNot be(defined)
@@ -543,8 +544,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some` if there are multiple children and `whoHasChildcareCosts` is defined" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(2),
-          WhoHasChildcareCostsId.of(Set(0))
+          NoOfChildrenId.withValue(2),
+          WhoHasChildcareCostsId.withValue(Set(0))
         )
       )
       answers.childrenWithCosts.value mustEqual Set(0)
@@ -553,8 +554,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some` if there is a single child and the `childcareCosts` is `yes`" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1),
-          ChildcareCostsId.of(YesNoNotYet.Yes)
+          NoOfChildrenId.withValue(1),
+          ChildcareCostsId.withValue(YesNoNotYet.Yes)
         )
       )
       answers.childrenWithCosts.value mustEqual Set(0)
@@ -563,8 +564,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some` if there is a single child and the `childcareCosts` is `not yet`" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1),
-          ChildcareCostsId.of(YesNoNotYet.NotYet)
+          NoOfChildrenId.withValue(1),
+          ChildcareCostsId.withValue(YesNoNotYet.NotYet)
         )
       )
       answers.childrenWithCosts.value mustEqual Set(0)
@@ -573,8 +574,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `Some(Set())` if there is a single child and `childcareCosts` is `no`" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1),
-          ChildcareCostsId.of(YesNoNotYet.No)
+          NoOfChildrenId.withValue(1),
+          ChildcareCostsId.withValue(YesNoNotYet.No)
         )
       )
       answers.childrenWithCosts.value mustEqual Set.empty
@@ -583,7 +584,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `None` if there is a single child and `childcareCosts` is undefined" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(1)
+          NoOfChildrenId.withValue(1)
         )
       )
       answers.childrenWithCosts mustNot be(defined)
@@ -592,7 +593,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `None` if there are multiple children and `whoHasChildcareCosts` is undefined" in {
       val answers = userAnswers(
         CacheMap.of(
-          NoOfChildrenId.of(2)
+          NoOfChildrenId.withValue(2)
         )
       )
       answers.childrenWithCosts mustNot be(defined)
@@ -611,8 +612,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
       s"return `true` if user has costs: $costs, and approved costs: $provider" in {
         val answers = userAnswers(
           CacheMap.of(
-            ChildcareCostsId.of(costs),
-            ApprovedProviderId.of(provider)
+            ChildcareCostsId.withValue(costs),
+            ApprovedProviderId.withValue(provider)
           )
         )
         answers.hasApprovedCosts.value mustEqual true
@@ -621,7 +622,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `false` if a user has no costs" in {
       val answers = userAnswers(
         CacheMap.of(
-          ChildcareCostsId.of(YesNoNotYet.No)
+          ChildcareCostsId.withValue(YesNoNotYet.No)
         )
       )
       answers.hasApprovedCosts.value mustEqual false
@@ -631,8 +632,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
       s"return `false` if a user has costs: $costs, but they aren't approved" in
         userAnswers(
           CacheMap.of(
-            ChildcareCostsId.of(costs),
-            ApprovedProviderId.of(YesNoNotSure.No)
+            ChildcareCostsId.withValue(costs),
+            ApprovedProviderId.withValue(YesNoNotSure.No)
           )
         )
     }
@@ -640,7 +641,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `None` if a user has costs but `approvedProvider` is undefined" in {
       val answers = userAnswers(
         CacheMap.of(
-          ChildcareCostsId.of(YesNoNotYet.Yes)
+          ChildcareCostsId.withValue(YesNoNotYet.Yes)
         )
       )
       answers.hasApprovedCosts mustNot be(defined)
@@ -649,7 +650,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return `None` if a user `childcareCosts` is undefined" in {
       val answers = userAnswers(
         CacheMap.of(
-          ApprovedProviderId.of(YesNoNotSure.Yes)
+          ApprovedProviderId.withValue(YesNoNotSure.Yes)
         )
       )
       answers.hasApprovedCosts mustNot be(defined)
@@ -658,7 +659,7 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
   "checkVouchersForBoth" must {
     "return false when whoWorks is 'neither'" in {
-      val answers = userAnswers(CacheMap.of(WhoGetsVouchersId.of(YouPartnerBothNeitherNotSure.Neither)))
+      val answers = userAnswers(CacheMap.of(WhoGetsVouchersId.withValue(YouPartnerBothNeitherNotSure.Neither)))
       answers.checkVouchersForBoth mustBe Some(false)
     }
 
@@ -668,12 +669,12 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     }
 
     "return true when whoWorks is 'you'" in {
-      val answers = userAnswers(CacheMap.of(WhoGetsVouchersId.of(YouPartnerBothNeitherNotSure.You)))
+      val answers = userAnswers(CacheMap.of(WhoGetsVouchersId.withValue(YouPartnerBothNeitherNotSure.You)))
       answers.checkVouchersForBoth mustBe Some(true)
     }
 
     "return true when whoWorks is 'partner'" in {
-      val answers = userAnswers(CacheMap.of(WhoGetsVouchersId.of(YouPartnerBothNeitherNotSure.Partner)))
+      val answers = userAnswers(CacheMap.of(WhoGetsVouchersId.withValue(YouPartnerBothNeitherNotSure.Partner)))
       answers.checkVouchersForBoth mustBe Some(true)
     }
   }
@@ -681,12 +682,12 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
   "hasVouchers" must {
     "return true" when {
       "'you' receive vouchers" in {
-        val answers = userAnswers(CacheMap.of(YourChildcareVouchersId.of(true)))
+        val answers = userAnswers(CacheMap.of(YourChildcareVouchersId.withValue(true)))
         answers.hasVouchers mustEqual true
       }
 
       "'partner' receives vouchers" in {
-        val answers = userAnswers(CacheMap.of(PartnerChildcareVouchersId.of(true)))
+        val answers = userAnswers(CacheMap.of(PartnerChildcareVouchersId.withValue(true)))
         answers.hasVouchers mustEqual true
       }
 
@@ -708,12 +709,12 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
 
     "return false" when {
       "'you' don't receive vouchers" in {
-        val answers = userAnswers(CacheMap.of(YourChildcareVouchersId.of(false)))
+        val answers = userAnswers(CacheMap.of(YourChildcareVouchersId.withValue(false)))
         answers.hasVouchers mustEqual false
       }
 
       "'partner' doesn't receive vouchers" in {
-        val answers = userAnswers(CacheMap.of(PartnerChildcareVouchersId.of(false)))
+        val answers = userAnswers(CacheMap.of(PartnerChildcareVouchersId.withValue(false)))
         answers.hasVouchers mustEqual false
       }
 
@@ -728,8 +729,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return Some(true) when the location is England and hasVouchers is true" in {
       val answers = userAnswers(
         CacheMap.of(
-          LocationId.of(Location.England),
-          PartnerChildcareVouchersId.of(true)
+          LocationId.withValue(Location.England),
+          PartnerChildcareVouchersId.withValue(true)
         )
       )
 
@@ -739,8 +740,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return Some(false) when the location is England and hasVouchers is false" in {
       val answers = userAnswers(
         CacheMap.of(
-          LocationId.of(Location.England),
-          PartnerChildcareVouchersId.of(false)
+          LocationId.withValue(Location.England),
+          PartnerChildcareVouchersId.withValue(false)
         )
       )
 
@@ -750,8 +751,8 @@ class UserAnswersSpec extends PlaySpec with OptionValues {
     "return None when the location is not England" in {
       val answers = userAnswers(
         CacheMap.of(
-          LocationId.of(Location.Scotland),
-          PartnerChildcareVouchersId.of(true)
+          LocationId.withValue(Location.Scotland),
+          PartnerChildcareVouchersId.withValue(true)
         )
       )
 

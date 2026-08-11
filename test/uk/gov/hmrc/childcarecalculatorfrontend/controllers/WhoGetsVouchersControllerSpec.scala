@@ -57,7 +57,7 @@ class WhoGetsVouchersControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(WhoGetsVouchersId.of(YouPartnerBothNeitherNotSure.You))
+      val validData       = Map(WhoGetsVouchersId.withValue(YouPartnerBothNeitherNotSure.You))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

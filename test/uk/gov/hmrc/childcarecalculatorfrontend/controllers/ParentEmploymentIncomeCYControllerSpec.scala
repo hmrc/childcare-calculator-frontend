@@ -63,7 +63,7 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(ParentEmploymentIncomeCYId.of(testNumber))
+      val validData       = Map(ParentEmploymentIncomeCYId.withValue(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -109,8 +109,8 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "100000")).withMethod("POST")
 
       val validData = Map(
-        YourMaximumEarningsId.of(false),
-        ParentEmploymentIncomeCYId.of(100000)
+        YourMaximumEarningsId.withValue(false),
+        ParentEmploymentIncomeCYId.withValue(100000)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -125,8 +125,8 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "1000000")).withMethod("POST")
 
       val validData = Map(
-        YourMaximumEarningsId.of(true),
-        ParentEmploymentIncomeCYId.of(1000000)
+        YourMaximumEarningsId.withValue(true),
+        ParentEmploymentIncomeCYId.withValue(1000000)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))

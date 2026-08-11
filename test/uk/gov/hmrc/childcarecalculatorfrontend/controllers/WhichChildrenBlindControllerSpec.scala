@@ -57,7 +57,7 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
     view(form, values.toSeq)(using fakeRequest, messages).toString
 
   def requiredData(values: Map[String, Int]): Map[String, JsValue] = Map(
-    AboutYourChildId.of(
+    AboutYourChildId.withValue(
       values.map { case (name, v) =>
         v -> AboutYourChild(name, LocalDate.of(2026, 7, 27))
       }
@@ -86,7 +86,7 @@ class WhichChildrenBlindControllerSpec extends ControllerSpecBase with OptionVal
       val value = values.values.toSeq.head
 
       s"populate the view correctly on a GET when the question has previously been answered, $i" in {
-        val validData       = requiredData(values) + WhichChildrenBlindId.of(Set(value))
+        val validData       = requiredData(values) + WhichChildrenBlindId.withValue(Set(value))
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
         val result = controller(getRelevantData).onPageLoad()(fakeRequest)

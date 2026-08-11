@@ -57,7 +57,7 @@ class ParentPaidWorkCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(ParentPaidWorkCYId.of(true))
+      val validData       = Map(ParentPaidWorkCYId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

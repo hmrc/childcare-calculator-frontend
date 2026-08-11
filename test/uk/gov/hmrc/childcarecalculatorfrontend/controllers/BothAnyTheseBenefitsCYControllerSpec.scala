@@ -41,7 +41,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
   def onwardRoute: Call            = routes.WhatToTellTheCalculatorController.onPageLoad
 
   val england: Location              = Location.England
-  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.of(england))
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(england))
   def getDataWithLocationSet         = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
@@ -68,7 +68,7 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData =
-        Map(LocationId.of(england), BothAnyTheseBenefitsCYId.of(true))
+        Map(LocationId.withValue(england), BothAnyTheseBenefitsCYId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -100,9 +100,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
       val location = Location.England
       val carerAllowance = Map(
-        LocationId.of(location),
-        DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-        DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+        LocationId.withValue(location),
+        DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+        DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
@@ -119,9 +119,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
         val location = Location.Scotland
         val scottishCarersAllowance = Map(
-          LocationId.of(location),
-          DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-          DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+          LocationId.withValue(location),
+          DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+          DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
         )
 
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -137,9 +137,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
       val location = Location.England
       val carerAllowance = Map(
-        LocationId.of(location),
-        DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-        DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+        LocationId.withValue(location),
+        DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+        DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
 
@@ -156,9 +156,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
         val location = Location.Scotland
         val scottishCarersAllowance = Map(
-          LocationId.of(location),
-          DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-          DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+          LocationId.withValue(location),
+          DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+          DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
         )
 
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -175,9 +175,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
         val location = Location.England
         val carerAllowance = Map(
-          LocationId.of(location),
-          DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-          DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+          LocationId.withValue(location),
+          DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+          DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
         )
 
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
@@ -194,9 +194,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
         val location = Location.Scotland
         val scottishCarersAllowance = Map(
-          LocationId.of(location),
-          DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-          DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+          LocationId.withValue(location),
+          DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+          DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
         )
 
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))
@@ -212,9 +212,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
       val location = Location.England
       val carerAllowance = Map(
-        LocationId.of(location),
-        DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-        DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+        LocationId.withValue(location),
+        DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+        DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, carerAllowance)))
@@ -231,9 +231,9 @@ class BothAnyTheseBenefitsCYControllerSpec extends ControllerSpecBase {
 
         val location = Location.Scotland
         val scottishCarersAllowance = Map(
-          LocationId.of(location),
-          DoYouGetAnyBenefitsId.of(Set(ParentsBenefit.CarersAllowance)),
-          DoesYourPartnerGetAnyBenefitsId.of(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
+          LocationId.withValue(location),
+          DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.CarersAllowance)),
+          DoesYourPartnerGetAnyBenefitsId.withValue(Set(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance))
         )
 
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, scottishCarersAllowance)))

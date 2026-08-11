@@ -18,10 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.JsValue
+import uk.gov.hmrc.childcarecalculatorfrontend.helpers.CacheKeyOps
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
-trait SchemeSpec extends PlaySpec {
+trait SchemeSpec extends PlaySpec with CacheKeyOps {
 
   def helper(answers: (String, JsValue)*): UserAnswers =
     new UserAnswers(CacheMap("", Map(answers*)))

@@ -36,7 +36,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
   val view: partnerMinimumEarnings   = inject[partnerMinimumEarnings]
   val location: Location             = Location.England
-  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.of(location))
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(location))
   val getDataWithLocationSet         = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   override lazy val nmwConfig: NmwConfig = mock[NmwConfig]
@@ -61,8 +61,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
     "return OK and the correct view for a GET" in {
       val validData = Map(
-        YourPartnersAgeId.of(Age.UnderEighteen),
-        LocationId.of(Location.England)
+        YourPartnersAgeId.withValue(Age.UnderEighteen),
+        LocationId.withValue(Location.England)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
@@ -77,9 +77,9 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val validData = Map(
-        YourPartnersAgeId.of(Age.UnderEighteen),
-        PartnerMinimumEarningsId.of(true),
-        LocationId.of(Location.England)
+        YourPartnersAgeId.withValue(Age.UnderEighteen),
+        PartnerMinimumEarningsId.withValue(true),
+        LocationId.withValue(Location.England)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))

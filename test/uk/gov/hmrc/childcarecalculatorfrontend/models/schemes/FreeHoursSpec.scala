@@ -33,14 +33,14 @@ class FreeHoursSpec extends SchemeSpec {
 
     "return `Eligible` if the user has a child aged 3 or 4" in {
       val answers: UserAnswers = helper(
-        ChildAgedThreeOrFourId.of(true)
+        ChildAgedThreeOrFourId.withValue(true)
       )
       freeHours.eligibility(answers) mustEqual Eligibility.Eligible
     }
 
     "return `NotEligible` is the user does not have a child aged 3 or 4" in {
       val answers: UserAnswers = helper(
-        ChildAgedThreeOrFourId.of(false)
+        ChildAgedThreeOrFourId.withValue(false)
       )
       freeHours.eligibility(answers) mustEqual Eligibility.NotEligible
     }

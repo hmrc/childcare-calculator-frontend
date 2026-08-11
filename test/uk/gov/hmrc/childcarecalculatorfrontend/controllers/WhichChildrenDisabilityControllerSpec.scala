@@ -49,7 +49,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     )
 
   val requiredData: Map[String, JsValue] = Map(
-    AboutYourChildId.of(
+    AboutYourChildId.withValue(
       Map(
         0 -> AboutYourChild("Foo", LocalDate.of(2026, 7, 27)),
         1 -> AboutYourChild("Bar", LocalDate.of(2026, 7, 27))
@@ -76,7 +76,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = requiredData + WhichChildrenDisabilityId.of(Set(0))
+      val validData       = requiredData + WhichChildrenDisabilityId.withValue(Set(0))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

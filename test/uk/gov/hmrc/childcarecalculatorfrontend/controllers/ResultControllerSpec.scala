@@ -45,7 +45,7 @@ class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
 
   val location: Location = Location.England
 
-  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.of(location))
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(location))
 
   val cacheMapWithNoLocation: CacheMap = CacheMap.of("test" -> JsString(location.toString))
 

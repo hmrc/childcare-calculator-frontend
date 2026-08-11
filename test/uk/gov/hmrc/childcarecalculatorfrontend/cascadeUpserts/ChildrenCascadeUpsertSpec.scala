@@ -30,7 +30,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         val result = cascadeUpsert(NoOfChildrenId, 4, originalCacheMap)
 
-        result.data mustBe Map(NoOfChildrenId.of(4))
+        result.data mustBe Map(NoOfChildrenId.withValue(4))
       }
 
       "remove relevant data in child journey when noOfChildren value is changed from single child" in {
@@ -38,7 +38,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         val result = cascadeUpsert(NoOfChildrenId, 4, originalCacheMap)
 
-        result.data mustBe Map(NoOfChildrenId.of(4))
+        result.data mustBe Map(NoOfChildrenId.withValue(4))
       }
     }
 
@@ -84,8 +84,8 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         "remove whichDisabilityBenefits data accordingly when childrenDisabilityBenefits is changed for 5 children " in {
           val originalCacheMap = DataGenerator.sample
             .overwritten(
-              WhichChildrenDisabilityId.of(Set(0, 1, 2, 4)),
-              WhichDisabilityBenefitsId.of(
+              WhichChildrenDisabilityId.withValue(Set(0, 1, 2, 4)),
+              WhichDisabilityBenefitsId.withValue(
                 Map(
                   0 -> Set(DisabilityBenefit.DisabilityBenefits),
                   1 -> Set(DisabilityBenefit.HigherDisabilityBenefits),
@@ -105,7 +105,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
       "Save registeredBlind data " must {
         "remove whichChildrenBlind data when registeredBlind is false" in {
-          val originalCacheMap: CacheMap = DataGenerator.sample.overwritten(WhichChildrenBlindId.of(Set(0, 2)))
+          val originalCacheMap: CacheMap = DataGenerator.sample.overwritten(WhichChildrenBlindId.withValue(Set(0, 2)))
 
           val result = cascadeUpsert(RegisteredBlindId, false, originalCacheMap)
           result.getEntry(WhichChildrenBlindId) mustBe None
@@ -116,14 +116,14 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed " in {
           val originalCacheMap = DataGenerator.sample
             .overwritten(
-              WhoHasChildcareCostsId.of(Set(0, 1)),
-              ChildcarePayFrequencyId.of(
+              WhoHasChildcareCostsId.withValue(Set(0, 1)),
+              ChildcarePayFrequencyId.withValue(
                 Map(
                   0 -> ChildcarePayFrequency.Monthly,
                   1 -> ChildcarePayFrequency.Weekly
                 )
               ),
-              ExpectedChildcareCostsId.of(
+              ExpectedChildcareCostsId.withValue(
                 Map(
                   0 -> 123,
                   1 -> 224
@@ -140,8 +140,8 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed for 5 children " in {
           val originalCacheMap = DataGenerator.sample.overwritten(
-            WhoHasChildcareCostsId.of(Set(0, 1, 3, 4)),
-            ChildcarePayFrequencyId.of(
+            WhoHasChildcareCostsId.withValue(Set(0, 1, 3, 4)),
+            ChildcarePayFrequencyId.withValue(
               Map(
                 0 -> ChildcarePayFrequency.Monthly,
                 1 -> ChildcarePayFrequency.Weekly,
@@ -149,7 +149,7 @@ class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
                 4 -> ChildcarePayFrequency.Weekly
               )
             ),
-            ExpectedChildcareCostsId.of(
+            ExpectedChildcareCostsId.withValue(
               Map(
                 0 -> 123,
                 1 -> 224,

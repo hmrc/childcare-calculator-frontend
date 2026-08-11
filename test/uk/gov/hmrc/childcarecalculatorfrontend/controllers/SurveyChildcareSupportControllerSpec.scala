@@ -56,7 +56,7 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(SurveyChildcareSupportId.of(true))
+      val validData       = Map(SurveyChildcareSupportId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(fakeRequest)

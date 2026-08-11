@@ -60,8 +60,8 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
     view(form, id, name)(using fakeRequest, messages).toString
 
   val requiredData: Map[String, JsValue] = Map(
-    WhoHasChildcareCostsId.of(Set(0, 1)),
-    AboutYourChildId.of(
+    WhoHasChildcareCostsId.withValue(Set(0, 1)),
+    AboutYourChildId.withValue(
       Map(
         0 -> AboutYourChild("Foo", LocalDate.of(2026, 7, 27)),
         1 -> AboutYourChild("Bar", LocalDate.of(2026, 7, 27))
@@ -93,7 +93,7 @@ class ChildcarePayFrequencyControllerSpec extends ControllerSpecBase with Option
       }
 
       s"populate the view correctly on a GET when the question has previously been answered, for id: $id" in {
-        val validData = requiredData + ChildcarePayFrequencyId.of(
+        val validData = requiredData + ChildcarePayFrequencyId.withValue(
           Map(
             id -> ChildcarePayFrequency.Weekly
           )

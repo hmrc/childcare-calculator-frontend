@@ -57,7 +57,7 @@ class YourAgeControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(YourAgeId.of(Age.UnderEighteen))
+      val validData       = Map(YourAgeId.withValue(Age.UnderEighteen))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

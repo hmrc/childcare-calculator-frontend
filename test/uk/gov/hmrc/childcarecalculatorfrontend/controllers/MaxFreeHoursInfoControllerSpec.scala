@@ -92,10 +92,10 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         when(esc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
         val validData = Map(
-          DoYouLiveWithPartnerId.of(false),
-          AreYouInPaidWorkId.of(true),
-          DoYouGetAnyBenefitsId.of(Set.empty),
-          ChildcareCostsId.of(YesNoNotYet.Yes)
+          DoYouLiveWithPartnerId.withValue(false),
+          AreYouInPaidWorkId.withValue(true),
+          DoYouGetAnyBenefitsId.withValue(Set.empty),
+          ChildcareCostsId.withValue(YesNoNotYet.Yes)
         )
 
         val info   = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -110,10 +110,10 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         when(esc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
         val validData = Map(
-          DoYouLiveWithPartnerId.of(true),
-          AreYouInPaidWorkId.of(true),
-          DoYouGetAnyBenefitsId.of(Set.empty),
-          ChildcareCostsId.of(YesNoNotYet.Yes)
+          DoYouLiveWithPartnerId.withValue(true),
+          AreYouInPaidWorkId.withValue(true),
+          DoYouGetAnyBenefitsId.withValue(Set.empty),
+          ChildcareCostsId.withValue(YesNoNotYet.Yes)
         )
         val info   = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
         val result = controller(info).onPageLoad(fakeRequest)
@@ -127,10 +127,10 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         when(esc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
         val validData = Map(
-          DoYouLiveWithPartnerId.of(true),
-          AreYouInPaidWorkId.of(true),
-          DoYouGetAnyBenefitsId.of(Set.empty),
-          ChildcareCostsId.of(YesNoNotYet.Yes)
+          DoYouLiveWithPartnerId.withValue(true),
+          AreYouInPaidWorkId.withValue(true),
+          DoYouGetAnyBenefitsId.withValue(Set.empty),
+          ChildcareCostsId.withValue(YesNoNotYet.Yes)
         )
         val info   = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
         val result = controller(info).onPageLoad(fakeRequest)
@@ -144,10 +144,10 @@ class MaxFreeHoursInfoControllerSpec extends ControllerSpecBase with MockitoSuga
         when(esc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
         val validData = Map(
-          DoYouLiveWithPartnerId.of(true),
-          AreYouInPaidWorkId.of(true),
-          DoYouGetAnyBenefitsId.of(Set.empty),
-          ChildcareCostsId.of(YesNoNotYet.Yes)
+          DoYouLiveWithPartnerId.withValue(true),
+          AreYouInPaidWorkId.withValue(true),
+          DoYouGetAnyBenefitsId.withValue(Set.empty),
+          ChildcareCostsId.withValue(YesNoNotYet.Yes)
         )
 
         val info   = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))

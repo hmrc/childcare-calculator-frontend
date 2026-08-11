@@ -45,13 +45,13 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
   "First Paragraph Builder" must {
     "Loading the Do You Have Children section" when {
       "You have two children" in {
-        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.of(2)))
+        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.withValue(2)))
 
         paragraphBuilder.buildFirstParagraph(answers) must contain("you have 2 children")
       }
 
       "You don’t have children" in {
-        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.of(0)))
+        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.withValue(0)))
 
         paragraphBuilder.buildFirstParagraph(answers) must contain("you don’t have children")
       }
@@ -63,7 +63,7 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
       }
 
       "You have one child" in {
-        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.of(1)))
+        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.withValue(1)))
 
         paragraphBuilder.buildFirstParagraph(answers) must contain("you have one child")
       }
@@ -74,9 +74,9 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
       "We have childcare costs at monthly aggregation" in {
         val answers = new UserAnswers(
           CacheMap.of(
-            NoOfChildrenId.of(2),
-            ChildcarePayFrequencyId.of(Map(1 -> ChildcarePayFrequency.Monthly)),
-            ExpectedChildcareCostsId.of(Map(1 -> 25))
+            NoOfChildrenId.withValue(2),
+            ChildcarePayFrequencyId.withValue(Map(1 -> ChildcarePayFrequency.Monthly)),
+            ExpectedChildcareCostsId.withValue(Map(1 -> 25))
           )
         )
 
@@ -86,15 +86,15 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
       "We have more than one childcare cost at monthly aggregation" in {
         val answers = new UserAnswers(
           CacheMap.of(
-            NoOfChildrenId.of(2),
-            ChildcarePayFrequencyId.of(
+            NoOfChildrenId.withValue(2),
+            ChildcarePayFrequencyId.withValue(
               Map(
                 1 -> ChildcarePayFrequency.Monthly,
                 2 -> ChildcarePayFrequency.Monthly,
                 3 -> ChildcarePayFrequency.Monthly
               )
             ),
-            ExpectedChildcareCostsId.of(
+            ExpectedChildcareCostsId.withValue(
               Map(1 -> 20, 2 -> 10, 3 -> 5)
             )
           )
@@ -106,9 +106,9 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
       "We have one childcare cost at weekly aggregation" in {
         val answers = new UserAnswers(
           CacheMap.of(
-            NoOfChildrenId.of(2),
-            ChildcarePayFrequencyId.of(Map(1 -> ChildcarePayFrequency.Weekly)),
-            ExpectedChildcareCostsId.of(Map(1 -> 4))
+            NoOfChildrenId.withValue(2),
+            ChildcarePayFrequencyId.withValue(Map(1 -> ChildcarePayFrequency.Weekly)),
+            ExpectedChildcareCostsId.withValue(Map(1 -> 4))
           )
         )
 
@@ -118,15 +118,15 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
       "We have one childcare cost at weekly aggregation and one childcare cost at monthly aggregation" in {
         val answers = new UserAnswers(
           CacheMap.of(
-            NoOfChildrenId.of(2),
-            ChildcarePayFrequencyId.of(
+            NoOfChildrenId.withValue(2),
+            ChildcarePayFrequencyId.withValue(
               Map(
                 1 -> ChildcarePayFrequency.Monthly,
                 2 -> ChildcarePayFrequency.Monthly,
                 3 -> ChildcarePayFrequency.Weekly
               )
             ),
-            ExpectedChildcareCostsId.of(
+            ExpectedChildcareCostsId.withValue(
               Map(1 -> 20, 2 -> 10, 3 -> 10)
             )
           )
@@ -136,13 +136,13 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
       }
 
       "We have children but no childcare costs" in {
-        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.of(1)))
+        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.withValue(1)))
 
         paragraphBuilder.buildFirstParagraph(answers) must contain("you have one child")
       }
 
       "You have 0 children and no childcare costs" in {
-        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.of(0)))
+        val answers = new UserAnswers(CacheMap.of(NoOfChildrenId.withValue(0)))
 
         paragraphBuilder.buildFirstParagraph(answers) must contain("you don’t have children")
       }
@@ -156,13 +156,13 @@ class FirstParagraphBuilderSpec extends PlaySpec with MockitoSugar with SpecBase
 
     "Loading the Your Living Status section" when {
       "You live on your own" in {
-        val answers = new UserAnswers(CacheMap.of(DoYouLiveWithPartnerId.of(false)))
+        val answers = new UserAnswers(CacheMap.of(DoYouLiveWithPartnerId.withValue(false)))
 
         paragraphBuilder.buildFirstParagraph(answers) must contain("you live on your own")
       }
 
       "You live with your partner" in {
-        val answers = new UserAnswers(CacheMap.of(DoYouLiveWithPartnerId.of(true)))
+        val answers = new UserAnswers(CacheMap.of(DoYouLiveWithPartnerId.withValue(true)))
 
         paragraphBuilder.buildFirstParagraph(answers) must contain("you live with your partner")
       }

@@ -66,13 +66,13 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
   val testNumber: Int = 123
 
   def requiredData(hasCosts: YesNoNotYet): Map[String, JsValue] = Map(
-    AboutYourChildId.of(
+    AboutYourChildId.withValue(
       Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
     ),
-    ChildcarePayFrequencyId.of(
+    ChildcarePayFrequencyId.withValue(
       Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
     ),
-    ChildcareCostsId.of(hasCosts)
+    ChildcareCostsId.withValue(hasCosts)
   )
 
   def getRequiredData(hasCosts: YesNoNotYet): DataRetrievalAction =
@@ -101,7 +101,7 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       }
 
       s"populate the view correctly on a GET when the question has previously been answered, for id: $id" in {
-        val validData = requiredData(hasCosts) + ExpectedChildcareCostsId.of(
+        val validData = requiredData(hasCosts) + ExpectedChildcareCostsId.withValue(
           Map(id -> testNumber)
         )
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
@@ -146,10 +146,10 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if no answer exists for `AboutYourChild`" in {
       val data = Map(
-        ChildcarePayFrequencyId.of(
+        ChildcarePayFrequencyId.withValue(
           Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.of(YesNoNotYet.Yes)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result  = controller(getData).onPageLoad(0)(fakeRequest)
@@ -158,10 +158,10 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no answers exists for `AboutYourChild`" in {
       val data = Map(
-        ChildcarePayFrequencyId.of(
+        ChildcarePayFrequencyId.withValue(
           Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.of(YesNoNotYet.Yes)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
@@ -171,13 +171,13 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if no answer exists for `ChildcarePayFrequency`" in {
       val data = Map(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequencyId.of(
+        ChildcarePayFrequencyId.withValue(
           Map(1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.of(YesNoNotYet.Yes)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result  = controller(getData).onPageLoad(0)(fakeRequest)
@@ -186,13 +186,13 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no answer exists for `ChildcarePayFrequency`" in {
       val data = Map(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequencyId.of(
+        ChildcarePayFrequencyId.withValue(
           Map(1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.of(YesNoNotYet.Yes)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
@@ -202,10 +202,10 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if no answer exists for `ChildcareCosts`" in {
       val data = Map(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequencyId.of(
+        ChildcarePayFrequencyId.withValue(
           Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         )
       )
@@ -216,10 +216,10 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no answer exists for `ChildcareCosts`" in {
       val data = Map(
-        AboutYourChildId.of(
+        AboutYourChildId.withValue(
           Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequencyId.of(
+        ChildcarePayFrequencyId.withValue(
           Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         )
       )

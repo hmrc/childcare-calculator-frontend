@@ -35,7 +35,7 @@ class ChildAgedTwoControllerSpec extends ControllerSpecBase {
 
   val location: Location = Location.England
 
-  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.of(location))
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(location))
 
   def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
@@ -63,8 +63,8 @@ class ChildAgedTwoControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        LocationId.of(location),
-        ChildAgedTwoId.of(true)
+        LocationId.withValue(location),
+        ChildAgedTwoId.withValue(true)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 

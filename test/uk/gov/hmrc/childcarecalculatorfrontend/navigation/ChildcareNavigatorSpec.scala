@@ -57,7 +57,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     }
 
   private def aboutYourChildren(children: (String, LocalDate)*): (String, JsValue) =
-    AboutYourChildId.of(children.zipWithIndex.map { case ((name, dateOfBirth), index) =>
+    AboutYourChildId.withValue(children.zipWithIndex.map { case ((name, dateOfBirth), index) =>
       index -> AboutYourChild(name, dateOfBirth)
     }.toMap)
 
@@ -76,7 +76,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     "this isn't the last child" when {
       "redirect to `About your child` for the next index" in {
         val answers: UserAnswers = userAnswersOverride(
-          NoOfChildrenId.of(2),
+          NoOfChildrenId.withValue(2),
           aboutYourChildren(
             foo -> dob,
             bar -> dob
@@ -91,7 +91,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to `Do any children get disability benefits` when child is over 16" in {
         val answers: UserAnswers = userAnswersOverride(
-          NoOfChildrenId.of(2),
+          NoOfChildrenId.withValue(2),
           aboutYourChildren(
             foo -> ageOfOver16,
             bar -> dob
@@ -103,7 +103,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
       "redirect to `Do any children get disability benefits` for all the child below 18" in {
         val answers: UserAnswers = userAnswersOverride(
-          NoOfChildrenId.of(2),
+          NoOfChildrenId.withValue(2),
           aboutYourChildren(
             foo -> ageOfExactly15,
             bar -> ageOfExactly15
@@ -130,8 +130,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Any children blind` when the user answers `No` when the user has 1 child" in {
       val answers: UserAnswers = userAnswers(
-        ChildrenDisabilityBenefitsId.of(false),
-        NoOfChildrenId.of(1)
+        ChildrenDisabilityBenefitsId.withValue(false),
+        NoOfChildrenId.withValue(1)
       )
       val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.RegisteredBlindController.onPageLoad()
@@ -139,8 +139,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Any children blind` when the user answers `No` when the user has more than 1 child" in {
       val answers: UserAnswers = userAnswers(
-        ChildrenDisabilityBenefitsId.of(false),
-        NoOfChildrenId.of(2)
+        ChildrenDisabilityBenefitsId.withValue(false),
+        NoOfChildrenId.withValue(2)
       )
       val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.RegisteredBlindController.onPageLoad()
@@ -148,8 +148,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Which disability benefits` when the user answers `Yes` and has 1 child" in {
       val answers: UserAnswers = userAnswers(
-        ChildrenDisabilityBenefitsId.of(true),
-        NoOfChildrenId.of(1)
+        ChildrenDisabilityBenefitsId.withValue(true),
+        NoOfChildrenId.withValue(1)
       )
       val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(0)
@@ -157,8 +157,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Which of your children get disability benefits` when the user answers `Yes` and has more than 1 child" in {
       val answers: UserAnswers = userAnswers(
-        ChildrenDisabilityBenefitsId.of(true),
-        NoOfChildrenId.of(2)
+        ChildrenDisabilityBenefitsId.withValue(true),
+        NoOfChildrenId.withValue(2)
       )
       val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.WhichChildrenDisabilityController.onPageLoad()
@@ -166,7 +166,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `SessionExpired` when the user has no answer for `Do any of your children get disability benefits`" in {
       val answers: UserAnswers = userAnswers(
-        NoOfChildrenId.of(1)
+        NoOfChildrenId.withValue(1)
       )
       val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
@@ -174,7 +174,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `SessionExpired` when the user has no answer for `Number of children`" in {
       val answers: UserAnswers = userAnswers(
-        ChildrenDisabilityBenefitsId.of(true)
+        ChildrenDisabilityBenefitsId.withValue(true)
       )
       val result = navigator.nextPage(ChildrenDisabilityBenefitsId).value(answers)
       result mustEqual routes.SessionExpiredController.onPageLoad
@@ -186,7 +186,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
     Seq(0, 2).foreach { id =>
       s"redirect to `WhichDisabilityBenefits` for the first appropriate child, for id: $id" in {
         val answers: UserAnswers = userAnswers(
-          WhichChildrenDisabilityId.of(Set(id))
+          WhichChildrenDisabilityId.withValue(Set(id))
         )
         val result = navigator.nextPage(WhichChildrenDisabilityId).value(answers)
         result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(id)
@@ -203,7 +203,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Which disability benefits` for the next applicable child, if this is not the last child" in {
       val answers: UserAnswers = userAnswers(
-        WhichChildrenDisabilityId.of(Set(0, 2))
+        WhichChildrenDisabilityId.withValue(Set(0, 2))
       )
       val result = navigator.nextPage(WhichDisabilityBenefitsId(0)).value(answers)
       result mustEqual routes.WhichDisabilityBenefitsController.onPageLoad(2)
@@ -211,7 +211,7 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Any children blind` when this is the last applicable child" in {
       val answers: UserAnswers = userAnswers(
-        WhichChildrenDisabilityId.of(Set(0, 2))
+        WhichChildrenDisabilityId.withValue(Set(0, 2))
       )
       val result = navigator.nextPage(WhichDisabilityBenefitsId(2)).value(answers)
       result mustEqual routes.RegisteredBlindController.onPageLoad()
@@ -219,8 +219,8 @@ class ChildcareNavigatorSpec extends SpecBase with OptionValues with MockitoSuga
 
     "redirect to `Any children blind` when this is the only child" in {
       val answers: UserAnswers = userAnswers(
-        NoOfChildrenId.of(1),
-        ChildrenDisabilityBenefitsId.of(true)
+        NoOfChildrenId.withValue(1),
+        ChildrenDisabilityBenefitsId.withValue(true)
       )
       val result = navigator.nextPage(WhichDisabilityBenefitsId(0)).value(answers)
       result mustEqual routes.RegisteredBlindController.onPageLoad()

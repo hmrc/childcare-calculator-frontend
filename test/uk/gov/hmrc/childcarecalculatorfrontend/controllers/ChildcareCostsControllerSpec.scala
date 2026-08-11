@@ -56,7 +56,7 @@ class ChildcareCostsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(ChildcareCostsId.of(YesNoNotYet.Yes))
+      val validData       = Map(ChildcareCostsId.withValue(YesNoNotYet.Yes))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

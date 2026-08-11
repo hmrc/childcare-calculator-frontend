@@ -70,14 +70,14 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       val (index, name) = cases.head
 
       Map(
-        NoOfChildrenId.of(1),
-        ChildrenDisabilityBenefitsId.of(true),
-        AboutYourChildId.of(Map(index -> AboutYourChild(name, LocalDate.of(2026, 7, 27))))
+        NoOfChildrenId.withValue(1),
+        ChildrenDisabilityBenefitsId.withValue(true),
+        AboutYourChildId.withValue(Map(index -> AboutYourChild(name, LocalDate.of(2026, 7, 27))))
       )
     } else {
       Map(
-        WhichChildrenDisabilityId.of(cases.keySet),
-        AboutYourChildId.of(
+        WhichChildrenDisabilityId.withValue(cases.keySet),
+        AboutYourChildId.withValue(
           cases.map { case (index, name) =>
             index -> AboutYourChild(name, LocalDate.of(2026, 7, 27))
           }
@@ -105,7 +105,7 @@ class WhichDisabilityBenefitsControllerSpec extends ControllerSpecBase with Opti
       }
 
       s"populate the view correctly on a GET when the question has previously been answered, for index: $index, name: $name" in {
-        val validData = requiredData(cases) + WhichDisabilityBenefitsId.of(
+        val validData = requiredData(cases) + WhichDisabilityBenefitsId.withValue(
           cases.map(_._1 -> Set(DisabilityBenefit.DisabilityBenefits))
         )
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))

@@ -69,7 +69,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
     view(form, values.toSeq)(using fakeRequest, messages).toString
 
   def requiredData(values: Map[String, Int]): Map[String, JsValue] = Map(
-    AboutYourChildId.of(
+    AboutYourChildId.withValue(
       values.map { case (name, v) =>
         v -> AboutYourChild(name, LocalDate.of(2026, 7, 27))
       }
@@ -98,7 +98,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
         "exact16WithBirthdayBefore31stAugust" -> 3
       )
 
-      val dataWithOneChildOver16 = requiredData(children) + AboutYourChildId.of(
+      val dataWithOneChildOver16 = requiredData(children) + AboutYourChildId.withValue(
         Map(
           0 -> AboutYourChild("Over16", ageOf19),
           1 -> AboutYourChild("Under16_1", ageOfExactly15),
@@ -106,8 +106,8 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
           3 -> AboutYourChild("exact16WithBirthdayBefore31stAugust", ageOf16Before31Aug)
         )
       ) +
-        WhichChildrenBlindId.of(Set(2)) +
-        WhichChildrenDisabilityId.of(Set(0, 3))
+        WhichChildrenBlindId.withValue(Set(2)) +
+        WhichChildrenDisabilityId.withValue(Set(0, 3))
 
       val getRelevantData =
         new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, dataWithOneChildOver16)), Some(testDate))
@@ -128,7 +128,7 @@ class WhoHasChildcareCostsControllerSpec extends ControllerSpecBase with OptionV
       val value = values.values.toSeq.head
 
       s"populate the view correctly on a GET when the question has previously been answered $i" in {
-        val validData       = requiredData(values) + WhoHasChildcareCostsId.of(Set(value))
+        val validData       = requiredData(values) + WhoHasChildcareCostsId.withValue(Set(value))
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
 
         val result = controller(getRelevantData).onPageLoad()(fakeRequest)

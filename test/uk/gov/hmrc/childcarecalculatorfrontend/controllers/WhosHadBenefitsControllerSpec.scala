@@ -57,7 +57,7 @@ class WhosHadBenefitsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(WhosHadBenefitsId.of(YouPartnerBoth.You))
+      val validData       = Map(WhosHadBenefitsId.withValue(YouPartnerBoth.You))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

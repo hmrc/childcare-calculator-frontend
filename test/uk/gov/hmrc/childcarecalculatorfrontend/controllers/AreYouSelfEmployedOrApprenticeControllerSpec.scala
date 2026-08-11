@@ -57,7 +57,7 @@ class AreYouSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        AreYouSelfEmployedOrApprenticeId.of(EmploymentStatus.SelfEmployed)
+        AreYouSelfEmployedOrApprenticeId.withValue(EmploymentStatus.SelfEmployed)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 

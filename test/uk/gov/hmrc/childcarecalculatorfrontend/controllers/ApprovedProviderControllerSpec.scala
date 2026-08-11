@@ -60,7 +60,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(ApprovedProviderId.of(YesNoNotSure.Yes))
+      val validData       = Map(ApprovedProviderId.withValue(YesNoNotSure.Yes))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -69,7 +69,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when we have NOT YET on childcare costs" in {
-      val validData       = Map(ChildcareCostsId.of(YesNoNotYet.NotYet))
+      val validData       = Map(ChildcareCostsId.withValue(YesNoNotYet.NotYet))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -78,7 +78,7 @@ class ApprovedProviderControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when we have selected YES on childcare costs" in {
-      val validData       = Map(ChildcareCostsId.of(YesNoNotYet.Yes))
+      val validData       = Map(ChildcareCostsId.withValue(YesNoNotYet.Yes))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

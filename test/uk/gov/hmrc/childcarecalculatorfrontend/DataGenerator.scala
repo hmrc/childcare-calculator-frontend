@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend
 
-import uk.gov.hmrc.childcarecalculatorfrontend.helpers.CacheMapOps
+import uk.gov.hmrc.childcarecalculatorfrontend.helpers.{CacheKeyOps, CacheMapOps}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{ChildcarePayFrequency, DisabilityBenefit}
@@ -24,7 +24,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
 import java.time.LocalDate
 
-object DataGenerator extends CacheMapOps {
+object DataGenerator extends CacheMapOps with CacheKeyOps {
   val ageOf19YearsAgo: LocalDate => LocalDate = (date: LocalDate) => date.minusYears(19).minusDays(1)
 
   val ageOf16WithBirthdayBefore31stAugust: LocalDate => LocalDate = (date: LocalDate) =>
@@ -52,8 +52,8 @@ object DataGenerator extends CacheMapOps {
   private val sampleDate = LocalDate.parse("2019-01-01")
 
   val sample: CacheMap = CacheMap.of(
-    NoOfChildrenId.of(5),
-    AboutYourChildId.of(
+    NoOfChildrenId.withValue(5),
+    AboutYourChildId.withValue(
       Map(
         0 -> AboutYourChild("Foo", sampleDate),
         1 -> AboutYourChild("Bar", sampleDate),
@@ -62,21 +62,21 @@ object DataGenerator extends CacheMapOps {
         4 -> AboutYourChild("Raz", sampleDate)
       )
     ),
-    ChildrenDisabilityBenefitsId.of(true),
-    WhichChildrenDisabilityId.of(Set(0, 2)),
-    WhichDisabilityBenefitsId.of(
+    ChildrenDisabilityBenefitsId.withValue(true),
+    WhichChildrenDisabilityId.withValue(Set(0, 2)),
+    WhichDisabilityBenefitsId.withValue(
       Map(
         0 -> Set(DisabilityBenefit.DisabilityBenefits),
         2 -> Set(DisabilityBenefit.DisabilityBenefits, DisabilityBenefit.HigherDisabilityBenefits)
       )
     ),
-    RegisteredBlindId.of(true),
-    WhichChildrenBlindId.of(Set(2)),
-    WhoHasChildcareCostsId.of(Set(0, 2)),
-    ChildcarePayFrequencyId.of(
+    RegisteredBlindId.withValue(true),
+    WhichChildrenBlindId.withValue(Set(2)),
+    WhoHasChildcareCostsId.withValue(Set(0, 2)),
+    ChildcarePayFrequencyId.withValue(
       Map(0 -> ChildcarePayFrequency.Monthly, 2 -> ChildcarePayFrequency.Weekly)
     ),
-    ExpectedChildcareCostsId.of(Map(3 -> BigDecimal(123), 4 -> BigDecimal(224)))
+    ExpectedChildcareCostsId.withValue(Map(3 -> BigDecimal(123), 4 -> BigDecimal(224)))
   )
 
 }

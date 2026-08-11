@@ -27,42 +27,42 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
   "Paid Pension CY" when {
     "Save  YouPaidPensionCY data " must {
       "remove howMuchYouPayPension page data when user selects no option" in {
-        val originalCacheMap = CacheMap.of(HowMuchYouPayPensionId.of(20))
+        val originalCacheMap = CacheMap.of(HowMuchYouPayPensionId.withValue(20))
 
         val result = cascadeUpsert(YouPaidPensionCYId, false, originalCacheMap)
 
-        result.data mustBe Map(YouPaidPensionCYId.of(false))
+        result.data mustBe Map(YouPaidPensionCYId.withValue(false))
       }
 
       "return original cache map when user selects yes option" in {
-        val originalCacheMap = CacheMap.of(HowMuchYouPayPensionId.of(20))
+        val originalCacheMap = CacheMap.of(HowMuchYouPayPensionId.withValue(20))
 
         val result = cascadeUpsert(YouPaidPensionCYId, true, originalCacheMap)
 
         result.data mustBe Map(
-          YouPaidPensionCYId.of(true),
-          HowMuchYouPayPensionId.of(20)
+          YouPaidPensionCYId.withValue(true),
+          HowMuchYouPayPensionId.withValue(20)
         )
       }
     }
 
     "Save PartnerPaidPensionCY data " must {
       "remove howMuchPartnerPayPension page data when user selects no option" in {
-        val originalCacheMap = CacheMap.of(HowMuchPartnerPayPensionId.of(20))
+        val originalCacheMap = CacheMap.of(HowMuchPartnerPayPensionId.withValue(20))
 
         val result = cascadeUpsert(PartnerPaidPensionCYId, false, originalCacheMap)
 
-        result.data mustBe Map(PartnerPaidPensionCYId.of(false))
+        result.data mustBe Map(PartnerPaidPensionCYId.withValue(false))
       }
 
       "return original cache map when user selects yes option" in {
-        val originalCacheMap = CacheMap.of(HowMuchPartnerPayPensionId.of(20))
+        val originalCacheMap = CacheMap.of(HowMuchPartnerPayPensionId.withValue(20))
 
         val result = cascadeUpsert(PartnerPaidPensionCYId, true, originalCacheMap)
 
         result.data mustBe Map(
-          PartnerPaidPensionCYId.of(true),
-          HowMuchPartnerPayPensionId.of(20)
+          PartnerPaidPensionCYId.withValue(true),
+          HowMuchPartnerPayPensionId.withValue(20)
         )
       }
     }
@@ -71,29 +71,29 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
       "remove WhoPaysIntoPension, howMuchYouPayPension, howMuchPartnerPayPension and howMuchBothPayPension pages data" +
         " when user selects no option" in {
           val originalCacheMap = CacheMap.of(
-            HowMuchYouPayPensionId.of(20),
-            HowMuchPartnerPayPensionId.of(20),
-            HowMuchBothPayPensionId.of(HowMuchBothPayPension(20, 20)),
-            WhoPaysIntoPensionId.of(YouPartnerBoth.You)
+            HowMuchYouPayPensionId.withValue(20),
+            HowMuchPartnerPayPensionId.withValue(20),
+            HowMuchBothPayPensionId.withValue(HowMuchBothPayPension(20, 20)),
+            WhoPaysIntoPensionId.withValue(YouPartnerBoth.You)
           )
 
           val result = cascadeUpsert(BothPaidPensionCYId, false, originalCacheMap)
 
-          result.data mustBe Map(BothPaidPensionCYId.of(false))
+          result.data mustBe Map(BothPaidPensionCYId.withValue(false))
         }
 
       "return original cache map when user selects yes option" in {
         val originalCacheMap = CacheMap.of(
-          WhoPaysIntoPensionId.of(YouPartnerBoth.You),
-          HowMuchYouPayPensionId.of(20)
+          WhoPaysIntoPensionId.withValue(YouPartnerBoth.You),
+          HowMuchYouPayPensionId.withValue(20)
         )
 
         val result = cascadeUpsert(BothPaidPensionCYId, true, originalCacheMap)
 
         result.data mustBe Map(
-          BothPaidPensionCYId.of(true),
-          WhoPaysIntoPensionId.of(YouPartnerBoth.You),
-          HowMuchYouPayPensionId.of(20)
+          BothPaidPensionCYId.withValue(true),
+          WhoPaysIntoPensionId.withValue(YouPartnerBoth.You),
+          HowMuchYouPayPensionId.withValue(20)
         )
       }
 
@@ -102,46 +102,46 @@ class PensionsCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
     "Save WhoPaysIntoPension data " must {
       "remove HowMuchPartnerPayPension and HowMuchBothPayPension page data when user selects you option" in {
         val originalCacheMap = CacheMap.of(
-          HowMuchYouPayPensionId.of(20),
-          HowMuchPartnerPayPensionId.of(20),
-          HowMuchBothPayPensionId.of(HowMuchBothPayPension(20, 20))
+          HowMuchYouPayPensionId.withValue(20),
+          HowMuchPartnerPayPensionId.withValue(20),
+          HowMuchBothPayPensionId.withValue(HowMuchBothPayPension(20, 20))
         )
 
         val result = cascadeUpsert(WhoPaysIntoPensionId, YouPartnerBoth.You, originalCacheMap)
 
         result.data mustBe Map(
-          WhoPaysIntoPensionId.of(YouPartnerBoth.You),
-          HowMuchYouPayPensionId.of(20)
+          WhoPaysIntoPensionId.withValue(YouPartnerBoth.You),
+          HowMuchYouPayPensionId.withValue(20)
         )
       }
 
       "remove HowMuchYouPayPension and HowMuchBothPayPension page data when user selects partner option" in {
         val originalCacheMap = CacheMap.of(
-          HowMuchYouPayPensionId.of(20),
-          HowMuchPartnerPayPensionId.of(20),
-          HowMuchBothPayPensionId.of(HowMuchBothPayPension(20, 20))
+          HowMuchYouPayPensionId.withValue(20),
+          HowMuchPartnerPayPensionId.withValue(20),
+          HowMuchBothPayPensionId.withValue(HowMuchBothPayPension(20, 20))
         )
 
         val result = cascadeUpsert(WhoPaysIntoPensionId, YouPartnerBoth.Partner, originalCacheMap)
 
         result.data mustBe Map(
-          WhoPaysIntoPensionId.of(YouPartnerBoth.Partner),
-          HowMuchPartnerPayPensionId.of(20)
+          WhoPaysIntoPensionId.withValue(YouPartnerBoth.Partner),
+          HowMuchPartnerPayPensionId.withValue(20)
         )
       }
 
       "remove HowMuchPartnerPayPension and HowMuchYouPayPension page data when user selects both option" in {
         val originalCacheMap = CacheMap.of(
-          HowMuchYouPayPensionId.of(20),
-          HowMuchPartnerPayPensionId.of(20),
-          HowMuchBothPayPensionId.of(HowMuchBothPayPension(20, 20))
+          HowMuchYouPayPensionId.withValue(20),
+          HowMuchPartnerPayPensionId.withValue(20),
+          HowMuchBothPayPensionId.withValue(HowMuchBothPayPension(20, 20))
         )
 
         val result = cascadeUpsert(WhoPaysIntoPensionId, YouPartnerBoth.Both, originalCacheMap)
 
         result.data mustBe Map(
-          WhoPaysIntoPensionId.of(YouPartnerBoth.Both),
-          HowMuchBothPayPensionId.of(HowMuchBothPayPension(20, 20))
+          WhoPaysIntoPensionId.withValue(YouPartnerBoth.Both),
+          HowMuchBothPayPensionId.withValue(HowMuchBothPayPension(20, 20))
         )
       }
     }

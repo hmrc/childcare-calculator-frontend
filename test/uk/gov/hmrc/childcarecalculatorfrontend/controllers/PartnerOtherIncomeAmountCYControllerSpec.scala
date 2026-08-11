@@ -59,7 +59,7 @@ class PartnerOtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(PartnerOtherIncomeAmountCYId.of(testNumber))
+      val validData       = Map(PartnerOtherIncomeAmountCYId.withValue(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
