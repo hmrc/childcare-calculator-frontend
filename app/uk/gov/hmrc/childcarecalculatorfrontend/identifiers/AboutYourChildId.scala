@@ -25,4 +25,5 @@ case class AboutYourChildId(id: Int) extends Identifier {
 
 object AboutYourChildId extends CacheKey[Map[Int, AboutYourChild]] {
   override val toString = "aboutYourChild"
+  override val cacheKey = "aboutYourChild"
 }

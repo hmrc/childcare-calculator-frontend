@@ -20,4 +20,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object YourMinimumEarningsId extends Identifier with CacheKey[Boolean] {
   override val toString = "yourMinimumEarnings"
+  override val cacheKey = "yourMinimumEarnings"
 }

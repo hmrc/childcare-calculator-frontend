@@ -21,4 +21,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object LocationId extends Identifier with CacheKey[Location] {
   override val toString = "location"
+  override val cacheKey = "location"
 }

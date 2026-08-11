@@ -20,4 +20,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object SurveyDoNotUnderstandId extends Identifier with CacheKey[String] {
   override val toString = "surveyDoNotUnderstand"
+  override val cacheKey = "surveyDoNotUnderstand"
 }

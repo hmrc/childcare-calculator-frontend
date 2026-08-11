@@ -23,4 +23,5 @@ case class WhichDisabilityBenefitsId(id: Int) extends Identifier
 
 object WhichDisabilityBenefitsId extends CacheKey[Map[Int, Set[DisabilityBenefit]]] {
   override val toString = "whichDisabilityBenefits"
+  override val cacheKey = "whichDisabilityBenefits"
 }

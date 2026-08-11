@@ -20,4 +20,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object YourSelfEmployedId extends Identifier with CacheKey[Boolean] {
   override val toString = "yourSelfEmployed"
+  override val cacheKey = "yourSelfEmployed"
 }

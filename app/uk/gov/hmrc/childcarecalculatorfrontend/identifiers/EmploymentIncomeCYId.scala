@@ -21,4 +21,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object EmploymentIncomeCYId extends Identifier with CacheKey[EmploymentIncomeCY] {
   override val toString = "employmentIncomeCY"
+  override val cacheKey = "employmentIncomeCY"
 }

@@ -23,4 +23,5 @@ case class ChildcarePayFrequencyId(id: Int) extends Identifier
 
 object ChildcarePayFrequencyId extends Identifier with CacheKey[Map[Int, ChildcarePayFrequency]] {
   override val toString = "childcarePayFrequency"
+  override val cacheKey = "childcarePayFrequency"
 }

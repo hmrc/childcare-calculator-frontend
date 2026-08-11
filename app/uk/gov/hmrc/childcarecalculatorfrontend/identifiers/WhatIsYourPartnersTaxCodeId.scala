@@ -20,4 +20,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object WhatIsYourPartnersTaxCodeId extends Identifier with CacheKey[String] {
   override val toString = "whatIsYourPartnersTaxCode"
+  override val cacheKey = "whatIsYourPartnersTaxCode"
 }

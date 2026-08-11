@@ -20,4 +20,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object PartnerPaidWorkCYId extends Identifier with CacheKey[Boolean] {
   override val toString = "partnerPaidWorkCY"
+  override val cacheKey = "partnerPaidWorkCY"
 }

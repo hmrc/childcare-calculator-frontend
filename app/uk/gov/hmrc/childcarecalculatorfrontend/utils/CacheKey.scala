@@ -21,7 +21,7 @@ import play.api.libs.json.{JsValue, Json, Writes}
 import scala.reflect.ClassTag
 
 trait CacheKey[A](using val classTag: ClassTag[A]) {
-  def cacheKey: String = toString
+  def cacheKey: String
 
   def of(value: A)(using Writes[A]): (String, JsValue) =
     cacheKey -> Json.toJson(value)

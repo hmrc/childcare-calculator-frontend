@@ -20,4 +20,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object HowMuchYouPayPensionId extends Identifier with CacheKey[BigDecimal] {
   override val toString = "howMuchYouPayPension"
+  override val cacheKey = "howMuchYouPayPension"
 }

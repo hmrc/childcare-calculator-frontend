@@ -21,4 +21,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object ApprovedProviderId extends Identifier with CacheKey[YesNoNotSure] {
   override val toString = "approvedProvider"
+  override val cacheKey = "approvedProvider"
 }

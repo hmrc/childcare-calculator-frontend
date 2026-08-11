@@ -21,4 +21,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object ResultsViewModelId extends Identifier with CacheKey[ResultsViewModel] {
   override val toString = "resultsViewModel"
+  override val cacheKey = "resultsViewModel"
 }

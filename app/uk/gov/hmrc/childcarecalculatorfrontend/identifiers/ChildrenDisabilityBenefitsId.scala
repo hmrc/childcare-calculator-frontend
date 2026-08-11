@@ -20,4 +20,5 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
 
 case object ChildrenDisabilityBenefitsId extends Identifier with CacheKey[Boolean] {
   override val toString = "childrenDisabilityBenefits"
+  override val cacheKey = "childrenDisabilityBenefits"
 }

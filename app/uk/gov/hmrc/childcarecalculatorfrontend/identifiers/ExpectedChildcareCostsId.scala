@@ -22,4 +22,5 @@ case class ExpectedChildcareCostsId(id: Int) extends Identifier
 
 object ExpectedChildcareCostsId extends CacheKey[Map[Int, BigDecimal]] {
   override val toString = "expectedChildcareCosts"
+  override val cacheKey = "expectedChildcareCosts"
 }
