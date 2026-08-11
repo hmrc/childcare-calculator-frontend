@@ -23,7 +23,7 @@ import scala.language.implicitConversions
 
 trait EnumFormat[E] extends Logging {
 
-  def values: Array[E]
+  protected def values: Array[E]
 
   protected val aliases: Map[String, E] = Map.empty
 
