@@ -37,12 +37,30 @@ class EnumFormatSpec extends PlaySpec {
         )
       }
 
-      "the value is not in the enum" in {
-        JsString("something").validate[Location] mustBe JsError(
-          JsonValidationError(
-            "Enumeration expected of type: 'class uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location$', but it does not appear to contain the value: 'something'"
+      "the input is a string" when {
+        "the value is not in the enum" in {
+          JsString("something").validate[Location] mustBe JsError(
+            JsonValidationError(
+              "Enumeration expected of type: 'class uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location$', but it does not appear to contain the value: 'something'"
+            )
           )
-        )
+        }
+
+        "the value differs from a known value by only case" in {
+          JsString("ENGLAND").validate[Location] mustBe JsError(
+            JsonValidationError(
+              "Enumeration expected of type: 'class uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location$', but it does not appear to contain the value: 'ENGLAND'"
+            )
+          )
+        }
+
+        "the value differs from a known value with the wrong separators" in {
+          JsString("northern_ireland").validate[Location] mustBe JsError(
+            JsonValidationError(
+              "Enumeration expected of type: 'class uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location$', but it does not appear to contain the value: 'northern_ireland'"
+            )
+          )
+        }
       }
 
     }
