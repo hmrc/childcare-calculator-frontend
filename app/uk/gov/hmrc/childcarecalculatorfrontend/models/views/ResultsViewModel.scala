@@ -17,8 +17,8 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.views
 
 import play.api.libs.json.*
-import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.*
 import uk.gov.hmrc.childcarecalculatorfrontend.models.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{
   freeHoursForEngland,
   freeHoursForNI,
@@ -60,27 +60,18 @@ case class ResultsViewModel(
 
   def isEligibleToAllSchemes: Boolean = noOfEligibleSchemes == 3
 
+  private def hasTwoYearOld   = childrenAgeGroups.contains(ChildAgeGroup.TwoYears)
+  private def hasThreeYearOld = childrenAgeGroups.contains(ChildAgeGroup.ThreeYears)
+  private def hasFourYearOld  = childrenAgeGroups.contains(ChildAgeGroup.FourYears)
+
   def showTwoYearOldInfo: Boolean =
-    if (childrenAgeGroups.contains(ChildAgeGroup.TwoYears)) {
-      location match {
-        case Location.NorthernIreland => false
-        case Location.Wales           => false
-        case _ =>
-          if (noOfEligibleSchemes == 0) {
-            if (
-              childrenAgeGroups
-                .contains(ChildAgeGroup.ThreeYears) || childrenAgeGroups.contains(ChildAgeGroup.FourYears)
-            ) {
-              false
-            } else {
-              true
-            }
-          } else {
-            true
-          }
-      }
-    } else {
-      false
+    location match {
+      case _ if !hasTwoYearOld      => false
+      case Location.NorthernIreland => false
+      case Location.Wales           => false
+      case _ if noOfEligibleSchemes == 0 =>
+        !hasThreeYearOld && !hasFourYearOld
+      case _ => true
     }
 
   def showNonEnglandFreeHoursLinks: Boolean =
