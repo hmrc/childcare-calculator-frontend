@@ -45,10 +45,8 @@ class UserAnswerToHousehold @Inject() (
 
   def convert(answers: UserAnswers): Household = {
     val children = if (answers.noOfChildren.isDefined) createChildren(answers) else List.empty
-    val partner = if (answers.doYouLiveWithPartner.contains(true)) {
-      Some(createPartnerClaimant(answers))
-    } else {
-      None
+    val partner = Option.when(answers.doYouLiveWithPartner.contains(true)) {
+      createPartnerClaimant(answers)
     }
     Household(
       credits = booleanToCredits(answers.universalCredit),
@@ -122,10 +120,8 @@ class UserAnswerToHousehold @Inject() (
       )
         || selfEmployedLessThan12Months.contains(true)
 
-    val amt: Option[BigDecimal] = if (age.isDefined) {
-      Some(nmwConfig.getEarningsForAgeRange(LocalDate.now, age))
-    } else {
-      None
+    val amt: Option[BigDecimal] = Option.when(age.isDefined) {
+      nmwConfig.getEarningsForAgeRange(LocalDate.now, age)
     }
 
     val backendEmploymentStatus = selfEmployedOrApprentice.map(BackendEmploymentStatus.from)

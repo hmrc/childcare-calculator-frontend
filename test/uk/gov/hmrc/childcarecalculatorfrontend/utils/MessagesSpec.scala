@@ -87,25 +87,17 @@ class MessagesSpec extends SpecBase {
   ) = {
     val missingFromWelsh   = englishKeySet -- welshKeySet
     val missingFromEnglish = welshKeySet -- englishKeySet
-    val welshMsg = if (missingFromWelsh.nonEmpty) {
-      Some(
-        listMissingMessageKeys(
-          s"The following message keys are $description the Welsh Set:",
-          englishKeySet -- welshKeySet
-        )
+    val welshMsg = Option.when(missingFromWelsh.nonEmpty) {
+      listMissingMessageKeys(
+        s"The following message keys are $description the Welsh Set:",
+        englishKeySet -- welshKeySet
       )
-    } else {
-      None
     }
-    val englishMsg = if (missingFromEnglish.nonEmpty) {
-      Some(
-        listMissingMessageKeys(
-          s"The following message keys are $description the English Set:",
-          welshKeySet -- englishKeySet
-        )
+    val englishMsg = Option.when(missingFromEnglish.nonEmpty) {
+      listMissingMessageKeys(
+        s"The following message keys are $description the English Set:",
+        welshKeySet -- englishKeySet
       )
-    } else {
-      None
     }
 
     Seq(welshMsg, englishMsg).flatten.mkString("\n")

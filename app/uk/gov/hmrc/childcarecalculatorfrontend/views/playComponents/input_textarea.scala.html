@@ -35,9 +35,5 @@
         classes = s"""govuk-label--xl ${labelClass.getOrElse("")}""",
         content = Text(label)
     ),
-    hint = if (hint.isDefined) {
-        Some(Hint(
-            content = Text(hint.get)
-        ))
-    } else None
+    hint = hint.map(hint => Hint(content = Text(hint)))
 ).withFormField(field))
