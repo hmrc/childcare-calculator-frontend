@@ -29,8 +29,7 @@ class FakeDataRetrievalAction(cacheMapToReturn: Option[CacheMap], timeReplacemen
     using app: Application
 ) extends DataRetrievalAction {
 
-  override def executionContext: ExecutionContext = ExecutionContext.global
-  given ec: ExecutionContext                      = ExecutionContext.global
+  override given executionContext: ExecutionContext = ExecutionContext.global
 
   override def parser: BodyParser[AnyContent] =
     app.injector.instanceOf[MessagesControllerComponents].parsers.defaultBodyParser
