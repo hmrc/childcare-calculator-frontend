@@ -63,44 +63,33 @@ class UserAnswerToHousehold @Inject() (
     case _                                   => None
   }
 
-  private def childDOBFromChildData(answers: UserAnswers, index: Int): Option[(String, LocalDate)] =
-    if (answers.aboutYourChild(index).isDefined) {
-      Some((answers.aboutYourChild(index).get.name, answers.aboutYourChild(index).get.dob))
-    } else {
-      None
-    }
+  private def createChild(answers: UserAnswers, index: Int, totalChildren: Int): Option[Child] =
+    for {
+      aboutChild <- answers.aboutYourChild(index)
+      childcareAmt    = answers.expectedChildcareCosts(index)
+      childcarePeriod = ccFrequencyToPeriod(answers.childcarePayFrequency(index))
+      childcareCost = Option.when(childcareAmt.isDefined) {
+        ChildCareCost(childcareAmt, childcarePeriod)
+      }
+      childIsBlindValue = childIsBlind(answers, totalChildren, index)
+    } yield Child(
+      id = index.toShort,
+      name = aboutChild.name,
+      dob = aboutChild.dob,
+      disability = Disability.populateFromRawData(index, answers.whichDisabilityBenefits, childIsBlindValue),
+      childcareCost = childcareCost
+    )
 
   private def createChildren(answers: UserAnswers): List[Child] = {
-    val totalChildren: Int     = answers.noOfChildren.getOrElse(0)
-    var childList: List[Child] = List()
+    val totalChildren: Int = answers.noOfChildren
+      .getOrElse(0)
 
-    for (i <- 0 until totalChildren) {
-      val childDOB: Option[(String, LocalDate)] = childDOBFromChildData(answers, i)
+    val childList = for {
+      index <- 0 until totalChildren
+      child <- createChild(answers, index, totalChildren)
+    } yield child
 
-      if (childDOB.nonEmpty) {
-        val childcareAmt: Option[BigDecimal] = answers.expectedChildcareCosts(i)
-        val childcarePeriod: Option[Period]  = ccFrequencyToPeriod(answers.childcarePayFrequency(i))
-        val childcareCost = if (childcareAmt.isDefined) {
-          Some(ChildCareCost(childcareAmt, childcarePeriod))
-        } else {
-          None
-        }
-
-        val childIsBlindValue = childIsBlind(answers, totalChildren, i)
-
-        val child = Child(
-          id = i.toShort,
-          name = childDOB.get._1,
-          dob = childDOB.get._2,
-          disability = Disability.populateFromRawData(i, answers.whichDisabilityBenefits, childIsBlindValue),
-          childcareCost = childcareCost
-        )
-
-        childList ::= child
-      }
-    }
-
-    childList.sortWith(_.id < _.id)
+    childList.toList
   }
 
   private def childIsBlind(answers: UserAnswers, count: Int, key: Int): Option[Boolean] = count match {
