@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.DisabilityBenefit
+@import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
 
 @this(
     layout: Layout,
@@ -53,12 +54,7 @@
             field = form("value"),
             legend = messages("whichDisabilityBenefits.heading", name),
             hint = Some(messages("whichBenefits.select.all")),
-            inputs = DisabilityBenefit.values.toSeq.map { checkboxOption =>
-                CheckboxItem(
-                    content = HtmlContent(messages(s"whichDisabilityBenefits.$checkboxOption")),
-                    value = checkboxOption.toString
-                )
-            }
+            inputs = WhichDisabilityBenefitsForm.options.map(_.toCheckboxItem)
         )
 
         @detailSummary(messages("whichDisabilityBenefits.help")) {

@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 case class InputOption(id: String, value: String, messageKey: String) {
@@ -25,6 +26,12 @@ case class InputOption(id: String, value: String, messageKey: String) {
   def toRadioItem(using messages: Messages): RadioItem = RadioItem(
     id = Some(id),
     value = Some(value),
+    content = HtmlContent(messages(messageKey))
+  )
+
+  def toCheckboxItem(using messages: Messages): CheckboxItem = CheckboxItem(
+    id = Some(id),
+    value = value,
     content = HtmlContent(messages(messageKey))
   )
 
