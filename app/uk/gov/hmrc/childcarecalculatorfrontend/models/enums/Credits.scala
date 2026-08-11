@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum Credits(override val toString: String) extends BindableEnum {
+enum Credits(override val toString: String) {
   case UniversalCredit extends Credits("UNIVERSALCREDIT")
   case None            extends Credits("NONE")
 }

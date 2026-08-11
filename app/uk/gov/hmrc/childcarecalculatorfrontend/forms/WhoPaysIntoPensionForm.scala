@@ -32,17 +32,13 @@ object WhoPaysIntoPensionForm extends FormErrorHelper {
   def apply(): Form[YouPartnerBoth] =
     Form(single("value" -> of(WhoPaysIntoPensionFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    whoPaysIntoPensionInputOption(YouPartnerBoth.You),
-    whoPaysIntoPensionInputOption(YouPartnerBoth.Partner),
-    whoPaysIntoPensionInputOption(YouPartnerBoth.Both)
-  )
-
-  private def whoPaysIntoPensionInputOption(value: YouPartnerBoth): InputOption =
-    InputOption(
-      id = value.valueId,
-      value = value.toString,
-      messageKey = s"whoPaysIntoPension.$value"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whoPaysIntoPension",
+    values = Seq(
+      YouPartnerBoth.You,
+      YouPartnerBoth.Partner,
+      YouPartnerBoth.Both
     )
+  )
 
 }

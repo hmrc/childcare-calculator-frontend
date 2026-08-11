@@ -34,17 +34,13 @@ object AreYouSelfEmployedOrApprenticeForm extends FormErrorHelper {
   def apply(): Form[EmploymentStatus] =
     Form(single("value" -> of(AreYouSelfEmployedOrApprenticeFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    areYouSelfEmployedOrApprenticeInputOption(EmploymentStatus.SelfEmployed),
-    areYouSelfEmployedOrApprenticeInputOption(EmploymentStatus.Apprentice),
-    areYouSelfEmployedOrApprenticeInputOption(EmploymentStatus.Neither)
-  )
-
-  private def areYouSelfEmployedOrApprenticeInputOption(employmentStatus: EmploymentStatus): InputOption =
-    InputOption(
-      id = employmentStatus.valueId,
-      value = employmentStatus.toString,
-      messageKey = s"areYouSelfEmployedOrApprentice.$employmentStatus"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "areYouSelfEmployedOrApprentice",
+    values = Seq(
+      EmploymentStatus.SelfEmployed,
+      EmploymentStatus.Apprentice,
+      EmploymentStatus.Neither
     )
+  )
 
 }

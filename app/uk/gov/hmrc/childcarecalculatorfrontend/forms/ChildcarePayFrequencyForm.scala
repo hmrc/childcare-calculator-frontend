@@ -29,17 +29,13 @@ object ChildcarePayFrequencyForm extends FormErrorHelper {
   def apply(name: String): Form[ChildcarePayFrequency] =
     Form(single("value" -> of(ChildcarePayFrequencyFormatter(name))))
 
-  val options: Seq[InputOption] = Seq(
-    payFrequencyInputOption(ChildcarePayFrequency.Weekly),
-    payFrequencyInputOption(ChildcarePayFrequency.Monthly)
-  )
-
-  private def payFrequencyInputOption(frequency: ChildcarePayFrequency): InputOption =
-    InputOption(
-      id = frequency.valueId,
-      value = frequency.toString,
-      messageKey = s"childcarePayFrequency.$frequency"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "childcarePayFrequency",
+    values = Seq(
+      ChildcarePayFrequency.Weekly,
+      ChildcarePayFrequency.Monthly
     )
+  )
 
   private def ChildcarePayFrequencyFormatter(name: String): Formatter[ChildcarePayFrequency] =
     EnumFormatter[ChildcarePayFrequency](

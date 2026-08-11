@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum Location(override val toString: String) extends BindableEnum {
+enum Location(override val toString: String) {
   case England         extends Location("england")
   case Scotland        extends Location("scotland")
   case Wales           extends Location("wales")

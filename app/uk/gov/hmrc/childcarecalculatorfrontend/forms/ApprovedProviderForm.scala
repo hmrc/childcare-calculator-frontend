@@ -32,17 +32,13 @@ object ApprovedProviderForm extends FormErrorHelper {
   def apply(): Form[YesNoNotSure] =
     Form(single("value" -> of(ApprovedProviderFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    approvedProviderInputOption(YesNoNotSure.Yes),
-    approvedProviderInputOption(YesNoNotSure.No),
-    approvedProviderInputOption(YesNoNotSure.NotSure)
-  )
-
-  private def approvedProviderInputOption(value: YesNoNotSure): InputOption =
-    InputOption(
-      id = value.valueId,
-      value = value.toString,
-      messageKey = s"approvedProvider.$value"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "approvedProvider",
+    values = Seq(
+      YesNoNotSure.Yes,
+      YesNoNotSure.No,
+      YesNoNotSure.NotSure
     )
+  )
 
 }

@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum Earnings(override val toString: String) extends BindableEnum {
+enum Earnings(override val toString: String) {
   case LessThanMinimum          extends Earnings("lessThanMinimum")
   case BetweenMinimumAndMaximum extends Earnings("betweenMinimumAndMaximum")
   case GreaterThanMaximum       extends Earnings("greaterThanMaximum")

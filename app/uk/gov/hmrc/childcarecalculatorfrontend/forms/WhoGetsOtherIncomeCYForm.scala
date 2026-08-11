@@ -35,17 +35,13 @@ object WhoGetsOtherIncomeCYForm extends FormErrorHelper {
   def apply(): Form[YouPartnerBoth] =
     Form(single("value" -> of(WhoGetsOtherIncomeCYFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    whoGetsOtherIncomeCYInputOption(YouPartnerBoth.You),
-    whoGetsOtherIncomeCYInputOption(YouPartnerBoth.Partner),
-    whoGetsOtherIncomeCYInputOption(YouPartnerBoth.Both)
-  )
-
-  private def whoGetsOtherIncomeCYInputOption(value: YouPartnerBoth): InputOption =
-    InputOption(
-      id = value.valueId,
-      value = value.toString,
-      messageKey = s"whoGetsOtherIncomeCY.$value"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whoGetsOtherIncomeCY",
+    values = Seq(
+      YouPartnerBoth.You,
+      YouPartnerBoth.Partner,
+      YouPartnerBoth.Both
     )
+  )
 
 }

@@ -29,19 +29,15 @@ object LocationForm extends FormErrorHelper {
   def apply(): Form[Location] =
     Form(single("value" -> of(LocationFormatter)))
 
-  def options: Seq[InputOption] = Seq(
-    locationInputOption(Location.England),
-    locationInputOption(Location.Scotland),
-    locationInputOption(Location.Wales),
-    locationInputOption(Location.NorthernIreland)
-  )
-
-  private def locationInputOption(location: Location) =
-    InputOption(
-      id = location.valueId,
-      value = location.toString,
-      messageKey = s"location.$location"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "location",
+    values = Seq(
+      Location.England,
+      Location.Scotland,
+      Location.Wales,
+      Location.NorthernIreland
     )
+  )
 
   private def LocationFormatter: Formatter[Location] =
     EnumFormatter[Location](missingErrorKey = locationErrorKey, unknownValueErrorKey = unknownErrorKey)

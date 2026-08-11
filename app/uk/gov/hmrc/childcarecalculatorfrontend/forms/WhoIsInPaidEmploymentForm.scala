@@ -35,18 +35,14 @@ object WhoIsInPaidEmploymentForm extends FormErrorHelper {
   def apply(): Form[YouPartnerBothNeither] =
     Form(single("value" -> of(WhoIsInPaidEmploymentFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeither.You),
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeither.Partner),
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeither.Both),
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeither.Neither)
-  )
-
-  private def whoIsInPaidEmploymentInputOption(value: YouPartnerBothNeither): InputOption =
-    InputOption(
-      id = value.valueId,
-      value = value.toString,
-      messageKey = s"whoIsInPaidEmployment.$value"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whoIsInPaidEmployment",
+    values = Seq(
+      YouPartnerBothNeither.You,
+      YouPartnerBothNeither.Partner,
+      YouPartnerBothNeither.Both,
+      YouPartnerBothNeither.Neither
     )
+  )
 
 }

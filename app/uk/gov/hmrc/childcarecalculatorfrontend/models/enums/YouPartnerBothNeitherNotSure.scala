@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum YouPartnerBothNeitherNotSure(override val toString: String) extends BindableEnum {
+enum YouPartnerBothNeitherNotSure(override val toString: String) {
   case You     extends YouPartnerBothNeitherNotSure("you")
   case Partner extends YouPartnerBothNeitherNotSure("partner")
   case Both    extends YouPartnerBothNeitherNotSure("both")

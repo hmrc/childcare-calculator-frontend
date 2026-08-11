@@ -35,18 +35,14 @@ object WhoGetsVouchersForm extends FormErrorHelper {
   def apply(): Form[YouPartnerBothNeitherNotSure] =
     Form(single("value" -> of(WhoGetsVouchersFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    whoGetsVouchersInputOption(YouPartnerBothNeitherNotSure.You),
-    whoGetsVouchersInputOption(YouPartnerBothNeitherNotSure.Partner),
-    whoGetsVouchersInputOption(YouPartnerBothNeitherNotSure.Both),
-    whoGetsVouchersInputOption(YouPartnerBothNeitherNotSure.Neither)
-  )
-
-  private def whoGetsVouchersInputOption(value: YouPartnerBothNeitherNotSure): InputOption =
-    InputOption(
-      id = value.valueId,
-      value = value.toString,
-      messageKey = s"whoGetsVouchers.$value"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whoGetsVouchers",
+    values = Seq(
+      YouPartnerBothNeitherNotSure.You,
+      YouPartnerBothNeitherNotSure.Partner,
+      YouPartnerBothNeitherNotSure.Both,
+      YouPartnerBothNeitherNotSure.Neither
     )
+  )
 
 }

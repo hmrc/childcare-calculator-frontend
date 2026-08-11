@@ -31,17 +31,13 @@ object ChildcareCostsForm extends FormErrorHelper {
 
   def apply(): Form[YesNoNotYet] = Form(single("value" -> of(ChildcareCostsFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    childcareCostsInputOption(YesNoNotYet.Yes),
-    childcareCostsInputOption(YesNoNotYet.No),
-    childcareCostsInputOption(YesNoNotYet.NotYet)
-  )
-
-  private def childcareCostsInputOption(value: YesNoNotYet): InputOption =
-    InputOption(
-      id = value.valueId,
-      value = value.toString,
-      messageKey = s"childcareCosts.$value"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "childcareCosts",
+    values = Seq(
+      YesNoNotYet.Yes,
+      YesNoNotYet.No,
+      YesNoNotYet.NotYet
     )
+  )
 
 }

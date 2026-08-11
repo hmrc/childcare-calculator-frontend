@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum ChildcarePayFrequency(override val toString: String) extends BindableEnum {
+enum ChildcarePayFrequency(override val toString: String) {
   case Weekly  extends ChildcarePayFrequency("weekly")
   case Monthly extends ChildcarePayFrequency("monthly")
 }

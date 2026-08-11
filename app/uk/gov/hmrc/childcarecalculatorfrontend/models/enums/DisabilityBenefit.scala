@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum DisabilityBenefit(override val toString: String) extends BindableEnum {
+enum DisabilityBenefit(override val toString: String) {
   case DisabilityBenefits       extends DisabilityBenefit("disability-benefits")
   case HigherDisabilityBenefits extends DisabilityBenefit("higher-disability-benefit")
 }

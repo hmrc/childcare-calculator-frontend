@@ -34,10 +34,13 @@ object PartnerChildcareVouchersForm extends FormErrorHelper {
   def apply(): Form[YesNoNotSure] =
     Form(single("value" -> of(PartnerChildcareVouchersFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    InputOption("partnerChildcareVouchers", YesNoNotSure.Yes.toString),
-    InputOption("partnerChildcareVouchers", YesNoNotSure.No.toString),
-    InputOption("partnerChildcareVouchers", YesNoNotSure.NotSure.toString)
+  val options: Seq[InputOption] = InputOption.namedFromEnumValues(
+    namePrefix = "partnerChildcareVouchers",
+    values = Seq(
+      YesNoNotSure.Yes,
+      YesNoNotSure.No,
+      YesNoNotSure.NotSure
+    )
   )
 
 }

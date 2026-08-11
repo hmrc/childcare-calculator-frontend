@@ -17,9 +17,9 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
 import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.claimant.BackendEmploymentStatus
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum EmploymentStatus(override val toString: String) extends BindableEnum {
+enum EmploymentStatus(override val toString: String) {
   case SelfEmployed extends EmploymentStatus("selfEmployed")
   case Apprentice   extends EmploymentStatus("apprentice")
   case Neither      extends EmploymentStatus("neither")

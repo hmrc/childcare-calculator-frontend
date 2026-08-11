@@ -32,17 +32,13 @@ object YourAgeForm extends FormErrorHelper {
   def apply(): Form[Age] =
     Form(single("value" -> of(YourAgeFormatter)))
 
-  val options: Seq[InputOption] = Seq(
-    yourAgeInputOption(Age.UnderEighteen),
-    yourAgeInputOption(Age.EighteenToTwenty),
-    yourAgeInputOption(Age.TwentyOneOrOver)
-  )
-
-  private def yourAgeInputOption(age: Age): InputOption =
-    InputOption(
-      id = age.valueId,
-      value = age.toString,
-      messageKey = s"yourAge.$age"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "yourAge",
+    values = Seq(
+      Age.UnderEighteen,
+      Age.EighteenToTwenty,
+      Age.TwentyOneOrOver
     )
+  )
 
 }

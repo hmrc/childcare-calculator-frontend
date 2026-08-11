@@ -32,17 +32,13 @@ object WhosHadBenefitsForm extends FormErrorHelper {
   def apply(): Form[YouPartnerBoth] =
     Form(single("value" -> of(WhosHadBenefitsFormatter)))
 
-  def options: Seq[InputOption] = Seq(
-    whosHadBenefitsInputOption(YouPartnerBoth.You),
-    whosHadBenefitsInputOption(YouPartnerBoth.Partner),
-    whosHadBenefitsInputOption(YouPartnerBoth.Both)
-  )
-
-  private def whosHadBenefitsInputOption(value: YouPartnerBoth): InputOption =
-    InputOption(
-      id = value.valueId,
-      value = value.toString,
-      messageKey = s"whosHadBenefits.$value"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whosHadBenefits",
+    values = Seq(
+      YouPartnerBoth.You,
+      YouPartnerBoth.Partner,
+      YouPartnerBoth.Both
     )
+  )
 
 }

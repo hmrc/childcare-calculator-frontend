@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.enums
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{BindableEnum, EnumFormat}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.EnumFormat
 
-enum Scheme(override val toString: String) extends BindableEnum {
+enum Scheme(override val toString: String) {
   case TfcEligibility extends Scheme("tfcEligibility")
   case TcEligibility  extends Scheme("tcEligibility")
   case EscEligibility extends Scheme("escEligibility")

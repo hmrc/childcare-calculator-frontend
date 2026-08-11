@@ -49,14 +49,12 @@ object WhichDisabilityBenefitsForm extends FormErrorHelper {
         .verifying(constraint(name))
     )
 
-  def options: Seq[InputOption] =
-    DisabilityBenefit.values.toSeq.map(disabilityBenefitsInputOption)
-
-  private def disabilityBenefitsInputOption(disabilityBenefit: DisabilityBenefit): InputOption =
-    InputOption(
-      id = disabilityBenefit.valueId,
-      value = disabilityBenefit.toString,
-      messageKey = s"whichDisabilityBenefits.$disabilityBenefit"
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whichDisabilityBenefits",
+    values = Seq(
+      DisabilityBenefit.DisabilityBenefits,
+      DisabilityBenefit.HigherDisabilityBenefits
     )
+  )
 
 }
