@@ -154,8 +154,15 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
-      contentAsString(result) must include(messages(parentEmploymentIncomeInvalidErrorKey))
-      contentAsString(result) must include(messages(partnerEmploymentIncomeInvalidErrorKey))
+
+      val document = Jsoup.parse(contentAsString(result))
+
+      document
+        .getElementById("parentEmploymentIncomeCY-error")
+        .text() mustBe s"Error: ${messages(parentEmploymentIncomeInvalidErrorKey)}"
+      document
+        .getElementById("partnerEmploymentIncomeCY-error")
+        .text() mustBe s"Error: ${messages(partnerEmploymentIncomeInvalidErrorKey)}"
     }
   }
 
