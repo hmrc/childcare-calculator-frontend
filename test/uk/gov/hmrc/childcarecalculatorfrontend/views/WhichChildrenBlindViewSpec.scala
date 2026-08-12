@@ -24,34 +24,31 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenBlind
 
 class WhichChildrenBlindViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[Int] {
 
-  val view             = application.injector.instanceOf[whichChildrenBlind]
-  val messageKeyPrefix = "whichChildrenBlind"
-  val fieldKey         = "value"
-  val errorMessage     = "error.invalid"
+  val view: whichChildrenBlind  = inject[whichChildrenBlind]
+  override val messageKeyPrefix = "whichChildrenBlind"
+  override val fieldKey         = "value"
+  override val errorMessage     = "error.invalid"
 
-  val values: Seq[(String, String)] = Seq(
-    "Foo" -> "0",
-    "Bar" -> "1"
+  override val values: Seq[(String, Int)] = Seq(
+    "Foo" -> 0,
+    "Bar" -> 1
   )
 
-  val strValues: Seq[(String, String)] = values.map { case (k, v) => (k, v.toString) }
+  override val form: Form[Set[Int]] = WhichChildrenBlindForm(0, 1)
 
-  def form: Form[Set[Int]] = WhichChildrenBlindForm(0, 1)
-
-  def createView(form: Form[Set[Int]] = form): Html =
+  override def render(form: Form[Set[Int]] = this.form): Html =
     view(
-      frontendAppConfig,
       form,
-      strValues
-    )(fakeRequest, messages)
+      values
+    )(using fakeRequest, messages)
 
   "WhichChildrenBlind view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(render, messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(render))
 
-    behave.like(checkboxPage())
+    behave.like(checkboxPage(divider = false))
   }
 
 }

@@ -16,14 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.PlaySpec
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, ParentsBenefit}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers}
 
 class TaxFreeChildcareSpec extends PlaySpec with Matchers with BeforeAndAfterEach {
@@ -42,23 +41,23 @@ class TaxFreeChildcareSpec extends PlaySpec with Matchers with BeforeAndAfterEac
   "TaxFreeChildcare on eligibility" must {
 
     "always call FreeChildcareEligibilityCalculator, providing correct set of eligible benefits" in {
-      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
+      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligibility.Eligible)
 
       taxFreeChildcare.eligibility(userAnswers)
 
-      val expectedEligibleBenefits: Set[ParentsBenefits] = Set(
-        CarersAllowance,
-        IncapacityBenefit,
-        SevereDisablementAllowance,
-        ContributionBasedEmploymentAndSupportAllowance
+      val expectedEligibleBenefits: Set[ParentsBenefit] = Set(
+        ParentsBenefit.CarersAllowance,
+        ParentsBenefit.IncapacityBenefit,
+        ParentsBenefit.SevereDisablementAllowance,
+        ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance
       )
       verify(freeChildcareEligibilityCalculator).calculateEligibility(eqTo(userAnswers), eqTo(expectedEligibleBenefits))
     }
 
     "return the value returned by FreeChildcareEligibilityCalculator" in {
-      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligible)
+      when(freeChildcareEligibilityCalculator.calculateEligibility(any(), any())).thenReturn(Eligibility.Eligible)
 
-      taxFreeChildcare.eligibility(userAnswers) mustBe Eligible
+      taxFreeChildcare.eligibility(userAnswers) mustBe Eligibility.Eligible
     }
   }
 

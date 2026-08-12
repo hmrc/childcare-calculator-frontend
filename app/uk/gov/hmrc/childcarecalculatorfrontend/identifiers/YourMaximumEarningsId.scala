@@ -16,6 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object YourMaximumEarningsId extends Identifier {
-  override def toString: String = "yourMaximumEarnings"
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object YourMaximumEarningsId extends Identifier with CacheKey[Boolean] {
+  override val toString = "yourMaximumEarnings"
+  override val cacheKey = "yourMaximumEarnings"
 }

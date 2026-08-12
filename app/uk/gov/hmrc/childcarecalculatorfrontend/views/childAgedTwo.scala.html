@@ -14,30 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button,
-        inputYesNo: playComponents.input_yes_no,
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button,
+    inputYesNo: playComponents.input_yes_no,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[Boolean],
-        location: Location.Value
+    form: Form[Boolean],
+    location: Location,
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("childAgedTwo.title")) else messages("childAgedTwo.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("childAgedTwo.title"))
+    } else {
+        messages("childAgedTwo.title")
+    }
 }
 
 @layout(pageTitle = title) {

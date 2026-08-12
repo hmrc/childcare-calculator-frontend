@@ -16,22 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.DisabilityBenefit
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{
+  unknownErrorKey,
+  whichDisabilityBenefitsErrorKey
+}
 
-class WhichDisabilityBenefitsFormSpec extends CheckboxBehaviours[DisabilityBenefits.Value] {
+class WhichDisabilityBenefitsFormSpec extends CheckboxBehaviours[DisabilityBenefit] {
 
-  override val validOptions: Set[DisabilityBenefits.Value] = DisabilityBenefits.values
+  override val validOptions: Set[DisabilityBenefit] = DisabilityBenefit.values.toSet
 
   override val fieldName = "value"
 
-  val form = WhichDisabilityBenefitsForm("Foo")
+  val form: Form[Set[DisabilityBenefit]] = WhichDisabilityBenefitsForm("Foo")
 
   "WhichDisabilityBenefits form" must {
 
-    behave.like(aCheckboxForm(invalid = "error.unknown"))
+    behave.like(aCheckboxForm(invalid = unknownErrorKey))
 
-    behave.like(aMandatoryCheckboxForm("whichDisabilityBenefits.error.notCompleted", "Foo"))
+    behave.like(aMandatoryCheckboxForm(whichDisabilityBenefitsErrorKey, "Foo"))
   }
 
 }

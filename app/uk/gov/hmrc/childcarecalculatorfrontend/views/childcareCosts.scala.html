@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcareCostsForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YesNoNotYet
 
 @this(
     layout: Layout,
@@ -24,13 +24,22 @@
     errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
     submitButton: playComponents.submit_button,
-    inputRadio: playComponents.input_radio
+    inputRadio: playComponents.input_radio,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String])(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[YesNoNotYet],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("childcareCosts.title")) else messages("childcareCosts.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("childcareCosts.title"))
+    } else {
+        messages("childcareCosts.title")
+    }
 }
 
 @layout(
@@ -43,13 +52,7 @@
         @inputRadio(
             legend = heading(messages("childcareCosts.heading")),
             legendClass = Some("visually-hidden"),
-            inputs = ChildcareCostsForm.options map { radioOption =>
-                RadioItem(
-                    value = Some(radioOption.value),
-                    content = HtmlContent(messages(radioOption.messageKey))
-                )
-
-            },
+            inputs = ChildcareCostsForm.options.map(_.toRadioItem),
             field = form("value")
         )
 

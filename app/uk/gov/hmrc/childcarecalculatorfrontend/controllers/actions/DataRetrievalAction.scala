@@ -18,21 +18,23 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
 import com.google.inject.{ImplementedBy, Inject}
 import play.api.Logging
-import play.api.mvc._
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
+import play.api.mvc.*
+import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.{OptionalDataRequest, SessionIdProvider}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, SessionId}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
+import javax.inject.Singleton
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class DataRetrievalActionImpl @Inject() (
-    val dataCacheConnector: DataCacheConnector,
+    val dataCacheService: DataCacheService,
     val mcc: MessagesControllerComponents,
     val appConfig: FrontendAppConfig
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends DataRetrievalAction
     with Logging {
 
@@ -40,7 +42,7 @@ class DataRetrievalActionImpl @Inject() (
   override def parser: BodyParser[AnyContent]               = mcc.parsers.defaultBodyParser
 
   override protected def transform[A](request: Request[A]): Future[OptionalDataRequest[A]] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     if (appConfig.navigationAudit) {
       logger.warn(
@@ -51,11 +53,16 @@ class DataRetrievalActionImpl @Inject() (
     hc.sessionId match {
       case None => Future.failed(new IllegalStateException())
       case Some(sessionId) =>
-        dataCacheConnector.fetch(sessionId.toString).map {
-          case None       => OptionalDataRequest(request, sessionId.toString, None)
-          case Some(data) => OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
+        dataCacheService.fetch()(using sessionIdProvider(sessionId)).map {
+          case None => OptionalDataRequest(request, sessionId.toString, None)
+          case Some(data) =>
+            OptionalDataRequest(request, sessionId.toString, Some(new UserAnswers(data)))
         }
     }
+  }
+
+  private def sessionIdProvider(sessionIdValue: SessionId): SessionIdProvider = new SessionIdProvider {
+    override val sessionId: String = sessionIdValue.toString
   }
 
 }

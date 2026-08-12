@@ -21,7 +21,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.Identifier
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+class FakeNavigator(desiredRoute: Call) extends Navigator(Seq.empty) {
 
   override def nextPage(controllerId: Identifier): UserAnswers => Call =
     _ => desiredRoute

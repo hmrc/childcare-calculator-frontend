@@ -16,14 +16,15 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
 import play.api.data.Form
-import play.api.data.Forms._
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import play.api.data.Forms.*
+import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
+@Singleton
 class EmploymentIncomeCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
   val minValue: Double = appConfig.minEmploymentIncome

@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.Json
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BenefitsIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.BenefitsIncomeCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
@@ -30,12 +30,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefitsIncomeCY
 
 class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[benefitsIncomeCY]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: benefitsIncomeCY = inject[benefitsIncomeCY]
+  def onwardRoute: Call      = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new BenefitsIncomeCYController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -44,8 +43,8 @@ class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
       new DataRequiredAction
     )
 
-  def viewAsString(form: Form[BenefitsIncomeCY] = BenefitsIncomeCYForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BenefitsIncomeCY] = BenefitsIncomeCYForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "BenefitsIncomeCY Controller" must {
 
@@ -57,7 +56,7 @@ class BenefitsIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(BenefitsIncomeCYId.toString -> Json.toJson(BenefitsIncomeCY(1, 2)))
+      val validData       = Map(BenefitsIncomeCYId.withValue(BenefitsIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

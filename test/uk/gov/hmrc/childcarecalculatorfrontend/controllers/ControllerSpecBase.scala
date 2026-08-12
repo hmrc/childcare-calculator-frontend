@@ -19,9 +19,10 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.libs.json.JsString
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.FakeDataRetrievalAction
+import uk.gov.hmrc.childcarecalculatorfrontend.helpers.CacheMapOps
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
-trait ControllerSpecBase extends SpecBase {
+trait ControllerSpecBase extends SpecBase with CacheMapOps {
 
   val cacheMapId    = "id"
   def emptyCacheMap = CacheMap(cacheMapId, Map())

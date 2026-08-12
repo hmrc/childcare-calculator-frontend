@@ -17,28 +17,34 @@
 @this(govukInput : GovukInput)
 
 @(
-label: Content,
-hint: Option[String] = None,
-labelClass: Option[String] = None,
-currency: Boolean = false,
-inputMode: Option[String] = None,
-autoComplete: Option[String] = None,
-shortAnswer: Boolean = false,
-isPageHeading: Boolean = false,
-field: Field
-)(implicit messages: Messages)
+    label: Content,
+    hint: Option[String] = None,
+    labelClass: Option[String] = None,
+    currency: Boolean = false,
+    inputMode: Option[String] = None,
+    autoComplete: Option[String] = None,
+    shortAnswer: Boolean = false,
+    isPageHeading: Boolean = false,
+    field: Field,
+)(
+    using messages: Messages,
+)
 
 @govukInput(Input(
-        label = Label(
-                isPageHeading = isPageHeading,
-                classes = s"""${if(isPageHeading) "govuk-label--xl" else ""} ${labelClass.getOrElse("")}""",
-                content = label
-        ),
-        hint = hint.map(hintString => Hint(content = Text(hintString))),
-        classes = if (shortAnswer) "govuk-input--width-5" else "govuk-input--width-10" ,
-        autocomplete = autoComplete,
-        inputmode = inputMode,
-        pattern = if(inputMode == Some("numeric")) Some("[0-9]*") else None,
-        prefix = if(currency) Some(PrefixOrSuffix(content = Text("£"))) else None
+    label = Label(
+        isPageHeading = isPageHeading,
+        classes = s"""${if(isPageHeading) "govuk-label--xl" else ""} ${labelClass.getOrElse("")}""",
+        content = label,
+    ),
+    hint = hint.map(hintString => Hint(content = Text(hintString))),
+    classes = if (shortAnswer) "govuk-input--width-5" else "govuk-input--width-10" ,
+    autocomplete = autoComplete,
+    inputmode = inputMode,
+    pattern = Option.when(inputMode.contains("numeric")) {
+        "[0-9]*"
+    },
+    prefix = Option.when(currency) {
+        PrefixOrSuffix(content = Text("£"))
+    },
 ).withFormField(field))
 

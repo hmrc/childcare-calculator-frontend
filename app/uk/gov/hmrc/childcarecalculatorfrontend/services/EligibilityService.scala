@@ -16,29 +16,28 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.connectors.EligibilityConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.*
 import uk.gov.hmrc.childcarecalculatorfrontend.models.mappings.UserAnswerToHousehold
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.http.HeaderCarrier
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 trait SubmissionService {
-  def eligibility(answers: UserAnswers)(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults]
+  def eligibility(answers: UserAnswers)(using req: play.api.mvc.Request[?], hc: HeaderCarrier): Future[SchemeResults]
 }
 
-class EligibilityService @Inject() (appConfig: FrontendAppConfig, utils: Utils, connector: EligibilityConnector)
+@Singleton
+class EligibilityService @Inject() (userAnswerToHousehold: UserAnswerToHousehold, connector: EligibilityConnector)
     extends SubmissionService {
 
   def eligibility(
       answers: UserAnswers
-  )(implicit req: play.api.mvc.Request[_], hc: HeaderCarrier): Future[SchemeResults] = {
+  )(using req: play.api.mvc.Request[?], hc: HeaderCarrier): Future[SchemeResults] = {
     val household = userAnswerToHousehold.convert(answers)
     connector.getEligibility(household)
   }
 
-  private def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(appConfig, utils)
 }

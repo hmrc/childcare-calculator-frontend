@@ -16,40 +16,28 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
+import play.api.data.Form
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Age
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object YourPartnersAgeForm extends FormErrorHelper {
 
-  def YourPartnersAgeFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, yourPartnersAgeErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
+  private def YourPartnersAgeFormatter: Formatter[Age] = EnumFormatter[Age](yourPartnersAgeErrorKey, unknownErrorKey)
 
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
+  def apply(): Form[Age] =
     Form(single("value" -> of(YourPartnersAgeFormatter)))
 
-  def options = Seq(
-    yourPartnersAgeInputOption("value", AgeEnum.UNDER18.toString),
-    yourPartnersAgeInputOption("value-2", AgeEnum.EIGHTEENTOTWENTY.toString),
-    yourPartnersAgeInputOption("value-3", AgeEnum.TWENTYONEOROVER.toString)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "yourPartnersAge",
+    values = Seq(
+      Age.UnderEighteen,
+      Age.EighteenToTwenty,
+      Age.TwentyOneOrOver
+    )
   )
 
-  private def yourPartnersAgeInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"yourPartnersAge.$option"
-    )
-
-  def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }

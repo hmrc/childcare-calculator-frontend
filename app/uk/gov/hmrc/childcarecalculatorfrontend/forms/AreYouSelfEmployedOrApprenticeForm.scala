@@ -17,39 +17,30 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SelfEmployedOrApprenticeOrNeitherEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.EmploymentStatus
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object AreYouSelfEmployedOrApprenticeForm extends FormErrorHelper {
 
-  def AreYouSelfEmployedOrApprenticeFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, selfEmployedOrApprenticeErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
-
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
-    Form(single("value" -> of(AreYouSelfEmployedOrApprenticeFormatter)))
-
-  def options = Seq(
-    areYouSelfEmployedOrApprenticeInputOption("value", SelfEmployedOrApprenticeOrNeitherEnum.SELFEMPLOYED.toString),
-    areYouSelfEmployedOrApprenticeInputOption("value-2", SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString),
-    areYouSelfEmployedOrApprenticeInputOption("value-3", SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString)
+  private val AreYouSelfEmployedOrApprenticeFormatter: Formatter[EmploymentStatus] = EnumFormatter[EmploymentStatus](
+    missingErrorKey = selfEmployedOrApprenticeErrorKey,
+    unknownValueErrorKey = unknownErrorKey
   )
 
-  def areYouSelfEmployedOrApprenticeInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"areYouSelfEmployedOrApprentice.$option"
-    )
+  def apply(): Form[EmploymentStatus] =
+    Form(single("value" -> of(AreYouSelfEmployedOrApprenticeFormatter)))
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "areYouSelfEmployedOrApprentice",
+    values = Seq(
+      EmploymentStatus.SelfEmployed,
+      EmploymentStatus.Apprentice,
+      EmploymentStatus.Neither
+    )
+  )
+
 }

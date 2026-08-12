@@ -16,27 +16,29 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.connectors
 
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.*
+import org.mockito.Mockito.*
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import play.api.mvc.{AnyContent, Request}
 import play.api.test.FakeRequest
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, SchemeResults}
+import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.SchemeResults
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.claimant.Claimant
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutures {
-  val mockHttp                              = mock[HttpClientV2]
-  val frontendAppConfig: FrontendAppConfig  = mock[FrontendAppConfig]
-  implicit val request: Request[AnyContent] = FakeRequest()
-  implicit val hc: HeaderCarrier            = HeaderCarrier()
-  implicit val ec: ExecutionContext         = ExecutionContext.global
+  val mockHttp: HttpClientV2               = mock[HttpClientV2]
+  val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
+  given request: Request[AnyContent]       = FakeRequest()
+  given hc: HeaderCarrier                  = HeaderCarrier()
+  given ec: ExecutionContext               = ExecutionContext.global
 
   def mockConnector: EligibilityConnector = new EligibilityConnector(frontendAppConfig, mockHttp)
 
@@ -51,12 +53,12 @@ class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutur
       ).thenReturn("http://localhost:9000/test")
 
       when(
-        mockHttp.post(any())(any())
+        mockHttp.post(any())(using any())
       ).thenReturn(testRequestBuilder)
 
       when(
         testRequestBuilder
-          .withBody[Household](any())(any(), any(), any())
+          .withBody[Household](any())(using any(), any(), any())
       ).thenReturn(testRequestBuilder)
 
       when(
@@ -67,7 +69,7 @@ class EligiblityConnectorSpec extends PlaySpec with MockitoSugar with ScalaFutur
       val res = mockConnector.getEligibility(
         Household(
           credits = None,
-          location = Location.ENGLAND,
+          location = Location.England,
           children = List.empty,
           parent = Claimant(),
           partner = None

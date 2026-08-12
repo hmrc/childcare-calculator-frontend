@@ -16,24 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeitherNotSure
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.whoGetsVouchersErrorKey
 
-class WhoGetsVouchersFormSpec extends FormBehaviours {
+class WhoGetsVouchersFormSpec extends FormBehaviours[YouPartnerBothNeitherNotSure] {
 
   val validData: Map[String, String] = Map(
-    "value" -> WhoGetsVouchersForm.options.head.value
+    "value" -> YouPartnerBothNeitherNotSure.You.toString
   )
 
-  val form = WhoGetsVouchersForm()
+  val form: Form[YouPartnerBothNeitherNotSure] = WhoGetsVouchersForm()
 
   "WhoGetsVouchers form" must {
-    behave.like(questionForm[String](WhoGetsVouchersForm.options.head.value))
+    behave.like(questionForm(YouPartnerBothNeitherNotSure.You))
 
     behave.like(
       formWithOptionFieldError(
         "value",
-        "whoGetsVouchers.error.notCompleted",
-        WhoGetsVouchersForm.options.map(x => x.value): _*
+        whoGetsVouchersErrorKey,
+        YouPartnerBothNeitherNotSure.values*
       )
     )
   }

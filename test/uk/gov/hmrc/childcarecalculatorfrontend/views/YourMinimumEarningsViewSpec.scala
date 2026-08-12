@@ -16,38 +16,34 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourMinimumEarnings
 
 class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndAfterEach {
 
-  val view                           = application.injector.instanceOf[yourMinimumEarnings]
+  val view: yourMinimumEarnings      = inject[yourMinimumEarnings]
   val messageKeyPrefix               = "yourMinimumEarnings"
   val averageWeeklyEarningsKeyPrefix = "yourMinimumEarnings.averageWeekly"
   override val form: Form[Boolean]   = BooleanForm()
   val bereavedPartnersPaternityLeave = "bereaved partner’s paternity leave"
 
-  def constructView(
-      appConfig: FrontendAppConfig = frontendAppConfig,
+  def render(
       form: Form[Boolean] = this.form,
       amount: BigDecimal = 0,
-      location: Location.Value = Location.ENGLAND
-  ): HtmlFormat.Appendable = view(appConfig, form, amount, location)(fakeRequest, messages)
+      location: Location = Location.England
+  ): Html = view(form, amount, location)(using fakeRequest, messages)
 
   "YourMinimumEarnings view" must {
 
     behave.like(
       normalPageWithTitleAsString(
-        view = () => constructView(),
+        view = () => render(),
         messageKeyPrefix = averageWeeklyEarningsKeyPrefix,
         messageKeyPostfix = "",
         title = messages("yourMinimumEarnings.averageWeekly.title", 0),
@@ -56,11 +52,11 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
         args = 0
       )
     )
-    behave.like(pageWithBackLink(() => constructView()))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       yesNoPage(
-        (form: Form[Boolean]) => constructView(form = form),
+        (form: Form[Boolean]) => render(form = form),
         messageKeyPrefix,
         routes.YourMinimumEarningsController.onSubmit().url,
         legend = Some(messages(s"$messageKeyPrefix.heading", 0))
@@ -69,19 +65,19 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
     "include bereaved partner's paternity leave on page" when {
       "the location is England" in {
-        constructView(location = Location.ENGLAND).toString must include(
+        render(location = Location.England).toString must include(
           bereavedPartnersPaternityLeave
         )
       }
 
       "the location is Scotland" in {
-        constructView(location = Location.SCOTLAND).toString must include(
+        render(location = Location.Scotland).toString must include(
           bereavedPartnersPaternityLeave
         )
       }
 
       "the location is Wales" in {
-        constructView(location = Location.WALES).toString must include(
+        render(location = Location.Wales).toString must include(
           bereavedPartnersPaternityLeave
         )
       }
@@ -90,14 +86,14 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
     "NOT include bereaved partner's paternity leave on page" when {
       "the location is Northern Ireland" in
-        (constructView(location = Location.NORTHERN_IRELAND).toString must not)
+        (render(location = Location.NorthernIreland).toString must not)
           .include(bereavedPartnersPaternityLeave)
 
     }
 
     "display the correct guidance text" when {
       "the location is other than Northern Ireland" in {
-        val view1 = constructView()
+        val view1 = render()
         val doc   = asDocument(view1)
 
         assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading"))
@@ -112,7 +108,7 @@ class YourMinimumEarningsViewSpec extends NewYesNoViewBehaviours with BeforeAndA
 
     "display the correct guidance text" when {
       "the location is Northern Ireland" in {
-        val view1 = constructView(location = Location.NORTHERN_IRELAND)
+        val view1 = render(location = Location.NorthernIreland)
         val doc   = asDocument(view1)
 
         assertContainsText(doc, messages(s"$averageWeeklyEarningsKeyPrefix.heading"))

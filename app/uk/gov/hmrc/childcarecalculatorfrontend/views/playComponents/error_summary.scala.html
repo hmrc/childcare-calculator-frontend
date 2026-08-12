@@ -15,10 +15,15 @@
  *@
 
 @this(
-        govukErrorSummary : GovukErrorSummary
+    govukErrorSummary : GovukErrorSummary
 )
 
-@(errors: Seq[FormError], customKeyMap: String => String = identity)(implicit messages: Messages)
+@(
+    errors: Seq[FormError],
+    customKeyMap: String => String = identity,
+)(
+    using messages: Messages,
+)
 
 @if(errors.nonEmpty) {
     @govukErrorSummary(ErrorSummary(

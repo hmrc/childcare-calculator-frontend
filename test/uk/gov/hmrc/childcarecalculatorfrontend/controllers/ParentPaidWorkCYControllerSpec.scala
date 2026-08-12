@@ -17,38 +17,35 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ParentPaidWorkCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentPaidWorkCY
 
 class ParentPaidWorkCYControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[parentPaidWorkCY]
-  val taxYearInfo = new TaxYearInfo
+  val view: parentPaidWorkCY = inject[parentPaidWorkCY]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ParentPaidWorkCYController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction,
       new DataRequiredAction,
-      taxYearInfo,
       view
     )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "ParentPaidWorkCY Controller" must {
 
@@ -60,7 +57,7 @@ class ParentPaidWorkCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(ParentPaidWorkCYId.toString -> JsBoolean(true))
+      val validData       = Map(ParentPaidWorkCYId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

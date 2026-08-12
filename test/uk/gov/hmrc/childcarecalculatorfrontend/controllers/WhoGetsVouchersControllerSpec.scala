@@ -17,25 +17,25 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsVouchersForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoGetsVouchersId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeitherNotSure
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsVouchers
 
 class WhoGetsVouchersControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[whoGetsVouchers]
+  val view: whoGetsVouchers = inject[whoGetsVouchers]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhoGetsVouchersController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -44,8 +44,8 @@ class WhoGetsVouchersControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[String] = WhoGetsVouchersForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[YouPartnerBothNeitherNotSure] = WhoGetsVouchersForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "WhoGetsVouchers Controller" must {
 
@@ -57,12 +57,12 @@ class WhoGetsVouchersControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(WhoGetsVouchersId.toString -> JsString(WhoGetsVouchersForm.options.head.value))
+      val validData       = Map(WhoGetsVouchersId.withValue(YouPartnerBothNeitherNotSure.You))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(WhoGetsVouchersForm().fill(WhoGetsVouchersForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(WhoGetsVouchersForm().fill(YouPartnerBothNeitherNotSure.You))
     }
 
     "redirect to the next page when valid data is submitted" in {

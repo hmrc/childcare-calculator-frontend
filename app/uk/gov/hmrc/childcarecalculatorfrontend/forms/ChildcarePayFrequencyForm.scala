@@ -17,37 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.ChildcarePayFrequency
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{childcarePayFrequencyErrorKey, unknownErrorKey}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object ChildcarePayFrequencyForm extends FormErrorHelper {
 
-  def apply(name: String): Form[ChildcarePayFrequency.Value] =
+  def apply(name: String): Form[ChildcarePayFrequency] =
     Form(single("value" -> of(ChildcarePayFrequencyFormatter(name))))
 
-  lazy val options: Seq[InputOption] = Seq(
-    payFrequencyInputOption(ChildcarePayFrequency.WEEKLY_KEY, ChildcarePayFrequency.WEEKLY.toString),
-    payFrequencyInputOption(ChildcarePayFrequency.MONTHLY_KEY, ChildcarePayFrequency.MONTHLY.toString)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "childcarePayFrequency",
+    values = Seq(
+      ChildcarePayFrequency.Weekly,
+      ChildcarePayFrequency.Monthly
+    )
   )
 
-  private def payFrequencyInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"childcarePayFrequency.$option"
+  private def ChildcarePayFrequencyFormatter(name: String): Formatter[ChildcarePayFrequency] =
+    EnumFormatter[ChildcarePayFrequency](
+      missingErrorKey = childcarePayFrequencyErrorKey,
+      unknownValueErrorKey = unknownErrorKey,
+      name
     )
 
-  private def ChildcarePayFrequencyFormatter(name: String) = new Formatter[ChildcarePayFrequency.Value] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(ChildcarePayFrequency.withName(s))
-      case None                        => produceError(key, "childcarePayFrequency.error.notCompleted", name)
-      case _                           => produceError(key, "error.unknown")
-    }
-
-    def unbind(key: String, value: ChildcarePayFrequency.Value) = Map(key -> value.toString)
-  }
-
-  private def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

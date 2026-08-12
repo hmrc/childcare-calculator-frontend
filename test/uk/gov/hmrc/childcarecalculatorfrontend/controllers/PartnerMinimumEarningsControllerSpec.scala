@@ -16,57 +16,57 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, JsString}
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.config.NmwConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{LocationId, PartnerMinimumEarningsId, YourPartnersAgeId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AgeEnum, Location}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{Age, Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerMinimumEarnings
 
 class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with MockitoSugar {
 
-  val view                   = application.injector.instanceOf[partnerMinimumEarnings]
-  val mockUtils              = mock[Utils]
-  val location               = Location.ENGLAND
-  val locationMap            = LocationId.toString -> JsString(location.toString)
-  val cacheMapWithLocation   = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
-  val getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
+  val view: partnerMinimumEarnings   = inject[partnerMinimumEarnings]
+  val location: Location             = Location.England
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(location))
+  val getDataWithLocationSet         = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  override lazy val nmwConfig: NmwConfig = mock[NmwConfig]
+
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new PartnerMinimumEarningsController(
-      frontendAppConfig,
+      nmwConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
       dataRetrievalAction,
       new DataRequiredAction,
-      mockUtils,
       view
     )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form, 0, location)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String =
+    view(form, 0, location)(using fakeRequest, messages).toString
 
   "PartnerMinimumEarnings Controller" must {
 
     "return OK and the correct view for a GET" in {
       val validData = Map(
-        YourPartnersAgeId.toString -> JsString(AgeEnum.UNDER18.toString),
-        LocationId.toString        -> JsString(Location.ENGLAND.toString)
+        YourPartnersAgeId.withValue(Age.UnderEighteen),
+        LocationId.withValue(Location.England)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      setUpMock()
+      mockEarnings()
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
@@ -77,14 +77,14 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val validData = Map(
-        YourPartnersAgeId.toString        -> JsString(AgeEnum.UNDER18.toString),
-        PartnerMinimumEarningsId.toString -> JsBoolean(true),
-        LocationId.toString               -> JsString(Location.ENGLAND.toString)
+        YourPartnersAgeId.withValue(Age.UnderEighteen),
+        PartnerMinimumEarningsId.withValue(true),
+        LocationId.withValue(Location.England)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
-      setUpMock()
+      mockEarnings()
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
@@ -95,7 +95,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      setUpMock()
+
+      mockEarnings()
 
       val result = controller().onSubmit()(postRequest)
 
@@ -106,7 +107,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm = BooleanForm("partnerMinimumEarnings.error.notCompleted", 0).bind(Map("value" -> "invalid value"))
-      setUpMock()
+
+      mockEarnings()
 
       val result = controller().onSubmit()(postRequest)
 
@@ -116,7 +118,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
     "redirect to Session Expired for a GET if no existing data is found" in {
       val result = controller(dontGetAnyData).onPageLoad()(fakeRequest)
-      setUpMock()
+
+      mockEarnings()
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.SessionExpiredController.onPageLoad.url)
@@ -124,7 +127,8 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
-      setUpMock()
+
+      mockEarnings()
 
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
@@ -141,7 +145,7 @@ class PartnerMinimumEarningsControllerSpec extends ControllerSpecBase with Mocki
 
   }
 
-  private def setUpMock() =
-    when(mockUtils.getEarningsForAgeRange(any(), any(), any())).thenReturn(0)
+  def mockEarnings(value: Int = 0): Unit =
+    when(nmwConfig.getEarningsForAgeRange(any(), any())).thenReturn(value)
 
 }

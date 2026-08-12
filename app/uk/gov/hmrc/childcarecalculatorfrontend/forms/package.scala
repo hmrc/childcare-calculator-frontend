@@ -25,7 +25,7 @@ import scala.util.Try
 package object forms {
 
   private val defaultLocalDateMapping: Mapping[(Int, Int, Int)] = {
-    import play.api.data.Forms._
+    import play.api.data.Forms.*
     tuple(
       "day"   -> number(min = 1, max = 31),
       "month" -> number(min = 1, max = 12),
@@ -61,19 +61,19 @@ package object forms {
     subMapping.verifying("error.invalidDate", validate _).transform(bind, unbind)
   }
 
-  implicit class WithErrors[A](mapping: Mapping[A]) {
+  extension [A](mapping: Mapping[A]) {
 
     def replaceError(error: FormError, newError: FormError): Mapping[A] =
       new Mapping[A] {
 
         override val key: String                           = mapping.key
-        override val mappings: Seq[Mapping[_]]             = mapping.mappings
+        override val mappings: Seq[Mapping[?]]             = mapping.mappings
         override val constraints: Seq[Constraint[A]]       = mapping.constraints
         override def unbind(value: A): Map[String, String] = mapping.unbind(value)
         override def withPrefix(prefix: String): Mapping[A] =
           mapping.withPrefix(prefix).replaceError(error.withPrefix(prefix), newError.withPrefix(prefix))
         override def verifying(constraints: Constraint[A]*): Mapping[A] =
-          mapping.verifying(constraints: _*).replaceError(error, newError)
+          mapping.verifying(constraints*).replaceError(error, newError)
 
         private def mapErrors(errors: Seq[FormError]): Seq[FormError] = {
           val index = errors.indexWhere(e => e.key == error.key && e.message == error.message)
@@ -98,7 +98,7 @@ package object forms {
 
   }
 
-  implicit class WithPrefix(formError: FormError) {
+  extension (formError: FormError) {
 
     def withPrefix(prefix: String): FormError = {
       val key = Seq(prefix, formError.key).filter(_.nonEmpty).mkString(".")

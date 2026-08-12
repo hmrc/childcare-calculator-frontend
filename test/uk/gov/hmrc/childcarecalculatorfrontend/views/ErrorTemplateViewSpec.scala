@@ -16,22 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.error_template
 
-class errorTemplateViewSpec extends NewViewSpecBase {
+class ErrorTemplateViewSpec extends NewViewSpecBase {
 
-  val view = application.injector.instanceOf[error_template]
+  val view: error_template = inject[error_template]
 
   val pageTitle   = "title"
   val headingText = "heading"
   val message     = "message"
 
-  def createView = () => view(pageTitle, headingText, message)(fakeRequest, messages)
+  def render(
+      pageTitle: String = this.pageTitle,
+      headingText: String = this.headingText,
+      message: String = this.message
+  ): Html = view(pageTitle, headingText, message)(using fakeRequest, messages)
 
   "behave like a normal page" when {
     "rendered" must {
       "have the correct banner title" in {
-        val doc         = asDocument(createView())
+        val doc         = asDocument(render())
         val serviceName = doc.select(".govuk-service-navigation__service-name a").text()
         serviceName mustBe messages("site.service_name")
       }
@@ -39,22 +44,22 @@ class errorTemplateViewSpec extends NewViewSpecBase {
   }
 
   "display the correct browser title" in {
-    val doc = asDocument(createView())
+    val doc = asDocument(render())
     assertEqualsValue(doc, "title", s"$pageTitle - " + messages("site.service_name") + " - GOV.UK")
   }
 
   "display the correct page title" in {
-    val doc = asDocument(createView())
+    val doc = asDocument(render())
     assertPageTitleEqualsMessage(doc, s"$headingText", 0)
   }
 
   "display the correct guidance" in {
-    val doc = asDocument(createView())
+    val doc = asDocument(render())
     assertContainsText(doc, message)
   }
 
   "not display HMRC branding" in {
-    val doc = asDocument(createView())
+    val doc = asDocument(render())
     assertNotRenderedByCssSelector(doc, ".organisation-logo")
   }
 

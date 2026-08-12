@@ -17,25 +17,25 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoPaysIntoPensionForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoPaysIntoPensionId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaysIntoPension
 
 class WhoPaysIntoPensionControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[whoPaysIntoPension]
+  val view: whoPaysIntoPension = inject[whoPaysIntoPension]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhoPaysIntoPensionController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -44,8 +44,8 @@ class WhoPaysIntoPensionControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[String] = WhoPaysIntoPensionForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[YouPartnerBoth] = WhoPaysIntoPensionForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "WhoPaysIntoPension Controller" must {
 
@@ -57,13 +57,13 @@ class WhoPaysIntoPensionControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(WhoPaysIntoPensionId.toString -> JsString(WhoPaysIntoPensionForm.options.head.value))
+      val validData       = Map(WhoPaysIntoPensionId.withValue(YouPartnerBoth.You))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(
-        WhoPaysIntoPensionForm().fill(WhoPaysIntoPensionForm.options.head.value)
+        WhoPaysIntoPensionForm().fill(YouPartnerBoth.You)
       )
     }
 

@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{Identifier, PartnerIncomeInfoId}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeither
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers, Utils}
 
 import javax.inject.{Inject, Singleton}
@@ -37,9 +37,9 @@ private[navigation] class IncomeInfoNavigator @Inject() (utils: Utils) extends S
     val hasPartner = userAnswers.doYouLiveWithPartner.getOrElse(false)
     if (hasPartner) {
       utils.getCall(userAnswers.whoIsInPaidEmployment) {
-        case `you`     => routes.PartnerPaidWorkCYController.onPageLoad()
-        case `partner` => routes.ParentPaidWorkCYController.onPageLoad()
-        case `both`    => routes.EmploymentIncomeCYController.onPageLoad()
+        case YouPartnerBothNeither.You     => routes.PartnerPaidWorkCYController.onPageLoad()
+        case YouPartnerBothNeither.Partner => routes.ParentPaidWorkCYController.onPageLoad()
+        case YouPartnerBothNeither.Both    => routes.EmploymentIncomeCYController.onPageLoad()
       }
     } else {
       SessionExpiredRouter.route(getClass.getName, "nextPageUrlCY", Some(userAnswers))

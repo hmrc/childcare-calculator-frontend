@@ -16,24 +16,38 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 case class CacheMap(id: String, data: Map[String, JsValue]) {
 
-  def getEntry[T](key: String)(implicit fjs: Reads[T]): Option[T] =
+  def getEntry[A](key: CacheKey[A])(using Reads[A]): Option[A] =
     data
-      .get(key)
+      .get(key.cacheKey)
       .map(json =>
         json
-          .validate[T]
+          .validate[A]
           .fold(
-            errors => throw new CacheEntryValidationException(key, json, CacheMap.getClass, errors),
+            errors => throw new CacheEntryValidationException(key.cacheKey, json, key.classTag.runtimeClass, errors),
             valid => valid
           )
       )
 
+  def updated(key: CacheKey[?], value: JsValue): CacheMap =
+    copy(
+      data = data.updated(key.cacheKey, Json.toJson(value))
+    )
+
+  def removed(key: CacheKey[?]): CacheMap = copy(
+    data = data.removed(key.cacheKey)
+  )
+
+  def removedAll(keys: CacheKey[?]*): CacheMap =
+    copy(
+      data = data.removedAll(keys.map(_.cacheKey))
+    )
+
 }
 
 object CacheMap {
-  implicit val formats: OFormat[CacheMap] = Json.format[CacheMap]
+  given formats: OFormat[CacheMap] = Json.format[CacheMap]
 }

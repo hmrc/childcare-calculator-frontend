@@ -14,9 +14,8 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.*
 @import uk.gov.hmrc.hmrcfrontend.views.Implicits.RichDateInput
-
 
 @this(govukDateInput : GovukDateInput)
 
@@ -27,8 +26,10 @@
     smallText: Boolean = false,
     largeText: Boolean = true,
     labelClass: Option[String] = None,
-    isPageHeading: Boolean = true
-)(implicit messages: Messages)
+    isPageHeading: Boolean = true,
+)(
+    using messages: Messages,
+)
 
 @govukDateInput(DateInput(
     hint = Some(

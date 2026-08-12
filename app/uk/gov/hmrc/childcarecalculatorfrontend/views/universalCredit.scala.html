@@ -14,32 +14,39 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 
 @this(
     layout: Layout,
     formWithCSRF: FormWithCSRF,
     errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
-    inputRadio: playComponents.input_radio,
     inputYesNo: playComponents.input_yes_no,
     submitButton: playComponents.submit_button,
 )
-@(appConfig: FrontendAppConfig, form: Form[Boolean],  havePartner: Option[Boolean])(implicit request: Request[_], messages: Messages)
+
+@(
+    form: Form[Boolean],
+    havePartner: Option[Boolean],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @getMessageKeys(keys: String) = @{
     havePartner match {
-    case Some(true) => messages(s"universalCreditPartner.$keys")
-    case _ => messages(s"universalCredit.$keys")
+        case Some(true) => messages(s"universalCreditPartner.$keys")
+        case _ => messages(s"universalCredit.$keys")
     }
 }
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", getMessageKeys("title")) else getMessageKeys("title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", getMessageKeys("title"))
+    } else {
+        getMessageKeys("title")
+    }
 }
-
-
 
 @layout(
     pageTitle = title

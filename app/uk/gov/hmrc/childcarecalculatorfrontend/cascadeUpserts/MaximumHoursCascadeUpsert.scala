@@ -17,207 +17,278 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
 import play.api.libs.json.{JsBoolean, JsString, JsValue}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, YesNoUnsureEnum}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{EmploymentStatus, YouPartnerBothNeither}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-class MaximumHoursCascadeUpsert @Inject() () extends SubCascadeUpsert {
-
-  lazy val no: String      = YesNoUnsureEnum.NO.toString
-  lazy val notSure: String = YesNoUnsureEnum.NOTSURE.toString
+@Singleton
+class MaximumHoursCascadeUpsert @Inject() {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      DoYouLiveWithPartnerId.toString()          -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
-      WhoIsInPaidEmploymentId.toString           -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
-      AreYouInPaidWorkId.toString                -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
-      YourAgeId.toString                         -> ((v, cm) => storeYourAge(v, cm)),
-      YourPartnersAgeId.toString                 -> ((v, cm) => storeYourPartnersAge(v, cm)),
-      AreYouSelfEmployedOrApprenticeId.toString  -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
-      PartnerSelfEmployedOrApprenticeId.toString -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
-      YourMinimumEarningsId.toString             -> ((v, cm) => storeMinimumEarnings(v, cm)),
-      PartnerMinimumEarningsId.toString          -> ((v, cm) => storePartnerMinimumEarnings(v, cm)),
-      SessionDataClearId.toString                -> ((v, cm) => clearSessionData(v, cm))
+      DoYouLiveWithPartnerId.cacheKey            -> ((v, cm) => storeDoYouLiveWithPartner(v, cm)),
+      WhoIsInPaidEmploymentId.cacheKey           -> ((v, cm) => storeWhoIsInPaidEmployment(v, cm)),
+      AreYouInPaidWorkId.cacheKey                -> ((v, cm) => storeAreYouInPaidWork(v, cm)),
+      YourAgeId.cacheKey                         -> ((v, cm) => storeYourAge(v, cm)),
+      YourPartnersAgeId.cacheKey                 -> ((v, cm) => storeYourPartnersAge(v, cm)),
+      AreYouSelfEmployedOrApprenticeId.cacheKey  -> ((v, cm) => AreYouSelfEmployedOrApprentice(v, cm)),
+      PartnerSelfEmployedOrApprenticeId.cacheKey -> ((v, cm) => PartnerSelfEmployedOrApprentice(v, cm)),
+      YourMinimumEarningsId.cacheKey             -> ((v, cm) => storeMinimumEarnings(v, cm)),
+      PartnerMinimumEarningsId.cacheKey          -> ((v, cm) => storePartnerMinimumEarnings(v, cm)),
+      SessionDataClearId.cacheKey                -> ((v, cm) => clearSessionData(v, cm))
     )
 
   private def storeDoYouLiveWithPartner(value: JsValue, cacheMap: CacheMap): CacheMap = {
 
     val mapToStore = if (value.equals(JsBoolean(false))) {
-      cacheMap.copy(data =
-        cacheMap.data - WhoIsInPaidEmploymentId.toString -
-          HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString -
-          WhatIsYourPartnersTaxCodeId.toString - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString -
-          DoYouGetAnyBenefitsId.toString -
-          DoesYourPartnerGetAnyBenefitsId.toString -
-          YourPartnersAgeId.toString -
-          PartnerSelfEmployedOrApprenticeId.toString - PartnerMinimumEarningsId.toString - PartnerMaximumEarningsId.toString -
-          EitherOfYouMaximumEarningsId.toString
+      cacheMap.removedAll(
+        WhoIsInPaidEmploymentId,
+        WhatIsYourPartnersTaxCodeId,
+        WhoGetsVouchersId,
+        PartnerChildcareVouchersId,
+        DoYouGetAnyBenefitsId,
+        DoesYourPartnerGetAnyBenefitsId,
+        YourPartnersAgeId,
+        PartnerSelfEmployedOrApprenticeId,
+        PartnerMinimumEarningsId,
+        PartnerMaximumEarningsId,
+        EitherOfYouMaximumEarningsId
       )
     } else if (value.equals(JsBoolean(true))) {
-      cacheMap.copy(data = cacheMap.data - AreYouInPaidWorkId.toString - DoYouGetAnyBenefitsId.toString)
+      cacheMap.removedAll(AreYouInPaidWorkId, DoYouGetAnyBenefitsId)
     } else cacheMap
 
-    store(DoYouLiveWithPartnerId.toString, value, mapToStore)
+    mapToStore.updated(DoYouLiveWithPartnerId, value)
   }
 
   private def storeAreYouInPaidWork(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = if (value == JsBoolean(false)) {
-      cacheMap.copy(data =
-        cacheMap.data -
-          HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
-          YourChildcareVouchersId.toString - DoYouGetAnyBenefitsId.toString - YourAgeId.toString -
-          YourMinimumEarningsId.toString - YourMaximumEarningsId.toString - UniversalCreditId.toString -
-          PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
-          HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
-          YouBenefitsIncomeCYId.toString
+      cacheMap.removedAll(
+        WhatIsYourTaxCodeId,
+        WhatIsYourPartnersTaxCodeId,
+        YourChildcareVouchersId,
+        DoYouGetAnyBenefitsId,
+        YourAgeId,
+        YourMinimumEarningsId,
+        YourMaximumEarningsId,
+        UniversalCreditId,
+        PartnerPaidWorkCYId,
+        ParentEmploymentIncomeCYId,
+        YouPaidPensionCYId,
+        HowMuchYouPayPensionId,
+        YourOtherIncomeThisYearId,
+        YouAnyTheseBenefitsCYId,
+        YouBenefitsIncomeCYId
       )
-    } else cacheMap.copy(data = cacheMap.data - WhoGetsVouchersId.toString - PartnerChildcareVouchersId.toString)
+    } else cacheMap.removedAll(WhoGetsVouchersId, PartnerChildcareVouchersId)
 
-    store(AreYouInPaidWorkId.toString, value, mapToStore)
+    mapToStore.updated(AreYouInPaidWorkId, value)
   }
 
   private def storeWhoIsInPaidEmployment(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore =
       value match {
-        case JsString(`you`) =>
-          cacheMap.copy(data =
-            cacheMap.data - HasYourPartnersTaxCodeBeenAdjustedId.toString -
-              DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString - PartnerChildcareVouchersId.toString -
-              WhoGetsVouchersId.toString - YourPartnersAgeId.toString - PartnerMinimumEarningsId.toString - PartnerSelfEmployedOrApprenticeId.toString -
-              PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
-              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString -
-              PartnerBenefitsIncomeCYId.toString -
-              EmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
-              BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString - BothAnyTheseBenefitsCYId.toString -
-              WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString
+        case JsString(YouPartnerBothNeither.You.toString) =>
+          cacheMap.removedAll(
+            WhatIsYourPartnersTaxCodeId,
+            PartnerChildcareVouchersId,
+            WhoGetsVouchersId,
+            YourPartnersAgeId,
+            PartnerMinimumEarningsId,
+            PartnerSelfEmployedOrApprenticeId,
+            PartnerMaximumEarningsId,
+            EitherOfYouMaximumEarningsId,
+            ParentPaidWorkCYId,
+            PartnerEmploymentIncomeCYId,
+            PartnerPaidPensionCYId,
+            HowMuchPartnerPayPensionId,
+            PartnerBenefitsIncomeCYId,
+            EmploymentIncomeCYId,
+            BothPaidPensionCYId,
+            WhoPaysIntoPensionId,
+            HowMuchBothPayPensionId,
+            BothOtherIncomeThisYearId,
+            WhoGetsOtherIncomeCYId,
+            OtherIncomeAmountCYId,
+            BothAnyTheseBenefitsCYId,
+            WhosHadBenefitsId,
+            BenefitsIncomeCYId
           )
-        case JsString(`partner`) =>
-          cacheMap.copy(data =
-            cacheMap.data - HasYourTaxCodeBeenAdjustedId.toString -
-              DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString - YourChildcareVouchersId.toString - WhoGetsVouchersId.toString -
-              YourAgeId.toString - YourMinimumEarningsId.toString - AreYouSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString -
-              EitherOfYouMaximumEarningsId.toString - PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
-              HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString - YouBenefitsIncomeCYId.toString -
-              EmploymentIncomeCYId.toString -
-              BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString -
-              HowMuchBothPayPensionId.toString - BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
-              BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString
+        case JsString(YouPartnerBothNeither.Partner.toString) =>
+          cacheMap.removedAll(
+            WhatIsYourTaxCodeId,
+            YourChildcareVouchersId,
+            WhoGetsVouchersId,
+            YourAgeId,
+            YourMinimumEarningsId,
+            AreYouSelfEmployedOrApprenticeId,
+            YourMaximumEarningsId,
+            EitherOfYouMaximumEarningsId,
+            PartnerPaidWorkCYId,
+            ParentEmploymentIncomeCYId,
+            YouPaidPensionCYId,
+            HowMuchYouPayPensionId,
+            YourOtherIncomeThisYearId,
+            YouAnyTheseBenefitsCYId,
+            YouBenefitsIncomeCYId,
+            EmploymentIncomeCYId,
+            BothPaidPensionCYId,
+            WhoPaysIntoPensionId,
+            HowMuchBothPayPensionId,
+            BothOtherIncomeThisYearId,
+            WhoGetsOtherIncomeCYId,
+            OtherIncomeAmountCYId,
+            BothAnyTheseBenefitsCYId,
+            WhosHadBenefitsId,
+            BenefitsIncomeCYId
           )
 
-        case JsString(`both`) =>
-          cacheMap.copy(data =
-            cacheMap.data - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
-              PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString - HowMuchYouPayPensionId.toString -
-              YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString - YouBenefitsIncomeCYId.toString -
-              ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
-              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString -
-              PartnerBenefitsIncomeCYId.toString
+        case JsString(YouPartnerBothNeither.Both.toString) =>
+          cacheMap.removedAll(
+            YourChildcareVouchersId,
+            PartnerChildcareVouchersId,
+            PartnerPaidWorkCYId,
+            ParentEmploymentIncomeCYId,
+            YouPaidPensionCYId,
+            HowMuchYouPayPensionId,
+            YourOtherIncomeThisYearId,
+            YouAnyTheseBenefitsCYId,
+            YouBenefitsIncomeCYId,
+            ParentPaidWorkCYId,
+            PartnerEmploymentIncomeCYId,
+            PartnerPaidPensionCYId,
+            HowMuchPartnerPayPensionId,
+            PartnerBenefitsIncomeCYId
           )
 
-        case JsString(`neither`) =>
-          cacheMap.copy(data =
-            cacheMap.data -
-              HasYourTaxCodeBeenAdjustedId.toString - DoYouKnowYourAdjustedTaxCodeId.toString - WhatIsYourTaxCodeId.toString -
-              HasYourPartnersTaxCodeBeenAdjustedId.toString - DoYouKnowYourPartnersAdjustedTaxCodeId.toString - WhatIsYourPartnersTaxCodeId.toString -
-              WhoGetsVouchersId.toString - YourChildcareVouchersId.toString - PartnerChildcareVouchersId.toString -
-              DoYouGetAnyBenefitsId.toString -
-              YourAgeId.toString -
-              YourMinimumEarningsId.toString - PartnerMinimumEarningsId.toString - YourPartnersAgeId.toString - AreYouSelfEmployedOrApprenticeId.toString -
-              PartnerSelfEmployedOrApprenticeId.toString - YourMaximumEarningsId.toString - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString -
-              UniversalCreditId.toString -
-              // Current Year
-              PartnerPaidWorkCYId.toString - ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString -
-              HowMuchYouPayPensionId.toString - YourOtherIncomeThisYearId.toString - YouAnyTheseBenefitsIdCY.toString -
-              YouBenefitsIncomeCYId.toString - ParentPaidWorkCYId.toString - PartnerEmploymentIncomeCYId.toString -
-              PartnerPaidPensionCYId.toString - HowMuchPartnerPayPensionId.toString -
-              PartnerBenefitsIncomeCYId.toString - EmploymentIncomeCYId.toString -
-              BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchBothPayPensionId.toString -
-              BothOtherIncomeThisYearId.toString - WhoGetsOtherIncomeCYId.toString - OtherIncomeAmountCYId.toString -
-              BothAnyTheseBenefitsCYId.toString - WhosHadBenefitsId.toString - BenefitsIncomeCYId.toString
+        case JsString(YouPartnerBothNeither.Neither.toString) =>
+          cacheMap.removedAll(
+            WhatIsYourTaxCodeId,
+            WhatIsYourPartnersTaxCodeId,
+            WhoGetsVouchersId,
+            YourChildcareVouchersId,
+            PartnerChildcareVouchersId,
+            DoYouGetAnyBenefitsId,
+            YourAgeId,
+            YourMinimumEarningsId,
+            PartnerMinimumEarningsId,
+            YourPartnersAgeId,
+            AreYouSelfEmployedOrApprenticeId,
+            PartnerSelfEmployedOrApprenticeId,
+            YourMaximumEarningsId,
+            PartnerMaximumEarningsId,
+            EitherOfYouMaximumEarningsId,
+            UniversalCreditId,
+            // Current Year
+            PartnerPaidWorkCYId,
+            ParentEmploymentIncomeCYId,
+            YouPaidPensionCYId,
+            HowMuchYouPayPensionId,
+            YourOtherIncomeThisYearId,
+            YouAnyTheseBenefitsCYId,
+            YouBenefitsIncomeCYId,
+            ParentPaidWorkCYId,
+            PartnerEmploymentIncomeCYId,
+            PartnerPaidPensionCYId,
+            HowMuchPartnerPayPensionId,
+            PartnerBenefitsIncomeCYId,
+            EmploymentIncomeCYId,
+            BothPaidPensionCYId,
+            WhoPaysIntoPensionId,
+            HowMuchBothPayPensionId,
+            BothOtherIncomeThisYearId,
+            WhoGetsOtherIncomeCYId,
+            OtherIncomeAmountCYId,
+            BothAnyTheseBenefitsCYId,
+            WhosHadBenefitsId,
+            BenefitsIncomeCYId
           )
 
         case _ => cacheMap
       }
 
-    store(WhoIsInPaidEmploymentId.toString, value, mapToStore)
+    mapToStore.updated(WhoIsInPaidEmploymentId, value)
   }
 
   private def AreYouSelfEmployedOrApprentice(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore =
-      if (
-        value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
-        || (value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString))
-      ) {
-        cacheMap.copy(data = cacheMap.data - YourSelfEmployedId.toString)
-      } else cacheMap
+      value match {
+        case JsString(EmploymentStatus.Apprentice.toString) | JsString(EmploymentStatus.Neither.toString) =>
+          cacheMap.removed(YourSelfEmployedId)
+        case _ => cacheMap
+      }
 
-    store(AreYouSelfEmployedOrApprenticeId.toString, value, mapToStore)
+    mapToStore.updated(AreYouSelfEmployedOrApprenticeId, value)
   }
 
   private def PartnerSelfEmployedOrApprentice(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore =
-      if (
-        value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.APPRENTICE.toString)
-        || (value == JsString(SelfEmployedOrApprenticeOrNeitherEnum.NEITHER.toString))
-      ) {
-        cacheMap.copy(data = cacheMap.data - PartnerSelfEmployedId.toString)
-      } else cacheMap
+      value match {
+        case JsString(EmploymentStatus.Apprentice.toString) | JsString(EmploymentStatus.Neither.toString) =>
+          cacheMap.removed(PartnerSelfEmployedId)
+        case _ => cacheMap
+      }
 
-    store(PartnerSelfEmployedOrApprenticeId.toString, value, mapToStore)
+    mapToStore.updated(PartnerSelfEmployedOrApprenticeId, value)
   }
 
   private def storeMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(true)) {
-      cacheMap.copy(data = cacheMap.data - AreYouSelfEmployedOrApprenticeId.toString - YourSelfEmployedId.toString)
-    } else if (value == JsBoolean(false))
-      cacheMap.copy(data = cacheMap.data - YourMaximumEarningsId.toString)
-    else cacheMap
+    val mapToStore =
+      value match {
+        case JsBoolean(true) =>
+          cacheMap.removedAll(AreYouSelfEmployedOrApprenticeId, YourSelfEmployedId)
+        case JsBoolean(false) =>
+          cacheMap.removed(YourMaximumEarningsId)
+        case _ => cacheMap
+      }
 
-    store(YourMinimumEarningsId.toString, value, mapToStore)
+    mapToStore.updated(YourMinimumEarningsId, value)
   }
 
   private def storePartnerMinimumEarnings(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val mapToStore = if (value == JsBoolean(true)) {
-      cacheMap.copy(data = cacheMap.data - PartnerSelfEmployedOrApprenticeId.toString - PartnerSelfEmployedId.toString)
-    } else if (value == JsBoolean(false))
-      cacheMap.copy(data = cacheMap.data - PartnerMaximumEarningsId.toString - EitherOfYouMaximumEarningsId.toString)
-    else cacheMap
+    val mapToStore =
+      value match {
+        case JsBoolean(true) =>
+          cacheMap.removedAll(PartnerSelfEmployedOrApprenticeId, PartnerSelfEmployedId)
+        case JsBoolean(false) =>
+          cacheMap.removedAll(PartnerMaximumEarningsId, EitherOfYouMaximumEarningsId)
+        case _ => cacheMap
+      }
 
-    store(PartnerMinimumEarningsId.toString, value, mapToStore)
+    mapToStore.updated(PartnerMinimumEarningsId, value)
   }
 
   private def storeYourAge(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val originalValue = cacheMap.data.get("yourAge")
-    val mapToStore = value match {
-      case JsString(_) if !originalValue.contains(value) =>
-        cacheMap.copy(data =
-          cacheMap.data - YourMinimumEarningsId.toString -
-            AreYouSelfEmployedOrApprenticeId.toString - YourSelfEmployedId.toString
-        )
-      case _ => cacheMap
-    }
-    store(YourAgeId.toString, value, mapToStore)
+    val originalValue = cacheMap.data.get(YourAgeId.cacheKey)
+
+    val mapToStore =
+      value match {
+        case JsString(_) if !originalValue.contains(value) =>
+          cacheMap.removedAll(YourMinimumEarningsId, AreYouSelfEmployedOrApprenticeId, YourSelfEmployedId)
+        case _ => cacheMap
+      }
+
+    mapToStore.updated(YourAgeId, value)
   }
 
   private def storeYourPartnersAge(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val originalValue = cacheMap.data.get("yourPartnersAge")
-    val mapToStore = value match {
-      case JsString(_) if !originalValue.contains(value) =>
-        cacheMap.copy(data =
-          cacheMap.data - PartnerMinimumEarningsId.toString -
-            PartnerSelfEmployedOrApprenticeId.toString - PartnerSelfEmployedId.toString
-        )
-      case _ => cacheMap
-    }
-    store(YourPartnersAgeId.toString, value, mapToStore)
+    val originalValue = cacheMap.data.get(YourPartnersAgeId.cacheKey)
+
+    val mapToStore =
+      value match {
+        case JsString(_) if !originalValue.contains(value) =>
+          cacheMap.removedAll(PartnerMinimumEarningsId, PartnerSelfEmployedOrApprenticeId, PartnerSelfEmployedId)
+        case _ => cacheMap
+      }
+    mapToStore.updated(YourPartnersAgeId, value)
   }
 
   private def clearSessionData(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = cacheMap.copy(data = Map())
-    store(SessionDataClearId.toString, value, mapToStore)
+
+    mapToStore.updated(SessionDataClearId, value)
   }
 
 }

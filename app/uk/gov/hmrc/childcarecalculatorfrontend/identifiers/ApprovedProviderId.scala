@@ -16,6 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object ApprovedProviderId extends Identifier {
-  override def toString: String = "approvedProvider"
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YesNoNotSure
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object ApprovedProviderId extends Identifier with CacheKey[YesNoNotSure] {
+  override val toString = "approvedProvider"
+  override val cacheKey = "approvedProvider"
 }

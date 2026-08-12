@@ -17,23 +17,22 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, JsNumber, Json}
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ParentEmploymentIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ParentEmploymentIncomeCYId, YourMaximumEarningsId}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.parentEmploymentIncomeCY
 
 class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[parentEmploymentIncomeCY]
-  val taxYearInfo = new TaxYearInfo
+  val view: parentEmploymentIncomeCY = inject[parentEmploymentIncomeCY]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ParentEmploymentIncomeCYController(
@@ -44,14 +43,13 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       dataRetrievalAction,
       new DataRequiredAction,
       new ParentEmploymentIncomeCYForm(frontendAppConfig),
-      taxYearInfo,
       view
     )
 
-  def viewAsString(form: Form[BigDecimal] = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()) =
-    view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()): String =
+    view(form)(using fakeRequest, messages).toString
 
-  val form = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
+  val form: Form[BigDecimal] = new ParentEmploymentIncomeCYForm(frontendAppConfig).apply()
 
   val testNumber = 123
 
@@ -65,7 +63,7 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(ParentEmploymentIncomeCYId.toString -> JsNumber(testNumber))
+      val validData       = Map(ParentEmploymentIncomeCYId.withValue(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -111,8 +109,8 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "100000")).withMethod("POST")
 
       val validData = Map(
-        YourMaximumEarningsId.toString      -> JsBoolean(false),
-        ParentEmploymentIncomeCYId.toString -> Json.toJson("100000")
+        YourMaximumEarningsId.withValue(false),
+        ParentEmploymentIncomeCYId.withValue(100000)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -127,8 +125,8 @@ class ParentEmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "1000000")).withMethod("POST")
 
       val validData = Map(
-        YourMaximumEarningsId.toString      -> JsBoolean(true),
-        ParentEmploymentIncomeCYId.toString -> Json.toJson("1000000")
+        YourMaximumEarningsId.withValue(true),
+        ParentEmploymentIncomeCYId.withValue(1000000)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))

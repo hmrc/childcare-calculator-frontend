@@ -17,29 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoPaysIntoPensionForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaysIntoPension
 
 class WhoPaysIntoPensionViewSpec extends NewViewBehaviours {
 
-  val view             = application.injector.instanceOf[whoPaysIntoPension]
-  val messageKeyPrefix = "whoPaysIntoPension"
+  val view: whoPaysIntoPension = inject[whoPaysIntoPension]
+  val messageKeyPrefix         = "whoPaysIntoPension"
 
-  def createView = () => view(frontendAppConfig, WhoPaysIntoPensionForm())(fakeRequest, messages)
+  val form: Form[YouPartnerBoth] = WhoPaysIntoPensionForm()
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def render(form: Form[YouPartnerBoth] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "WhoPaysIntoPension view" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
   }
 
   "WhoPaysIntoPension view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(WhoPaysIntoPensionForm()))
+        val doc = asDocument(render())
         for (option <- WhoPaysIntoPensionForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
       }
@@ -48,7 +50,7 @@ class WhoPaysIntoPensionViewSpec extends NewViewBehaviours {
     for (option <- WhoPaysIntoPensionForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(WhoPaysIntoPensionForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(render(form = form.bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
           for (unselectedOption <- WhoPaysIntoPensionForm.options.filterNot(o => o == option))

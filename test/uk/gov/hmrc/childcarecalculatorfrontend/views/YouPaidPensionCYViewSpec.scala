@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
@@ -25,27 +26,25 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youPaidPensionCY
 
 class YouPaidPensionCYViewSpec extends NewYesNoViewBehaviours {
 
-  val view             = application.injector.instanceOf[youPaidPensionCY]
-  val taxYearInfo      = new TaxYearInfo
-  override val form    = BooleanForm()
-  val messageKeyPrefix = "YouPaidPensionCY"
+  val view: youPaidPensionCY       = inject[youPaidPensionCY]
+  val taxYearInfo                  = new TaxYearInfo
+  override val form: Form[Boolean] = BooleanForm()
+  val messageKeyPrefix             = "YouPaidPensionCY"
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), taxYearInfo)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages)
+  def render(form: Form[Boolean] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "YouPaidPensionCY view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.YouPaidPensionCYController.onSubmit().url)
+      yesNoPage(form => render(form = form), messageKeyPrefix, routes.YouPaidPensionCYController.onSubmit().url)
     )
 
     "contain tax year info" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
       assertContainsText(
         doc,
         messages(

@@ -17,11 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsNumber, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc.Call
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, NoOfChildrenId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
@@ -35,11 +35,10 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
 
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  val aboutYourChild: aboutYourChild = application.injector.instanceOf[aboutYourChild]
+  val aboutYourChild: aboutYourChild = inject[aboutYourChild]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): AboutYourChildController =
     new AboutYourChildController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -49,10 +48,10 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     )
 
   def viewAsString(form: Form[AboutYourChild] = AboutYourChildForm()): String =
-    aboutYourChild(frontendAppConfig, form, 0, 1)(fakeRequest, messages).toString
+    aboutYourChild(form, 0, 1)(using fakeRequest, messages).toString
 
-  val requiredData: Map[String, JsNumber] = Map(
-    NoOfChildrenId.toString -> JsNumber(1)
+  val requiredData: Map[String, JsValue] = Map(
+    NoOfChildrenId.withValue(1)
   )
 
   "AboutYourChild Controller" must {
@@ -67,8 +66,8 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       =
-        requiredData + (AboutYourChildId.toString -> Json.obj("0" -> AboutYourChild("Foo", LocalDate.of(2016, 2, 1))))
+      val validData = requiredData +
+        AboutYourChildId.withValue(Map(0 -> AboutYourChild("Foo", LocalDate.of(2016, 2, 1))))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(0)(fakeRequest)
@@ -80,7 +79,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
-      val date            = LocalDate.now
+      val date            = LocalDate.of(2016, 2, 1)
       val postRequest = fakeRequest
         .withFormUrlEncodedBody(
           "name"                     -> "Foo",
@@ -115,7 +114,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if no existing data is found" in {
-      val date = LocalDate.now
+      val date = LocalDate.of(2026, 7, 27)
       val postRequest = fakeRequest
         .withFormUrlEncodedBody(
           "name"                     -> "Foo",
@@ -139,7 +138,7 @@ class AboutYourChildControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if the user hasn't said how many children they have" in {
-      val date = LocalDate.now
+      val date = LocalDate.of(2026, 7, 27)
       val postRequest = fakeRequest
         .withFormUrlEncodedBody(
           "name"                     -> "Foo",

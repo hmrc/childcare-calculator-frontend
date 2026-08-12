@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.unauthorised
 
 class UnauthorisedViewSpec extends NewViewBehaviours {
 
-  val view = application.injector.instanceOf[unauthorised]
+  val view: unauthorised = inject[unauthorised]
 
-  def createView = () => view(frontendAppConfig)(fakeRequest, messages)
+  def render: () => Html = () => view()(using fakeRequest, messages)
 
   "Unauthorised view" must
-    behave.like(normalPage(createView, "unauthorised"))
+    behave.like(normalPage(render, "unauthorised"))
 
 }

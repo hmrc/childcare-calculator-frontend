@@ -16,14 +16,48 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-case class InputOption(id: String, value: String, messageKey: String)
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
+
+case class InputOption(id: String, value: String, messageKey: String) {
+
+  def toRadioItem(using messages: Messages): RadioItem = RadioItem(
+    id = Some(id),
+    value = Some(value),
+    content = HtmlContent(messages(messageKey))
+  )
+
+  def toCheckboxItem(using messages: Messages): CheckboxItem = CheckboxItem(
+    id = Some(id),
+    value = value,
+    content = HtmlContent(messages(messageKey))
+  )
+
+}
 
 object InputOption {
 
-  def apply(keyPrefix: String, option: String): InputOption = InputOption(
-    s"$keyPrefix.$option",
-    option,
-    s"$keyPrefix.$option"
+  private[utils] def namedFromEnumValue[E](namePrefix: String, enumValue: E): InputOption = InputOption(
+    id = s"$namePrefix.$enumValue",
+    value = enumValue.toString,
+    messageKey = s"$namePrefix.$enumValue"
   )
+
+  def namedFromEnumValues[E](namePrefix: String, values: Seq[E]): Seq[InputOption] =
+    values.map(enumValue => namedFromEnumValue(namePrefix, enumValue))
+
+  private[utils] def indexedFromEnumValue[E](index: Int, enumValue: E, messagePrefix: String): InputOption =
+    InputOption(
+      id = if (index == 1) "value" else s"value-$index",
+      value = enumValue.toString,
+      messageKey = s"$messagePrefix.$enumValue"
+    )
+
+  def indexedFromEnumValues[E](messagePrefix: String, values: Seq[E]): Seq[InputOption] =
+    values.zip(Iterator.from(1)).map { case (enumValue, index) =>
+      indexedFromEnumValue(index, enumValue, messagePrefix)
+    }
 
 }

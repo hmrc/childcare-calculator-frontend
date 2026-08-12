@@ -14,28 +14,39 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefit
 
 @this(
-  layout: Layout,
-  formWithCSRF: FormWithCSRF,
-  heading: playComponents.heading,
-  inputCheckBox: playComponents.input_check_box,
-  submit_button: playComponents.submit_button,
-  error_summary: playComponents.error_summary
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    inputCheckBox: playComponents.input_check_box,
+    submit_button: playComponents.submit_button,
+    error_summary: playComponents.error_summary,
 )
 
 @(
-  appConfig: FrontendAppConfig,
-  form: Form[Set[ParentsBenefits]],
-)(implicit request: Request[_], messages: Messages)
+    form: Form[Set[ParentsBenefit]],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-  if(form.errors.nonEmpty) messages("site.title.error", messages("doYouGetAnyBenefits.title")) else messages("doYouGetAnyBenefits.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("doYouGetAnyBenefits.title"))
+    } else {
+        messages("doYouGetAnyBenefits.title")
+    }
+}
+
+@checkboxItem(value: ParentsBenefit) = @{
+    CheckboxItem(
+        content = Text(messages(s"doYouGetAnyBenefits.$value")),
+        value = value.toString,
+        checked = form.value.getOrElse(Set.empty).contains(value)
+    )
 }
 
 @layout(pageTitle = title) {
@@ -50,46 +61,17 @@
             isPageHeading = true,
             hint = Some(messages("doYouGetAnyBenefits.select.all")),
             inputs = Seq(
-              CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$CarersAllowance")),
-                value = CarersAllowance.toString,
-                checked = form.data.values.toList.contains(CarersAllowance.toString)
-              ),
+                checkboxItem(ParentsBenefit.CarersAllowance),
+                checkboxItem(ParentsBenefit.CarersCredit),
+                checkboxItem(ParentsBenefit.ContributionBasedEmploymentAndSupportAllowance),
+                checkboxItem(ParentsBenefit.IncapacityBenefit),
+                checkboxItem(ParentsBenefit.NICreditsForIncapacityOrLimitedCapabilityForWork),
+                checkboxItem(ParentsBenefit.SevereDisablementAllowance),
                 CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$CarersCredit")),
-                value = CarersCredit.toString,
-                checked = form.data.values.toList.contains(CarersCredit.toString)
+                    divider = Some(messages("doYouGetAnyBenefits.or"))
                 ),
-                CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$ContributionBasedEmploymentAndSupportAllowance")),
-                value = ContributionBasedEmploymentAndSupportAllowance.toString,
-                checked = form.data.values.toList.contains(ContributionBasedEmploymentAndSupportAllowance.toString)
-                ),
-              CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$IncapacityBenefit")),
-                value = IncapacityBenefit.toString,
-                checked = form.data.values.toList.contains(IncapacityBenefit.toString)
-              ),
-                CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$NICreditsForIncapacityOrLimitedCapabilityForWork")),
-                value = NICreditsForIncapacityOrLimitedCapabilityForWork.toString,
-                checked = form.data.values.toList.contains(NICreditsForIncapacityOrLimitedCapabilityForWork.toString)
-                ),
-               CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$SevereDisablementAllowance")),
-                value = SevereDisablementAllowance.toString,
-                checked = form.data.values.toList.contains(SevereDisablementAllowance.toString)
-              ),
-              CheckboxItem(
-                divider = Some(messages("doYouGetAnyBenefits.or"))
-              ),
-              CheckboxItem(
-                content = Text(messages(s"doYouGetAnyBenefits.$NoneOfThese")),
-                value = NoneOfThese.toString,
-                checked = form.data.values.toList.contains(NoneOfThese),
-                behaviour = Some(ExclusiveCheckbox)
-              )
-            )
+                checkboxItem(ParentsBenefit.NoneOfThese)
+                .copy(behaviour = Some(ExclusiveCheckbox)))
         )
 
         @submit_button()

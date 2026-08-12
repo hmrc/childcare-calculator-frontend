@@ -14,29 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoPaysIntoPensionForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
 
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button,
-        inputRadio: playComponents.input_radio,
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button,
+    inputRadio: playComponents.input_radio,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[String]
+    form: Form[YouPartnerBoth],
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("whoPaysIntoPension.title")) else messages("whoPaysIntoPension.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("whoPaysIntoPension.title"))
+    } else {
+        messages("whoPaysIntoPension.title")
+    }
 }
 
 @layout(pageTitle = title) {
@@ -44,15 +47,9 @@
     @errorSummary(form.errors)
     @formWithCSRF(action = WhoPaysIntoPensionController.onSubmit(), Symbol("autoComplete") -> "off") {
 
-
     @inputRadio(
         legend = heading(messages("whoPaysIntoPension.heading")),
-        inputs = WhoPaysIntoPensionForm.options map { radioOption =>
-            RadioItem(
-                value = Some(radioOption.value),
-                content = HtmlContent(messages(radioOption.messageKey))
-            )
-        },
+        inputs = WhoPaysIntoPensionForm.options.map(_.toRadioItem),
         field = form("value")
     )
         @submitButton()

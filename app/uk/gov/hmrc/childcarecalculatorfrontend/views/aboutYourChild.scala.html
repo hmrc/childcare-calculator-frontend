@@ -14,29 +14,26 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
-
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        inputText: playComponents.input_text,
-        inputDate: playComponents.input_date,
-        submitButton: playComponents.submit_button
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    inputText: playComponents.input_text,
+    inputDate: playComponents.input_date,
+    submitButton: playComponents.submit_button,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[AboutYourChild],
-        index: Int,
-        total: Int
+    form: Form[AboutYourChild],
+    index: Int,
+    total: Int,
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @headingText = @{
@@ -53,7 +50,11 @@
     } else {
         messages(s"aboutYourChild.heading.nth", messages(s"nth.$index"))
     }
-    if(form.errors.nonEmpty) messages("site.title.error", titleText) else titleText
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", titleText)
+    } else {
+        titleText
+    }
 }
 
 @nameText = @{

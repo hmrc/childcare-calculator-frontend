@@ -14,10 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoIsInPaidEmploymentForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{Location, YouPartnerBothNeither}
 
 @this(
     layout: Layout,
@@ -25,19 +24,31 @@
     errorSummary: playComponents.error_summary,
     inputRadio: playComponents.input_radio,
     heading: playComponents.heading,
-    submitButton: playComponents.submit_button
+    submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String], location: Location.Value)(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[YouPartnerBothNeither],
+    location: Location,
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("whoIsInPaidEmployment.title")) else messages("whoIsInPaidEmployment.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("whoIsInPaidEmployment.title"))
+    } else {
+        messages("whoIsInPaidEmployment.title")
+    }
 }
 
-@hintPara = @{if (location != Location.NORTHERN_IRELAND)
-  "whoIsInPaidEmployment.para1"
-else
-  "whoIsInPaidEmployment.northernIreland.para1"
+@hintPara = @{
+    if (location != Location.NorthernIreland) {
+        "whoIsInPaidEmployment.para1"
+    } else {
+        "whoIsInPaidEmployment.northernIreland.para1"
+    }
 }
 
 @layout(
@@ -49,12 +60,7 @@ else
         @inputRadio(
             legend = heading(messages("whoIsInPaidEmployment.heading")),
             hint = Some(messages(hintPara)),
-            inputs = WhoIsInPaidEmploymentForm.options map { radioOptions =>
-                RadioItem (
-                    value = Some(radioOptions.value),
-                    content = HtmlContent(messages(radioOptions.messageKey))
-                )
-            },
+            inputs = WhoIsInPaidEmploymentForm.options.map(_.toRadioItem),
             field = form("value")
         )
 

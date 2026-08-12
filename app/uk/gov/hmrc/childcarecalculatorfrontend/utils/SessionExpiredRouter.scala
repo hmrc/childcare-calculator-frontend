@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
 import play.api.Logging
+import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 
 object SessionExpiredRouter extends Logging {
@@ -27,7 +28,7 @@ object SessionExpiredRouter extends Logging {
       answers: Option[UserAnswers] = None,
       uri: String = "N/A",
       session: String = "N/A"
-  ) = {
+  ): Call = {
 
     val isCacheMapAvailable = answers.fold("No")(c => if (c.cacheMap == null) "No" else "")
 

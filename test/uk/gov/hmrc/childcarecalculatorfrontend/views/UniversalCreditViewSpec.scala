@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
@@ -24,27 +25,26 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.universalCredit
 
 class UniversalCreditViewSpec extends NewYesNoViewBehaviours {
 
-  val view = application.injector.instanceOf[universalCredit]
+  val view: universalCredit = inject[universalCredit]
 
-  override val form = BooleanForm()
+  override val form: Form[Boolean] = BooleanForm()
 
   val messageKeyPrefix        = "universalCredit"
   val messageKeyPartnerPrefix = "universalCreditPartner"
 
-  def createView(isPartner: Option[Boolean]) = () => view(frontendAppConfig, form, isPartner)(fakeRequest, messages)
-
-  def createViewUsingForm(isPartner: Option[Boolean]) = (form: Form[Boolean]) =>
-    view(frontendAppConfig, form, isPartner)(fakeRequest, messages)
+  def render(form: Form[Boolean] = this.form, isPartner: Option[Boolean]): Html =
+    view(form, isPartner)(using fakeRequest, messages)
 
   "UniversalCredit view when there is partner" must {
+    val isPartner = Some(true)
 
-    behave.like(normalPage(createView(Some(true)), messageKeyPartnerPrefix))
+    behave.like(normalPage(() => render(isPartner = isPartner), messageKeyPartnerPrefix))
 
-    behave.like(pageWithBackLink(createView(Some(true))))
+    behave.like(pageWithBackLink(() => render(isPartner = isPartner)))
 
     behave.like(
       yesNoPage(
-        createViewUsingForm(Some(true)),
+        form => render(form = form, isPartner = isPartner),
         messageKeyPartnerPrefix,
         routes.UniversalCreditController.onSubmit().url
       )
@@ -52,14 +52,15 @@ class UniversalCreditViewSpec extends NewYesNoViewBehaviours {
   }
 
   "UniversalCredit view when there is no partner" must {
+    val isPartner = Some(false)
 
-    behave.like(normalPage(createView(Some(false)), messageKeyPrefix))
+    behave.like(normalPage(() => render(isPartner = isPartner), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView(Some(false))))
+    behave.like(pageWithBackLink(() => render(isPartner = isPartner)))
 
     behave.like(
       yesNoPage(
-        createViewUsingForm(Some(false)),
+        form => render(form = form, isPartner = isPartner),
         messageKeyPrefix,
         routes.UniversalCreditController.onSubmit().url
       )

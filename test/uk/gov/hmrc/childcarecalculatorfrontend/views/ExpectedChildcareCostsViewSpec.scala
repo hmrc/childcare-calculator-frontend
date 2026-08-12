@@ -17,71 +17,64 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectedChildcareCostsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency.WEEKLY
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{ChildcarePayFrequency, YesNoNotYet}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewBigDecimalViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
 
 class ExpectedChildcareCostsViewSpec extends NewBigDecimalViewBehaviours {
 
-  val messageKeyPrefix  = "expectedChildcareCosts"
-  val messageKeyPostfix = ".notYet"
-  val view              = application.injector.instanceOf[expectedChildcareCosts]
+  val messageKeyPrefix             = "expectedChildcareCosts"
+  val messageKeyPostfix            = ".notYet"
+  val view: expectedChildcareCosts = inject[expectedChildcareCosts]
 
-  def createView = () =>
-    view(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), YES, 0, WEEKLY, "Foo")(
-      fakeRequest,
-      messages
-    )
+  override val form: Form[BigDecimal] = ExpectedChildcareCostsForm(ChildcarePayFrequency.Weekly, "Foo")
+  val cardinal: String                = messages("nth.0")
 
-  def createViewNotYet = () =>
-    view(frontendAppConfig, ExpectedChildcareCostsForm(WEEKLY, "Foo"), NOTYET, 0, WEEKLY, "Foo")(
-      fakeRequest,
-      messages
-    )
-
-  def createViewUsingForm = (form: Form[BigDecimal]) =>
-    view(frontendAppConfig, form, YES, 0, WEEKLY, "Foo")(fakeRequest, messages)
-
-  val form     = ExpectedChildcareCostsForm(WEEKLY, "Foo")
-  val cardinal = messages("nth.0")
+  def render(
+      form: Form[BigDecimal] = this.form,
+      hasCosts: YesNoNotYet = YesNoNotYet.Yes,
+      index: Int = 0,
+      frequency: ChildcarePayFrequency = ChildcarePayFrequency.Weekly,
+      name: String = "Foo"
+  ): Html = view(form, hasCosts, index, frequency, name)(using fakeRequest, messages)
 
   "ExpectedChildcareCosts view" must {
 
     "user has costs" when
       behave.like(
         normalPageWithTitleParameters(
-          createView,
+          () => render(),
           messageKeyPrefix,
           messageKeyPostfix = "",
           Seq("info"),
-          args = Seq(WEEKLY.toString, "Foo"),
-          titleArgs = Seq(WEEKLY.toString, cardinal)
+          args = Seq(ChildcarePayFrequency.Weekly.toString, "Foo"),
+          titleArgs = Seq(ChildcarePayFrequency.Weekly.toString, cardinal)
         )
       )
 
     "user may have costs in the future" when
       behave.like(
         normalPageWithTitleParameters(
-          createViewNotYet,
+          () => render(hasCosts = YesNoNotYet.NotYet),
           messageKeyPrefix,
           messageKeyPostfix,
           Seq(s"info$messageKeyPostfix"),
-          args = Seq(WEEKLY.toString, "Foo"),
-          titleArgs = Seq(WEEKLY.toString, cardinal)
+          args = Seq(ChildcarePayFrequency.Weekly.toString, "Foo"),
+          titleArgs = Seq(ChildcarePayFrequency.Weekly.toString, cardinal)
         )
       )
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       bigDecimalPage(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.ExpectedChildcareCostsController.onSubmit(0).url,
-        Some(messages(s"$messageKeyPrefix.heading", WEEKLY, "Foo"))
+        Some(messages(s"$messageKeyPrefix.heading", ChildcarePayFrequency.Weekly, "Foo"))
       )
     )
   }

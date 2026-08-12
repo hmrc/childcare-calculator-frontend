@@ -16,6 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object LocationId extends Identifier {
-  override def toString: String = "location"
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object LocationId extends Identifier with CacheKey[Location] {
+  override val toString = "location"
+  override val cacheKey = "location"
 }

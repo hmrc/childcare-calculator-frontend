@@ -31,20 +31,23 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
  * limitations under the License.
  */
 
-import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.scalactic.source.Position
+import org.scalatest.Assertion
 import play.twirl.api.Html
-import scala.jdk.CollectionConverters._
+import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
+
+import scala.jdk.CollectionConverters.*
 
 trait NewViewSpecBase extends SpecBase {
 
   def asDocument(html: Html): Document = Jsoup.parse(html.toString())
 
-  def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String) =
+  def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String)(using Position): Assertion =
     assertEqualsValue(doc, cssSelector, messages(expectedMessageKey))
 
-  def assertEqualsValue(doc: Document, cssSelector: String, expectedValue: String) = {
+  def assertEqualsValue(doc: Document, cssSelector: String, expectedValue: String)(using Position): Assertion = {
     val elements = doc.select(cssSelector)
 
     if (elements.isEmpty) throw new IllegalArgumentException(s"CSS Selector $cssSelector wasn't rendered.")
@@ -53,7 +56,7 @@ trait NewViewSpecBase extends SpecBase {
     assert(elements.first().html().replace("\n", "") == expectedValue)
   }
 
-  def assertNotContainsValue(doc: Document, cssSelector: String, expectedValue: String) = {
+  def assertNotContainsValue(doc: Document, cssSelector: String, expectedValue: String)(using Position): Assertion = {
     val elements = doc.select(cssSelector)
 
     if (elements.isEmpty) throw new IllegalArgumentException(s"CSS Selector $cssSelector wasn't rendered.")
@@ -62,51 +65,53 @@ trait NewViewSpecBase extends SpecBase {
     assert(!elements.first().html().replace("\n", "").sorted.contains(expectedValue.sorted))
   }
 
-  def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*) = {
+  def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*)(using Position): Assertion = {
     val headers = doc.getElementsByTag("h1")
-    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")
+    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args*).replaceAll("&nbsp;", " ")
   }
 
-  def assertPageTitleEqualsString(doc: Document, expectedMessage: String) = {
+  def assertPageTitleEqualsString(doc: Document, expectedMessage: String)(using Position): Assertion = {
     val headers = doc.getElementsByTag("h1")
     headers.size mustBe 1
     headers.first.text.replaceAll("\u00a0", " ") mustBe expectedMessage.replaceAll("&nbsp;", " ")
   }
 
-  def assertContainsText(doc: Document, text: String) =
+  def assertContainsText(doc: Document, text: String)(using Position): Assertion =
     assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
 
-  def assertNotContainsText(doc: Document, text: String) =
+  def assertNotContainsText(doc: Document, text: String)(using Position): Assertion =
     assert(!doc.toString.contains(text), "\n\ntext " + text + " was rendered on the page.\n")
 
-  def assertContainsLinkWithHref(doc: Document, text: String, href: String) =
-    doc.select("main a").asScala.toList.map(l => (l.text, l.attr("href"))).contains((text, href))
+  def assertContainsLinkWithHref(doc: Document, text: String, href: String)(using Position): Assertion =
+    doc.select("main a").asScala.toList.map(l => (l.text, l.attr("href"))) must contain((text, href))
 
-  def assertContainsMessages(doc: Document, expectedMessageKeys: String*) =
+  def assertContainsMessages(doc: Document, expectedMessageKeys: String*)(using Position): Unit =
     for (key <- expectedMessageKeys) assertContainsText(doc, messages(key))
 
-  def assertRenderedById(doc: Document, id: String) =
+  def assertRenderedById(doc: Document, id: String)(using Position): Assertion =
     assert(doc.getElementById(id) != null, "\n\nElement " + id + " was not rendered on the page.\n")
 
-  def assertNotRenderedById(doc: Document, id: String) =
+  def assertNotRenderedById(doc: Document, id: String)(using Position): Assertion =
     assert(doc.getElementById(id) == null, "\n\nElement " + id + " was rendered on the page.\n")
 
-  def assertRenderedByCssSelector(doc: Document, cssSelector: String) =
+  def assertRenderedByCssSelector(doc: Document, cssSelector: String)(using Position): Assertion =
     assert(!doc.select(cssSelector).isEmpty, "Element " + cssSelector + " was not rendered on the page.")
 
-  def assertNotRenderedByCssSelector(doc: Document, cssSelector: String) =
+  def assertNotRenderedByCssSelector(doc: Document, cssSelector: String)(using Position): Assertion =
     assert(doc.select(cssSelector).isEmpty, "\n\nElement " + cssSelector + " was rendered on the page.\n")
 
-  def assertContainsLabel(doc: Document, forElement: String, expectedText: String) = {
+  def assertContainsLabel(doc: Document, forElement: String, expectedText: String)(using Position): Assertion = {
     val labels = doc.getElementsByAttributeValue("for", forElement)
     assert(labels.size == 1, s"\n\nLabel for $forElement was not rendered on the page.")
     assert(labels.first.text() == expectedText, s"\n\nLabel for $forElement was not $expectedText")
   }
 
-  def assertElementHasClass(doc: Document, id: String, expectedClass: String) =
+  def assertElementHasClass(doc: Document, id: String, expectedClass: String)(using Position): Assertion =
     assert(doc.getElementById(id).hasClass(expectedClass), s"\n\nElement $id does not have class $expectedClass")
 
-  def assertContainsRadioButton(doc: Document, id: String, name: String, value: String, isChecked: Boolean) = {
+  def assertContainsRadioButton(doc: Document, id: String, name: String, value: String, isChecked: Boolean)(
+      using Position
+  ): Assertion = {
     assertRenderedById(doc, id)
     val radio = doc.getElementById(id)
     assert(radio.attr("name") == name, s"\n\nElement $id does not have name $name")
@@ -117,7 +122,7 @@ trait NewViewSpecBase extends SpecBase {
     }
   }
 
-  def assertBulletListValues(doc: Document, expected: Seq[String], selector: String) = {
+  def assertBulletListValues(doc: Document, expected: Seq[String], selector: String)(using Position): Assertion = {
     val bulletItems        = doc.select(selector)
     val expectedListValues = expected.map(messages(_))
 

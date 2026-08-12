@@ -16,57 +16,55 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.*
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.Lang
 import play.api.libs.json.JsString
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{
   DataRequiredAction,
   DataRetrievalAction,
   FakeDataRetrievalAction
 }
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{FakeDataCacheService, ResultsService}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, Utils}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
 import scala.concurrent.Future
 
 class ResultControllerSpec extends ControllerSpecBase with MockitoSugar {
 
-  val view                          = application.injector.instanceOf[result]
+  val view: result                  = inject[result]
   val resultService: ResultsService = mock[ResultsService]
 
-  implicit val l: Lang = mock[Lang]
+  given l: Lang = mock[Lang]
 
-  val location = Location.ENGLAND
+  val location: Location = Location.England
 
-  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(location))
 
-  val cacheMapWithNoLocation = new CacheMap("id", Map("test" -> JsString(location.toString)))
+  val cacheMapWithNoLocation: CacheMap = CacheMap.of("test" -> JsString(location.toString))
 
   def controller(
       dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap,
       resultService: ResultsService
   ): ResultController =
     new ResultController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       dataRetrievalAction,
       new DataRequiredAction,
       resultService,
-      new Utils,
       view
     )
 
   "Result Controller" must {
     "return OK and with ResultViewModel for a GET" in {
-      when(resultService.getResultsViewModel(any(), any())(any(), any(), any())).thenReturn(
+      when(resultService.getResultsViewModel(any(), any())(using any(), any(), any())).thenReturn(
         Future.successful(
           ResultsViewModel(
             freeHours = Some(15),

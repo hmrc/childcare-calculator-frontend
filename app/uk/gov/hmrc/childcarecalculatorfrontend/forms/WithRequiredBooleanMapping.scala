@@ -21,18 +21,18 @@ import play.api.data.format.Formatter
 
 trait WithRequiredBooleanMapping {
 
-  implicit def requiredBooleanFormatter: Formatter[Boolean] = new Formatter[Boolean] {
+  given requiredBooleanFormatter: Formatter[Boolean] = new Formatter[Boolean] {
 
     override val format = Some(("format.boolean", Nil))
 
-    def bind(key: String, data: Map[String, String]) =
+    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Boolean] =
       Right(data.getOrElse(key, "")).flatMap {
         case "true"  => Right(true)
         case "false" => Right(false)
         case _       => Left(Seq(FormError(key, "error.boolean", Nil)))
       }
 
-    def unbind(key: String, value: Boolean) = Map(key -> value.toString)
+    def unbind(key: String, value: Boolean): Map[String, String] = Map(key -> value.toString)
   }
 
   val requiredBoolean: Mapping[Boolean] = Forms.of[Boolean](requiredBooleanFormatter)

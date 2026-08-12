@@ -18,61 +18,61 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import play.twirl.api.Html
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.RegisteredBlindId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.{childRegisteredBlind, registeredBlind}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class RegisteredBlindController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     childRegisteredBlind: childRegisteredBlind,
     registeredBlind: registeredBlind
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     withData { case (noOfChildren, name) =>
       val preparedForm = request.userAnswers.registeredBlind match {
         case None        => BooleanForm()
         case Some(value) => BooleanForm().fill(value)
       }
-      Future.successful(Ok(view(appConfig, preparedForm, name, noOfChildren)))
+      Future.successful(Ok(view(preparedForm, name, noOfChildren)))
     }
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     withData { case (noOfChildren, name) =>
       BooleanForm("registeredBlind.error.notCompleted")
         .bindFromRequest()
         .fold(
-          (formWithErrors: Form[Boolean]) =>
-            Future.successful(BadRequest(view(appConfig, formWithErrors, name, noOfChildren))),
+          (formWithErrors: Form[Boolean]) => Future.successful(BadRequest(view(formWithErrors, name, noOfChildren))),
           value =>
-            dataCacheConnector
-              .save[Boolean](request.sessionId, RegisteredBlindId.toString, value)
+            dataCacheService
+              .save(RegisteredBlindId, value)
               .map(cacheMap => Redirect(navigator.nextPage(RegisteredBlindId)(new UserAnswers(cacheMap))))
         )
     }
   }
 
-  private def withData[A](block: (Int, String) => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
+  private def withData[A](block: (Int, String) => Future[Result])(using request: DataRequest[A]): Future[Result] = {
     for {
       noOfChildren <- request.userAnswers.noOfChildren
       name         <- request.userAnswers.aboutYourChild(0).map(_.name)
@@ -83,13 +83,13 @@ class RegisteredBlindController @Inject() (
     )
   )
 
-  private def view(appConfig: FrontendAppConfig, form: Form[Boolean], name: String, noOfChildren: Int)(
-      implicit request: Request[_]
+  private def view(form: Form[Boolean], name: String, noOfChildren: Int)(
+      using request: Request[?]
   ): Html =
     if (noOfChildren == 1) {
-      childRegisteredBlind(appConfig, form, name)
+      childRegisteredBlind(form, name)
     } else {
-      registeredBlind(appConfig, form)
+      registeredBlind(form)
     }
 
 }

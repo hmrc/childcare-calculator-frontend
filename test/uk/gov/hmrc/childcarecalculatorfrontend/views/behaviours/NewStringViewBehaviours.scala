@@ -18,20 +18,20 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
+import play.twirl.api.Html
 
 trait NewStringViewBehaviours extends NewQuestionViewBehaviours[String] {
 
   val answer = "answer"
 
   def stringPage(
-      createView: Form[String] => HtmlFormat.Appendable,
+      createView: Form[String] => Html,
       messageKeyPrefix: String,
       expectedFormAction: String,
       expectedHintKeyLine1: Option[String],
       expectedHintKeyLine2: Option[String],
       args: Any*
-  ) =
+  ): Unit =
 
     "behave like a page with a string value field" when {
       "rendered" must {
@@ -43,7 +43,7 @@ trait NewStringViewBehaviours extends NewQuestionViewBehaviours[String] {
           assertContainsLabel(
             doc,
             "value",
-            messages(s"$messageKeyPrefix.heading", args: _*),
+            messages(s"$messageKeyPrefix.heading", args*),
             expectedHintTextLine1,
             expectedHintTextLine2
           )
@@ -94,7 +94,7 @@ trait NewStringViewBehaviours extends NewQuestionViewBehaviours[String] {
       expectedText: String,
       expectedHintTextLine1: Option[String] = None,
       expectedHintTextLine2: Option[String] = None
-  ) = {
+  ): Any = {
     val labels = doc.getElementsByAttributeValue("for", forElement)
     assert(labels.size == 1, s"\n\nLabel for $forElement was not rendered on the page.")
     val label = labels.first

@@ -14,37 +14,46 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.*
+@import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
 
 @this(
-        layout: Layout,
-        heading: playComponents.heading,
-        buttonLink: playComponents.button_link
+    layout: Layout,
+    heading: playComponents.heading,
+    buttonLink: playComponents.button_link,
+    appConfig: FrontendAppConfig,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        tfcEligibility: Eligibility,
-        childcareVouchersEligibility: Eligibility,
-        userAnswers: UserAnswers
-)(implicit request: Request[_], messages: Messages)
+    tfcEligibility: Eligibility,
+    childcareVouchersEligibility: Eligibility,
+    childrenAgeGroups: Option[Set[ChildAgeGroup]],
+    max30HoursEnglandContent: Option[Boolean],
+    universalCredit: Option[Boolean],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
     messages("maxFreeHoursInfo.title")
 }
 
 @youCanGetSeq = @{
-    if(userAnswers.childrenAgeGroups.nonEmpty){
+    childrenAgeGroups.map(childrenAgeGroups =>
         Seq(
-            if(userAnswers.childrenAgeGroups.get.contains(NineTo23Months)) Some(messages("maxFreeHoursInfo.you.can.get.nineTo23Months", appConfig.maxFreeHoursAmount)) else None,
-            if(userAnswers.childrenAgeGroups.get.contains(TwoYears)) Some(messages("maxFreeHoursInfo.you.can.get.twoYears", appConfig.maxFreeHoursAmount)) else None,
-            if(userAnswers.childrenAgeGroups.get.contains(ThreeYears) || userAnswers.childrenAgeGroups.get.contains(FourYears)) Some(messages("maxFreeHoursInfo.you.can.get.threeAndFourYears")) else None
+            Option.when(childrenAgeGroups.contains(ChildAgeGroup.NineTo23Months)) {
+                messages("maxFreeHoursInfo.you.can.get.nineTo23Months", appConfig.maxFreeHoursAmount)
+            },
+            Option.when(childrenAgeGroups.contains(ChildAgeGroup.TwoYears)) {
+                messages("maxFreeHoursInfo.you.can.get.twoYears", appConfig.maxFreeHoursAmount)
+            },
+            Option.when(childrenAgeGroups.contains(ChildAgeGroup.ThreeYears) || childrenAgeGroups.contains(ChildAgeGroup.FourYears)) {
+                messages("maxFreeHoursInfo.you.can.get.threeAndFourYears")
+            }
         ).flatten
-    } else Seq()
+    ).getOrElse(Seq.empty)
 }
 
 @layout(
@@ -54,13 +63,13 @@
     @heading(messages("maxFreeHoursInfo.heading"))
 
     @if(youCanGetSeq.size == 1) {
-                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @youCanGetSeq</p>
-            } else if(youCanGetSeq.size > 1) {
-                <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get.with.colon")</p>
-                @playComponents.list(
-                    bulletList = youCanGetSeq
-                )
-            }
+        <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get") @youCanGetSeq</p>
+    } else if(youCanGetSeq.size > 1) {
+        <p class="govuk-body">@messages("maxFreeHoursInfo.you.can.get.with.colon")</p>
+        @playComponents.list(
+            bulletList = youCanGetSeq
+        )
+    }
 
     <p class="govuk-body">@messages("maxFreeHoursInfo.p1")</p>
     <p class="govuk-body">@messages("maxFreeHoursInfo.p2")</p>
@@ -72,12 +81,12 @@
 
     <h2 class="govuk-heading-m">@messages("maxFreeHoursInfo.get.more.help")</h2>
 
-    @if(userAnswers.max30HoursEnglandContent.isDefined) {
-        @if(userAnswers.max30HoursEnglandContent.contains(true)) {
+    @if(max30HoursEnglandContent.isDefined) {
+        @if(max30HoursEnglandContent.contains(true)) {
             <p class="govuk-body">@messages("maxFreeHoursInfo.england.hasVouchers.info")</p>
         }
 
-        @if(userAnswers.max30HoursEnglandContent.contains(false)) {
+        @if(max30HoursEnglandContent.contains(false)) {
             <p class="govuk-body">@messages("maxFreeHoursInfo.england.noVouchers.info")</p>
         }
 
@@ -89,19 +98,19 @@
         )
     }
 
-    @if(userAnswers.max30HoursEnglandContent.isEmpty) {
+    @if(max30HoursEnglandContent.isEmpty) {
         <p class="govuk-body">@messages("maxFreeHoursInfo.give.more.info")</p>
 
 
-        @if(childcareVouchersEligibility == Eligible) {
+        @if(childcareVouchersEligibility == Eligibility.Eligible) {
             @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.vouchers")))
         }
 
-        @if(tfcEligibility == Eligible) {
+        @if(tfcEligibility == Eligibility.Eligible) {
             @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tfc")))
         }
 
-        @if(userAnswers.universalCredit.map(_.toString).getOrElse("") != universalCredits) {
+        @if(universalCredit.contains(true)) {
             @playComponents.list(bulletList = Seq(messages("maxFreeHoursInfo.li.tax_credits")))
         }
 

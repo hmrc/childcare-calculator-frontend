@@ -15,17 +15,20 @@
  *@
 
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 
 @this(
     layout: Layout,
-    formWithCSRF: FormWithCSRF,
-    errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
-    buttonLink: playComponents.button_link
+    buttonLink: playComponents.button_link,
 )
 
-@(location: Location.Value)(implicit request: Request[_], messages: Messages)
+@(
+    location: Location,
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @layout(
     pageTitle = messages("freeHoursInfo.title")
@@ -33,7 +36,7 @@
 
     @heading(messages("freeHoursInfo.heading"))
 
-    @if(location == Location.ENGLAND) {
+    @if(location == Location.England) {
         <p class="govuk-body">@messages("freeHoursInfo.para1.england")</p>
         <p class="govuk-body">@messages("freeHoursInfo.para2.england")</p>
     } else {
@@ -45,7 +48,7 @@
     <p class="govuk-body">@messages("freeHoursInfo.guidance")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-        @if(location == Location.ENGLAND) {
+        @if(location == Location.England) {
             <li>@messages("freeHoursInfo.li.workingParents")</li>
         }
 

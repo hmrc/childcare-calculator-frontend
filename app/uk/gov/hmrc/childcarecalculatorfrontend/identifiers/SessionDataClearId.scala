@@ -16,6 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object SessionDataClearId extends Identifier {
-  override def toString: String = "sessionDataClear"
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object SessionDataClearId extends Identifier with CacheKey[String] {
+  override val toString = "sessionDataClear"
+  override val cacheKey = "sessionDataClear"
 }

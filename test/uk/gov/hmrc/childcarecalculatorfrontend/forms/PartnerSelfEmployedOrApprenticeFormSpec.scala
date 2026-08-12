@@ -16,25 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.EmploymentStatus
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
-class PartnerSelfEmployedOrApprenticeFormSpec extends FormBehaviours {
+class PartnerSelfEmployedOrApprenticeFormSpec extends FormBehaviours[EmploymentStatus] {
 
   val validData: Map[String, String] = Map(
-    "value" -> PartnerSelfEmployedOrApprenticeForm.options.head.value
+    "value" -> EmploymentStatus.SelfEmployed.toString
   )
 
-  val form = PartnerSelfEmployedOrApprenticeForm()
+  val form: Form[EmploymentStatus] = PartnerSelfEmployedOrApprenticeForm()
 
   "PartnerSelfEmployedOrApprentice form" must {
-    behave.like(questionForm[String](PartnerSelfEmployedOrApprenticeForm.options.head.value))
+    behave.like(questionForm(EmploymentStatus.SelfEmployed))
 
     behave.like(
       formWithOptionFieldError(
         "value",
         partnerSelfEmployedOrApprenticeErrorKey,
-        PartnerSelfEmployedOrApprenticeForm.options.map(x => x.value): _*
+        EmploymentStatus.values*
       )
     )
   }

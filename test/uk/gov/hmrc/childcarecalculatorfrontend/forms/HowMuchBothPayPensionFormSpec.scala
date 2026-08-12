@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
 
-class HowMuchBothPayPensionFormSpec extends FormBehaviours {
+class HowMuchBothPayPensionFormSpec extends FormBehaviours[HowMuchBothPayPension] {
 
   val validData: Map[String, String] = Map(
     "howMuchYouPayPension"     -> "1",
     "howMuchPartnerPayPension" -> "2"
   )
 
-  val form = HowMuchBothPayPensionForm()
+  val form: Form[HowMuchBothPayPension] = HowMuchBothPayPensionForm()
 
   "HowMuchBothPayPension form" must {
     behave.like(questionForm(HowMuchBothPayPension(1, 2)))

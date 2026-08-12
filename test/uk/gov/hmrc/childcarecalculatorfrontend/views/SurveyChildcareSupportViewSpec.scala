@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
@@ -24,24 +25,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
 
 class SurveyChildcareSupportViewSpec extends NewYesNoViewBehaviours {
 
-  override val form = BooleanForm()
+  override val form: Form[Boolean] = BooleanForm()
 
   val messageKeyPrefix = "surveyChildcareSupport"
 
-  val view = application.injector.instanceOf[surveyChildcareSupport]
+  val view: surveyChildcareSupport = inject[surveyChildcareSupport]
 
-  def createView = () => view(frontendAppConfig, BooleanForm())(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def render(form: Form[Boolean] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "SurveyChildcareSupport view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.SurveyChildcareSupportController.onSubmit().url)
+      yesNoPage(form => render(form = form), messageKeyPrefix, routes.SurveyChildcareSupportController.onSubmit().url)
     )
   }
 

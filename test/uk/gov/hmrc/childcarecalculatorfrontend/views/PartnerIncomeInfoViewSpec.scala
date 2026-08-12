@@ -17,26 +17,25 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.mvc.Call
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 
 class PartnerIncomeInfoViewSpec extends NewViewBehaviours {
 
-  val taxYearInfo = new TaxYearInfo
-  val view        = application.injector.instanceOf[partnerIncomeInfo]
+  val taxYearInfo             = new TaxYearInfo
+  val view: partnerIncomeInfo = inject[partnerIncomeInfo]
 
-  def createView = () => view(frontendAppConfig, Call("GET", "test"), taxYearInfo)(fakeRequest, messages)
-
-  def createViewWithNextPageLink = (nextPage: Call) =>
-    view(frontendAppConfig, nextPage, taxYearInfo)(fakeRequest, messages)
+  val call                                     = Call("GET", "test")
+  def render(nextPage: Call = this.call): Html = view(nextPage)(using fakeRequest, messages)
 
   val messageKeyPrefix = "partnerIncomeInfo"
 
   "Partner Income Info view" must
     behave.like(
       normalPage(
-        createView,
+        () => render(),
         messageKeyPrefix,
         "guidance",
         "li.income_paid_work",
@@ -47,7 +46,7 @@ class PartnerIncomeInfoViewSpec extends NewViewBehaviours {
     )
 
   "contain tax year info" in {
-    val doc = asDocument(createView())
+    val doc = asDocument(render())
     assertContainsText(
       doc,
       messages("partnerIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
@@ -55,9 +54,9 @@ class PartnerIncomeInfoViewSpec extends NewViewBehaviours {
   }
 
   "contain the link for next page" in {
-    val testCall = Call("GET", "http://google.com")
+    val testCall = Call("GET", "https://google.com")
 
-    val doc          = asDocument(createViewWithNextPageLink(testCall))
+    val doc          = asDocument(render(nextPage = testCall))
     val continueLink = doc.getElementsByClass("govuk-button")
 
     assertContainsText(doc, messages("site.save_and_continue"))

@@ -17,33 +17,32 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.scalatest.BeforeAndAfterEach
-import play.api.libs.json.JsString
-import play.api.test.Helpers._
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.freeHoursInfo
 
 class FreeHoursInfoControllerSpec extends ControllerSpecBase with BeforeAndAfterEach {
 
-  private val view = application.injector.instanceOf[freeHoursInfo]
+  private val view = inject[freeHoursInfo]
 
   private def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new FreeHoursInfoController(mcc, dataRetrievalAction, new DataRequiredAction, view)
 
   "FreeHoursInfo Controller" when {
 
-    Seq(ENGLAND, WALES, SCOTLAND, NORTHERN_IRELAND).foreach { location =>
+    Location.values.toSeq.foreach { location =>
       s"location is $location" must {
         "return OK containing freeHoursInfo view" in {
-          val cacheData           = Map(LocationId.toString -> JsString(location.toString))
+          val cacheData           = Map(LocationId.withValue(location))
           val dataRetrievalAction = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, cacheData)))
 
           val result = controller(dataRetrievalAction).onPageLoad(fakeRequest)
 
           status(result) mustBe OK
-          contentAsString(result) mustBe view(location)(fakeRequest, messages).toString
+          contentAsString(result) mustBe view(location)(using fakeRequest, messages).toString
         }
       }
     }

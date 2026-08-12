@@ -14,22 +14,19 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
-        layout: Layout,
-        heading: playComponents.heading,
-        buttonLink: playComponents.button_link
+    layout: Layout,
+    heading: playComponents.heading,
+    buttonLink: playComponents.button_link,
+    taxYearInfo: TaxYearInfo,
 )
 
-@(
-        appConfig: FrontendAppConfig,
-        taxYearInfo: TaxYearInfo
-)(
-        implicit request: Request[_],
-        messages: Messages
+@()(
+    using request: Request[?],
+    messages: Messages,
 )
 
 @title = @{

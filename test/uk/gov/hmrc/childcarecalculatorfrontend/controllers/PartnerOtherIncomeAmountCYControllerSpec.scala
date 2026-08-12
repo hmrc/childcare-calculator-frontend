@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerOtherIncomeAmountCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.PartnerOtherIncomeAmountCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
@@ -29,13 +29,12 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerOtherIncomeAmou
 
 class PartnerOtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
 
-  val view                           = application.injector.instanceOf[partnerOtherIncomeAmountCY]
-  val partnerOtherIncomeAmountCYForm = new PartnerOtherIncomeAmountCYForm(frontendAppConfig).apply()
-  def onwardRoute                    = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: partnerOtherIncomeAmountCY                 = inject[partnerOtherIncomeAmountCY]
+  val partnerOtherIncomeAmountCYForm: Form[BigDecimal] = new PartnerOtherIncomeAmountCYForm(frontendAppConfig).apply()
+  def onwardRoute: Call                                = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerOtherIncomeAmountCYController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -45,8 +44,8 @@ class PartnerOtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[BigDecimal] = partnerOtherIncomeAmountCYForm) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = partnerOtherIncomeAmountCYForm): String =
+    view(form)(using fakeRequest, messages).toString
 
   val testNumber = 123
 
@@ -60,7 +59,7 @@ class PartnerOtherIncomeAmountCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(PartnerOtherIncomeAmountCYId.toString -> JsNumber(testNumber))
+      val validData       = Map(PartnerOtherIncomeAmountCYId.withValue(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

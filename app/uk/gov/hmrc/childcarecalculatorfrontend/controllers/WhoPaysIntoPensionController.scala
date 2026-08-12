@@ -19,47 +19,50 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoPaysIntoPensionForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhoPaysIntoPensionId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoPaysIntoPension
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class WhoPaysIntoPensionController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     whoPaysIntoPension: whoPaysIntoPension
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.whoPaysIntoPension match {
       case None        => WhoPaysIntoPensionForm()
       case Some(value) => WhoPaysIntoPensionForm().fill(value)
     }
-    Ok(whoPaysIntoPension(appConfig, preparedForm))
+    Ok(whoPaysIntoPension(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     WhoPaysIntoPensionForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[String]) => Future.successful(BadRequest(whoPaysIntoPension(appConfig, formWithErrors))),
+        (formWithErrors: Form[YouPartnerBoth]) => Future.successful(BadRequest(whoPaysIntoPension(formWithErrors))),
         value =>
-          dataCacheConnector
-            .save[String](request.sessionId, WhoPaysIntoPensionId.toString, value)
+          dataCacheService
+            .save(WhoPaysIntoPensionId, value)
             .map(cacheMap => Redirect(navigator.nextPage(WhoPaysIntoPensionId)(new UserAnswers(cacheMap))))
       )
   }

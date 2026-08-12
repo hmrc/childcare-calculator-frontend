@@ -16,27 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
+import org.jsoup.Jsoup
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, Json}
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeither
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 
 class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[employmentIncomeCY]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: employmentIncomeCY = inject[employmentIncomeCY]
+  def onwardRoute: Call        = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  val taxYearInfo = new TaxYearInfo
-
-  val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
+  val form: Form[EmploymentIncomeCY] = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new EmploymentIncomeCYController(
@@ -47,12 +47,11 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       dataRetrievalAction,
       new DataRequiredAction,
       new EmploymentIncomeCYForm(frontendAppConfig),
-      taxYearInfo,
       view
     )
 
-  def viewAsString(form: Form[EmploymentIncomeCY] = form) =
-    view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages).toString
+  def viewAsString(form: Form[EmploymentIncomeCY] = form): String =
+    view(form)(using fakeRequest, messages).toString
 
   "EmploymentIncomeCY Controller" must {
 
@@ -64,7 +63,7 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(EmploymentIncomeCYId.toString -> Json.toJson(EmploymentIncomeCY(1, 2)))
+      val validData       = Map(EmploymentIncomeCYId.withValue(EmploymentIncomeCY(1, 2)))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -116,10 +115,10 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
         .withMethod("POST")
 
       val validData = Map(
-        EitherOfYouMaximumEarningsId.toString -> JsBoolean(false),
-        ParentEmploymentIncomeCYId.toString   -> Json.toJson("100000"),
-        PartnerEmploymentIncomeCYId.toString  -> Json.toJson("100000"),
-        WhoIsInPaidEmploymentId.toString      -> Json.toJson("both")
+        EitherOfYouMaximumEarningsId.withValue(false),
+        ParentEmploymentIncomeCYId.withValue(100000),
+        PartnerEmploymentIncomeCYId.withValue(100000),
+        WhoIsInPaidEmploymentId.withValue(YouPartnerBothNeither.Both)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -127,8 +126,15 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
-      contentAsString(result) contains messages(parentEmploymentIncomeInvalidMaxEarningsErrorKey)
-      contentAsString(result) contains messages(partnerEmploymentIncomeInvalidMaxEarningsErrorKey)
+
+      val document = Jsoup.parse(contentAsString(result))
+
+      document
+        .getElementById("parentEmploymentIncomeCY-error")
+        .text() mustBe s"Error: ${messages(parentEmploymentIncomeBothInvalidMaxEarningsErrorKey)}"
+      document
+        .getElementById("partnerEmploymentIncomeCY-error")
+        .text() mustBe s"Error: ${messages(partnerEmploymentIncomeBothInvalidMaxEarningsErrorKey)}"
     }
 
     "return a Bad Request and errors when user answered max earnings question under 1000000 but input was above 1000000" in {
@@ -137,10 +143,10 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
         .withMethod("POST")
 
       val validData = Map(
-        EitherOfYouMaximumEarningsId.toString -> JsBoolean(true),
-        ParentEmploymentIncomeCYId.toString   -> Json.toJson("1000000"),
-        PartnerEmploymentIncomeCYId.toString  -> Json.toJson("1000000"),
-        WhoIsInPaidEmploymentId.toString      -> Json.toJson("both")
+        EitherOfYouMaximumEarningsId.withValue(true),
+        ParentEmploymentIncomeCYId.withValue(1000000),
+        PartnerEmploymentIncomeCYId.withValue(1000000),
+        WhoIsInPaidEmploymentId.withValue(YouPartnerBothNeither.Both)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -148,8 +154,15 @@ class EmploymentIncomeCYControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onSubmit()(postRequest)
 
       status(result) mustBe BAD_REQUEST
-      contentAsString(result) contains messages(parentEmploymentIncomeInvalidErrorKey)
-      contentAsString(result) contains messages(partnerEmploymentIncomeInvalidErrorKey)
+
+      val document = Jsoup.parse(contentAsString(result))
+
+      document
+        .getElementById("parentEmploymentIncomeCY-error")
+        .text() mustBe s"Error: ${messages(parentEmploymentIncomeInvalidErrorKey)}"
+      document
+        .getElementById("partnerEmploymentIncomeCY-error")
+        .text() mustBe s"Error: ${messages(partnerEmploymentIncomeInvalidErrorKey)}"
     }
   }
 

@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.NoOfChildrenForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewIntViewBehaviours
@@ -24,23 +25,19 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 
 class NoOfChildrenViewSpec extends NewIntViewBehaviours {
 
-  val view             = application.injector.instanceOf[noOfChildren]
-  val messageKeyPrefix = "noOfChildren"
+  val view: noOfChildren = inject[noOfChildren]
+  val messageKeyPrefix   = "noOfChildren"
 
-  val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
+  override val form: Form[Int] = new NoOfChildrenForm(frontendAppConfig).apply()
 
-  def createView = () => view(frontendAppConfig, NoOfChildrenForm)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Int]) => view(frontendAppConfig, form)(fakeRequest, messages)
-
-  val form = NoOfChildrenForm
+  def render(form: Form[Int] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "NoOfChildren view" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
-    behave.like(intPage(createViewUsingForm, messageKeyPrefix, routes.NoOfChildrenController.onSubmit().url))
+    behave.like(intPage(form => render(form = form), messageKeyPrefix, routes.NoOfChildrenController.onSubmit().url))
   }
 
 }

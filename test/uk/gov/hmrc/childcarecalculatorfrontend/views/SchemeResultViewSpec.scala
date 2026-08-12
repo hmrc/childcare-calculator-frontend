@@ -23,27 +23,26 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents.scheme_
 
 class SchemeResultViewSpec extends NewViewBehaviours {
 
-  lazy val appSchemeResult = application.injector.instanceOf[scheme_result]
+  lazy val view: scheme_result = inject[scheme_result]
+
+  def render(model: SchemeResultModel): Html = view(model)(using messages)
 
   "Scheme Result view" must {
 
     "Contain title and paragraph" in {
-      val view = asDocument(
-        appSchemeResult(
-          SchemeResultModel(
-            title = "You are eligible",
-            couldGet = Some("you could get"),
-            eligibility = Some(EligibilityModel("100", "")),
-            periodText = Some("a month"),
-            para1 = Some("some text"),
-            para2 = Some(Html("some more text")),
-            para3 = Some("some even more text")
-          )
-        )(messages)
+      val model = SchemeResultModel(
+        title = "You are eligible",
+        couldGet = Some("you could get"),
+        eligibility = Some(EligibilityModel("100", "")),
+        periodText = Some("a month"),
+        para1 = Some("some text"),
+        para2 = Some(Html("some more text")),
+        para3 = Some("some even more text")
       )
+      val document = asDocument(render(model))
 
       assertContainsMessages(
-        view,
+        document,
         "You are eligible",
         "you could get",
         "100",

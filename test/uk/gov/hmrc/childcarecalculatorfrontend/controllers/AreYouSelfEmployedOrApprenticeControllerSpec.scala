@@ -17,24 +17,24 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AreYouSelfEmployedOrApprenticeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.AreYouSelfEmployedOrApprenticeId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.EmploymentStatus
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouSelfEmployedOrApprentice
 
 class AreYouSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[areYouSelfEmployedOrApprentice]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: areYouSelfEmployedOrApprentice = inject[areYouSelfEmployedOrApprentice]
+  def onwardRoute: Call                    = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new AreYouSelfEmployedOrApprenticeController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -43,8 +43,8 @@ class AreYouSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[String] = AreYouSelfEmployedOrApprenticeForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[EmploymentStatus] = AreYouSelfEmployedOrApprenticeForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "AreYouSelfEmployedOrApprentice Controller" must {
 
@@ -57,20 +57,20 @@ class AreYouSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData = Map(
-        AreYouSelfEmployedOrApprenticeId.toString -> JsString(AreYouSelfEmployedOrApprenticeForm.options.head.value)
+        AreYouSelfEmployedOrApprenticeId.withValue(EmploymentStatus.SelfEmployed)
       )
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
       contentAsString(result) mustBe viewAsString(
-        AreYouSelfEmployedOrApprenticeForm().fill(AreYouSelfEmployedOrApprenticeForm.options.head.value)
+        AreYouSelfEmployedOrApprenticeForm().fill(EmploymentStatus.SelfEmployed)
       )
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest = fakeRequest
-        .withFormUrlEncodedBody(("value", AreYouSelfEmployedOrApprenticeForm.options.head.value))
+        .withFormUrlEncodedBody(("value", EmploymentStatus.SelfEmployed.toString))
         .withMethod("POST")
 
       val result = controller().onSubmit()(postRequest)
@@ -98,7 +98,7 @@ class AreYouSelfEmployedOrApprenticeControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest = fakeRequest
-        .withFormUrlEncodedBody(("value", AreYouSelfEmployedOrApprenticeForm.options.head.value))
+        .withFormUrlEncodedBody(("value", EmploymentStatus.SelfEmployed.toString))
         .withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 

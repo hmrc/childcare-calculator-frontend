@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import org.mockito.Mockito._
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{YouPartnerBoth, YouPartnerBothNeither}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Utils}
 
 class PensionNavigatorSpec extends SpecBase with MockitoSugar {
@@ -30,7 +30,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
   val navigator = new PensionNavigator(new Utils)
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
-    new UserAnswers(CacheMap("", Map(answers: _*)))
+    new UserAnswers(CacheMap("", Map(answers*)))
 
   "Current Year Pension Route Navigation" when {
     "in Normal mode" must {
@@ -133,7 +133,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
       "Who Pays Into Pension CY Route" must {
         "redirects to howMuchYouPayPension page when user selects you option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension).thenReturn(Some("you"))
+          when(answers.whoPaysIntoPension).thenReturn(Some(YouPartnerBoth.You))
 
           navigator
             .nextPage(WhoPaysIntoPensionId)
@@ -142,7 +142,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to HowMuchPartnerPayPension page when user selects partner option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension).thenReturn(Some("partner"))
+          when(answers.whoPaysIntoPension).thenReturn(Some(YouPartnerBoth.Partner))
 
           navigator
             .nextPage(WhoPaysIntoPensionId)
@@ -151,7 +151,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to HowMuchBothPayPension page when user selects both option" in {
           val answers = spy(userAnswers())
-          when(answers.whoPaysIntoPension).thenReturn(Some("both"))
+          when(answers.whoPaysIntoPension).thenReturn(Some(YouPartnerBoth.Both))
 
           navigator
             .nextPage(WhoPaysIntoPensionId)
@@ -191,7 +191,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to SessionExpired page when user provides valid input, lives with partner and" +
           "partner in paid employment" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment).thenReturn(Some(partner))
+            when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeither.Partner))
 
             navigator
               .nextPage(HowMuchYouPayPensionId)
@@ -221,7 +221,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
       "How Much Partner Pay Pension CY Route" must {
         "redirects to benefits page when user provides valid input and partner in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment).thenReturn(Some(partner))
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeither.Partner))
 
           navigator
             .nextPage(HowMuchPartnerPayPensionId)
@@ -230,7 +230,7 @@ class PensionNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to BothAnyTheseBenefitsCY page when user provides valid input and both in paid employment" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment).thenReturn(Some(both))
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeither.Both))
 
           navigator
             .nextPage(HowMuchPartnerPayPensionId)

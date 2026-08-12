@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package guice
+package uk.gov.hmrc.childcarecalculatorfrontend.guice
 
 import com.google.inject.AbstractModule
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{EligibilityService, SubmissionService}

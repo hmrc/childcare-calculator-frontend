@@ -14,8 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
 @this(
@@ -24,13 +23,23 @@
     errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
     submitButton: playComponents.submit_button,
-    inputNumber: playComponents.input_number
+    inputNumber: playComponents.input_number,
+    taxYearInfo: TaxYearInfo,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[BigDecimal], taxYearInfo: TaxYearInfo)(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[BigDecimal],
+)(
+    using request: Request[?],
+    messages: Messages
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("parentEmploymentIncomeCY.title")) else messages("parentEmploymentIncomeCY.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("parentEmploymentIncomeCY.title"))
+    } else {
+        messages("parentEmploymentIncomeCY.title")
+    }
 }
 
 @layout(

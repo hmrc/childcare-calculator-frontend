@@ -23,7 +23,7 @@ import play.api.data.{Form, FormError}
 
 class LocalDateMappingSpec extends PlaySpec with OptionValues {
 
-  import play.api.data.Forms._
+  import play.api.data.Forms.*
   val form = Form(single("date" -> localDateMapping))
 
   ".bind" must {

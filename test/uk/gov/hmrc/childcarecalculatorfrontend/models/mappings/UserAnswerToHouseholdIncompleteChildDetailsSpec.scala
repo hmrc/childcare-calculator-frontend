@@ -16,39 +16,40 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.mappings
 
-import java.time.LocalDate
-import org.mockito.Mockito._
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.integration._
+import uk.gov.hmrc.childcarecalculatorfrontend.config.NmwConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.models.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{Location, YesNoNotSure}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.child.Child
+import uk.gov.hmrc.childcarecalculatorfrontend.models.integration.claimant.{Claimant, MinimumEarnings}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.SchemeSpec
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers, Utils}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo, UserAnswers}
 import uk.gov.hmrc.time.TaxYear
+
+import java.time.LocalDate
 
 class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with MockitoSugar with BeforeAndAfterEach {
 
-  def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers: _*)))
+  def userAnswers(answers: (String, JsValue)*): UserAnswers = new UserAnswers(CacheMap("", Map(answers*)))
 
-  val frontendAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
-  val utils: Utils                         = mock[Utils]
+  val nmwConfig: NmwConfig = mock[NmwConfig]
 
   val mockTaxYearInfo: TaxYearInfo = mock[TaxYearInfo]
 
-  val currentTaxYear = TaxYear.current.startYear
+  val currentTaxYear: Int = TaxYear.current.startYear
 
-  val previousTaxYear = currentTaxYear - 1
+  val previousTaxYear: Int = currentTaxYear - 1
 
-  def userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(frontendAppConfig, utils)
+  val userAnswerToHousehold: UserAnswerToHousehold = new UserAnswerToHousehold(nmwConfig)
 
-  val currentDate: LocalDate = LocalDate.now()
+  val currentDate: LocalDate = LocalDate.of(2026, 7, 27)
 
   override def beforeEach(): Unit = {
-    reset(frontendAppConfig)
-    reset(utils)
+    reset(nmwConfig)
     reset(mockTaxYearInfo)
     super.beforeEach()
   }
@@ -57,7 +58,7 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
     "convert UserAnswers to Household object specifically when not all children have dob" when {
       "includes all child with dob" in {
         val claimant =
-          Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0, None, None)))
+          Claimant(escVouchers = Some(YesNoNotSure.No), minimumEarnings = Some(MinimumEarnings(0.0, None, None)))
 
         val child1 = Child(
           id = 0,
@@ -87,10 +88,10 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
         )
 
         val expectedHousehold =
-          Household(location = Location.ENGLAND, children = List(child1, child2, child3), parent = claimant)
+          Household(location = Location.England, children = List(child1, child2, child3), parent = claimant)
         val answers = spy(userAnswers())
 
-        when(answers.location).thenReturn(Some(Location.ENGLAND))
+        when(answers.location).thenReturn(Some(Location.England))
         when(answers.noOfChildren).thenReturn(Some(3))
         when(answers.aboutYourChild(0)).thenReturn(Some(AboutYourChild("child-1", currentDate.minusYears(7))))
         when(answers.aboutYourChild(1)).thenReturn(Some(AboutYourChild("child-2", currentDate.minusYears(2))))
@@ -101,7 +102,7 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
 
       "exclude child with no dob or details" in {
         val claimant =
-          Claimant(escVouchers = Some(YesNoUnsureEnum.NO), minimumEarnings = Some(MinimumEarnings(0.0, None, None)))
+          Claimant(escVouchers = Some(YesNoNotSure.No), minimumEarnings = Some(MinimumEarnings(0.0, None, None)))
 
         val child1 = Child(
           id = 0,
@@ -122,7 +123,7 @@ class UserAnswerToHouseholdIncompleteChildDetailsSpec extends SchemeSpec with Mo
         )
 
         val expectedHousehold =
-          Household(location = Location.ENGLAND, children = List(child1, child2), parent = claimant)
+          Household(location = Location.England, children = List(child1, child2), parent = claimant)
         val answers = spy(userAnswers())
 
         when(answers.noOfChildren).thenReturn(Some(3))

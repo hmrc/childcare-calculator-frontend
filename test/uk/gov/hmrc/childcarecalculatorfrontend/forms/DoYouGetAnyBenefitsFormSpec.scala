@@ -18,13 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefit
 
-class DoYouGetAnyBenefitsFormSpec extends CheckboxBehaviours[ParentsBenefits] {
+class DoYouGetAnyBenefitsFormSpec extends CheckboxBehaviours[ParentsBenefit] {
 
-  override val form: Form[Set[ParentsBenefits]] = DoYouGetAnyBenefitsForm()
+  override val form: Form[Set[ParentsBenefit]] = DoYouGetAnyBenefitsForm()
 
-  override val validOptions: Set[ParentsBenefits] = ParentsBenefits.inverseMapping.keySet
+  override val validOptions: Set[ParentsBenefit] = ParentsBenefit.values.toSet
 
   override val fieldName = "doYouGetAnyBenefits"
 
@@ -35,8 +35,8 @@ class DoYouGetAnyBenefitsFormSpec extends CheckboxBehaviours[ParentsBenefits] {
 
     "fail to bind when multiple options are selected along with 'No'" in {
       val data = Map(
-        s"$fieldName[0]" -> ParentsBenefits.NoneOfThese.toString,
-        s"$fieldName[1]" -> ParentsBenefits.CarersAllowance.toString
+        s"$fieldName[0]" -> ParentsBenefit.NoneOfThese.toString,
+        s"$fieldName[1]" -> ParentsBenefit.CarersAllowance.toString
       )
       form.bind(data).errors mustBe Seq(FormError(fieldName, "doYouGetAnyBenefits.error.select"))
     }

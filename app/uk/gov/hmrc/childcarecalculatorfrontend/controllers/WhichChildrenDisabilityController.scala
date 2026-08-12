@@ -19,66 +19,64 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichChildrenDisabilityId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichChildrenDisability
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class WhichChildrenDisabilityController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     whichChildrenDisability: whichChildrenDisability
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     withValues { values =>
       val answer = request.userAnswers.whichChildrenDisability
       val preparedForm = answer match {
         case None        => WhichChildrenDisabilityForm()
         case Some(value) => WhichChildrenDisabilityForm().fill(value)
       }
-      Future.successful(Ok(whichChildrenDisability(appConfig, preparedForm, options(values))))
+      Future.successful(Ok(whichChildrenDisability(preparedForm, options(values))))
     }
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     withValues { values =>
-      WhichChildrenDisabilityForm(values.values.toSeq: _*)
+      WhichChildrenDisabilityForm(values.values.toSeq*)
         .bindFromRequest()
         .fold(
-          (formWithErrors: Form[_]) =>
-            Future.successful(BadRequest(whichChildrenDisability(appConfig, formWithErrors, options(values)))),
+          (formWithErrors: Form[Set[Int]]) =>
+            Future.successful(BadRequest(whichChildrenDisability(formWithErrors, options(values)))),
           value =>
-            dataCacheConnector.save[Set[Int]](request.sessionId, WhichChildrenDisabilityId.toString, value).map {
-              cacheMap => Redirect(navigator.nextPage(WhichChildrenDisabilityId)(new UserAnswers(cacheMap)))
+            dataCacheService.save(WhichChildrenDisabilityId, value).map { cacheMap =>
+              Redirect(navigator.nextPage(WhichChildrenDisabilityId)(new UserAnswers(cacheMap)))
             }
         )
     }
   }
 
-  private def options(values: Map[String, Int]): Seq[(String, String)] =
-    values.map { case (k, v) =>
-      (k, v.toString)
-    }.toSeq
+  private def options(values: Map[String, Int]): Seq[(String, Int)] = values.toSeq
 
   private def withValues(
       block: Map[String, Int] => Future[Result]
-  )(implicit request: DataRequest[AnyContent]): Future[Result] =
+  )(using request: DataRequest[AnyContent]): Future[Result] =
 
     request.userAnswers.aboutYourChild
       .map { aboutYourChild =>

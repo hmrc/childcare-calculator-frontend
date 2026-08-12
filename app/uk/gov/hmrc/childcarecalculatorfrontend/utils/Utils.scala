@@ -16,127 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.Configuration
 import play.api.mvc.Call
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{
-  ccDateFormat,
-  nmwConfigFileAbbreviation,
-  ruleDateConfigParam
-}
-
-import java.text.SimpleDateFormat
-import java.time.{LocalDate, ZoneId}
-import scala.jdk.CollectionConverters._
 
 class Utils {
 
-  /** Throws exception with appropriate error message if optional element value is None otherwise returns the value ex -
-    * val a = Some(5), return value is 5 val a = Some(PageObjects), return value is PageObjects val a = None , return is
-    * runtime exception
-    *
-    * @param optionalElement
-    * @param controllerId
-    * @param objectName
-    * @param errorMessage
-    * @tparam T
-    */
-
-  def getOrException[T](
-      optionalElement: Option[T],
-      controllerId: Option[String] = None,
-      objectName: Option[String] = None,
-      errorMessage: String = "no element found"
-  ): T = {
-
-    val controller = controllerId.getOrElse("")
-    val objectId   = objectName.getOrElse("")
-
-    if (controllerId.isDefined && objectName.isDefined) {
-      optionalElement
-        .fold(throw new RuntimeException(s"no element found in $controller while fetching $objectId"))(identity)
-    } else {
-      optionalElement.fold(throw new RuntimeException(errorMessage))(identity)
-    }
-
-  }
-
-  /** Gets the NMW for the given age range
-    *
-    * @param configuration
-    * @param currentDate
-    * @param ageRange
-    * @return
-    */
-  def getEarningsForAgeRange(configuration: Configuration, currentDate: LocalDate, ageRange: Option[String]): Int =
-    getOrException(getNMWConfig(configuration, currentDate).getOptional[Int](ageRange.getOrElse("non-existent-age")))
-
-  /** @param currentDate
-    * @return
-    */
-  def getNMWConfig(configuration: Configuration, currentDate: LocalDate): Configuration =
-    getLatestConfig(configuration, nmwConfigFileAbbreviation, currentDate)
-
-  /** Gets the latest configuration for the input config type
-    *
-    * @param configType
-    * @param currentDate
-    * @return
-    */
-  def getLatestConfig(configuration: Configuration, configType: String, currentDate: LocalDate): Configuration = {
-
-    val dateFormat = new SimpleDateFormat(ccDateFormat)
-
-    val configs: Seq[Configuration] =
-      configuration.underlying.getConfigList(configType).asScala.toSeq.map(Configuration(_))
-
-    val configsExcludingDefault: Seq[Configuration] = configs
-      .filterNot(
-        _.get[String](ruleDateConfigParam).contains("default")
-      )
-      .sortWith((conf1, conf2) =>
-        dateFormat
-          .parse(conf1.getOptional[String](ruleDateConfigParam).get)
-          .after(dateFormat.parse(conf2.get[String](ruleDateConfigParam)))
-      )
-
-    val result: Option[Configuration] = configsExcludingDefault.find { conf =>
-      val ruleDate = dateFormat.parse(conf.get[String](ruleDateConfigParam))
-      currentDate.compareTo(ruleDate.toInstant.atZone(ZoneId.systemDefault()).toLocalDate) >= 0
-    }
-
-    result match {
-      case Some(conf) =>
-        conf
-      case _ =>
-        configs.filter(_.getOptional[String](ruleDateConfigParam).contains("default")).head
-    }
-  }
-
-  /** * Returns the call from the input function (f: A => Call) when optionalElement has some value otherwise returns
-    * SessionExpired Page Ex - getCall(Some(true)){case _ => Call("GET", "http://test.com")} returns Call("GET",
-    * "http://test.com") getCall(None){case _ => Call("GET", "http://test.com")} returns
-    * routes.SessionExpiredController.onPageLoad
-    *
-    * @param optionalElement
-    * @param f
-    * @tparam A
-    * @return
-    *   Call
-    */
   def getCall[A](optionalElement: Option[A])(f: PartialFunction[A, Call]): Call =
     optionalElement.flatMap(f.lift).getOrElse(SessionExpiredRouter.route(getClass.getName, "getCall"))
 
-  /** Returns the value with comma when value is more than 999, also removes the decimal part and gives the whole number
-    *
-    * Ex - 30 -> 30 , 30.35 -> 30, 1300 -> 1,300
-    * @param value
-    * @return
-    */
-  def valueFormatter(value: BigDecimal): String = {
+  def formatBigDecimal(value: BigDecimal): String = {
     val valueFormatter = new java.text.DecimalFormat("##,###")
     valueFormatter.format(value)
   }
-
-  def emptyCacheMap(existingCacheMap: CacheMap): CacheMap = existingCacheMap.copy(data = Map())
 
 }

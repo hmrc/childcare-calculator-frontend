@@ -16,25 +16,27 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
-class WhoGetsOtherIncomeCYFormSpec extends FormBehaviours {
+class WhoGetsOtherIncomeCYFormSpec extends FormBehaviours[YouPartnerBoth] {
 
   val validData: Map[String, String] = Map(
-    "value" -> WhoGetsOtherIncomeCYForm.options.head.value
+    "value" -> YouPartnerBoth.You.toString
   )
 
-  val form = WhoGetsOtherIncomeCYForm()
+  val form: Form[YouPartnerBoth] = WhoGetsOtherIncomeCYForm()
 
   "WhoGetsOtherIncomeCY form" must {
-    behave.like(questionForm[String](WhoGetsOtherIncomeCYForm.options.head.value))
+    behave.like(questionForm(YouPartnerBoth.You))
 
     behave.like(
       formWithOptionFieldError(
         "value",
         whoGetsOtherIncomeCYErrorKey,
-        WhoGetsOtherIncomeCYForm.options.map(x => x.value): _*
+        YouPartnerBoth.values*
       )
     )
   }

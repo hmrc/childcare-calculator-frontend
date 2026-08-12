@@ -17,33 +17,35 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import com.google.inject.Inject
-import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.Household.{JointHousehold, SingleHousehold}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.{ModelFactory, Parent}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
+import javax.inject.Singleton
+
+@Singleton
 private[schemes] class FreeChildcareEligibilityCalculator @Inject() (modelFactory: ModelFactory) {
 
-  def calculateEligibility(answers: UserAnswers, eligibleBenefits: Set[ParentsBenefits]): Eligibility =
+  def calculateEligibility(answers: UserAnswers, eligibleBenefits: Set[ParentsBenefit]): Eligibility =
     modelFactory(answers)
       .map {
         case SingleHousehold(parent) => singleEligibility(parent)
         case JointHousehold(parent, partner) =>
-          jointEligibility(parent, partner, eligibleBenefits: Set[ParentsBenefits])
+          jointEligibility(parent, partner, eligibleBenefits: Set[ParentsBenefit])
       }
-      .getOrElse(NotDetermined)
+      .getOrElse(Eligibility.NotDetermined)
 
   private def singleEligibility(parent: Parent): Eligibility =
-    if (isEligibleBasedOnEarnings(parent)) Eligible
-    else NotEligible
+    Eligibility.fromBoolean(isEligibleBasedOnEarnings(parent))
 
-  private def jointEligibility(parent: Parent, partner: Parent, eligibleBenefits: Set[ParentsBenefits]): Eligibility =
-    if (isJointHouseholdEligible(parent, partner, eligibleBenefits)) Eligible
-    else NotEligible
+  private def jointEligibility(parent: Parent, partner: Parent, eligibleBenefits: Set[ParentsBenefit]): Eligibility =
+    Eligibility.fromBoolean(isJointHouseholdEligible(parent, partner, eligibleBenefits))
 
   private def isJointHouseholdEligible(
       parent: Parent,
       partner: Parent,
-      eligibleBenefits: Set[ParentsBenefits]
+      eligibleBenefits: Set[ParentsBenefit]
   ): Boolean =
     isEligibleBasedOnEarnings(parent) && (isEligibleBasedOnEarnings(partner) || isEligibleBasedOnBenefits(
       partner,
@@ -63,7 +65,7 @@ private[schemes] class FreeChildcareEligibilityCalculator @Inject() (modelFactor
   private def earnsBelowMinEarningsButIsApprenticeOrSelfEmployed(parent: Parent): Boolean =
     !parent.earnsAboveMinEarnings && (parent.apprentice || parent.selfEmployed)
 
-  private def isEligibleBasedOnBenefits(parent: Parent, eligibleBenefits: Set[ParentsBenefits]): Boolean =
+  private def isEligibleBasedOnBenefits(parent: Parent, eligibleBenefits: Set[ParentsBenefit]): Boolean =
     parent.benefits.intersect(eligibleBenefits).nonEmpty
 
 }

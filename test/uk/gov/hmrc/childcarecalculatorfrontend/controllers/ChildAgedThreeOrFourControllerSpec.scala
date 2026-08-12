@@ -17,31 +17,30 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, JsString}
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{ChildAgedThreeOrFourId, LocationId}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedThreeOrFour
 
 class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[childAgedThreeOrFour]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: childAgedThreeOrFour = inject[childAgedThreeOrFour]
+  def onwardRoute: Call          = routes.WhatToTellTheCalculatorController.onPageLoad
 
-  val location = Location.ENGLAND
+  val location: Location = Location.England
 
-  val cacheMapWithLocation = new CacheMap("id", Map(LocationId.toString -> JsString(location.toString)))
+  val cacheMapWithLocation: CacheMap = CacheMap.of(LocationId.withValue(location))
 
   def getDataWithLocationSet = new FakeDataRetrievalAction(Some(cacheMapWithLocation))
 
   def controller(dataRetrievalAction: DataRetrievalAction = getDataWithLocationSet) =
     new ChildAgedThreeOrFourController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -50,8 +49,8 @@ class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form, location)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String =
+    view(form, location)(using fakeRequest, messages).toString
 
   "ChildAgedThreeOrFour Controller" must {
 
@@ -64,7 +63,7 @@ class ChildAgedThreeOrFourControllerSpec extends ControllerSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
       val validData =
-        Map(LocationId.toString -> JsString(location.toString), ChildAgedThreeOrFourId.toString -> JsBoolean(true))
+        Map(LocationId.withValue(location), ChildAgedThreeOrFourId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.OtherIncomeAmountCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
@@ -25,24 +26,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.otherIncomeAmountCY
 
 class OtherIncomeAmountCYViewSpec extends NewQuestionViewBehaviours[OtherIncomeAmountCY] {
 
-  val view             = application.injector.instanceOf[otherIncomeAmountCY]
-  val messageKeyPrefix = "otherIncomeAmountCY"
+  val view: otherIncomeAmountCY = inject[otherIncomeAmountCY]
+  val messageKeyPrefix          = "otherIncomeAmountCY"
 
-  override val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
+  override val form: Form[OtherIncomeAmountCY] = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
 
-  def createView = () => view(frontendAppConfig, form)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[OtherIncomeAmountCY]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def render(form: Form[OtherIncomeAmountCY] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "OtherIncomeAmountCY view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       pageWithTextFields(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.OtherIncomeAmountCYController.onSubmit().url,
         "parentOtherIncome",
@@ -51,7 +50,7 @@ class OtherIncomeAmountCYViewSpec extends NewQuestionViewBehaviours[OtherIncomeA
     )
 
     "contain the currencySymbol class and £ " in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
 
       assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 

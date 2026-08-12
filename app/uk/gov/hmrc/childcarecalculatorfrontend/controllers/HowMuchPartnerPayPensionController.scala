@@ -19,48 +19,49 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchPartnerPayPensionForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HowMuchPartnerPayPensionId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchPartnerPayPension
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class HowMuchPartnerPayPensionController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     howMuchPartnerPayPension: howMuchPartnerPayPension
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.howMuchPartnerPayPension match {
       case None        => HowMuchPartnerPayPensionForm()
       case Some(value) => HowMuchPartnerPayPensionForm().fill(value)
     }
-    Ok(howMuchPartnerPayPension(appConfig, preparedForm))
+    Ok(howMuchPartnerPayPension(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     HowMuchPartnerPayPensionForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[BigDecimal]) =>
-          Future.successful(BadRequest(howMuchPartnerPayPension(appConfig, formWithErrors))),
+        (formWithErrors: Form[BigDecimal]) => Future.successful(BadRequest(howMuchPartnerPayPension(formWithErrors))),
         value =>
-          dataCacheConnector
-            .save[BigDecimal](request.sessionId, HowMuchPartnerPayPensionId.toString, value)
+          dataCacheService
+            .save(HowMuchPartnerPayPensionId, value)
             .map(cacheMap => Redirect(navigator.nextPage(HowMuchPartnerPayPensionId)(new UserAnswers(cacheMap))))
       )
   }

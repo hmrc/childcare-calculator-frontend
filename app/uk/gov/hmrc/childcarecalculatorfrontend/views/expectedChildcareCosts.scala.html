@@ -14,10 +14,8 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{ChildcarePayFrequency, YesNoNotYet}
 
 
 @this(
@@ -25,22 +23,22 @@
     formWithCSRF: FormWithCSRF,
     errorSummary: playComponents.error_summary,
     inputNumber: playComponents.input_number,
-    submitButton: playComponents.submit_button
+    submitButton: playComponents.submit_button,
 )
+
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[BigDecimal],
-        hasCosts: YesNoNotYetEnum.Value,
-        childIndex: Int,
-        frequency: ChildcarePayFrequency.Value,
-        name: String
+    form: Form[BigDecimal],
+    hasCosts: YesNoNotYet,
+    childIndex: Int,
+    frequency: ChildcarePayFrequency,
+    name: String,
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @suffix = @{
-    if (hasCosts == YesNoNotYetEnum.NOTYET) {
+    if (hasCosts == YesNoNotYet.NotYet) {
         ".notYet"
     } else {
         ""
@@ -49,7 +47,11 @@
 
 @title = @{
     val innerTitle = messages("expectedChildcareCosts.title", messages(s"childcarePayFrequency.$frequency").toLowerCase, messages(s"nth.$childIndex"))
-    if (form.errors.nonEmpty) messages("site.title.error", innerTitle) else innerTitle
+    if (form.errors.nonEmpty) {
+        messages("site.title.error", innerTitle)
+    } else {
+        innerTitle
+    }
 }
 
 @layout(

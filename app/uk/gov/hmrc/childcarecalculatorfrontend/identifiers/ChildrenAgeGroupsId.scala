@@ -16,6 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object ChildrenAgeGroupsId extends Identifier {
-  override def toString: String = "childrenAgeGroups"
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object ChildrenAgeGroupsId extends Identifier with CacheKey[Set[ChildAgeGroup]] {
+  override val toString = "childrenAgeGroups"
+  override val cacheKey = "childrenAgeGroups"
 }

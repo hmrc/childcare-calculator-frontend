@@ -16,21 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-class SurveyDoNotUnderstandFormSpec extends FormSpec {
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.surveyDoNotUnderstandErrorKey
 
-  val errorKeyBlank   = "blank"
-  val errorKeyInvalid = "invalid"
+class SurveyDoNotUnderstandFormSpec extends FormSpec {
 
   "SurveyDoNotUnderstand Form" must {
 
     "fail to bind a blank value" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(SurveyDoNotUnderstandForm(errorKeyBlank, errorKeyInvalid), Map("value" -> ""), expectedError)
+      val expectedError = error("value", surveyDoNotUnderstandErrorKey)
+      checkForError(SurveyDoNotUnderstandForm(surveyDoNotUnderstandErrorKey), Map("value" -> ""), expectedError)
     }
 
     "fail to bind when value is omitted" in {
-      val expectedError = error("value", errorKeyBlank)
-      checkForError(SurveyDoNotUnderstandForm(errorKeyBlank, errorKeyInvalid), emptyForm, expectedError)
+      val expectedError = error("value", surveyDoNotUnderstandErrorKey)
+      checkForError(SurveyDoNotUnderstandForm(surveyDoNotUnderstandErrorKey), emptyForm, expectedError)
     }
 
   }

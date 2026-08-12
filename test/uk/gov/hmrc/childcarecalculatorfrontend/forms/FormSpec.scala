@@ -16,31 +16,34 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import org.scalactic.source.Position
+import org.scalatest.Assertion
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.data.{Form, FormError}
 import play.api.inject.Injector
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 import org.scalatestplus.play.PlaySpec
+import play.api.test.Injecting
+import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
 
-trait FormSpec extends PlaySpec with GuiceOneAppPerSuite {
+trait FormSpec extends PlaySpec with GuiceOneAppPerSuite with Injecting {
 
   def injector: Injector = app.injector
 
-  def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+  def frontendAppConfig: FrontendAppConfig = inject[FrontendAppConfig]
 
-  def checkForError(form: Form[_], data: Map[String, String], expectedErrors: Seq[FormError]) =
-    form
-      .bind(data)
-      .fold(
-        formWithErrors => {
-          for (error <- expectedErrors)
-            formWithErrors.errors must contain(error)
-          formWithErrors.errors.size mustBe expectedErrors.size
-        },
-        form => fail("Expected a validation error when binding the form, but it was bound successfully.")
-      )
+  def checkForError(form: Form[?], data: Map[String, String], expectedErrors: Seq[FormError])(
+      using Position
+  ): Assertion = {
+    val formWithErrors = form.bind(data)
 
-  def error(key: String, value: String, args: Any*) = Seq(FormError(key, value, args))
+    for (error <- expectedErrors)
+      formWithErrors.errors must contain(error)
 
-  lazy val emptyForm = Map[String, String]()
+    formWithErrors.errors.size mustBe expectedErrors.size
+
+  }
+
+  def error(key: String, value: String, args: Any*): Seq[FormError] = Seq(FormError(key, value, args))
+
+  lazy val emptyForm: Map[String, String] = Map.empty
 }

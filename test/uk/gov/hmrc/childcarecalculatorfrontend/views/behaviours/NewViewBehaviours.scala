@@ -17,11 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import uk.gov.hmrc.childcarecalculatorfrontend.views.NewViewSpecBase
-import play.twirl.api.HtmlFormat
+import play.twirl.api.Html
 
 trait NewViewBehaviours extends NewViewSpecBase {
 
-  def normalPage(view: () => HtmlFormat.Appendable, messageKeyPrefix: String, expectedGuidanceKeys: String*): Unit =
+  def normalPage(view: () => Html, messageKeyPrefix: String, expectedGuidanceKeys: String*): Unit =
 
     "behave like a normal page" when {
       "rendered" must {
@@ -64,12 +64,12 @@ trait NewViewBehaviours extends NewViewSpecBase {
     }
 
   def normalPageWithCurrencySymbol(
-      view: () => HtmlFormat.Appendable,
+      view: () => Html,
       messageKeyPrefix: String,
       expectedGuidanceKeys: String*
   ): Unit = {
 
-    normalPage(view, messageKeyPrefix, expectedGuidanceKeys: _*)
+    normalPage(view, messageKeyPrefix, expectedGuidanceKeys*)
 
     "behave like a currency symbol page" when {
       "rendered" must {
@@ -83,7 +83,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
   }
 
   def normalPageWithTitleAsString(
-      view: () => HtmlFormat.Appendable,
+      view: () => Html,
       messageKeyPrefix: String,
       messageKeyPostfix: String,
       title: String,
@@ -108,7 +108,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading$messageKeyPostfix", args: _*)
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading$messageKeyPostfix", args*)
         }
 
         "display the correct guidance" in {
@@ -129,7 +129,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
     }
 
   def normalPageWithTitleParameters(
-      view: () => HtmlFormat.Appendable,
+      view: () => Html,
       messageKeyPrefix: String,
       messageKeyPostfix: String,
       expectedGuidanceKeys: Seq[String],
@@ -150,14 +150,14 @@ trait NewViewBehaviours extends NewViewSpecBase {
           assertEqualsValue(
             doc,
             "title",
-            messages(s"$messageKeyPrefix.title", titleArgs: _*) + " - " + messages("site.service_name") + " - GOV.UK"
+            messages(s"$messageKeyPrefix.title", titleArgs*) + " - " + messages("site.service_name") + " - GOV.UK"
           )
           assertNotContainsValue(doc, "title", "{}")
         }
 
         "display the correct page title" in {
           val doc = asDocument(view())
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading$messageKeyPostfix", args: _*)
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading$messageKeyPostfix", args*)
         }
 
         "display the correct guidance" in {
@@ -177,7 +177,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
       }
     }
 
-  def pageWithBackLink(view: () => HtmlFormat.Appendable): Unit =
+  def pageWithBackLink(view: () => Html): Unit =
 
     "behave like a page with a back link" must {
       "have a back link" in {
@@ -186,7 +186,7 @@ trait NewViewBehaviours extends NewViewSpecBase {
       }
     }
 
-  def resultPage(view: () => HtmlFormat.Appendable): Unit =
+  def resultPage(view: () => Html): Unit =
     "behave like a result page" when {
       "rendered" must {
         "have a link to feedback survey" in {

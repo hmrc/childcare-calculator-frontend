@@ -17,16 +17,17 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import play.twirl.api.Html
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultNotEligible
 
 class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
 
-  lazy val appResultNotEligible: resultNotEligible = application.injector.instanceOf[resultNotEligible]
+  val view: resultNotEligible = inject[resultNotEligible]
 
-  val locationEngland: Location.Value = Location.ENGLAND
+  def render(model: ResultsViewModel): Html = view(model)(using messages)
 
   "Result not eligible view" must {
     "contain results" when {
@@ -34,31 +35,31 @@ class ResultNotEligibleViewSpec extends NewViewBehaviours with MockitoSugar {
         val model = ResultsViewModel(
           freeHours = None,
           freeChildcareWorkingParentsEligibilityMsg = Some("not working"),
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultNotEligible(model)(messages))
+        val document = asDocument(render(model))
 
-        view.getElementById("notEligibleFreeChildcareWorkingParents").text() mustBe messages("not working")
+        document.getElementById("notEligibleFreeChildcareWorkingParents").text() mustBe messages("not working")
       }
 
       "User is not eligible for TFC scheme" in {
         val model = ResultsViewModel(
           tfc = None,
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true,
           taxFreeChildcareEligibilityMsg = Some("not working")
         )
-        val view = asDocument(appResultNotEligible(model)(messages))
+        val document = asDocument(render(model))
 
-        assertContainsMessages(view, "Tax-Free Childcare")
-        view.getElementById("notEligibleTFC").text() mustBe messages("not working")
+        assertContainsMessages(document, "Tax-Free Childcare")
+        document.getElementById("notEligibleTFC").text() mustBe messages("not working")
       }
     }
   }

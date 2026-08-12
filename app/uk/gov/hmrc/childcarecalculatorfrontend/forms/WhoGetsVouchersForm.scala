@@ -17,40 +17,32 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeitherNotSure
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothNeitherNotSureEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object WhoGetsVouchersForm extends FormErrorHelper {
 
-  def WhoGetsVouchersFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, whoGetsVouchersErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
-
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
-    Form(single("value" -> of(WhoGetsVouchersFormatter)))
-
-  def options = Seq(
-    whoGetsVouchersInputOption("value", YouPartnerBothNeitherNotSureEnum.YOU.toString),
-    whoGetsVouchersInputOption("value-2", YouPartnerBothNeitherNotSureEnum.PARTNER.toString),
-    whoGetsVouchersInputOption("value-3", YouPartnerBothNeitherNotSureEnum.BOTH.toString),
-    whoGetsVouchersInputOption("value-4", YouPartnerBothNeitherNotSureEnum.NEITHER.toString)
-  )
-
-  private def whoGetsVouchersInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"whoGetsVouchers.$option"
+  private val WhoGetsVouchersFormatter: Formatter[YouPartnerBothNeitherNotSure] =
+    EnumFormatter[YouPartnerBothNeitherNotSure](
+      missingErrorKey = whoGetsVouchersErrorKey,
+      unknownValueErrorKey = unknownErrorKey
     )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def apply(): Form[YouPartnerBothNeitherNotSure] =
+    Form(single("value" -> of(WhoGetsVouchersFormatter)))
+
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whoGetsVouchers",
+    values = Seq(
+      YouPartnerBothNeitherNotSure.You,
+      YouPartnerBothNeitherNotSure.Partner,
+      YouPartnerBothNeitherNotSure.Both,
+      YouPartnerBothNeitherNotSure.Neither
+    )
+  )
+
 }

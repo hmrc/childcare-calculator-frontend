@@ -23,7 +23,7 @@ import play.api.data.{FormError, Mapping}
 class WithErrorsSpec extends PlaySpec with EitherValues {
 
   val mapping: Mapping[String] = {
-    import play.api.data.Forms._
+    import play.api.data.Forms.*
     single(
       "foo" -> nonEmptyText
         .replaceError("error.required", "my.custom.error.notCompleted")

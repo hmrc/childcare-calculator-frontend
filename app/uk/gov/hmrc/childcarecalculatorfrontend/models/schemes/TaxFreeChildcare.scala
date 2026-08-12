@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, ParentsBenefits}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefit.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, ParentsBenefit}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
+@Singleton
 class TaxFreeChildcare @Inject() (freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator)
     extends Scheme {
 
-  private val eligibleBenefits: Set[ParentsBenefits] = Set(
+  private val eligibleBenefits: Set[ParentsBenefit] = Set(
     CarersAllowance,
     IncapacityBenefit,
     SevereDisablementAllowance,

@@ -17,14 +17,14 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
+import play.twirl.api.Html
 
 trait NewBigDecimalViewBehaviours extends NewQuestionViewBehaviours[BigDecimal] {
 
   val number = 12
 
   def bigDecimalPage(
-      createView: (Form[BigDecimal]) => HtmlFormat.Appendable,
+      createView: Form[BigDecimal] => Html,
       messageKeyPrefix: String,
       expectedFormAction: String,
       label: Option[String] = None,

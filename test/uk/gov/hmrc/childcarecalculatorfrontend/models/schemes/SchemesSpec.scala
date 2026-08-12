@@ -16,18 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligibility, Eligible, NotDetermined, NotEligible}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Eligibility
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class SchemesSpec extends SchemeSpec {
 
-  def scheme(e: Eligibility): Scheme = new Scheme {
-    override def eligibility(answers: UserAnswers): Eligibility = e
-  }
+  def scheme(e: Eligibility): Scheme = (answers: UserAnswers) => e
 
-  val eligible: Scheme      = scheme(Eligible)
-  val notEligible: Scheme   = scheme(NotEligible)
-  val notDetermined: Scheme = scheme(NotDetermined)
+  val eligible: Scheme      = scheme(Eligibility.Eligible)
+  val notEligible: Scheme   = scheme(Eligibility.NotEligible)
+  val notDetermined: Scheme = scheme(Eligibility.NotDetermined)
 
   ".allSchemesDetermined" must {
 

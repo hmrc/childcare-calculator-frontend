@@ -16,24 +16,25 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
-class WhosHadBenefitsFormSpec extends FormBehaviours {
+class WhosHadBenefitsFormSpec extends FormBehaviours[YouPartnerBoth] {
 
   val validData: Map[String, String] = Map(
-    "value" -> WhosHadBenefitsForm.options.head.value
+    "value" -> YouPartnerBoth.You.toString
   )
 
-  val form = WhosHadBenefitsForm()
+  val form: Form[YouPartnerBoth] = WhosHadBenefitsForm()
 
   "WhosHadBenefits form" must {
 
-    behave.like(questionForm[YouPartnerBothEnum.Value](YouPartnerBothEnum.YOU))
+    behave.like(questionForm(YouPartnerBoth.You))
 
     behave.like(
-      formWithOptionFieldError("value", whosHadBenefitsErrorKey, WhosHadBenefitsForm.options.map(x => x.value): _*)
+      formWithOptionFieldError("value", whosHadBenefitsErrorKey, YouPartnerBoth.values*)
     )
   }
 

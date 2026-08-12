@@ -16,43 +16,36 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.services
 
-import play.api.libs.json.Format
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import play.api.libs.json.{Format, Reads, Writes}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.SessionIdProvider
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheKey, CacheMap}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object FakeDataCacheService extends DataCacheConnector {
+object FakeDataCacheService extends DataCacheService {
 
-  implicit val ec: ExecutionContext = ExecutionContext.global
+  given ec: ExecutionContext = ExecutionContext.global
 
-  override def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap] = Future(
-    CacheMap(cacheId, Map())
+  override def save[A](
+      key: CacheKey[A],
+      value: A
+  )(using writes: Writes[A], sessionIdProvider: SessionIdProvider): Future[CacheMap] = Future(
+    CacheMap(sessionIdProvider.sessionId, Map())
   )
 
-  override def remove(cacheId: String, key: String): Future[Boolean] = ???
-
-  override def fetch(cacheId: String): Future[Option[CacheMap]] = Future(Some(CacheMap(cacheId, Map())))
-
-  override def getEntry[A](cacheId: String, key: String)(implicit fmt: Format[A]): Future[Option[A]] = Future(
-    CacheMap(cacheId, Map()).getEntry(key)
+  override def fetch()(using sessionIdProvider: SessionIdProvider): Future[Option[CacheMap]] = Future(
+    Some(CacheMap(sessionIdProvider.sessionId, Map()))
   )
 
-  override def addToCollection[A](cacheId: String, collectionKey: String, value: A)(
-      implicit fmt: Format[A]
-  ): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+  override def getEntry[A](
+      key: CacheKey[A]
+  )(using reads: Reads[A], sessionIdProvider: SessionIdProvider): Future[Option[A]] = Future(
+    CacheMap(sessionIdProvider.sessionId, Map()).getEntry(key)
+  )
 
-  override def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(
-      implicit fmt: Format[A]
-  ): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
+  override def saveInMap[K, V](collectionKey: CacheKey[Map[K, V]], key: K, value: V)(
+      using fmt: Format[Map[K, V]],
+      sessionIdProvider: SessionIdProvider
+  ) = Future(CacheMap(sessionIdProvider.sessionId, Map()))
 
-  override def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(
-      implicit fmt: Format[A]
-  ): Future[CacheMap] = Future(CacheMap(cacheId, Map()))
-
-  override def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(
-      implicit fmt: Format[Map[K, V]]
-  ) = Future(CacheMap(cacheId, Map()))
-
-  override def updateMap(data: CacheMap): Future[Boolean] = Future(true)
 }

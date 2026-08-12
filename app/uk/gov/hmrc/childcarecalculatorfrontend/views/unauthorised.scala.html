@@ -14,15 +14,15 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-
-
 @this(
     layout: Layout,
-    heading: playComponents.heading
+    heading: playComponents.heading,
 )
 
-@(appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+@()(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{messages("unauthorised.title")}
 

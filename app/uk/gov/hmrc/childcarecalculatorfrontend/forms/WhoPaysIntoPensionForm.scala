@@ -17,39 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object WhoPaysIntoPensionForm extends FormErrorHelper {
 
-  def WhoPaysIntoPensionFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, whoPaysIntoPensionErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
+  private def WhoPaysIntoPensionFormatter: Formatter[YouPartnerBoth] =
+    EnumFormatter[YouPartnerBoth](missingErrorKey = whoPaysIntoPensionErrorKey, unknownValueErrorKey = unknownErrorKey)
 
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
+  def apply(): Form[YouPartnerBoth] =
     Form(single("value" -> of(WhoPaysIntoPensionFormatter)))
 
-  def options = Seq(
-    whoPaysIntoPensionInputOption("value", YouPartnerBothEnum.YOU.toString),
-    whoPaysIntoPensionInputOption("value-2", YouPartnerBothEnum.PARTNER.toString),
-    whoPaysIntoPensionInputOption("value-3", YouPartnerBothEnum.BOTH.toString)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whoPaysIntoPension",
+    values = Seq(
+      YouPartnerBoth.You,
+      YouPartnerBoth.Partner,
+      YouPartnerBoth.Both
+    )
   )
 
-  private def whoPaysIntoPensionInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"whoPaysIntoPension.$option"
-    )
-
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

@@ -14,25 +14,38 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildrenAgeGroupsForm
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup._
 
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        inputCheckBox: playComponents.input_check_box,
-        submitButton: playComponents.submit_button,
-        govukCheckboxes: GovukCheckboxes,
-        appConfig: FrontendAppConfig
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    inputCheckBox: playComponents.input_check_box,
+    submitButton: playComponents.submit_button,
 )
 
-@(form: Form[Set[ChildAgeGroup]])(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[Set[ChildAgeGroup]],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("childrenAgeGroups.title")) else messages("childrenAgeGroups.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("childrenAgeGroups.title"))
+    } else {
+        messages("childrenAgeGroups.title")
+    }
+}
+
+@checkboxItem(value: ChildAgeGroup) = @{
+    CheckboxItem(
+        content = Text(messages(s"childrenAgeGroups.$value")),
+        value = value.toString,
+        checked = form.value.getOrElse(Set.empty).contains(value)
+    )
 }
 
 @layout(
@@ -47,37 +60,16 @@
             legend = messages("childrenAgeGroups.heading"),
             isPageHeading = true,
             hint = Some(messages("childrenAgeGroups.hint")),
-            inputs = (Seq(
-                CheckboxItem(
-                    content = Text(messages(s"childrenAgeGroups.$nineTo23Months")),
-                    value = nineTo23Months,
-                    checked = form.data.values.toList.contains(nineTo23Months)
-                ))
-            ) ++ Seq(
-                CheckboxItem(
-                    content = Text(messages(s"childrenAgeGroups.$twoYears")),
-                    value = twoYears,
-                    checked = form.data.values.toList.contains(twoYears)
-                ),
-                CheckboxItem(
-                    content = Text(messages(s"childrenAgeGroups.$threeYears")),
-                    value = threeYears,
-                    checked = form.data.values.toList.contains(threeYears)
-                ),
-                CheckboxItem(
-                    content = Text(messages(s"childrenAgeGroups.$fourYears")),
-                    value = fourYears,
-                    checked = form.data.values.toList.contains(fourYears)
-                ),
+            inputs = Seq(
+                checkboxItem(ChildAgeGroup.NineTo23Months),
+                checkboxItem(ChildAgeGroup.TwoYears),
+                checkboxItem(ChildAgeGroup.ThreeYears),
+                checkboxItem(ChildAgeGroup.FourYears),
                 CheckboxItem(
                     divider = Some(messages("childrenAgeGroups.or"))
                 ),
-                CheckboxItem(
-                    content = Text(messages(s"childrenAgeGroups.$noneOfThese")),
-                    value = noneOfThese,
-                    checked = form.data.values.toList.contains(noneOfThese),
-                    behaviour = Some(ExclusiveCheckbox)
-                )
+                checkboxItem(ChildAgeGroup.NoneOfThese)
+                    .copy(behaviour = Some(ExclusiveCheckbox))
             )
         )
 

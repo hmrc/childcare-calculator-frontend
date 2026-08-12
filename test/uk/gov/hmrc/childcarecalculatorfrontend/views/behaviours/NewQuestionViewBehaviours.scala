@@ -33,7 +33,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
  */
 
 import play.api.data.{Form, FormError}
-import play.twirl.api.HtmlFormat
+import play.twirl.api.Html
 
 trait NewQuestionViewBehaviours[A] extends NewViewBehaviours {
 
@@ -44,11 +44,11 @@ trait NewQuestionViewBehaviours[A] extends NewViewBehaviours {
   val form: Form[A]
 
   def pageWithTextFields(
-      createView: (Form[A]) => HtmlFormat.Appendable,
+      createView: Form[A] => Html,
       messageKeyPrefix: String,
       expectedFormAction: String,
       fields: String*
-  ) =
+  ): Unit =
 
     "behave like a question page" when {
       "rendered" must {

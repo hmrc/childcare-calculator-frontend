@@ -16,21 +16,15 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.SelfEmployedOrApprenticeOrNeitherEnum.{
-  APPRENTICE,
-  SELFEMPLOYED,
-  SelfEmployedOrApprenticeOrNeitherEnum
-}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{SelfEmployedOrApprenticeOrNeitherEnum, _}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{EmploymentStatus, YouPartnerBothNeither}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.tfc.Household.{JointHousehold, SingleHousehold}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
+@Singleton
 class ModelFactory @Inject() {
-
-  val You: String     = YouPartnerBothEnum.YOU.toString
-  val Both: String    = YouPartnerBothEnum.BOTH.toString
-  val Partner: String = YouPartnerBothEnum.PARTNER.toString
 
   def apply(answers: UserAnswers): Option[Household] =
     answers.doYouLiveWithPartner.flatMap {
@@ -47,14 +41,12 @@ class ModelFactory @Inject() {
   private def buildParent(answers: UserAnswers): Option[Parent] =
     for {
       parentMinEarnings <- answers.whoIsInPaidEmployment.flatMap {
-        case str if str == You  => answers.yourMinimumEarnings
-        case str if str == Both => answers.yourMinimumEarnings
-        case _                  => Some(false)
+        case YouPartnerBothNeither.You  => answers.yourMinimumEarnings
+        case YouPartnerBothNeither.Both => answers.yourMinimumEarnings
+        case _                          => Some(false)
       }
 
-      areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice.map(
-        SelfEmployedOrApprenticeOrNeitherEnum.withName
-      )
+      areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
 
       parentApprentice = isApprenticeAndNotEarningTheMinimum(parentMinEarnings, areYouSelfEmployedOrApprentice)
       parentSelfEmployed = isRecentlySelfEmployedAndNotEarningTheMinimum(
@@ -77,14 +69,12 @@ class ModelFactory @Inject() {
   private def buildPartner(answers: UserAnswers): Option[Parent] =
     for {
       partnerMinEarnings <- answers.whoIsInPaidEmployment.flatMap {
-        case str if str == Partner => answers.partnerMinimumEarnings
-        case str if str == Both    => answers.partnerMinimumEarnings
-        case _                     => Some(false)
+        case YouPartnerBothNeither.Partner => answers.partnerMinimumEarnings
+        case YouPartnerBothNeither.Both    => answers.partnerMinimumEarnings
+        case _                             => Some(false)
       }
 
-      partnerSelfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice.map(
-        SelfEmployedOrApprenticeOrNeitherEnum.withName
-      )
+      partnerSelfEmployedOrApprentice = answers.partnerSelfEmployedOrApprentice
 
       partnerApprentice = isApprenticeAndNotEarningTheMinimum(partnerMinEarnings, partnerSelfEmployedOrApprentice)
       partnerSelfEmployed = isRecentlySelfEmployedAndNotEarningTheMinimum(
@@ -113,9 +103,7 @@ class ModelFactory @Inject() {
           Some(false)
         }
 
-      areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice.map(
-        SelfEmployedOrApprenticeOrNeitherEnum.withName
-      )
+      areYouSelfEmployedOrApprentice = answers.areYouSelfEmployedOrApprentice
 
       apprentice = isApprenticeAndNotEarningTheMinimum(minEarnings, areYouSelfEmployedOrApprentice)
       selfEmployed = isRecentlySelfEmployedAndNotEarningTheMinimum(
@@ -133,8 +121,8 @@ class ModelFactory @Inject() {
 
       doYouGetAnyBenefits <- answers.doYouGetAnyBenefits
       benefits <-
-        if (doYouGetAnyBenefits.contains(ParentsBenefits.NoneOfThese)) {
-          Some(Set.empty[ParentsBenefits])
+        if (doYouGetAnyBenefits.contains(ParentsBenefit.NoneOfThese)) {
+          Some(Set.empty[ParentsBenefit])
         } else {
           answers.doYouGetAnyBenefits
         }
@@ -142,21 +130,21 @@ class ModelFactory @Inject() {
 
   private def isApprenticeAndNotEarningTheMinimum(
       minEarnings: Boolean,
-      areYouSelfEmployedOrApprentice: Option[SelfEmployedOrApprenticeOrNeitherEnum]
+      areYouSelfEmployedOrApprentice: Option[EmploymentStatus]
   ): Boolean =
     (minEarnings, areYouSelfEmployedOrApprentice) match {
-      case (false, Some(APPRENTICE)) => true
-      case _                         => false
+      case (false, Some(EmploymentStatus.Apprentice)) => true
+      case _                                          => false
     }
 
   private def isRecentlySelfEmployedAndNotEarningTheMinimum(
       minEarnings: Boolean,
-      areYouSelfEmployedOrApprentice: Option[SelfEmployedOrApprenticeOrNeitherEnum],
+      areYouSelfEmployedOrApprentice: Option[EmploymentStatus],
       isEmployedForLessThan12Months: Boolean
   ): Boolean =
     (minEarnings, areYouSelfEmployedOrApprentice) match {
-      case (false, Some(SELFEMPLOYED)) => isEmployedForLessThan12Months
-      case _                           => false
+      case (false, Some(EmploymentStatus.SelfEmployed)) => isEmployedForLessThan12Months
+      case _                                            => false
     }
 
 }

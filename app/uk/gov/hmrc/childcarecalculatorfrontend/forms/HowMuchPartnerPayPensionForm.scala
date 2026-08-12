@@ -17,35 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.DecimalFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
 object HowMuchPartnerPayPensionForm extends FormErrorHelper {
 
-  private def howMuchPartnerPayPensionFormatter(errorKeyBlank: String, errorKeyInvalid: String): Formatter[BigDecimal] =
-    new Formatter[BigDecimal] {
+  private def howMuchPartnerPayPensionFormatter(
+      missingErrorKey: String,
+      invalidValueErrorKey: String
+  ): Formatter[BigDecimal] =
+    DecimalFormatter(missingErrorKey = missingErrorKey, invalidValueErrorKey = invalidValueErrorKey)
 
-      val decimalRegex = """\d+(\.\d{1,2})?"""
-
-      def bind(key: String, data: Map[String, String]) =
-        data.get(key) match {
-          case None                               => produceError(key, errorKeyBlank)
-          case Some("")                           => produceError(key, errorKeyBlank)
-          case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
-          case _                                  => produceError(key, errorKeyInvalid)
-        }
-
-      def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-    }
-
-  def apply(
-      errorKeyBlank: String = howMuchPartnerPayPensionRequiredErrorKey,
-      errorKeyInvalid: String = howMuchPartnerPayPensionInvalidErrorKey
-  ): Form[BigDecimal] =
+  def apply(): Form[BigDecimal] =
     Form(
       single(
-        "value" -> of(howMuchPartnerPayPensionFormatter(errorKeyBlank, errorKeyInvalid))
+        "value" -> of(
+          howMuchPartnerPayPensionFormatter(
+            howMuchPartnerPayPensionRequiredErrorKey,
+            howMuchPartnerPayPensionInvalidErrorKey
+          )
+        )
           .verifying(minimumValue[BigDecimal](1, howMuchPartnerPayPensionInvalidErrorKey))
           .verifying(maximumValue[BigDecimal](9999.99, howMuchPartnerPayPensionInvalidErrorKey))
       )

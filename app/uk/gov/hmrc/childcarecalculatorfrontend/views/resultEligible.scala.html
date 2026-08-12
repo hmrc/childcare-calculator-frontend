@@ -14,18 +14,24 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.{EligibilityModel, ResultsViewModel, SchemeResultModel}
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.{FourYears, Location, NineTo23Months, ThreeYears, TwoYears}
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
+@import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
 
 @this(
-        schemeResult: playComponents.scheme_result,
-        appConfig: FrontendAppConfig
+    schemeResult: playComponents.scheme_result,
+    appConfig: FrontendAppConfig,
+    utils: Utils,
 )
 
-@(model: ResultsViewModel, utils: Utils, location: String)(implicit messages: Messages)
+@(
+    model: ResultsViewModel,
+)(
+    using messages: Messages,
+)
 
 @freeHoursContactCouncil = {
     <p class="govuk-body">@messages("result.free.hours.detailPara3.you.can")
@@ -40,20 +46,35 @@
         id = Some("freeChildcareWorkingParents"),
         couldGet = Some(messages("result.you.can.get")),
         childrenAgeGroupText = Seq(
-            if(model.childrenAgeGroups.contains(NineTo23Months)) Some(messages("result.free.childcare.working.parents.nineTo23.Month.old", appConfig.maxFreeHoursAmount)) else None,
-            if(model.childrenAgeGroups.contains(TwoYears)) Some(messages("result.free.childcare.working.parents.two.year.old", appConfig.maxFreeHoursAmount)) else None,
-            if(model.childrenAgeGroups.contains(ThreeYears) || model.childrenAgeGroups.contains(FourYears)) Some(messages("result.free.childcare.working.parents.threeOrFour.year.old")) else None
+            Option.when(model.childrenAgeGroups.contains(ChildAgeGroup.NineTo23Months)) {
+                messages("result.free.childcare.working.parents.nineTo23.Month.old", appConfig.maxFreeHoursAmount)
+            },
+            Option.when(model.childrenAgeGroups.contains(ChildAgeGroup.TwoYears)) {
+                messages("result.free.childcare.working.parents.two.year.old", appConfig.maxFreeHoursAmount)
+            },
+            Option.when(model.childrenAgeGroups.contains(ChildAgeGroup.ThreeYears) || model.childrenAgeGroups.contains(ChildAgeGroup.FourYears)) {
+                messages("result.free.childcare.working.parents.threeOrFour.year.old")
+            }
         ),
         displayApplyForFCHLink = true,
-        location = location
+        location = model.location.toString
     ))
 } else if(model.freeHours.isDefined) {
     @schemeResult(SchemeResultModel(
         title = messages("result.free.hours.title.3to4"),
         id = Some("freeHours"),
         couldGet = Some(messages("result.you.could.get.up.to")),
-        eligibility = Some(EligibilityModel(model.freeHours.fold("")(hours => if(hours != freeHoursForNI) s"${hours.toString} ${messages("result.free.hours.hours")}" else messages("result.free.hours.twelve.and.half")), "freeHoursEligibility")),
-        periodText = if(model.location == Location.ENGLAND) {
+        eligibility = Some(
+            EligibilityModel(
+                model.freeHours.fold("")(hours => if(hours != freeHoursForNI) {
+                    s"${hours.toString} ${messages("result.free.hours.hours")}"
+                } else {
+                    messages("result.free.hours.twelve.and.half")
+                }),
+                "freeHoursEligibility"
+            )
+        ),
+        periodText = if(model.location == Location.England) {
             Some(messages(s"result.free.hours.period.${model.location}", totalNoOfHoursAYear))
         } else {
             Some(messages(s"result.free.hours.period.${model.location}"))
@@ -68,11 +89,11 @@
         title = messages("result.tfc.title"),
         id = Some("tfc"),
         couldGet = Some(messages("result.you.could.get")),
-        eligibility = Some(EligibilityModel("£" + model.tfc.fold("")(value => utils.valueFormatter(value)), "taxFreeChildcareEligibility")),
+        eligibility = Some(EligibilityModel("£" + model.tfc.fold("")(value => utils.formatBigDecimal(value)), "taxFreeChildcareEligibility")),
         periodText = Some(messages("result.tfc.period")),
         warningMessage = model.tfcWarningMessage,
         displayApplyForTFCLink = true,
-        location = location
+        location = model.location.toString
     ))
 }
 
@@ -81,7 +102,7 @@
         title = messages("result.esc.title"),
         id = Some("esc"),
         couldGet = Some(messages("result.you.could.get")),
-        eligibility = Some(EligibilityModel("£" + model.esc.fold("")(value => utils.valueFormatter(value)), "childcareVouchersEligibility")),
+        eligibility = Some(EligibilityModel("£" + model.esc.fold("")(value => utils.formatBigDecimal(value)), "childcareVouchersEligibility")),
         periodText = Some(messages("result.esc.period"))
     ))
 }

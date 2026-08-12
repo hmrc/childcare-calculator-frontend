@@ -18,11 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import play.api.i18n.Messages
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.ChildcarePayFrequency
 
 object ExpectedChildcareCostsForm extends FormErrorHelper {
 
-  def apply(frequency: ChildcarePayFrequency.Value, name: String)(implicit messages: Messages): Form[BigDecimal] =
+  def apply(frequency: ChildcarePayFrequency, name: String)(using messages: Messages): Form[BigDecimal] =
     Form(
       "value" ->
         decimal(

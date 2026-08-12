@@ -14,32 +14,30 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import play.api.mvc.Call
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-
 @this(
     layout: Layout,
-    formWithCSRF: FormWithCSRF,
     heading: playComponents.heading,
-    button_link: playComponents.button_link
+    button_link: playComponents.button_link,
+    taxYearInfo: TaxYearInfo,
 )
 
 @(
-    appConfig: FrontendAppConfig,
     nextPage: Call,
-    taxYearInfo: TaxYearInfo
 )(
-    implicit request: Request[_],
-    messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @bulletList = @{
-    Seq(messages("partnerIncomeInfo.li.income_paid_work"),
+    Seq(
+        messages("partnerIncomeInfo.li.income_paid_work"),
         messages("partnerIncomeInfo.li.pensions"),
         messages("partnerIncomeInfo.li.other_income"),
-        messages("partnerIncomeInfo.li.benefits_income"))
+        messages("partnerIncomeInfo.li.benefits_income")
+    )
 }
 
 @layout(

@@ -16,74 +16,69 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
-import javax.inject.Inject
 import play.api.libs.json.{JsBoolean, JsString, JsValue}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
-class PensionsCascadeUpsert @Inject() () extends SubCascadeUpsert {
+import javax.inject.{Inject, Singleton}
+
+@Singleton
+class PensionsCascadeUpsert @Inject() {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      YouPaidPensionCYId.toString     -> ((v, cm) => storeYouPaidPensionCY(v, cm)),
-      PartnerPaidPensionCYId.toString -> ((v, cm) => storePartnerPaidPensionCY(v, cm)),
-      BothPaidPensionCYId.toString    -> ((v, cm) => storeBothPaidPensionCY(v, cm)),
-      WhoPaysIntoPensionId.toString   -> ((v, cm) => storeWhoPaysIntoPension(v, cm))
+      YouPaidPensionCYId.cacheKey     -> ((v, cm) => storeYouPaidPensionCY(v, cm)),
+      PartnerPaidPensionCYId.cacheKey -> ((v, cm) => storePartnerPaidPensionCY(v, cm)),
+      BothPaidPensionCYId.cacheKey    -> ((v, cm) => storeBothPaidPensionCY(v, cm)),
+      WhoPaysIntoPensionId.cacheKey   -> ((v, cm) => storeWhoPaysIntoPension(v, cm))
     )
 
   private def storeYouPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsBoolean(false) => cacheMap.copy(data = cacheMap.data - HowMuchYouPayPensionId.toString)
+      case JsBoolean(false) => cacheMap.removed(HowMuchYouPayPensionId)
       case _                => cacheMap
     }
 
-    store(YouPaidPensionCYId.toString, value, mapToStore)
+    mapToStore.updated(YouPaidPensionCYId, value)
   }
 
   private def storePartnerPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsBoolean(false) => cacheMap.copy(data = cacheMap.data - HowMuchPartnerPayPensionId.toString)
+      case JsBoolean(false) => cacheMap.removed(HowMuchPartnerPayPensionId)
       case _                => cacheMap
     }
 
-    store(PartnerPaidPensionCYId.toString, value, mapToStore)
+    mapToStore.updated(PartnerPaidPensionCYId, value)
   }
 
   private def storeBothPaidPensionCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsBoolean(false) =>
-        cacheMap.copy(data =
-          cacheMap.data - HowMuchYouPayPensionId.toString - HowMuchPartnerPayPensionId.toString
-            - HowMuchBothPayPensionId.toString - WhoPaysIntoPensionId.toString
+        cacheMap.removedAll(
+          HowMuchYouPayPensionId,
+          HowMuchPartnerPayPensionId,
+          HowMuchBothPayPensionId,
+          WhoPaysIntoPensionId
         )
       case _ => cacheMap
     }
 
-    store(BothPaidPensionCYId.toString, value, mapToStore)
+    mapToStore.updated(BothPaidPensionCYId, value)
   }
 
   private def storeWhoPaysIntoPension(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsString(`you`) =>
-        cacheMap.copy(data =
-          cacheMap.data - HowMuchPartnerPayPensionId.toString -
-            HowMuchBothPayPensionId.toString
-        )
-      case JsString(`partner`) =>
-        cacheMap.copy(data =
-          cacheMap.data - HowMuchYouPayPensionId.toString -
-            HowMuchBothPayPensionId.toString
-        )
-      case JsString(`both`) =>
-        cacheMap.copy(data =
-          cacheMap.data - HowMuchYouPayPensionId.toString -
-            HowMuchPartnerPayPensionId.toString
-        )
+      case JsString(YouPartnerBoth.You.toString) =>
+        cacheMap.removedAll(HowMuchPartnerPayPensionId, HowMuchBothPayPensionId)
+      case JsString(YouPartnerBoth.Partner.toString) =>
+        cacheMap.removedAll(HowMuchYouPayPensionId, HowMuchBothPayPensionId)
+      case JsString(YouPartnerBoth.Both.toString) =>
+        cacheMap.removedAll(HowMuchYouPayPensionId, HowMuchPartnerPayPensionId)
       case _ => cacheMap
     }
 
-    store(WhoPaysIntoPensionId.toString, value, mapToStore)
+    mapToStore.updated(WhoPaysIntoPensionId, value)
   }
 
 }

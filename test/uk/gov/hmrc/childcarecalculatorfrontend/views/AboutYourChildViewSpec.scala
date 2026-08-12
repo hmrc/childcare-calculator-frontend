@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
-import play.twirl.api.{Html, HtmlFormat}
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AboutYourChildForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
@@ -30,27 +30,22 @@ class AboutYourChildViewSpec
 
   val messageKeyPrefix = "aboutYourChild"
 
-  val view = application.injector.instanceOf[aboutYourChild]
+  val view: aboutYourChild = inject[aboutYourChild]
 
-  def createView: () => Html = () => createView(0, 1)
-
-  def createViewUsingForm: Form[AboutYourChild] => HtmlFormat.Appendable = (form: Form[AboutYourChild]) =>
-    view(frontendAppConfig, form, 0, 1)(fakeRequest, messages)
-
-  def createView(index: Int, total: Int): Html =
-    view(frontendAppConfig, AboutYourChildForm(), index, total)(fakeRequest, messages)
+  def render(form: Form[AboutYourChild] = this.form, index: Int = 0, total: Int = 1): Html =
+    view(form, index, total)(using fakeRequest, messages)
 
   override val form: Form[AboutYourChild] = AboutYourChildForm()
 
   "AboutYourChild view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix, "title", "heading"))
+    behave.like(normalPage(() => render(), messageKeyPrefix, "title", "heading"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       pageWithTextFields(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.AboutYourChildController.onSubmit(0).url,
         "name"
@@ -59,7 +54,7 @@ class AboutYourChildViewSpec
 
     behave.like(
       pageWithDateFields(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.AboutYourChildController.onSubmit(0).url,
         "aboutYourChild.dob"
@@ -67,17 +62,17 @@ class AboutYourChildViewSpec
     )
 
     "use the correct messages when there are multiple children" in {
-      val doc = asDocument(createView(0, 2))
+      val doc = asDocument(render(index = 0, total = 2))
       assertContainsText(doc, messages(s"$messageKeyPrefix.title.nth", messages("nth.0")))
     }
 
     "contain lede guidance for the first child" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
       assertContainsText(doc, messages(s"$messageKeyPrefix.lede"))
     }
 
     "contain lede guidance for other children" in {
-      val doc = asDocument(createView(1, 2))
+      val doc = asDocument(render(index = 1, total = 2))
       assertContainsText(doc, messages(s"$messageKeyPrefix.lede"))
     }
   }

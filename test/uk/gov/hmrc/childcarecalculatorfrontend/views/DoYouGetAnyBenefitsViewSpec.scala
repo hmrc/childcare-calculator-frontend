@@ -19,49 +19,48 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoYouGetAnyBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefit
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefit.*
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouGetAnyBenefits
 
-class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ParentsBenefits] {
+class DoYouGetAnyBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ParentsBenefit] {
 
-  override val form    = DoYouGetAnyBenefitsForm()
-  val testView         = application.injector.instanceOf[doYouGetAnyBenefits]
-  val messageKeyPrefix = "doYouGetAnyBenefits"
-  val fieldKey: String = DoYouGetAnyBenefitsForm.formId
-  val errorMessage     = s"$messageKeyPrefix.error.select"
+  override val form: Form[Set[ParentsBenefit]] = DoYouGetAnyBenefitsForm()
+  val view: doYouGetAnyBenefits                = inject[doYouGetAnyBenefits]
+  override val messageKeyPrefix                = "doYouGetAnyBenefits"
+  override val fieldKey: String                = DoYouGetAnyBenefitsForm.formId
+  override val errorMessage                    = s"$messageKeyPrefix.error.select"
 
-  override val values: Seq[(String, String)] =
+  override val values: Seq[(String, ParentsBenefit)] =
     Seq(
-      (s"$messageKeyPrefix.$CarersAllowance", CarersAllowance.toString),
-      (s"$messageKeyPrefix.$CarersCredit", CarersCredit.toString),
+      (s"$messageKeyPrefix.$CarersAllowance", CarersAllowance),
+      (s"$messageKeyPrefix.$CarersCredit", CarersCredit),
       (
         s"$messageKeyPrefix.$ContributionBasedEmploymentAndSupportAllowance",
-        ContributionBasedEmploymentAndSupportAllowance.toString
+        ContributionBasedEmploymentAndSupportAllowance
       ),
-      (s"$messageKeyPrefix.$IncapacityBenefit", IncapacityBenefit.toString),
+      (s"$messageKeyPrefix.$IncapacityBenefit", IncapacityBenefit),
       (
         s"$messageKeyPrefix.$NICreditsForIncapacityOrLimitedCapabilityForWork",
-        NICreditsForIncapacityOrLimitedCapabilityForWork.toString
+        NICreditsForIncapacityOrLimitedCapabilityForWork
       ),
-      (s"$messageKeyPrefix.$SevereDisablementAllowance", SevereDisablementAllowance.toString),
-      (s"$messageKeyPrefix.or", "divider"),
-      (s"$messageKeyPrefix.$NoneOfThese", NoneOfThese.toString)
+      (s"$messageKeyPrefix.$SevereDisablementAllowance", SevereDisablementAllowance),
+      (s"$messageKeyPrefix.$NoneOfThese", NoneOfThese)
     )
 
-  override def createView(form: Form[Set[ParentsBenefits]] = form): Html =
-    testView(frontendAppConfig, form)(fakeRequest, messages)
+  override def render(form: Form[Set[ParentsBenefit]] = form): Html =
+    view(form)(using fakeRequest, messages)
 
   "DoYouGetAnyBenefits view" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(render, messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(render))
 
-    behave.like(checkboxPage())
+    behave.like(checkboxPage(divider = true))
 
     "display correct content when loaded" in {
-      val view = createView()
+      val view = render()
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.select.all"))
       assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.or"))
     }

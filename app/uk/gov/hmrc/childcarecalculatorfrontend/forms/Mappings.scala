@@ -20,8 +20,9 @@ import java.time.LocalDate
 import play.api.data.FieldMapping
 import play.api.data.Forms.of
 import play.api.data.validation.{Constraint, Invalid, Valid}
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.{DecimalFormatter, IntFormatter, StringFormatter}
 
-trait Mappings extends Formatters {
+trait Mappings {
 
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
     Constraint { input =>
@@ -32,28 +33,28 @@ trait Mappings extends Formatters {
     }
 
   protected def minimumValue[A](minimum: A, errorKey: String, errorArgs: Any*)(
-      implicit ev: Ordering[A]
+      using ev: Ordering[A]
   ): Constraint[A] =
     Constraint { input =>
-      import ev._
+      import ev.*
 
       if (input >= minimum) {
         Valid
       } else {
-        Invalid(errorKey, errorArgs: _*)
+        Invalid(errorKey, errorArgs*)
       }
     }
 
   protected def maximumValue[A](maximum: A, errorKey: String, errorArgs: Any*)(
-      implicit ev: Ordering[A]
+      using ev: Ordering[A]
   ): Constraint[A] =
     Constraint { input =>
-      import ev._
+      import ev.*
 
       if (input <= maximum) {
         Valid
       } else {
-        Invalid(errorKey, errorArgs: _*)
+        Invalid(errorKey, errorArgs*)
       }
     }
 
@@ -62,13 +63,13 @@ trait Mappings extends Formatters {
       case str if str.length <= maximum =>
         Valid
       case _ =>
-        Invalid(errorKey, errorArgs: _*)
+        Invalid(errorKey, errorArgs*)
     }
 
   protected def inRange[A: Ordering](minimum: A, maximum: A, errorKey: String, errorArgs: Any*): Constraint[A] =
     firstError(
-      minimumValue[A](minimum, errorKey, errorArgs: _*),
-      maximumValue[A](maximum, errorKey, errorArgs: _*)
+      minimumValue[A](minimum, errorKey, errorArgs*),
+      maximumValue[A](maximum, errorKey, errorArgs*)
     )
 
   protected def before(date: LocalDate, errorKey: String, errorArgs: Any*): Constraint[LocalDate] =
@@ -76,7 +77,7 @@ trait Mappings extends Formatters {
       case d if d.isBefore(date) =>
         Valid
       case _ =>
-        Invalid(errorKey, errorArgs: _*)
+        Invalid(errorKey, errorArgs*)
     }
 
   protected def after(date: LocalDate, errorKey: String, errorArgs: Any*): Constraint[LocalDate] =
@@ -84,16 +85,16 @@ trait Mappings extends Formatters {
       case d if d.isAfter(date) =>
         Valid
       case _ =>
-        Invalid(errorKey, errorArgs: _*)
+        Invalid(errorKey, errorArgs*)
     }
 
   protected def decimal(requiredKey: String, invalidKey: String, args: Any*): FieldMapping[BigDecimal] =
-    of(decimalFormatter(requiredKey, invalidKey, args: _*))
+    of(DecimalFormatter(requiredKey, invalidKey, args*))
 
   protected def string(requiredKey: String, args: Any*): FieldMapping[String] =
-    of(stringFormatter(requiredKey, args: _*))
+    of(StringFormatter(requiredKey, args*))
 
   protected def int(requiredKey: String, invalidKey: String, args: Any*): FieldMapping[Int] =
-    of(intFormatter(requiredKey, invalidKey, args: _*))
+    of(IntFormatter(requiredKey, invalidKey, args*))
 
 }

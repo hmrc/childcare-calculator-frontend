@@ -18,19 +18,19 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
+import play.twirl.api.Html
 
 trait NewYesNoViewBehaviours extends NewQuestionViewBehaviours[Boolean] {
 
-  val formProvider = BooleanForm("yourMinimumEarnings.error.notCompleted", 0)
+  val formProvider: Form[Boolean] = BooleanForm("yourMinimumEarnings.error.notCompleted", 0)
 
   def yesNoPage(
-      createView: (Form[Boolean]) => HtmlFormat.Appendable,
+      createView: Form[Boolean] => Html,
       messageKeyPrefix: String,
       expectedFormAction: String,
       legend: Option[String] = None,
       legendDynamicValue: Option[String] = None
-  ) =
+  ): Unit =
 
     "behave like a page with a Yes/No question" when {
       "rendered" must {
@@ -81,7 +81,7 @@ trait NewYesNoViewBehaviours extends NewQuestionViewBehaviours[Boolean] {
       }
     }
 
-  def answeredYesNoPage(createView: (Form[Boolean]) => HtmlFormat.Appendable, answer: Boolean) = {
+  def answeredYesNoPage(createView: Form[Boolean] => Html, answer: Boolean): Unit = {
 
     "have only the correct value checked" in {
       val doc = asDocument(createView(BooleanForm().fill(answer)))

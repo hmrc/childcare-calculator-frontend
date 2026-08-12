@@ -32,7 +32,7 @@ object AboutYourChildForm extends Mappings {
   private val maxDate        = LocalDate.now.plusDays(1)
 
   def apply(index: Int = 0, total: Int = 1, children: Option[Map[Int, AboutYourChild]] = None)(
-      implicit messages: Messages
+      using messages: Messages
   ): Form[AboutYourChild] =
     if (total > 1) {
       multipleChildrenForm(index, children)
@@ -55,7 +55,7 @@ object AboutYourChildForm extends Mappings {
     }
 
   private def multipleChildrenForm(index: Int, children: Option[Map[Int, AboutYourChild]])(
-      implicit messages: Messages
+      using messages: Messages
   ): Form[AboutYourChild] = {
     val indexMessage = messages(s"nth.$index")
 

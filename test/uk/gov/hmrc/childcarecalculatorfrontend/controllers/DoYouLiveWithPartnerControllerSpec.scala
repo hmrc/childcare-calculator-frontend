@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoYouLiveWithPartnerId
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
@@ -29,12 +29,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doYouLiveWithPartner
 
 class DoYouLiveWithPartnerControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[doYouLiveWithPartner]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: doYouLiveWithPartner = inject[doYouLiveWithPartner]
+  def onwardRoute: Call          = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new DoYouLiveWithPartnerController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -43,8 +42,8 @@ class DoYouLiveWithPartnerControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "DoYouLiveWithPartner Controller" must {
 
@@ -56,7 +55,7 @@ class DoYouLiveWithPartnerControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(DoYouLiveWithPartnerId.toString -> JsBoolean(true))
+      val validData       = Map(DoYouLiveWithPartnerId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

@@ -17,24 +17,24 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildcareCostsId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YesNoNotYet
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcareCosts
 
 class ChildcareCostsControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[childcareCosts]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: childcareCosts = inject[childcareCosts]
+  def onwardRoute: Call    = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new ChildcareCostsController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -43,8 +43,8 @@ class ChildcareCostsControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[String] = ChildcareCostsForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[YesNoNotYet] = ChildcareCostsForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "ChildcareCosts Controller" must {
 
@@ -56,17 +56,17 @@ class ChildcareCostsControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(ChildcareCostsId.toString -> JsString(ChildcareCostsForm.options.head.value))
+      val validData       = Map(ChildcareCostsId.withValue(YesNoNotYet.Yes))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(ChildcareCostsForm().fill(ChildcareCostsForm.options.head.value))
+      contentAsString(result) mustBe viewAsString(ChildcareCostsForm().fill(YesNoNotYet.Yes))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest =
-        fakeRequest.withFormUrlEncodedBody(("value", ChildcareCostsForm.options.head.value)).withMethod("POST")
+        fakeRequest.withFormUrlEncodedBody(("value", YesNoNotYet.Yes.toString)).withMethod("POST")
 
       val result = controller().onSubmit()(postRequest)
 
@@ -93,7 +93,7 @@ class ChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
       val postRequest =
-        fakeRequest.withFormUrlEncodedBody(("value", ChildcareCostsForm.options.head.value)).withMethod("POST")
+        fakeRequest.withFormUrlEncodedBody(("value", YesNoNotYet.Yes.toString)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER

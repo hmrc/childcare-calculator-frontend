@@ -18,21 +18,21 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import play.api.data.Forms.{set, single, text}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefit
 
 object DoesYourPartnerGetAnyBenefitsForm {
 
   val formId: String = "doesYourPartnerGetAnyBenefits"
 
-  def apply(): Form[Set[ParentsBenefits]] = Form(
+  def apply(): Form[Set[ParentsBenefit]] = Form(
     single(
       formId -> set(text)
-        .verifying("doesYourPartnerGetAnyBenefits.error.select", _.forall(ParentsBenefits.mapping.keySet.contains _))
-        .transform[Set[ParentsBenefits]](_.map(ParentsBenefits.mapping), _.map(ParentsBenefits.inverseMapping))
+        .verifying("doesYourPartnerGetAnyBenefits.error.select", _.forall(ParentsBenefit.withName(_).isDefined))
+        .transform[Set[ParentsBenefit]](_.map(ParentsBenefit.withName(_).get), _.map(_.toString))
         .verifying("doesYourPartnerGetAnyBenefits.error.select", _.nonEmpty)
         .verifying(
           "doesYourPartnerGetAnyBenefits.error.select",
-          set => !(set.contains(ParentsBenefits.NoneOfThese) && set.size > 1)
+          set => !(set.contains(ParentsBenefit.NoneOfThese) && set.size > 1)
         )
     )
   )

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.test.Helpers.status
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 
 class FeedbackSurveyControllerSpec extends ControllerSpecBase {
 

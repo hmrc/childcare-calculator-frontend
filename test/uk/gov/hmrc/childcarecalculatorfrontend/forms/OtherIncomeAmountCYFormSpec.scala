@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.OtherIncomeAmountCY
 
-class OtherIncomeAmountCYFormSpec extends FormBehaviours {
+class OtherIncomeAmountCYFormSpec extends FormBehaviours[OtherIncomeAmountCY] {
 
   val validData: Map[String, String] = Map(
     "parentOtherIncome"  -> "1",
@@ -29,7 +30,7 @@ class OtherIncomeAmountCYFormSpec extends FormBehaviours {
   override val maxValue: BigDecimal = 999999.99
   override val minValue: BigDecimal = 0
 
-  val form = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
+  val form: Form[OtherIncomeAmountCY] = new OtherIncomeAmountCYForm(frontendAppConfig).apply()
 
   "OtherIncomeAmountCY form" must {
     behave.like(questionForm(OtherIncomeAmountCY(1, 2)))

@@ -17,101 +17,115 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import play.api.data.{Form, FormError}
-import play.twirl.api.{Html, HtmlFormat}
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.views.NewViewSpecBase
 
 trait NewCheckboxViewBehaviours[A] extends NewViewSpecBase {
 
   def form: Form[Set[A]]
-  def createView(form: Form[Set[A]]): Html
-  def createView: () => HtmlFormat.Appendable = () => createView(form)
-  def values: Seq[(String, String)]
+  def render(form: Form[Set[A]]): Html
+  def render: () => Html = () => render(form)
+  def values: Seq[(String, A)]
 
   def fieldKey: String
   def errorMessage: String
   def messageKeyPrefix: String
-  lazy val error   = FormError(fieldKey, errorMessage)
-  lazy val divider = "divider"
+  def dividerMessageKey: String = s"$messageKeyPrefix.or"
 
-  def fieldId(index: Int): String =
-    index + 1 match {
-      case 1 => fieldKey
-      case i => form(fieldKey)(s"[$i]").id.replace("_", "-")
-    }
+  lazy val error = FormError(fieldKey, errorMessage)
 
   // scalastyle:off
-  def checkboxPage(legend: Option[String] = None): Unit = {
+  def checkboxPage(legend: Option[String] = None, divider: Boolean = true): Unit =
 
-    "rendered" must {
-
-      "contain a legend for the question" in {
-        val doc     = asDocument(createView())
-        val legends = doc.getElementsByTag("legend")
-        legends.size mustBe 1
-        legends.first.text mustBe legend.getOrElse(messages(s"$messageKeyPrefix.heading"))
+    def fieldId(index: Int): String =
+      index + 1 match {
+        case 1                                => fieldKey
+        case i if i == values.size && divider => s"$fieldKey-${i + 1}"
+        case i                                => s"$fieldKey-$i"
       }
 
-      "contain an input or divider for the value" in {
-        val doc = asDocument(createView())
-        for { (value, i) <- values.zipWithIndex } yield
-          if (value._2 != divider) assertRenderedById(doc, fieldId(i))
-          else assertRenderedByCssSelector(doc, ".govuk-checkboxes__divider")
-      }
+    "behave like a multi-checkbox page" when {
 
-      "contain a label for each input or divider" in {
-        val doc = asDocument(createView())
-        for { ((label, value), i) <- values.zipWithIndex } yield
-          if (value != divider) {
-            val id = fieldId(i)
-            doc.select(s"label[for=$id]").text mustEqual messages(label).capitalize
-          } else {
-            doc.select(".govuk-checkboxes__divider").text mustEqual messages(label)
+      "rendered" must {
+
+        "contain a legend for the question" in {
+          val doc     = asDocument(render())
+          val legends = doc.getElementsByTag("legend")
+          legends.size mustBe 1
+          legends.first.text mustBe legend.getOrElse(messages(s"$messageKeyPrefix.heading"))
+        }
+
+        if (divider) {
+          "contain a divider" in {
+            val doc = asDocument(render())
+            assertRenderedByCssSelector(doc, ".govuk-checkboxes__divider")
           }
-      }
 
-      "have no values checked when rendered with no form" in {
-        val doc = asDocument(createView())
-        for { (value, i) <- values.zipWithIndex.filterNot(_._1._2 == divider) } yield assert(
-          !doc.getElementById(fieldId(i)).hasAttr("checked")
-        )
-      }
+          "contain a label for the divider" in {
+            val doc = asDocument(render())
+            doc.select(".govuk-checkboxes__divider").text mustEqual messages(dividerMessageKey)
+          }
+        }
 
-      values.zipWithIndex.filterNot(_._1._2 == divider).foreach { case (v, i) =>
-        s"has correct value checked when value `$v` is given" in {
-          val data: Map[String, String] = Map(
-            s"$fieldKey[$i]" -> v._2
-          )
+        values.zipWithIndex.foreach { case ((label, value), index) =>
 
-          val doc = asDocument(createView(form.bind(data)))
+          s"have an input for value '$value'".that {
 
-          assert(doc.getElementById(fieldId(i)).hasAttr("checked"), s"${fieldId(i)} is not checked")
+            val id = fieldId(index)
 
-          values.zipWithIndex.filterNot(_._1._2 == divider).foreach { case (value, j) =>
-            if (value != v) {
-              assert(!doc.getElementById(fieldId(j)).hasAttr("checked"), s"${fieldId(j)} is checked")
+            s"contains an input element with id '$id'" in {
+              val doc = asDocument(render())
+
+              assertRenderedById(doc, id)
             }
+
+            s"contains a label with message key '$label'" in {
+              val doc = asDocument(render())
+
+              doc.select(s"label[for=$id]").text mustEqual messages(label).capitalize
+            }
+
+            s"is not checked when rendered with no form" in {
+              val doc = asDocument(render())
+
+              doc.getElementById(id).hasAttr("checked") mustBe false
+            }
+
+            s"is checked when bound in form" in {
+              val doc = asDocument(render(form.fill(Set(value))))
+
+              doc.getElementById(id).hasAttr("checked") mustBe true
+
+              values.zipWithIndex.foreach { case (_, index2) =>
+                if (index2 != index) {
+                  val id2 = fieldId(index2)
+                  doc.getElementById(id2).hasAttr("checked") mustBe false
+                }
+              }
+            }
+
           }
+
+        }
+
+        "not render an error summary" in {
+          val doc = asDocument(render())
+          assertNotRenderedById(doc, "error-summary-heading")
         }
       }
 
-      "not render an error summary" in {
-        val doc = asDocument(createView())
-        assertNotRenderedById(doc, "error-summary-heading")
+      "rendered with an error" must {
+        "show an error summary" in {
+          val doc = asDocument(render(form.withError(error)))
+          assertRenderedByCssSelector(doc, ".govuk-error-summary__title")
+        }
+
+        "show an error in the value field's label" in {
+          val doc       = asDocument(render(form.withError(error)))
+          val errorSpan = doc.getElementsByClass("govuk-error-message").first
+          errorSpan.text mustBe "Error: " + messages(errorMessage)
+        }
       }
     }
-
-    "rendered with an error" must {
-      "show an error summary" in {
-        val doc = asDocument(createView(form.withError(error)))
-        assertRenderedByCssSelector(doc, ".govuk-error-summary__title")
-      }
-
-      "show an error in the value field's label" in {
-        val doc       = asDocument(createView(form.withError(error)))
-        val errorSpan = doc.getElementsByClass("govuk-error-message").first
-        errorSpan.text mustBe "Error: " + messages(errorMessage)
-      }
-    }
-  }
 
 }

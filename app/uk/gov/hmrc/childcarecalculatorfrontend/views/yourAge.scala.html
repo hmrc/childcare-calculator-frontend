@@ -14,29 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourAgeForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Age
 
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button,
-        inputRadio: playComponents.input_radio
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button,
+    inputRadio: playComponents.input_radio,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[String]
+    form: Form[Age],
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("yourAge.title")) else messages("yourAge.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("yourAge.title"))
+    } else {
+        messages("yourAge.title")
+    }
 }
 
 @layout(pageTitle = title) {
@@ -45,12 +48,7 @@
 
     @inputRadio(
         legend = heading(messages("yourAge.title")),
-        inputs = YourAgeForm.options map { radioOptions =>
-            RadioItem(
-                value = Some(radioOptions.value),
-                content = HtmlContent(messages(radioOptions.messageKey))
-            )
-        },
+        inputs = YourAgeForm.options.map(_.toRadioItem),
         field = form("value")
     )
 

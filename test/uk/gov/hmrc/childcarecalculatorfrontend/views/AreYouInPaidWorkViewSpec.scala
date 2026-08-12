@@ -16,15 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouInPaidWork
 
@@ -32,24 +29,23 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
 
   override val form: Form[Boolean]   = BooleanForm()
   val messageKeyPrefix               = "areYouInPaidWork"
-  val view: areYouInPaidWork         = application.injector.instanceOf[areYouInPaidWork]
+  val view: areYouInPaidWork         = inject[areYouInPaidWork]
   val bereavedPartnersPaternityLeave = "bereaved partner&#x27;s paternity leave"
 
-  def constructView(
-      appConfig: FrontendAppConfig = frontendAppConfig,
-      form: Form[Boolean] = BooleanForm(),
-      location: Location.Value = Location.ENGLAND
-  ): HtmlFormat.Appendable = view(appConfig, form, location)(fakeRequest, messages)
+  def render(
+      form: Form[Boolean] = this.form,
+      location: Location = Location.England
+  ): Html = view(form, location)(using fakeRequest, messages)
 
   "AreYouInPaidWork view" must {
 
-    behave.like(normalPage(() => constructView(), messageKeyPrefix, "heading", "para1"))
+    behave.like(normalPage(() => render(), messageKeyPrefix, "heading", "para1"))
 
-    behave.like(pageWithBackLink(() => constructView()))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       yesNoPage(
-        (form: Form[Boolean]) => constructView(form = form),
+        (form: Form[Boolean]) => render(form = form),
         messageKeyPrefix,
         routes.AreYouInPaidWorkController.onSubmit().url
       )
@@ -57,19 +53,19 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
 
     "include bereaved partner's paternity leave on page" when {
       "the location is England" in {
-        constructView(location = Location.ENGLAND).toString must include(
+        render(location = Location.England).toString must include(
           bereavedPartnersPaternityLeave
         )
       }
 
       "the location is Scotland" in {
-        constructView(location = Location.SCOTLAND).toString must include(
+        render(location = Location.Scotland).toString must include(
           bereavedPartnersPaternityLeave
         )
       }
 
       "the location is Wales" in {
-        constructView(location = Location.WALES).toString must include(
+        render(location = Location.Wales).toString must include(
           bereavedPartnersPaternityLeave
         )
       }
@@ -77,7 +73,7 @@ class AreYouInPaidWorkViewSpec extends NewYesNoViewBehaviours with BeforeAndAfte
 
     "NOT include bereaved partner's paternity leave on page" when {
       "the location is Northern Ireland" in
-        (constructView(location = Location.NORTHERN_IRELAND).toString must not)
+        (render(location = Location.NorthernIreland).toString must not)
           .include(bereavedPartnersPaternityLeave)
     }
   }

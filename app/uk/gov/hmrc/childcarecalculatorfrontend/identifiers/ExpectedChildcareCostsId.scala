@@ -16,8 +16,11 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
 case class ExpectedChildcareCostsId(id: Int) extends Identifier
 
-object ExpectedChildcareCostsId {
-  override def toString: String = "expectedChildcareCosts"
+object ExpectedChildcareCostsId extends CacheKey[Map[Int, BigDecimal]] {
+  override val toString = "expectedChildcareCosts"
+  override val cacheKey = "expectedChildcareCosts"
 }

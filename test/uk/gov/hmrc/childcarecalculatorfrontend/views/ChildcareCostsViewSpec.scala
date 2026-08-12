@@ -17,29 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcareCostsForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YesNoNotYet
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childcareCosts
 
 class ChildcareCostsViewSpec extends NewViewBehaviours {
 
-  val messageKeyPrefix = "childcareCosts"
-  val view             = application.injector.instanceOf[childcareCosts]
+  val messageKeyPrefix     = "childcareCosts"
+  val view: childcareCosts = inject[childcareCosts]
 
-  def createView = () => view(frontendAppConfig, ChildcareCostsForm())(fakeRequest, messages)
+  val form: Form[YesNoNotYet] = ChildcareCostsForm()
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def render(form: Form[YesNoNotYet] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "ChildcareCosts view" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
   }
 
   "ChildcareCosts view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(ChildcareCostsForm()))
+        val doc = asDocument(render())
         for (option <- ChildcareCostsForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
       }
@@ -48,7 +50,7 @@ class ChildcareCostsViewSpec extends NewViewBehaviours {
     for (option <- ChildcareCostsForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(ChildcareCostsForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(render(form = form.bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
           for (unselectedOption <- ChildcareCostsForm.options.filterNot(o => o == option))

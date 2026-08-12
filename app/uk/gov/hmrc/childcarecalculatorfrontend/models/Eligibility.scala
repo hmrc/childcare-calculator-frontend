@@ -16,7 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models
 
-sealed trait Eligibility
-case object Eligible      extends Eligibility
-case object NotEligible   extends Eligibility
-case object NotDetermined extends Eligibility
+enum Eligibility {
+  case Eligible, NotEligible, NotDetermined
+}
+
+object Eligibility {
+  def fromBoolean(boolean: Boolean): Eligibility = if (boolean) Eligible else NotEligible
+
+  def fromOptionalBoolean(optionalBoolean: Option[Boolean]): Eligibility = optionalBoolean match {
+    case Some(boolean) => fromBoolean(boolean)
+    case None          => NotDetermined
+  }
+
+}

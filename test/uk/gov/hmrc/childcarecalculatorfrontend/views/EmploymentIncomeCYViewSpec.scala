@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.EmploymentIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
@@ -26,27 +27,24 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 
 class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentIncomeCY] {
 
-  val messageKeyPrefix = "employmentIncomeCY"
-  val view             = application.injector.instanceOf[employmentIncomeCY]
+  val messageKeyPrefix         = "employmentIncomeCY"
+  val view: employmentIncomeCY = inject[employmentIncomeCY]
 
   val taxYearInfo = new TaxYearInfo
 
-  override val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
+  override val form: Form[EmploymentIncomeCY] = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
-  def createView = () => view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[EmploymentIncomeCY]) =>
-    view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages)
+  def render(form: Form[EmploymentIncomeCY] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "EmploymentIncomeCY view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix, "hint"))
+    behave.like(normalPage(() => render(), messageKeyPrefix, "hint"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       pageWithTextFields(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.EmploymentIncomeCYController.onSubmit().url,
         "parentEmploymentIncomeCY",
@@ -55,7 +53,7 @@ class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentInc
     )
 
     "contain tax year info" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
       assertContainsText(
         doc,
         messages(s"$messageKeyPrefix.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
@@ -63,7 +61,7 @@ class EmploymentIncomeCYViewSpec extends NewQuestionViewBehaviours[EmploymentInc
     }
 
     "contain the currencySymbol class and £ " in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
 
       assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 

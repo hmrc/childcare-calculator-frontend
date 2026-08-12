@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import java.time.LocalDate
 import uk.gov.hmrc.time.TaxYear
 
-class TaxYearInfo @Inject() () {
+@Singleton
+class TaxYearInfo @Inject() {
 
   private lazy val currentTaxYear: TaxYear = TaxYear.current
 
@@ -28,9 +29,4 @@ class TaxYearInfo @Inject() () {
   lazy val currentTaxYearEndDate: LocalDate = currentTaxYear.finishes
   lazy val currentTaxYearEnd: String        = currentTaxYearEndDate.getYear.toString
 
-  private lazy val previousTaxYear: TaxYear = currentTaxYear.previous
-
-  lazy val previousTaxYearStart: String      = previousTaxYear.starts.getYear.toString
-  lazy val previousTaxYearEndDate: LocalDate = previousTaxYear.finishes
-  lazy val previousTaxYearEnd: String        = previousTaxYearEndDate.getYear.toString
 }

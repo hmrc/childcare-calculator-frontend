@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
@@ -23,16 +24,16 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfo
 
 class YourIncomeInfoViewSpec extends NewViewBehaviours {
 
-  val view        = application.injector.instanceOf[yourIncomeInfo]
-  val taxYearInfo = new TaxYearInfo
+  val view: yourIncomeInfo = inject[yourIncomeInfo]
+  val taxYearInfo          = new TaxYearInfo
+  val messageKeyPrefix     = "yourIncomeInfo"
 
-  def createView       = () => view(frontendAppConfig, taxYearInfo)(fakeRequest, messages)
-  val messageKeyPrefix = "yourIncomeInfo"
+  val render: () => Html = () => view()(using fakeRequest, messages)
 
   "Your Income Info view" must {
     behave.like(
       normalPage(
-        createView,
+        render,
         messageKeyPrefix,
         "guidance",
         "li.income_paid_work",
@@ -43,7 +44,7 @@ class YourIncomeInfoViewSpec extends NewViewBehaviours {
     )
 
     "contain tax year info" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
       assertContainsText(
         doc,
         messages("yourIncomeInfo.tax_year", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)
@@ -51,7 +52,7 @@ class YourIncomeInfoViewSpec extends NewViewBehaviours {
     }
 
     "contain the link for parent paid work for current year" in {
-      val doc          = asDocument(createView())
+      val doc          = asDocument(render())
       val continueLink = doc.getElementsByClass("govuk-button")
 
       assertContainsText(doc, messages("site.save_and_continue"))

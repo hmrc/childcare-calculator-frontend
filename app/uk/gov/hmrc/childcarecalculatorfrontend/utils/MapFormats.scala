@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.util.{Failure, Success, Try}
 
 trait MapFormats {
 
-  implicit def mapReads[V](implicit rds: Reads[Map[String, V]]): Reads[Map[Int, V]] =
+  given mapReads[V](using rds: Reads[Map[String, V]]): Reads[Map[Int, V]] =
     Reads[Map[Int, V]] { json =>
       Json.fromJson[Map[String, V]](json).flatMap { data =>
         Try(data.map { case (k, v) =>
@@ -30,13 +30,13 @@ trait MapFormats {
         }) match {
           case Success(v) =>
             JsSuccess(v)
-          case Failure(e) =>
+          case Failure(_) =>
             JsError("Failed to convert map keys into ints")
         }
       }
     }
 
-  implicit def mapWrites[V](implicit wrts: Writes[Map[String, V]]): Writes[Map[Int, V]] =
+  given mapWrites[V](using wrts: Writes[Map[String, V]]): Writes[Map[Int, V]] =
     Writes[Map[Int, V]] { map =>
       val newMap = map.map { case (k, v) =>
         (k.toString, v)

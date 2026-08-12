@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BenefitsIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
@@ -25,24 +26,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.benefitsIncomeCY
 
 class BenefitsIncomeCYViewSpec extends NewQuestionViewBehaviours[BenefitsIncomeCY] {
 
-  val messageKeyPrefix = "benefitsIncomeCY"
-  val view             = application.injector.instanceOf[benefitsIncomeCY]
+  val messageKeyPrefix       = "benefitsIncomeCY"
+  val view: benefitsIncomeCY = inject[benefitsIncomeCY]
 
-  def createView = () => view(frontendAppConfig, BenefitsIncomeCYForm())(fakeRequest, messages)
+  override val form: Form[BenefitsIncomeCY] = BenefitsIncomeCYForm()
 
-  def createViewUsingForm = (form: Form[BenefitsIncomeCY]) => view(frontendAppConfig, form)(fakeRequest, messages)
-
-  override val form = BenefitsIncomeCYForm()
+  def render(form: Form[BenefitsIncomeCY] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "BenefitsIncomeCY view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       pageWithTextFields(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.BenefitsIncomeCYController.onSubmit().url,
         "parentBenefitsIncome",
@@ -51,7 +50,7 @@ class BenefitsIncomeCYViewSpec extends NewQuestionViewBehaviours[BenefitsIncomeC
     )
 
     "contain the currencySymbol class and £ for parent and partner input text boxes" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
 
       assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 

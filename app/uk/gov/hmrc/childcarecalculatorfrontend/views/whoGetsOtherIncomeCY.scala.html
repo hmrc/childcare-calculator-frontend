@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsOtherIncomeCYForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
 
 @this(
     layout: Layout,
@@ -27,10 +27,19 @@
     inputRadio: playComponents.input_radio,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String])(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[YouPartnerBoth],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("whoGetsOtherIncomeCY.title")) else messages("whoGetsOtherIncomeCY.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("whoGetsOtherIncomeCY.title"))
+    } else {
+        messages("whoGetsOtherIncomeCY.title")
+    }
 }
 
 @layout(pageTitle = title) {
@@ -40,12 +49,7 @@
 
     @inputRadio(
         legend = heading(messages("whoGetsOtherIncomeCY.heading")),
-        inputs = WhoGetsOtherIncomeCYForm.options map { radioOption =>
-            RadioItem(
-            value = Some(radioOption.value),
-            content = HtmlContent(messages(radioOption.messageKey))
-            )
-        },
+        inputs = WhoGetsOtherIncomeCYForm.options.map(_.toRadioItem),
         field = form("value")
         )
     @submitButton()

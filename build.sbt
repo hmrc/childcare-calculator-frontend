@@ -4,7 +4,6 @@ import scoverage._
 
 lazy val appName = "childcare-calculator-frontend"
 
-lazy val appDependencies: Seq[ModuleID] = ???
 lazy val plugins: Seq[Plugins]          = Seq.empty
 lazy val playSettings: Seq[Setting[_]]  = Seq.empty
 
@@ -33,9 +32,10 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:cat=unused-imports&src=routes/.*:s",
-      "-Wconf:cat=unused-imports&src=html/.*:s",
-      "-Wconf:cat=unused&src=routes/.*:s"
+      "-Wconf:msg=unused-imports&src=routes/.*:s",
+      "-Wconf:msg=unused-imports&src=html/.*:s",
+      "-Wconf:msg=unused&src=routes/.*:s",
+      "-Wconf:msg=Flag.*repeatedly:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,

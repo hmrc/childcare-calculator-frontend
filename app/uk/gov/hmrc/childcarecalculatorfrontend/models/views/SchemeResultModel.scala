@@ -36,7 +36,7 @@ case class SchemeResultModel(
     detailPara3: Option[String] = None,
     detailPara3WithLink: Option[Html] = None,
     detailPara4: Option[String] = None,
-    notEligibleID: Tuple2[Option[String], Option[String]] = (None, None),
+    notEligibleID: (Option[String], Option[String]) = (None, None),
     insetText: Option[String] = None,
     insetTextId: Option[String] = None,
     warningMessage: Option[String] = None,

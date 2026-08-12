@@ -14,18 +14,22 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.*
 
-@this(govukRadios : GovukRadios)
+@this(
+    govukRadios : GovukRadios
+)
 
 @(
-        label: Content,
-        hint: Option[String] = None,
-        labelClass: Option[String] = None,
-        isPageHeading: Boolean = false,
-        field: Field,
-        isInline: Boolean = true
-)(implicit messages: Messages)
+    label: Content,
+    hint: Option[String] = None,
+    labelClass: Option[String] = None,
+    isPageHeading: Boolean = false,
+    field: Field,
+    isInline: Boolean = true,
+)(
+    using messages: Messages,
+)
 
 @govukRadios(Radios(
     fieldset = Some(Fieldset(

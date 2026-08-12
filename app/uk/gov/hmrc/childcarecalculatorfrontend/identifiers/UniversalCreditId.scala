@@ -16,6 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object UniversalCreditId extends Identifier {
-  override def toString: String = "universalCredit"
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object UniversalCreditId extends Identifier with CacheKey[Boolean] {
+  override val toString = "universalCredit"
+  override val cacheKey = "universalCredit"
 }

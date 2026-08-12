@@ -16,24 +16,15 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend
 
+import uk.gov.hmrc.childcarecalculatorfrontend.helpers.{CacheKeyOps, CacheMapOps}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{ChildcarePayFrequency, DisabilityBenefit}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+
 import java.time.LocalDate
-import play.api.libs.json._
 
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, DisabilityBenefits}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
-
-case class DataGenerator(sample: CacheMap) extends SubCascadeUpsert {
-
-  def overWriteObject(objectName: String, properties: JsValue): DataGenerator =
-    DataGenerator(sample.copy(data = sample.data + (objectName -> properties)))
-
-  def deleteObject(objectName: String): DataGenerator =
-    DataGenerator(sample.copy(data = sample.data - objectName))
-
-}
-
-object DataGenerator {
+object DataGenerator extends CacheMapOps with CacheKeyOps {
   val ageOf19YearsAgo: LocalDate => LocalDate = (date: LocalDate) => date.minusYears(19).minusDays(1)
 
   val ageOf16WithBirthdayBefore31stAugust: LocalDate => LocalDate = (date: LocalDate) =>
@@ -58,41 +49,34 @@ object DataGenerator {
   val ageExactly15Relative: LocalDate => LocalDate = (date: LocalDate) =>
     LocalDate.of(date.minusYears(15).getYear, 6, 1)
 
-  lazy val disabilityBenefits: String           = DisabilityBenefits.DISABILITY_BENEFITS.toString
-  lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString
-
-  lazy val weekly: String  = ChildcarePayFrequency.WEEKLY.toString
-  lazy val monthly: String = ChildcarePayFrequency.MONTHLY.toString
-
   private val sampleDate = LocalDate.parse("2019-01-01")
 
-  val sample = new CacheMap(
-    "id",
-    Map(
-      NoOfChildrenId.toString -> JsNumber(5),
-      AboutYourChildId.toString -> Json.obj(
-        "0" -> Json.toJson(AboutYourChild("Foo", sampleDate)),
-        "1" -> Json.toJson(AboutYourChild("Bar", sampleDate)),
-        "2" -> Json.toJson(AboutYourChild("Quux", sampleDate)),
-        "3" -> Json.toJson(AboutYourChild("Baz", sampleDate)),
-        "4" -> Json.toJson(AboutYourChild("Raz", sampleDate))
-      ),
-      ChildrenDisabilityBenefitsId.toString -> JsBoolean(true),
-      WhichChildrenDisabilityId.toString    -> Json.toJson(Seq(0, 2)),
-      WhichDisabilityBenefitsId.toString -> Json.obj(
-        "0" -> Seq(disabilityBenefits),
-        "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits)
-      ),
-      RegisteredBlindId.toString      -> JsBoolean(true),
-      WhichChildrenBlindId.toString   -> Json.toJson(Seq(2)),
-      WhoHasChildcareCostsId.toString -> Json.toJson(Seq(0, 2)),
-      ChildcarePayFrequencyId.toString -> Json.obj(
-        "0" -> monthly,
-        "2" -> weekly
-      ),
-      ExpectedChildcareCostsId.toString -> Json.obj("3" -> JsNumber(123), "4" -> JsNumber(224))
-    )
+  val sample: CacheMap = CacheMap.of(
+    NoOfChildrenId.withValue(5),
+    AboutYourChildId.withValue(
+      Map(
+        0 -> AboutYourChild("Foo", sampleDate),
+        1 -> AboutYourChild("Bar", sampleDate),
+        2 -> AboutYourChild("Quux", sampleDate),
+        3 -> AboutYourChild("Baz", sampleDate),
+        4 -> AboutYourChild("Raz", sampleDate)
+      )
+    ),
+    ChildrenDisabilityBenefitsId.withValue(true),
+    WhichChildrenDisabilityId.withValue(Set(0, 2)),
+    WhichDisabilityBenefitsId.withValue(
+      Map(
+        0 -> Set(DisabilityBenefit.DisabilityBenefits),
+        2 -> Set(DisabilityBenefit.DisabilityBenefits, DisabilityBenefit.HigherDisabilityBenefits)
+      )
+    ),
+    RegisteredBlindId.withValue(true),
+    WhichChildrenBlindId.withValue(Set(2)),
+    WhoHasChildcareCostsId.withValue(Set(0, 2)),
+    ChildcarePayFrequencyId.withValue(
+      Map(0 -> ChildcarePayFrequency.Monthly, 2 -> ChildcarePayFrequency.Weekly)
+    ),
+    ExpectedChildcareCostsId.withValue(Map(3 -> BigDecimal(123), 4 -> BigDecimal(224)))
   )
 
-  def apply(): DataGenerator = DataGenerator(sample)
 }

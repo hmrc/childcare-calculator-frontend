@@ -14,10 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildcarePayFrequencyForm
-@import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.ChildcarePayFrequency
 
 @this(
     layout: Layout,
@@ -27,10 +26,22 @@
     inputRadio: playComponents.input_radio,
     submitButton: playComponents.submit_button,
 )
-@(appConfig: FrontendAppConfig, form: Form[ChildcarePayFrequency.Value], index: Int, name: String)(implicit request: Request[_], messages: Messages)
+
+@(
+    form: Form[ChildcarePayFrequency],
+    index: Int,
+    name: String
+)(
+    using request: Request[?],
+    messages: Messages
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("childcarePayFrequency.title", messages(s"nth.$index"))) else messages("childcarePayFrequency.title", messages(s"nth.$index"))
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("childcarePayFrequency.title", messages(s"nth.$index")))
+    } else {
+        messages("childcarePayFrequency.title", messages(s"nth.$index"))
+    }
 }
 
 @layout(
@@ -44,12 +55,7 @@
         @inputRadio(
             legend = heading(messages("childcarePayFrequency.heading", name)),
             classes = "govuk-radios--inline",
-            inputs = ChildcarePayFrequencyForm.options map { radioOptions =>
-                RadioItem(
-                    value = Some(radioOptions.value),
-                    content = HtmlContent(messages(radioOptions.messageKey))
-                )
-            },
+            inputs = ChildcarePayFrequencyForm.options.map(_.toRadioItem),
             field = form("value")
         )
         @submitButton()

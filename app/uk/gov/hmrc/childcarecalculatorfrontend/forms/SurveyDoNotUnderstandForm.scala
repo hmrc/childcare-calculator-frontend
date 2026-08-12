@@ -17,28 +17,18 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.StringFormatter
 
 object SurveyDoNotUnderstandForm extends FormErrorHelper {
 
-  def surveyDoNotUnderstandFormatter(errorKeyBlank: String, errorKeyInvalid: String) = new Formatter[String] {
-
-    def bind(key: String, data: Map[String, String]) =
-      data.get(key) match {
-        case None     => produceError(key, errorKeyBlank)
-        case Some("") => produceError(key, errorKeyBlank)
-        case Some(s)  => Right(s)
-        case _        => produceError(key, errorKeyInvalid)
-      }
-
-    def unbind(key: String, value: String) = Map(key -> value.toString)
-  }
+  private def surveyDoNotUnderstandFormatter(missingErrorKey: String): Formatter[String] =
+    StringFormatter(missingErrorKey = missingErrorKey)
 
   def apply(
-      errorKeyBlank: String = "surveyDoNotUnderstand.error.notCompleted",
-      errorKeyInvalid: String = "error.bigDecimal"
+      missingErrorKey: String = "surveyDoNotUnderstand.error.notCompleted"
   ): Form[String] =
-    Form(single("value" -> of(surveyDoNotUnderstandFormatter(errorKeyBlank, errorKeyInvalid))))
+    Form(single("value" -> of(surveyDoNotUnderstandFormatter(missingErrorKey))))
 
 }

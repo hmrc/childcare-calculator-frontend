@@ -19,47 +19,50 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YourAgeForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YourAgeId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Age
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourAge
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class YourAgeController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     yourAge: yourAge
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.yourAge match {
       case None        => YourAgeForm()
       case Some(value) => YourAgeForm().fill(value)
     }
-    Ok(yourAge(appConfig, preparedForm))
+    Ok(yourAge(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     YourAgeForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[String]) => Future.successful(BadRequest(yourAge(appConfig, formWithErrors))),
+        (formWithErrors: Form[Age]) => Future.successful(BadRequest(yourAge(formWithErrors))),
         value =>
-          dataCacheConnector
-            .save[String](request.sessionId, YourAgeId.toString, value)
+          dataCacheService
+            .save(YourAgeId, value)
             .map(cacheMap => Redirect(navigator.nextPage(YourAgeId)(new UserAnswers(cacheMap))))
       )
   }

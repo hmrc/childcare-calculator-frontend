@@ -16,108 +16,100 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import play.api.libs.json.{JsBoolean, JsString, JsValue}
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, SubCascadeUpsert}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 
-class IncomeCascadeUpsert @Inject() () extends SubCascadeUpsert {
+@Singleton
+class IncomeCascadeUpsert @Inject() {
 
   val funcMap: Map[String, (JsValue, CacheMap) => CacheMap] =
     Map(
-      YourOtherIncomeThisYearId.toString -> ((v, cm) => storeYourOtherIncomeThisYear(v, cm)),
-      BothOtherIncomeThisYearId.toString -> ((v, cm) => storeBothOtherIncomeThisYear(v, cm)),
-      WhoGetsOtherIncomeCYId.toString    -> ((v, cm) => storeWhoGetsOtherIncomeCY(v, cm)),
-      ParentPaidWorkCYId.toString        -> ((v, cm) => storeParentPaidWorkCY(v, cm)),
-      PartnerPaidWorkCYId.toString       -> ((v, cm) => storePartnerPaidWorkCY(v, cm))
+      YourOtherIncomeThisYearId.cacheKey -> ((v, cm) => storeYourOtherIncomeThisYear(v, cm)),
+      BothOtherIncomeThisYearId.cacheKey -> ((v, cm) => storeBothOtherIncomeThisYear(v, cm)),
+      WhoGetsOtherIncomeCYId.cacheKey    -> ((v, cm) => storeWhoGetsOtherIncomeCY(v, cm)),
+      ParentPaidWorkCYId.cacheKey        -> ((v, cm) => storeParentPaidWorkCY(v, cm)),
+      PartnerPaidWorkCYId.cacheKey       -> ((v, cm) => storePartnerPaidWorkCY(v, cm))
     )
 
   private def storeYourOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsBoolean(false) => cacheMap.copy(data = cacheMap.data - YourOtherIncomeAmountCYId.toString)
+      case JsBoolean(false) => cacheMap.removed(YourOtherIncomeAmountCYId)
       case _                => cacheMap
     }
 
-    store(YourOtherIncomeThisYearId.toString, value, mapToStore)
+    mapToStore.updated(YourOtherIncomeThisYearId, value)
   }
 
   private def storeBothOtherIncomeThisYear(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
       case JsBoolean(false) =>
-        cacheMap.copy(data =
-          cacheMap.data - WhoGetsOtherIncomeCYId.toString - YourOtherIncomeAmountCYId.toString
-            - PartnerOtherIncomeAmountCYId.toString - OtherIncomeAmountCYId.toString
+        cacheMap.removedAll(
+          WhoGetsOtherIncomeCYId,
+          YourOtherIncomeAmountCYId,
+          PartnerOtherIncomeAmountCYId,
+          OtherIncomeAmountCYId
         )
       case _ => cacheMap
     }
 
-    store(BothOtherIncomeThisYearId.toString, value, mapToStore)
+    mapToStore.updated(BothOtherIncomeThisYearId, value)
   }
 
   private def storeWhoGetsOtherIncomeCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
     val mapToStore = value match {
-      case JsString(`you`) =>
-        cacheMap.copy(data =
-          cacheMap.data - PartnerOtherIncomeAmountCYId.toString -
-            OtherIncomeAmountCYId.toString
-        )
-      case JsString(`partner`) =>
-        cacheMap.copy(data =
-          cacheMap.data - YourOtherIncomeAmountCYId.toString -
-            OtherIncomeAmountCYId.toString
-        )
-      case JsString(`both`) =>
-        cacheMap.copy(data =
-          cacheMap.data - YourOtherIncomeAmountCYId.toString -
-            PartnerOtherIncomeAmountCYId.toString
-        )
+      case JsString(YouPartnerBoth.You.toString) =>
+        cacheMap.removedAll(PartnerOtherIncomeAmountCYId, OtherIncomeAmountCYId)
+      case JsString(YouPartnerBoth.Partner.toString) =>
+        cacheMap.removedAll(YourOtherIncomeAmountCYId, OtherIncomeAmountCYId)
+      case JsString(YouPartnerBoth.Both.toString) =>
+        cacheMap.removedAll(YourOtherIncomeAmountCYId, PartnerOtherIncomeAmountCYId)
       case _ => cacheMap
     }
 
-    store(WhoGetsOtherIncomeCYId.toString, value, mapToStore)
+    mapToStore.updated(WhoGetsOtherIncomeCYId, value)
   }
 
   private def storePartnerPaidWorkCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val existingValue = cacheMap.data.get(PartnerPaidWorkCYId.toString)
+    val existingValue = cacheMap.data.get(PartnerPaidWorkCYId.cacheKey)
 
     val mapToStore = value match {
       case JsBoolean(false) if existingValue.contains(JsBoolean(true)) =>
-        cacheMap.copy(data =
-          cacheMap.data - EmploymentIncomeCYId.toString -
-            BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString - HowMuchPartnerPayPensionId.toString -
-            HowMuchBothPayPensionId.toString
+        cacheMap.removedAll(
+          EmploymentIncomeCYId,
+          BothPaidPensionCYId,
+          WhoPaysIntoPensionId,
+          HowMuchPartnerPayPensionId,
+          HowMuchBothPayPensionId
         )
 
       case JsBoolean(true) if existingValue.contains(JsBoolean(false)) =>
-        cacheMap.copy(data =
-          cacheMap.data -
-            ParentEmploymentIncomeCYId.toString - YouPaidPensionCYId.toString
-        )
+        cacheMap.removedAll(ParentEmploymentIncomeCYId, YouPaidPensionCYId)
       case _ => cacheMap
     }
 
-    store(PartnerPaidWorkCYId.toString, value, mapToStore)
+    mapToStore.updated(PartnerPaidWorkCYId, value)
   }
 
   private def storeParentPaidWorkCY(value: JsValue, cacheMap: CacheMap): CacheMap = {
-    val existingValue = cacheMap.data.get(ParentPaidWorkCYId.toString)
+    val existingValue = cacheMap.data.get(ParentPaidWorkCYId.cacheKey)
 
     val mapToStore = value match {
       case JsBoolean(false) if existingValue.contains(JsBoolean(true)) =>
-        cacheMap.copy(data =
-          cacheMap.data - EmploymentIncomeCYId.toString -
-            PartnerPaidPensionCYId.toString - HowMuchYouPayPensionId.toString - HowMuchBothPayPensionId.toString
+        cacheMap.removedAll(
+          EmploymentIncomeCYId,
+          PartnerPaidPensionCYId,
+          HowMuchYouPayPensionId,
+          HowMuchBothPayPensionId
         )
       case JsBoolean(true) if existingValue.contains(JsBoolean(false)) =>
-        cacheMap.copy(data =
-          cacheMap.data -
-            PartnerEmploymentIncomeCYId.toString - BothPaidPensionCYId.toString - WhoPaysIntoPensionId.toString
-        )
+        cacheMap.removedAll(PartnerEmploymentIncomeCYId, BothPaidPensionCYId, WhoPaysIntoPensionId)
       case _ => cacheMap
     }
 
-    store(ParentPaidWorkCYId.toString, value, mapToStore)
+    mapToStore.updated(ParentPaidWorkCYId, value)
   }
 
 }

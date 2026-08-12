@@ -23,7 +23,10 @@
     classes: String = "",
     hint: Option[String] = None,
     inputs: Seq[RadioItem],
-    field: Field)(implicit messages: Messages)
+    field: Field,
+)(
+    using messages: Messages,
+)
 
 
 @govukRadios(

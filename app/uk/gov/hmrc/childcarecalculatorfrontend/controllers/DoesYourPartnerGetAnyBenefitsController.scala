@@ -18,48 +18,49 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.DoesYourPartnerGetAnyBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.DoesYourPartnerGetAnyBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.doesYourPartnerGetAnyBenefits
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class DoesYourPartnerGetAnyBenefitsController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     doesYourPartnerGetAnyBenefits: doesYourPartnerGetAnyBenefits
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.doesYourPartnerGetAnyBenefits match {
       case None        => DoesYourPartnerGetAnyBenefitsForm()
       case Some(value) => DoesYourPartnerGetAnyBenefitsForm().fill(value)
     }
-    Ok(doesYourPartnerGetAnyBenefits(appConfig, preparedForm))
+    Ok(doesYourPartnerGetAnyBenefits(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     DoesYourPartnerGetAnyBenefitsForm()
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(doesYourPartnerGetAnyBenefits(appConfig, formWithErrors))),
+        formWithErrors => Future.successful(BadRequest(doesYourPartnerGetAnyBenefits(formWithErrors))),
         value =>
-          dataCacheConnector
-            .save[Set[ParentsBenefits]](request.sessionId, DoesYourPartnerGetAnyBenefitsId.toString, value)
+          dataCacheService
+            .save(DoesYourPartnerGetAnyBenefitsId, value)
             .map(cacheMap => Redirect(navigator.nextPage(DoesYourPartnerGetAnyBenefitsId)(new UserAnswers(cacheMap))))
       )
   }

@@ -17,31 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childAgedTwo
 
 class ChildAgedTwoViewSpec extends NewYesNoViewBehaviours {
 
-  override val form    = BooleanForm()
-  val view             = application.injector.instanceOf[childAgedTwo]
-  val messageKeyPrefix = "childAgedTwo"
-  val location         = Location.ENGLAND
+  override val form: Form[Boolean] = BooleanForm()
+  val view: childAgedTwo           = inject[childAgedTwo]
+  val messageKeyPrefix             = "childAgedTwo"
+  val location: Location           = Location.England
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), location)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, location)(fakeRequest, messages)
+  def render(form: Form[Boolean] = this.form, location: Location = this.location): Html =
+    view(form, location)(using fakeRequest, messages)
 
   "ChildAgedTwo view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix, s"guidance.$location"))
+    behave.like(normalPage(() => render(), messageKeyPrefix, s"guidance.$location"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
-      yesNoPage(createViewUsingForm, messageKeyPrefix, routes.ChildAgedTwoController.onSubmit().url, None)
+      yesNoPage(form => render(form = form), messageKeyPrefix, routes.ChildAgedTwoController.onSubmit().url, None)
     )
   }
 

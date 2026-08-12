@@ -18,9 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.FreeHours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Eligible, Location, YesNoNotYetEnum, YesNoUnsureEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Eligibility
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{YesNoNotSure, YesNoNotYet}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 import javax.inject.{Inject, Singleton}
@@ -38,23 +40,22 @@ private[navigation] class MinimumHoursNavigator @Inject() (freeHours: FreeHours)
   )
 
   private def locationRoute(answers: UserAnswers): Call =
-    if (answers.location.contains(Location.ENGLAND)) {
+    if (answers.location.contains(Location.England)) {
       routes.ChildrenAgeGroupsController.onPageLoad()
-    } else if (answers.location.contains(Location.NORTHERN_IRELAND) || answers.location.contains(Location.WALES)) {
+    } else if (answers.location.contains(Location.NorthernIreland) || answers.location.contains(Location.Wales)) {
       routes.ChildAgedThreeOrFourController.onPageLoad()
     } else {
       routes.ChildAgedTwoController.onPageLoad()
     }
 
-  private def costRoute(answers: UserAnswers): Call = {
-    val No = YesNoNotYetEnum.NO.toString
-    if (answers.childcareCosts.contains(No)) {
-      if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
+  private def costRoute(answers: UserAnswers): Call =
+    if (answers.childcareCosts.contains(YesNoNotYet.No)) {
+      if (freeHours.eligibility(answers) == Eligibility.Eligible && answers.location.contains(Location.England)) {
         routes.FreeHoursInfoController.onPageLoad
       } else if (
         (answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedNineTo23Months.getOrElse(
           false
-        )) && answers.location.contains(Location.ENGLAND)
+        )) && answers.location.contains(Location.England)
       ) {
         routes.DoYouLiveWithPartnerController.onPageLoad()
       } else {
@@ -63,30 +64,26 @@ private[navigation] class MinimumHoursNavigator @Inject() (freeHours: FreeHours)
     } else {
       routes.ApprovedProviderController.onPageLoad()
     }
-  }
 
-  private def approvedChildCareRoute(answers: UserAnswers): Call = {
-    val No = YesNoUnsureEnum.NO.toString
-
-    if (answers.approvedProvider.contains(No)) {
-      if (freeHours.eligibility(answers) == Eligible && answers.location.contains(Location.ENGLAND)) {
+  private def approvedChildCareRoute(answers: UserAnswers): Call =
+    if (answers.approvedProvider.contains(YesNoNotSure.No)) {
+      if (freeHours.eligibility(answers) == Eligibility.Eligible && answers.location.contains(Location.England)) {
         routes.FreeHoursInfoController.onPageLoad
       } else if (
         (answers.isChildAgedTwo.getOrElse(false) || answers.isChildAgedNineTo23Months.getOrElse(
           false
-        )) && answers.location.contains(Location.ENGLAND)
+        )) && answers.location.contains(Location.England)
       ) {
         routes.DoYouLiveWithPartnerController.onPageLoad()
       } else {
         routes.ResultController.onPageLoad()
       }
     } else {
-      if (freeHours.eligibility(answers) == Eligible) {
+      if (freeHours.eligibility(answers) == Eligibility.Eligible) {
         routes.FreeHoursInfoController.onPageLoad
       } else {
         routes.DoYouLiveWithPartnerController.onPageLoad()
       }
     }
-  }
 
 }

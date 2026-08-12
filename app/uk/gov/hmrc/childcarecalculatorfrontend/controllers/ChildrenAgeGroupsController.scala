@@ -18,31 +18,33 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildrenAgeGroupsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ChildrenAgeGroupsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenAgeGroups
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class ChildrenAgeGroupsController @Inject() (
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     childAgeGroup: childrenAgeGroups
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.childrenAgeGroups match {
       case None        => ChildrenAgeGroupsForm()
       case Some(value) => ChildrenAgeGroupsForm().fill(value)
@@ -50,14 +52,15 @@ class ChildrenAgeGroupsController @Inject() (
     Ok(childAgeGroup(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     ChildrenAgeGroupsForm()
       .bindFromRequest()
       .fold(
         formWithErrors => Future.successful(BadRequest(childAgeGroup(formWithErrors))),
         value =>
-          dataCacheConnector
-            .save[Set[ChildAgeGroup]](request.sessionId, ChildrenAgeGroupsId.toString, value)
+          dataCacheService
+            .save(ChildrenAgeGroupsId, value)
             .map(cacheMap => Redirect(navigator.nextPage(ChildrenAgeGroupsId)(new UserAnswers(cacheMap))))
       )
 

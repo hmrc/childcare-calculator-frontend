@@ -17,29 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
 class LocationViewSpec extends NewViewBehaviours {
 
-  val view             = application.injector.instanceOf[location]
+  val view: location   = inject[location]
   val messageKeyPrefix = "location"
 
-  def createView = () => view(frontendAppConfig, LocationForm())(fakeRequest, messages)
+  val form: Form[Location] = LocationForm()
 
-  def createViewUsingForm = (form: Form[_]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def render(form: Form[Location] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "Location view" must {
-    behave.like(normalPage(createView, messageKeyPrefix, "guidance"))
+    behave.like(normalPage(() => render(), messageKeyPrefix, "guidance"))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
   }
 
   "Location view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(LocationForm()))
+        val doc = asDocument(render())
         for (option <- LocationForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
       }
@@ -48,7 +50,7 @@ class LocationViewSpec extends NewViewBehaviours {
     for (option <- LocationForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(LocationForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(render(form = form.bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
           for (unselectedOption <- LocationForm.options.filterNot(o => o == option))

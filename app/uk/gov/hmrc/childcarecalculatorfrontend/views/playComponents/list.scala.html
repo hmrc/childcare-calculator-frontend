@@ -17,15 +17,25 @@
 @(
     pageKey: Option[String] = None,
     addCssClass: Option[String] = None,
-    bulletList: Seq[String]
-)(implicit messages: Messages)
+    bulletList: Seq[String],
+)(
+    using messages: Messages,
+)
 
 @cssClass = @{
-    if(addCssClass.isDefined) s"form-group ${addCssClass.get}" else "form-group"
+    if(addCssClass.isDefined) {
+        s"form-group ${addCssClass.get}"
+    } else {
+        "form-group"
+    }
 }
 
 @text(bullet: String) = @{
-    if(pageKey.isDefined) messages(s"${pageKey.get}.$bullet") else bullet
+    if(pageKey.isDefined) {
+        messages(s"${pageKey.get}.$bullet")
+    } else {
+        bullet
+    }
 }
 
 @list = {

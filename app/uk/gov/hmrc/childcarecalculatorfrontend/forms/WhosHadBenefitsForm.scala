@@ -17,39 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhosHadBenefitsForm extends FormErrorHelper {
 
-  def apply(): Form[YouPartnerBothEnum.Value] =
+  private val WhosHadBenefitsFormatter: Formatter[YouPartnerBoth] =
+    EnumFormatter[YouPartnerBoth](missingErrorKey = whosHadBenefitsErrorKey, unknownValueErrorKey = unknownErrorKey)
+
+  def apply(): Form[YouPartnerBoth] =
     Form(single("value" -> of(WhosHadBenefitsFormatter)))
 
-  def options: Seq[InputOption] = Seq(
-    whosHadBenefitsInputOption("value", YouPartnerBothEnum.YOU.toString),
-    whosHadBenefitsInputOption("value-2", YouPartnerBothEnum.PARTNER.toString),
-    whosHadBenefitsInputOption("value-3", YouPartnerBothEnum.BOTH.toString)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whosHadBenefits",
+    values = Seq(
+      YouPartnerBoth.You,
+      YouPartnerBoth.Partner,
+      YouPartnerBoth.Both
+    )
   )
 
-  private def whosHadBenefitsInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"whosHadBenefits.$option"
-    )
-
-  private def WhosHadBenefitsFormatter = new Formatter[YouPartnerBothEnum.Value] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(YouPartnerBothEnum.withName(s))
-      case None                        => produceError(key, whosHadBenefitsErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
-
-    def unbind(key: String, value: YouPartnerBothEnum.Value) = Map(key -> value.toString)
-  }
-
-  private def optionIsValid(value: String) = options.exists(o => o.value == value)
 }

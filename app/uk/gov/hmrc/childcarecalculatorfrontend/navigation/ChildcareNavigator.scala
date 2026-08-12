@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{DateTimeUtils, SessionExpiredRouter, UserAnswers, Utils}
 
 import javax.inject.{Inject, Singleton}
@@ -99,16 +99,14 @@ private[navigation] class ChildcareNavigator @Inject() (utils: Utils) extends Su
       }
   }.flatten.getOrElse(SessionExpiredRouter.route(getClass.getName, "registeredBlindRoutes", Some(answers)))
 
-  private def handleSingleChildRoute(answers: UserAnswers): Option[Call] = {
-    for {
-      children <- answers.childrenWithCosts
-    } yield
+  private def handleSingleChildRoute(answers: UserAnswers): Option[Call] =
+    answers.childrenWithCosts.flatMap(_ =>
       if (answers.numberOfChildrenOver16 > 0) {
         Some(routeToIncomeInfoPage(answers))
       } else {
         destinedUrlForSingleChildAged16(answers)
       }
-  }.flatten
+    )
 
   private def whichChildrenBlindRoute(answers: UserAnswers): Call =
     handleRoutesIfChildrenOver16(answers, answers.noOfChildren.getOrElse(0))

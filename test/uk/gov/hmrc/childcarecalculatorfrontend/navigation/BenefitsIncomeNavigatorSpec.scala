@@ -16,15 +16,14 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import org.mockito.Mockito._
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{YouPartnerBoth, YouPartnerBothNeither}
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Utils}
 
 class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
@@ -32,7 +31,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
   val navigator = new BenefitsIncomeNavigator(new Utils())
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
-    new UserAnswers(CacheMap("", Map(answers: _*)))
+    new UserAnswers(CacheMap("", Map(answers*)))
 
   "Current Year Benefits Route Navigation" when {
     "in Normal mode" must {
@@ -42,7 +41,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.youAnyTheseBenefits).thenReturn(Some(true))
 
           navigator
-            .nextPage(YouAnyTheseBenefitsIdCY)
+            .nextPage(YouAnyTheseBenefitsCYId)
             .value(answers) mustBe routes.YouBenefitsIncomeCYController.onPageLoad()
         }
 
@@ -52,7 +51,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner).thenReturn(Some(false))
 
           navigator
-            .nextPage(YouAnyTheseBenefitsIdCY)
+            .nextPage(YouAnyTheseBenefitsCYId)
             .value(answers) mustBe routes.YourOtherIncomeThisYearController.onPageLoad()
         }
 
@@ -62,7 +61,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.doYouLiveWithPartner).thenReturn(Some(true))
 
           navigator
-            .nextPage(YouAnyTheseBenefitsIdCY)
+            .nextPage(YouAnyTheseBenefitsCYId)
             .value(answers) mustBe routes.BothOtherIncomeThisYearController.onPageLoad()
         }
 
@@ -71,7 +70,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.youAnyTheseBenefits).thenReturn(None)
 
           navigator
-            .nextPage(YouAnyTheseBenefitsIdCY)
+            .nextPage(YouAnyTheseBenefitsCYId)
             .value(answers) mustBe routes.SessionExpiredController.onPageLoad
         }
       }
@@ -109,7 +108,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       "Whos Had Benefits CY Route" must {
         "redirects to youBenefitsIncomeCY page when user selects you option" in {
           val answers = spy(userAnswers())
-          when(answers.whosHadBenefits).thenReturn(Some(YOU))
+          when(answers.whosHadBenefits).thenReturn(Some(YouPartnerBoth.You))
 
           navigator.nextPage(WhosHadBenefitsId).value(answers) mustBe
             routes.YouBenefitsIncomeCYController.onPageLoad()
@@ -117,7 +116,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to partnerBenefitsIncomeCY page when user selects partner option" in {
           val answers = spy(userAnswers())
-          when(answers.whosHadBenefits).thenReturn(Some(PARTNER))
+          when(answers.whosHadBenefits).thenReturn(Some(YouPartnerBoth.Partner))
 
           navigator.nextPage(WhosHadBenefitsId).value(answers) mustBe
             routes.PartnerBenefitsIncomeCYController.onPageLoad()
@@ -125,7 +124,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to benefitsIncomeCY page when user selects both option" in {
           val answers = spy(userAnswers())
-          when(answers.whosHadBenefits).thenReturn(Some(BOTH))
+          when(answers.whosHadBenefits).thenReturn(Some(YouPartnerBoth.Both))
 
           navigator.nextPage(WhosHadBenefitsId).value(answers) mustBe
             routes.BenefitsIncomeCYController.onPageLoad()
@@ -173,7 +172,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to SessionExpired page when user provides valid input, lives with partner and " +
           "partner in paid employment" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment).thenReturn(Some(partner))
+            when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeither.Partner))
             when(answers.youBenefitsIncomeCY).thenReturn(Some(BigDecimal(23)))
 
             navigator
@@ -203,7 +202,7 @@ class BenefitsIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       "Partner Benefits Income CY Route" must {
         "redirects to other income page when user provides valid input" in {
           val answers = spy(userAnswers())
-          when(answers.whoIsInPaidEmployment).thenReturn(Some(both))
+          when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeither.Both))
           when(answers.partnerBenefitsIncomeCY).thenReturn(Some(BigDecimal(23)))
 
           navigator

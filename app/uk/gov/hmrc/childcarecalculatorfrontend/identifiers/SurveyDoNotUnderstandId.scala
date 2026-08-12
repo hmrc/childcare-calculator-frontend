@@ -16,6 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object SurveyDoNotUnderstandId extends Identifier {
-  override def toString: String = "surveyDoNotUnderstand"
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object SurveyDoNotUnderstandId extends Identifier with CacheKey[String] {
+  override val toString = "surveyDoNotUnderstand"
+  override val cacheKey = "surveyDoNotUnderstand"
 }

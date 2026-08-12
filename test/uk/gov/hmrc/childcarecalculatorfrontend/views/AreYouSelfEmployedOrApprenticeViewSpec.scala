@@ -17,29 +17,32 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.AreYouSelfEmployedOrApprenticeForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.EmploymentStatus
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.areYouSelfEmployedOrApprentice
 
 class AreYouSelfEmployedOrApprenticeViewSpec extends NewViewBehaviours {
 
-  val messageKeyPrefix = "areYouSelfEmployedOrApprentice"
-  val view             = application.injector.instanceOf[areYouSelfEmployedOrApprentice]
+  val messageKeyPrefix                     = "areYouSelfEmployedOrApprentice"
+  val view: areYouSelfEmployedOrApprentice = inject[areYouSelfEmployedOrApprentice]
 
-  def createView = () => view(frontendAppConfig, AreYouSelfEmployedOrApprenticeForm())(fakeRequest, messages)
+  val form: Form[EmploymentStatus] = AreYouSelfEmployedOrApprenticeForm()
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def render(form: Form[EmploymentStatus] = form): Html =
+    view(form)(using fakeRequest, messages)
 
   "AreYouSelfEmployedOrApprentice view" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
   }
 
   "AreYouSelfEmployedOrApprentice view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(AreYouSelfEmployedOrApprenticeForm()))
+        val doc = asDocument(render())
         for (option <- AreYouSelfEmployedOrApprenticeForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
       }
@@ -49,7 +52,7 @@ class AreYouSelfEmployedOrApprenticeViewSpec extends NewViewBehaviours {
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
           val doc = asDocument(
-            createViewUsingForm(AreYouSelfEmployedOrApprenticeForm().bind(Map("value" -> s"${option.value}")))
+            render(form = form.bind(Map("value" -> s"${option.value}")))
           )
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 

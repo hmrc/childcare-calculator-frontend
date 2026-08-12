@@ -14,8 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 
 @this(
     layout: Layout,
@@ -23,12 +22,23 @@
     errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
     submitButton: playComponents.submit_button,
-    inputYesNo: playComponents.input_yes_no
+    inputYesNo: playComponents.input_yes_no,
 )
-@(appConfig: FrontendAppConfig, form: Form[Boolean], name: String)(implicit request: Request[_], messages: Messages)
+
+@(
+    form: Form[Boolean],
+    name: String,
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("childRegisteredBlind.title")) else messages("childRegisteredBlind.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("childRegisteredBlind.title"))
+    } else {
+        messages("childRegisteredBlind.title")
+    }
 }
 
 @layout(pageTitle = title) {

@@ -19,54 +19,56 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
+import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.{EmploymentIncomeCYForm, FormErrorHelper}
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.EmploymentIncomeCYId
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeither
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{Both, Partner, You}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{TaxYearInfo, UserAnswers}
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.employmentIncomeCY
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class EmploymentIncomeCYController @Inject() (
     appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     form: EmploymentIncomeCYForm,
-    taxYearInfo: TaxYearInfo,
     employmentIncomeCY: employmentIncomeCY
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport
     with FormErrorHelper {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.employmentIncomeCY match {
       case None        => form()
       case Some(value) => form().fill(value)
     }
-    Ok(employmentIncomeCY(appConfig, preparedForm, taxYearInfo))
+    Ok(employmentIncomeCY(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
-    val maxEarnings = maximumEarnings(request.userAnswers)
-    val boundForm   = form().bindFromRequest()
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
+    val maxEarnings               = maximumEarnings(request.userAnswers)
+    val boundForm                 = form().bindFromRequest()
 
     validateForm(boundForm, maxEarnings).fold(
-      (formWithErrors: Form[EmploymentIncomeCY]) =>
-        Future.successful(BadRequest(employmentIncomeCY(appConfig, formWithErrors, taxYearInfo))),
+      (formWithErrors: Form[EmploymentIncomeCY]) => Future.successful(BadRequest(employmentIncomeCY(formWithErrors))),
       value =>
-        dataCacheConnector
-          .save[EmploymentIncomeCY](request.sessionId, EmploymentIncomeCYId.toString, value)
+        dataCacheService
+          .save(EmploymentIncomeCYId, value)
           .map(cacheMap => Redirect(navigator.nextPage(EmploymentIncomeCYId)(new UserAnswers(cacheMap))))
     )
   }
@@ -80,10 +82,10 @@ class EmploymentIncomeCYController @Inject() (
 
   private def maximumEarnings(answers: UserAnswers) =
     answers.whoIsInPaidEmployment match {
-      case Some(You)     => answers.yourMaximumEarnings
-      case Some(Partner) => answers.partnerMaximumEarnings
-      case Some(Both)    => answers.eitherOfYouMaximumEarnings
-      case _             => None
+      case Some(YouPartnerBothNeither.You)     => answers.yourMaximumEarnings
+      case Some(YouPartnerBothNeither.Partner) => answers.partnerMaximumEarnings
+      case Some(YouPartnerBothNeither.Both)    => answers.eitherOfYouMaximumEarnings
+      case _                                   => None
     }
 
 }

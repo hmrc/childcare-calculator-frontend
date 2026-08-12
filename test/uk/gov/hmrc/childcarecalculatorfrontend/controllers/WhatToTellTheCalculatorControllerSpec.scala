@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
 
 class WhatToTellTheCalculatorControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[whatToTellTheCalculator]
+  val view: whatToTellTheCalculator = inject[whatToTellTheCalculator]
 
   "WhatToTellTheCalculator Controller" must {
     "return 200 for a GET" in {
@@ -31,7 +31,7 @@ class WhatToTellTheCalculatorControllerSpec extends ControllerSpecBase {
 
     "return the correct view for a GET" in {
       val result = new WhatToTellTheCalculatorController(mcc, view).onPageLoad(fakeRequest)
-      contentAsString(result) mustBe view()(fakeRequest, messages).toString
+      contentAsString(result) mustBe view()(using fakeRequest, messages).toString
     }
   }
 

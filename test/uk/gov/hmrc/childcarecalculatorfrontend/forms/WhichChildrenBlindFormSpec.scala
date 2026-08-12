@@ -16,7 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.CheckboxBehaviours
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{unknownErrorKey, whichChildrenBlindErrorKey}
 
 class WhichChildrenBlindFormSpec extends CheckboxBehaviours[Int] {
 
@@ -24,13 +26,13 @@ class WhichChildrenBlindFormSpec extends CheckboxBehaviours[Int] {
   override val invalidValue: String   = "5"
   override val fieldName              = "value"
 
-  val form = WhichChildrenBlindForm(0, 1)
+  val form: Form[Set[Int]] = WhichChildrenBlindForm(0, 1)
 
   "WhichChildrenBlind form" must {
 
-    behave.like(aCheckboxForm(invalid = "error.unknown"))
+    behave.like(aCheckboxForm(invalid = unknownErrorKey))
 
-    behave.like(aMandatoryCheckboxForm("whichChildrenBlind.error.notCompleted"))
+    behave.like(aMandatoryCheckboxForm(whichChildrenBlindErrorKey))
   }
 
 }

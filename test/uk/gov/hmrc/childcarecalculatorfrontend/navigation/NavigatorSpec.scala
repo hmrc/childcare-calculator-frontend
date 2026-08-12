@@ -20,7 +20,7 @@ import org.scalatest.OptionValues
 import org.scalatestplus.play.PlaySpec
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 class NavigatorSpec extends PlaySpec with OptionValues {
@@ -43,7 +43,7 @@ class NavigatorSpec extends PlaySpec with OptionValues {
         )
       )
 
-      val navigator = new Navigator(instance1, instance2)
+      val navigator = new Navigator(Seq(instance1, instance2))
 
       "return the default route when no route exists in the navigator" in {
         val result = navigator.nextPage(ApprovedProviderId)

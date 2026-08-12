@@ -17,40 +17,44 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
 import play.api.data.validation.{Constraint, Invalid, Valid}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.DisabilityBenefit
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{
+  unknownErrorKey,
+  whichDisabilityBenefitsErrorKey
+}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
 
 object WhichDisabilityBenefitsForm extends FormErrorHelper {
 
-  private def whichDisabilityBenefitsFormatter = new Formatter[DisabilityBenefits.Value] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(DisabilityBenefits.withName(s))
-      case None                        => produceError(key, "whichDisabilityBenefits.error.notCompleted")
-      case _                           => produceError(key, "error.unknown")
-    }
+  private def whichDisabilityBenefitsFormatter: Formatter[DisabilityBenefit] =
+    EnumFormatter[DisabilityBenefit](
+      missingErrorKey = whichDisabilityBenefitsErrorKey,
+      unknownValueErrorKey = unknownErrorKey
+    )
 
-    def unbind(key: String, value: DisabilityBenefits.Value) = Map(key -> value.toString)
-  }
-
-  private def optionIsValid(value: String): Boolean =
-    DisabilityBenefits.sortedDisabilityBenefits.map(_.toString).contains(value)
-
-  private def constraint(name: String): Constraint[Set[DisabilityBenefits.Value]] = Constraint {
+  private def constraint(name: String): Constraint[Set[DisabilityBenefit]] = Constraint {
     case set if set.nonEmpty =>
       Valid
     case _ =>
-      Invalid("whichDisabilityBenefits.error.notCompleted", name)
+      Invalid(whichDisabilityBenefitsErrorKey, name)
   }
 
-  def apply(name: String): Form[Set[DisabilityBenefits.Value]] =
+  def apply(name: String): Form[Set[DisabilityBenefit]] =
     Form(
       "value" -> set(of(whichDisabilityBenefitsFormatter))
         .verifying(constraint(name))
     )
 
-  def options: Seq[(String, String)] =
-    DisabilityBenefits.sortedDisabilityBenefits.map(value => s"whichDisabilityBenefits.$value" -> value.toString)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whichDisabilityBenefits",
+    values = Seq(
+      DisabilityBenefit.DisabilityBenefits,
+      DisabilityBenefit.HigherDisabilityBenefits
+    )
+  )
 
 }

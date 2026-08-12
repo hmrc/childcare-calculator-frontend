@@ -19,47 +19,49 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.DataRetrievalAction
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.OptionalDataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class LocationController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     location: location
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData { request =>
+    given OptionalDataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.flatMap(x => x.location) match {
       case None        => LocationForm()
       case Some(value) => LocationForm().fill(value)
     }
-    Ok(location(appConfig, preparedForm))
+    Ok(location(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.async { request =>
+    given OptionalDataRequest[AnyContent] = request
     LocationForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(location(appConfig, formWithErrors))),
+        (formWithErrors: Form[Location]) => Future.successful(BadRequest(location(formWithErrors))),
         value =>
-          dataCacheConnector
-            .save[Location.Value](request.sessionId, LocationId.toString, value)
+          dataCacheService
+            .save(LocationId, value)
             .map(cacheMap => Redirect(navigator.nextPage(LocationId)(new UserAnswers(cacheMap))))
       )
   }

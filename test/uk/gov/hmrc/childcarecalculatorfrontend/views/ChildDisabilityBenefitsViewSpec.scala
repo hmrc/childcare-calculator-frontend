@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewYesNoViewBehaviours
@@ -24,20 +25,19 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childDisabilityBenefit
 
 class ChildDisabilityBenefitsViewSpec extends NewYesNoViewBehaviours {
 
-  override val form    = BooleanForm()
-  val messageKeyPrefix = "childDisabilityBenefits"
+  override val form: Form[Boolean] = BooleanForm()
+  val messageKeyPrefix             = "childDisabilityBenefits"
 
-  val view = application.injector.instanceOf[childDisabilityBenefits]
+  val view: childDisabilityBenefits = inject[childDisabilityBenefits]
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), "Foo")(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, "Foo")(fakeRequest, messages)
+  def render(form: Form[Boolean] = this.form, name: String = "Foo"): Html =
+    view(form, name)(using fakeRequest, messages)
 
   "ChildDisabilityBenefits view" must {
 
     behave.like(
       normalPageWithTitleAsString(
-        view = createView,
+        view = () => render(),
         messageKeyPrefix = messageKeyPrefix,
         messageKeyPostfix = "",
         title = messages(s"$messageKeyPrefix.title"),
@@ -47,11 +47,11 @@ class ChildDisabilityBenefitsViewSpec extends NewYesNoViewBehaviours {
       )
     )
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       yesNoPage(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.ChildrenDisabilityBenefitsController.onSubmit().url,
         legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))

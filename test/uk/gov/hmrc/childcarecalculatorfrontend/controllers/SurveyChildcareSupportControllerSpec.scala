@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsBoolean
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyChildcareSupportId
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
@@ -30,12 +30,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyChildcareSupport
 
 class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[surveyChildcareSupport]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: surveyChildcareSupport = inject[surveyChildcareSupport]
+  def onwardRoute: Call            = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new SurveyChildcareSupportController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -45,7 +44,7 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) = view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String = view(form)(using fakeRequest, messages).toString
 
   "SurveyChildcareSupport Controller" must {
 
@@ -57,7 +56,7 @@ class SurveyChildcareSupportControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(SurveyChildcareSupportId.toString -> JsBoolean(true))
+      val validData       = Map(SurveyChildcareSupportId.withValue(true))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad(fakeRequest)

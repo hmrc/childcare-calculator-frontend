@@ -18,12 +18,13 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
-class Navigator(navigators: SubNavigator*) {
+@Singleton
+class Navigator(navigators: Seq[SubNavigator]) {
 
   @Inject()
   def this(
@@ -37,12 +38,12 @@ class Navigator(navigators: SubNavigator*) {
       childcare: ChildcareNavigator,
       survey: SurveyNavigator
   ) =
-    this(Seq(minHours, maxHours, pensions, employment, benefitsIncome, otherIncome, incomeInfo, childcare, survey): _*)
+    this(Seq(minHours, maxHours, pensions, employment, benefitsIncome, otherIncome, incomeInfo, childcare, survey))
 
   def nextPage(id: Identifier): UserAnswers => Call =
     navigators
       .map(_.nextPage(id))
-      .reduce(_ orElse _)
+      .reduce(_.orElse(_))
       .getOrElse(_ => routes.WhatToTellTheCalculatorController.onPageLoad)
 
 }

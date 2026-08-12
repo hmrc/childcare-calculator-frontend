@@ -17,40 +17,32 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeither
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothNeitherEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object WhoIsInPaidEmploymentForm extends FormErrorHelper {
 
-  def WhoIsInPaidEmploymentFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, whoIsInPaidEmploymentErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
-
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
-    Form(single("value" -> of(WhoIsInPaidEmploymentFormatter)))
-
-  def options = Seq(
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeitherEnum.YOU.toString, "value"),
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeitherEnum.PARTNER.toString, "value-2"),
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeitherEnum.BOTH.toString, "value-3"),
-    whoIsInPaidEmploymentInputOption(YouPartnerBothNeitherEnum.NEITHER.toString, "value-4")
-  )
-
-  def whoIsInPaidEmploymentInputOption(option: String, id: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"whoIsInPaidEmployment.$option"
+  private val WhoIsInPaidEmploymentFormatter: Formatter[YouPartnerBothNeither] =
+    EnumFormatter[YouPartnerBothNeither](
+      missingErrorKey = whoIsInPaidEmploymentErrorKey,
+      unknownValueErrorKey = unknownErrorKey
     )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def apply(): Form[YouPartnerBothNeither] =
+    Form(single("value" -> of(WhoIsInPaidEmploymentFormatter)))
+
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "whoIsInPaidEmployment",
+    values = Seq(
+      YouPartnerBothNeither.You,
+      YouPartnerBothNeither.Partner,
+      YouPartnerBothNeither.Both,
+      YouPartnerBothNeither.Neither
+    )
+  )
+
 }

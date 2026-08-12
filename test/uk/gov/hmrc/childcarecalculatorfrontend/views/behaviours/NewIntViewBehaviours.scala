@@ -17,18 +17,18 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
+import play.twirl.api.Html
 
 trait NewIntViewBehaviours extends NewQuestionViewBehaviours[Int] {
 
   val number = 12
 
   def intPage(
-      createView: (Form[Int]) => HtmlFormat.Appendable,
+      createView: Form[Int] => Html,
       messageKeyPrefix: String,
       expectedFormAction: String,
       messageDynamicValue: Option[String] = None
-  ) =
+  ): Unit =
 
     "behave like a page with an integer value field" when {
       "rendered" must {

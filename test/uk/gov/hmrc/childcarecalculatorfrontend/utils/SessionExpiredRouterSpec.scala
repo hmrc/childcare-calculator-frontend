@@ -52,6 +52,6 @@ class SessionExpiredRouterSpec extends SpecBase {
   }
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
-    new UserAnswers(CacheMap("", Map(answers: _*)))
+    new UserAnswers(CacheMap("", Map(answers*)))
 
 }

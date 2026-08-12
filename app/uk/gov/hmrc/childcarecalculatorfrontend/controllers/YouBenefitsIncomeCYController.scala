@@ -19,49 +19,49 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.YouBenefitsIncomeCYForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.YouBenefitsIncomeCYId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.parentBenefitsIncomeCYRequiredErrorKey
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.youBenefitsIncomeCY
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class YouBenefitsIncomeCYController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     youBenefitsIncomeCY: youBenefitsIncomeCY
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.youBenefitsIncomeCY match {
       case None        => YouBenefitsIncomeCYForm()
       case Some(value) => YouBenefitsIncomeCYForm().fill(value)
     }
-    Ok(youBenefitsIncomeCY(appConfig, preparedForm))
+    Ok(youBenefitsIncomeCY(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
-    YouBenefitsIncomeCYForm(parentBenefitsIncomeCYRequiredErrorKey)
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
+    YouBenefitsIncomeCYForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[BigDecimal]) =>
-          Future.successful(BadRequest(youBenefitsIncomeCY(appConfig, formWithErrors))),
+        (formWithErrors: Form[BigDecimal]) => Future.successful(BadRequest(youBenefitsIncomeCY(formWithErrors))),
         value =>
-          dataCacheConnector
-            .save[BigDecimal](request.sessionId, YouBenefitsIncomeCYId.toString, value)
+          dataCacheService
+            .save(YouBenefitsIncomeCYId, value)
             .map(cacheMap => Redirect(navigator.nextPage(YouBenefitsIncomeCYId)(new UserAnswers(cacheMap))))
       )
   }

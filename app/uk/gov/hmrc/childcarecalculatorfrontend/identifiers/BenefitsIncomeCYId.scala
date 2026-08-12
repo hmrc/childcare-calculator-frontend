@@ -16,6 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object BenefitsIncomeCYId extends Identifier {
-  override def toString: String = "benefitsIncomeCY"
+import uk.gov.hmrc.childcarecalculatorfrontend.models.BenefitsIncomeCY
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object BenefitsIncomeCYId extends Identifier with CacheKey[BenefitsIncomeCY] {
+  override val toString = "benefitsIncomeCY"
+  override val cacheKey = "benefitsIncomeCY"
 }

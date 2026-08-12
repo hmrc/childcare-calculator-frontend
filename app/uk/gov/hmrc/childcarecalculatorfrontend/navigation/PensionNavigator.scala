@@ -18,11 +18,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 import javax.inject.{Inject, Singleton}
+import scala.annotation.unused
 
 /** Contains the navigation for current and previous year pension pages
   */
@@ -63,9 +64,9 @@ private[navigation] class PensionNavigator @Inject() (utils: Utils) extends SubN
 
   private def whoPaysPensionRouteCY(answers: UserAnswers): Call =
     utils.getCall(answers.whoPaysIntoPension) {
-      case `you`     => routes.HowMuchYouPayPensionController.onPageLoad()
-      case `partner` => routes.HowMuchPartnerPayPensionController.onPageLoad()
-      case `both`    => routes.HowMuchBothPayPensionController.onPageLoad()
+      case YouPartnerBoth.You     => routes.HowMuchYouPayPensionController.onPageLoad()
+      case YouPartnerBoth.Partner => routes.HowMuchPartnerPayPensionController.onPageLoad()
+      case YouPartnerBoth.Both    => routes.HowMuchBothPayPensionController.onPageLoad()
     }
 
   private def howMuchYouPayPensionRouteCY(answers: UserAnswers): Call = utils.getCall(answers.doYouLiveWithPartner) {
@@ -73,10 +74,10 @@ private[navigation] class PensionNavigator @Inject() (utils: Utils) extends SubN
     case false => routes.YouAnyTheseBenefitsCYController.onPageLoad()
   }
 
-  private def howMuchPartnerPayPensionRouteCY(answers: UserAnswers): Call =
+  private def howMuchPartnerPayPensionRouteCY(@unused answers: UserAnswers): Call =
     routes.BothAnyTheseBenefitsCYController.onPageLoad()
 
-  private def howMuchBothPayPensionRouteCY(answers: UserAnswers): Call =
+  private def howMuchBothPayPensionRouteCY(@unused answers: UserAnswers): Call =
     routes.BothAnyTheseBenefitsCYController.onPageLoad()
 
 }

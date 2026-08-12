@@ -14,29 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhosHadBenefitsForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
 
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button,
-        inputRadio: playComponents.input_radio,
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button,
+    inputRadio: playComponents.input_radio,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[_]
+    form: Form[YouPartnerBoth],
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("whosHadBenefits.title")) else messages("whosHadBenefits.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("whosHadBenefits.title"))
+    } else {
+        messages("whosHadBenefits.title")
+    }
 }
 
 @layout(pageTitle = title) {
@@ -46,12 +49,7 @@
 
         @inputRadio(
             legend = heading(messages("whosHadBenefits.heading")),
-            inputs = WhosHadBenefitsForm.options map { radioOption =>
-                RadioItem(
-                    value = Some(radioOption.value),
-                    content = HtmlContent(messages(radioOption.messageKey))
-                )
-            },
+            inputs = WhosHadBenefitsForm.options.map(_.toRadioItem),
             field = form("value")
         )
         @submitButton()

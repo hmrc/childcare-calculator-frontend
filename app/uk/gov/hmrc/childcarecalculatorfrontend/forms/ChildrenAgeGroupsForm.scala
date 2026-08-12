@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
 import play.api.data.Forms.{set, single, text}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildAgeGroup, NoneOfThese}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
 
 object ChildrenAgeGroupsForm {
 
@@ -27,11 +27,14 @@ object ChildrenAgeGroupsForm {
   def apply(): Form[Set[ChildAgeGroup]] = Form(
     single(
       formId -> set(text)
-        .verifying("childrenAgeGroups.error.select", _.forall(ChildAgeGroup.mapping.keySet.contains _))
+        .verifying("childrenAgeGroups.error.select", _.forall(ChildAgeGroup.withName(_).isDefined))
         // technically first .verifying not needed, just a sanity check to avoid exceptions from html tampering
-        .transform[Set[ChildAgeGroup]](_.map(ChildAgeGroup.mapping), _.map(ChildAgeGroup.inverseMappping))
+        .transform[Set[ChildAgeGroup]](_.map(ChildAgeGroup.withName(_).get), _.map(_.toString))
         .verifying("childrenAgeGroups.error.select", _.nonEmpty)
-        .verifying("childrenAgeGroups.error.exclusive", set => !(set.contains(NoneOfThese) && set.size > 1))
+        .verifying(
+          "childrenAgeGroups.error.exclusive",
+          set => !(set.contains(ChildAgeGroup.NoneOfThese) && set.size > 1)
+        )
     )
   )
 

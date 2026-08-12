@@ -20,13 +20,13 @@ import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.SurveyDoNotUnderstandId
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
 import uk.gov.hmrc.childcarecalculatorfrontend.services.{
+  DataCacheService,
   SplunkSubmissionServiceInterface,
   SubmissionFailed,
   SubmissionSuccessful
@@ -35,37 +35,38 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class SurveyDoNotUnderstandController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     splunkSubmissionService: SplunkSubmissionServiceInterface,
     surveyDoNotUnderstand: surveyDoNotUnderstand
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport
     with Logging {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
     val preparedForm = request.userAnswers.surveyDoNotUnderstand match {
       case None        => SurveyDoNotUnderstandForm()
       case Some(value) => SurveyDoNotUnderstandForm().fill(value)
     }
-    Ok(surveyDoNotUnderstand(appConfig, preparedForm))
+    Ok(surveyDoNotUnderstand(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     SurveyDoNotUnderstandForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[String]) =>
-          Future.successful(BadRequest(surveyDoNotUnderstand(appConfig, formWithErrors))),
+        (formWithErrors: Form[String]) => Future.successful(BadRequest(surveyDoNotUnderstand(formWithErrors))),
         value => {
 
           val data = Map("reasonForNotUnderstanding" -> value)
@@ -75,8 +76,8 @@ class SurveyDoNotUnderstandController @Inject() (
             case SubmissionFailed     => logger.warn("reasonForNotUnderstanding failed to log to Splunk")
           }
 
-          dataCacheConnector
-            .save[String](request.sessionId, SurveyDoNotUnderstandId.toString, value)
+          dataCacheService
+            .save(SurveyDoNotUnderstandId, value)
             .map(cacheMap => Redirect(navigator.nextPage(SurveyDoNotUnderstandId)(new UserAnswers(cacheMap))))
         }
       )

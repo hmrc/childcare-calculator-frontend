@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.validation.{Constraints, Invalid}
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
 class FormErrorHelperSpec extends SpecBase with Mappings {
 
@@ -191,7 +191,7 @@ class FormErrorHelperSpec extends SpecBase with Mappings {
       "validate and handle first on failure" in {
         val objectUnderTest = new TestObject()
         val constraints     = List(Constraints.nonEmpty, Constraints.maxLength(1))
-        val result          = objectUnderTest.returnOnFirstFailure(constraints: _*)("ee")
+        val result          = objectUnderTest.returnOnFirstFailure(constraints*)("ee")
         result.asInstanceOf[Invalid].errors.head.message mustBe "error.maxLength"
       }
 

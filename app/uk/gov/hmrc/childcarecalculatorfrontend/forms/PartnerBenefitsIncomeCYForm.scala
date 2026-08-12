@@ -17,37 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.DecimalFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
 object PartnerBenefitsIncomeCYForm extends FormErrorHelper {
 
-  private def partnerBenefitsIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String): Formatter[BigDecimal] =
-    new Formatter[BigDecimal] {
-
-      val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-
-      def bind(key: String, data: Map[String, String]) =
-        data.get(key) match {
-          case None                               => produceError(key, errorKeyBlank)
-          case Some("")                           => produceError(key, errorKeyBlank)
-          case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
-          case _                                  => produceError(key, errorKeyInvalid)
-        }
-
-      def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-    }
+  private def partnerBenefitsIncomeCYFormatter(
+      missingErrorKey: String,
+      invalidValueErrorKey: String
+  ): Formatter[BigDecimal] =
+    DecimalFormatter(missingErrorKey = missingErrorKey, invalidValueErrorKey = invalidValueErrorKey)
 
   def apply(
-      errorKeyBlank: String = partnerBenefitsIncomeCYRequiredErrorKey,
-      errorKeyInvalid: String = partnerBenefitsIncomeInvalidErrorKey
+      missingErrorKey: String = partnerBenefitsIncomeCYRequiredErrorKey,
+      invalidValueErrorKey: String = partnerBenefitsIncomeInvalidErrorKey
   ): Form[BigDecimal] =
     Form(
       single(
-        "value" -> of(partnerBenefitsIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))
-          .verifying(maximumValue[BigDecimal](9999.99, errorKeyInvalid))
-          .verifying(minimumValue[BigDecimal](1, errorKeyInvalid))
+        "value" -> of(partnerBenefitsIncomeCYFormatter(missingErrorKey, invalidValueErrorKey))
+          .verifying(maximumValue[BigDecimal](9999.99, invalidValueErrorKey))
+          .verifying(minimumValue[BigDecimal](1, invalidValueErrorKey))
       )
     )
 

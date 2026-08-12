@@ -16,120 +16,156 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts
 
-import play.api.libs.json._
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{ChildcarePayFrequency, DisabilityBenefits}
-import uk.gov.hmrc.childcarecalculatorfrontend.{CascadeUpsertBase, DataGenerator, SpecBase}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{ChildcarePayFrequency, DisabilityBenefit}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
+import uk.gov.hmrc.childcarecalculatorfrontend.{DataGenerator, SpecBase}
 
 class ChildrenCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
-
-  lazy val disabilityBenefits: String           = DisabilityBenefits.DISABILITY_BENEFITS.toString
-  lazy val higherRateDisabilityBenefits: String = DisabilityBenefits.HIGHER_DISABILITY_BENEFITS.toString
-
-  lazy val weekly: String  = ChildcarePayFrequency.WEEKLY.toString
-  lazy val monthly: String = ChildcarePayFrequency.MONTHLY.toString
 
   "Children Journey" when {
     "Save noOfChildren data " must {
       "remove relevant data in child journey when noOfChildren value is changed" in {
-        val result = cascadeUpsert(NoOfChildrenId.toString, 4, DataGenerator.sample)
+        val originalCacheMap: CacheMap = DataGenerator.sample
 
-        result.data mustBe Map(NoOfChildrenId.toString -> JsNumber(4))
+        val result = cascadeUpsert(NoOfChildrenId, 4, originalCacheMap)
+
+        result.data mustBe Map(NoOfChildrenId.withValue(4))
       }
 
       "remove relevant data in child journey when noOfChildren value is changed from single child" in {
-        val result = cascadeUpsert(NoOfChildrenId.toString, 4, DataGenerator.sample)
+        val originalCacheMap: CacheMap = DataGenerator.sample
 
-        result.data mustBe Map(NoOfChildrenId.toString -> JsNumber(4))
+        val result = cascadeUpsert(NoOfChildrenId, 4, originalCacheMap)
+
+        result.data mustBe Map(NoOfChildrenId.withValue(4))
       }
     }
 
     "Save childrenDisabilityBenefits data " must {
       "remove whichChildrenDisability and whichDisabilityBenefits data when childrenDisabilityBenefits is false" in {
-        val result = cascadeUpsert(ChildrenDisabilityBenefitsId.toString, false, DataGenerator.sample)
+        val originalCacheMap: CacheMap = DataGenerator.sample
 
-        result.data.get(WhichDisabilityBenefitsId.toString) mustBe None
-        result.data.get(WhichChildrenDisabilityId.toString) mustBe None
+        val result = cascadeUpsert(ChildrenDisabilityBenefitsId, false, originalCacheMap)
+
+        result.getEntry(WhichDisabilityBenefitsId) mustBe None
+        result.getEntry(WhichChildrenDisabilityId) mustBe None
       }
 
       "remove whichDisabilityBenefits data when childDisabilityBenefits is false" in {
-        val result = cascadeUpsert(ChildDisabilityBenefitsId.toString, false, DataGenerator.sample)
+        val originalCacheMap: CacheMap = DataGenerator.sample
 
-        result.data.get(WhichDisabilityBenefitsId.toString) mustBe None
+        val result = cascadeUpsert(ChildDisabilityBenefitsId, false, originalCacheMap)
+
+        result.getEntry(WhichDisabilityBenefitsId) mustBe None
       }
     }
 
     "Save whichChildrenDisability data " must {
       "remove whichDisabilityBenefits data accordingly when childrenDisabilityBenefits is changed" in {
-        val result = cascadeUpsert(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 1)), DataGenerator.sample)
+        val originalCacheMap: CacheMap = DataGenerator.sample
 
-        result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj("0" -> Seq(disabilityBenefits)))
+        val result = cascadeUpsert(WhichChildrenDisabilityId, Set(0, 1), originalCacheMap)
+
+        result.getEntry(WhichDisabilityBenefitsId) mustBe Some(
+          Map(0 -> Set(DisabilityBenefit.DisabilityBenefits))
+        )
       }
 
       "Save whichChildrenDisability data " must {
         "not remove anything if there is no object" in {
-          val data = DataGenerator().deleteObject(WhichDisabilityBenefitsId.toString)
+          val originalCacheMap = DataGenerator.sample.removed(WhichDisabilityBenefitsId)
 
-          val result = cascadeUpsert(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 2)), data.sample)
+          val result = cascadeUpsert(WhichChildrenDisabilityId, Set(0, 2), originalCacheMap)
 
-          result.data.get(WhichDisabilityBenefitsId.toString) mustBe None
+          result.getEntry(WhichDisabilityBenefitsId) mustBe None
         }
 
         "remove whichDisabilityBenefits data accordingly when childrenDisabilityBenefits is changed for 5 children " in {
-          val data = DataGenerator()
-            .overWriteObject(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 1, 2, 4)))
-            .overWriteObject(
-              WhichDisabilityBenefitsId.toString,
-              Json.obj(
-                "0" -> Seq(disabilityBenefits),
-                "1" -> Seq(higherRateDisabilityBenefits),
-                "2" -> Seq(disabilityBenefits, higherRateDisabilityBenefits),
-                "4" -> Seq(higherRateDisabilityBenefits)
+          val originalCacheMap = DataGenerator.sample
+            .overwritten(
+              WhichChildrenDisabilityId.withValue(Set(0, 1, 2, 4)),
+              WhichDisabilityBenefitsId.withValue(
+                Map(
+                  0 -> Set(DisabilityBenefit.DisabilityBenefits),
+                  1 -> Set(DisabilityBenefit.HigherDisabilityBenefits),
+                  2 -> Set(DisabilityBenefit.DisabilityBenefits, DisabilityBenefit.HigherDisabilityBenefits),
+                  4 -> Set(DisabilityBenefit.HigherDisabilityBenefits)
+                )
               )
             )
 
-          val result = cascadeUpsert(WhichChildrenDisabilityId.toString, Json.toJson(Seq(0, 3)), data.sample)
-          result.data.get(WhichDisabilityBenefitsId.toString) mustBe Some(Json.obj("0" -> Seq(disabilityBenefits)))
+          val result = cascadeUpsert(WhichChildrenDisabilityId, Set(0, 3), originalCacheMap)
+
+          result.getEntry(WhichDisabilityBenefitsId) mustBe Some(
+            Map(0 -> Set(DisabilityBenefit.DisabilityBenefits))
+          )
         }
       }
 
       "Save registeredBlind data " must {
         "remove whichChildrenBlind data when registeredBlind is false" in {
-          val originalCacheMap = DataGenerator().overWriteObject(WhichChildrenBlindId.toString, Json.toJson(Seq(0, 2)))
+          val originalCacheMap: CacheMap = DataGenerator.sample.overwritten(WhichChildrenBlindId.withValue(Set(0, 2)))
 
-          val result = cascadeUpsert(RegisteredBlindId.toString, false, originalCacheMap.sample)
-          result.data.get(WhichChildrenBlindId.toString) mustBe None
+          val result = cascadeUpsert(RegisteredBlindId, false, originalCacheMap)
+          result.getEntry(WhichChildrenBlindId) mustBe None
         }
       }
 
       "Save whoHasChildcareCosts data " must {
         "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed " in {
-          val originalCacheMap = DataGenerator()
-            .overWriteObject(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1)))
-            .overWriteObject(ChildcarePayFrequencyId.toString, Json.obj("0" -> monthly, "1" -> weekly))
-            .overWriteObject(ExpectedChildcareCostsId.toString, Json.obj("0" -> JsNumber(123), "1" -> JsNumber(224)))
+          val originalCacheMap = DataGenerator.sample
+            .overwritten(
+              WhoHasChildcareCostsId.withValue(Set(0, 1)),
+              ChildcarePayFrequencyId.withValue(
+                Map(
+                  0 -> ChildcarePayFrequency.Monthly,
+                  1 -> ChildcarePayFrequency.Weekly
+                )
+              ),
+              ExpectedChildcareCostsId.withValue(
+                Map(
+                  0 -> 123,
+                  1 -> 224
+                )
+              )
+            )
 
-          val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 2)), originalCacheMap.sample)
-          result.data.get(ChildcarePayFrequencyId.toString) mustBe Some(Json.obj("0" -> monthly))
-          result.data.get(ExpectedChildcareCostsId.toString) mustBe Some(Json.obj("0" -> JsNumber(123)))
+          val result = cascadeUpsert(WhoHasChildcareCostsId, Set(0, 2), originalCacheMap)
+          result.getEntry(ChildcarePayFrequencyId) mustBe Some(
+            Map(0 -> ChildcarePayFrequency.Monthly)
+          )
+          result.getEntry(ExpectedChildcareCostsId) mustBe Some(Map(0 -> 123))
         }
 
         "remove childcarePayFrequency and expectedChildcareCosts data accordingly when whoHasChildcareCosts is changed for 5 children " in {
-          val originalCacheMap = DataGenerator()
-            .overWriteObject(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 1, 3, 4)))
-            .overWriteObject(
-              ChildcarePayFrequencyId.toString,
-              Json.obj("0" -> monthly, "1" -> weekly, "3" -> weekly, "4" -> weekly)
+          val originalCacheMap = DataGenerator.sample.overwritten(
+            WhoHasChildcareCostsId.withValue(Set(0, 1, 3, 4)),
+            ChildcarePayFrequencyId.withValue(
+              Map(
+                0 -> ChildcarePayFrequency.Monthly,
+                1 -> ChildcarePayFrequency.Weekly,
+                3 -> ChildcarePayFrequency.Weekly,
+                4 -> ChildcarePayFrequency.Weekly
+              )
+            ),
+            ExpectedChildcareCostsId.withValue(
+              Map(
+                0 -> 123,
+                1 -> 224,
+                3 -> 500,
+                4 -> 340
+              )
             )
-            .overWriteObject(
-              ExpectedChildcareCostsId.toString,
-              Json.obj("0" -> JsNumber(123), "1" -> JsNumber(224), "3" -> JsNumber(500), "4" -> JsNumber(340))
-            )
+          )
 
-          val result = cascadeUpsert(WhoHasChildcareCostsId.toString, Json.toJson(Seq(0, 4)), originalCacheMap.sample)
-          result.data.get(ChildcarePayFrequencyId.toString) mustBe Some(Json.obj("0" -> monthly, "4" -> weekly))
-          result.data.get(ExpectedChildcareCostsId.toString) mustBe Some(
-            Json.obj("0" -> JsNumber(123), "4" -> JsNumber(340))
+          val result = cascadeUpsert(WhoHasChildcareCostsId, Set(0, 4), originalCacheMap)
+
+          result.getEntry(ChildcarePayFrequencyId) mustBe Some(
+            Map(0 -> ChildcarePayFrequency.Monthly, 4 -> ChildcarePayFrequency.Weekly)
+          )
+          result.getEntry(ExpectedChildcareCostsId) mustBe Some(
+            Map(0 -> 123, 4 -> 340)
           )
         }
       }

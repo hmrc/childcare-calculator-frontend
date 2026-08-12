@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 
-class EmploymentIncomeCYFormSpec extends FormBehaviours {
+class EmploymentIncomeCYFormSpec extends FormBehaviours[EmploymentIncomeCY] {
 
   val validData: Map[String, String] = Map(
     "parentEmploymentIncomeCY"  -> "1",
     "partnerEmploymentIncomeCY" -> "2"
   )
 
-  val form = new EmploymentIncomeCYForm(frontendAppConfig).apply()
+  val form: Form[EmploymentIncomeCY] = new EmploymentIncomeCYForm(frontendAppConfig).apply()
 
   "EmploymentIncomeCY form" must {
     behave.like(questionForm(EmploymentIncomeCY(1, 2)))

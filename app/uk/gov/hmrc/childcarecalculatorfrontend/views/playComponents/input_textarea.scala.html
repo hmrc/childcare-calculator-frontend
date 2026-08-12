@@ -15,18 +15,18 @@
  *@
 
 @this(
-        govukTextarea : GovukTextarea
+    govukTextarea : GovukTextarea
 )
 
 @(
-        label: String,
-        secondaryLabel: Option[String] = None,
-        inputClass: Option[String] = None,
-        hint: Option[String] = None,
-        labelClass: Option[String] = None,
-        isPageHeading: Boolean = true,
-        field: Field
-)(implicit messages: Messages)
+    label: String,
+    hint: Option[String] = None,
+    labelClass: Option[String] = None,
+    isPageHeading: Boolean = true,
+    field: Field,
+)(
+    using messages: Messages,
+)
 
 
 @govukTextarea(Textarea(
@@ -35,9 +35,5 @@
         classes = s"""govuk-label--xl ${labelClass.getOrElse("")}""",
         content = Text(label)
     ),
-    hint = if (hint.isDefined) {
-        Some(Hint(
-            content = Text(hint.get)
-        ))
-    } else None
+    hint = hint.map(hint => Hint(content = Text(hint)))
 ).withFormField(field))

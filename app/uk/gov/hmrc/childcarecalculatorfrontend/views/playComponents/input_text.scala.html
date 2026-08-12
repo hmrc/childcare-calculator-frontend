@@ -28,13 +28,15 @@
     smallText: Boolean = false,
     largeText: Boolean = true,
     shortAnswer: Boolean = false,
-    field: Field
-)(implicit messages: Messages)
+    field: Field,
+)(
+    using messages: Messages,
+)
 
 @hint = @{
-    (Seq(hintLine1, hintLine2).flatten.mkString(" ")) match {
+    Seq(hintLine1, hintLine2).flatten.mkString(" ") match {
         case ""           => None
-        case (hintString) => Some(hintString)
+        case hintString => Some(hintString)
     }
 }
 
@@ -49,6 +51,8 @@
     spellcheck = Some(!currency),
     autocomplete = autoComplete,
     inputmode = inputMode,
-    prefix = if(currency) Some(PrefixOrSuffix(content = Text("£"))) else None
+    prefix = Option.when(currency) {
+        PrefixOrSuffix(content = Text("£"))
+    }
 ).withFormField(field))
 

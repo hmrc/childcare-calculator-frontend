@@ -18,10 +18,11 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import org.scalatest.OptionValues
 import play.api.data.Form
-import play.api.libs.json._
-import play.api.test.Helpers._
+import play.api.libs.json.JsValue
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichChildrenDisabilityForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, WhichChildrenDisabilityId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
@@ -33,13 +34,12 @@ import java.time.LocalDate
 
 class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with OptionValues {
 
-  val view = application.injector.instanceOf[whichChildrenDisability]
+  val view: whichChildrenDisability = inject[whichChildrenDisability]
 
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new WhichChildrenDisabilityController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -49,21 +49,23 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     )
 
   val requiredData: Map[String, JsValue] = Map(
-    AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now)),
-      "1" -> Json.toJson(AboutYourChild("Bar", LocalDate.now))
+    AboutYourChildId.withValue(
+      Map(
+        0 -> AboutYourChild("Foo", LocalDate.of(2026, 7, 27)),
+        1 -> AboutYourChild("Bar", LocalDate.of(2026, 7, 27))
+      )
     )
   )
 
   val getRequiredData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData)))
 
-  val options = Seq(
-    "Foo" -> "0",
-    "Bar" -> "1"
+  val options: Seq[(String, Int)] = Seq(
+    "Foo" -> 0,
+    "Bar" -> 1
   )
 
-  def viewAsString(form: Form[_] = WhichChildrenDisabilityForm()): String =
-    view(frontendAppConfig, form, options)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Set[Int]] = WhichChildrenDisabilityForm()): String =
+    view(form, options)(using fakeRequest, messages).toString
 
   "WhichChildrenDisability Controller" must {
 
@@ -74,7 +76,7 @@ class WhichChildrenDisabilityControllerSpec extends ControllerSpecBase with Opti
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = requiredData + (WhichChildrenDisabilityId.toString -> JsArray(Seq(JsNumber(0))))
+      val validData       = requiredData + WhichChildrenDisabilityId.withValue(Set(0))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

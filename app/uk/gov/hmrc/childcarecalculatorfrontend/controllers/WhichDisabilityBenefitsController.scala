@@ -17,59 +17,58 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.i18n.I18nSupport
-import play.api.mvc._
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
+import play.api.mvc.*
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.WhichDisabilityBenefitsId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.DisabilityBenefit
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{MapFormats, SessionExpiredRouter, UserAnswers}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefits
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class WhichDisabilityBenefitsController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     whichDisabilityBenefits: whichDisabilityBenefits
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport
     with MapFormats {
 
   def onPageLoad(childIndex: Int): Action[AnyContent] =
-    getData.andThen(requireData).async { implicit request =>
+    getData.andThen(requireData).async { request =>
+      given DataRequest[AnyContent] = request
       withValidIndex(childIndex) { name =>
         val answer = request.userAnswers.whichDisabilityBenefits(childIndex)
         val preparedForm = answer match {
           case None        => WhichDisabilityBenefitsForm(name)
           case Some(value) => WhichDisabilityBenefitsForm(name).fill(value)
         }
-        Future.successful(Ok(whichDisabilityBenefits(appConfig, preparedForm, childIndex, name)))
+        Future.successful(Ok(whichDisabilityBenefits(preparedForm, childIndex, name)))
       }
     }
 
-  def onSubmit(childIndex: Int): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(childIndex: Int): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     withValidIndex(childIndex) { name =>
       WhichDisabilityBenefitsForm(name)
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(whichDisabilityBenefits(appConfig, formWithErrors, childIndex, name))),
+          formWithErrors => Future.successful(BadRequest(whichDisabilityBenefits(formWithErrors, childIndex, name))),
           value =>
-            dataCacheConnector
-              .saveInMap[Int, Set[DisabilityBenefits.Value]](
-                request.sessionId,
-                WhichDisabilityBenefitsId.toString,
+            dataCacheService
+              .saveInMap[Int, Set[DisabilityBenefit]](
+                WhichDisabilityBenefitsId,
                 childIndex,
                 value
               )
@@ -81,13 +80,13 @@ class WhichDisabilityBenefitsController @Inject() (
   }
 
   private def sessionExpired(message: String, answers: Option[UserAnswers])(
-      implicit request: RequestHeader
+      using request: RequestHeader
   ): Future[Result] =
     Future.successful(Redirect(SessionExpiredRouter.route(getClass.getName, message, answers, request.uri)))
 
   private def withValidIndex[A](
       index: Int
-  )(block: String => Future[Result])(implicit request: DataRequest[A]): Future[Result] = {
+  )(block: String => Future[Result])(using request: DataRequest[A]): Future[Result] = {
     for {
       children <- request.userAnswers.childrenWithDisabilityBenefits
       name     <- request.userAnswers.aboutYourChild(index).map(_.name)

@@ -14,31 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 
-
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button,
-        inputYesNo: playComponents.input_yes_no,
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button,
+    inputYesNo: playComponents.input_yes_no,
+    taxYearInfo: TaxYearInfo,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[Boolean],
-        taxYearInfo: TaxYearInfo
+    form: Form[Boolean],
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("bothPaidPensionCY.title")) else messages("bothPaidPensionCY.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("bothPaidPensionCY.title"))
+    } else {
+        messages("bothPaidPensionCY.title")
+    }
 }
 
 @layout(pageTitle = title) {

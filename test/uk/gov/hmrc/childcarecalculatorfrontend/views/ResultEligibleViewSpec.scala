@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{FourYears, Location, ThreeYears, TwoYears}
+import play.twirl.api.Html
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.resultEligible
 
 class ResultEligibleViewSpec extends NewViewBehaviours {
 
-  lazy val appResultEligible: resultEligible = application.injector.instanceOf[resultEligible]
+  val view: resultEligible = inject[resultEligible]
 
-  val utils = new Utils
+  def render(model: ResultsViewModel): Html = view(model)(using messages)
 
   "Result eligible view" must {
 
@@ -34,65 +35,81 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
       "We have free hours value" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = Location.ENGLAND,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "england")(messages))
+        val document = asDocument(render(model))
 
-        assertContainsMessages(view, "15")
+        assertContainsMessages(document, "15")
       }
 
-      "User is eligible for TFC scheme" in {
-        val modelWithLessThan1000 = ResultsViewModel(
-          tfc = Some(600),
-          location = Location.ENGLAND,
-          hasChildcareCosts = true,
-          hasCostsWithApprovedProvider = true,
-          isAnyoneInPaidEmployment = true,
-          livesWithPartner = true
-        )
-        val modelWithMoreThan1000 = ResultsViewModel(
-          tfc = Some(1600),
-          location = Location.ENGLAND,
-          hasChildcareCosts = true,
-          hasCostsWithApprovedProvider = true,
-          isAnyoneInPaidEmployment = true,
-          livesWithPartner = true
-        )
+      "User is eligible for TFC scheme" when {
+        "User is eligible for less than £1,000" in {
+          val model = ResultsViewModel(
+            tfc = Some(600),
+            location = Location.England,
+            hasChildcareCosts = true,
+            hasCostsWithApprovedProvider = true,
+            isAnyoneInPaidEmployment = true,
+            livesWithPartner = true
+          )
 
-        val viewWithLessThan1000 = asDocument(appResultEligible(modelWithLessThan1000, utils, "england")(messages))
-        val viewWithMoreThan1000 = asDocument(appResultEligible(modelWithMoreThan1000, utils, "england")(messages))
+          val document = asDocument(render(model))
 
-        assertContainsMessages(viewWithLessThan1000, "600")
-        assertContainsMessages(viewWithMoreThan1000, "1,600")
+          assertContainsMessages(document, "600")
+        }
+
+        "User is eligible for more than £1,000" in {
+
+          val model = ResultsViewModel(
+            tfc = Some(1600),
+            location = Location.England,
+            hasChildcareCosts = true,
+            hasCostsWithApprovedProvider = true,
+            isAnyoneInPaidEmployment = true,
+            livesWithPartner = true
+          )
+
+          val document = asDocument(render(model))
+
+          assertContainsMessages(document, "1,600")
+        }
+
       }
 
-      "User is eligible for ESC scheme" in {
-        val modelWithLessThan1000 = ResultsViewModel(
-          esc = Some(900),
-          location = Location.ENGLAND,
-          hasChildcareCosts = true,
-          hasCostsWithApprovedProvider = true,
-          isAnyoneInPaidEmployment = true,
-          livesWithPartner = true
-        )
-        val modelWithMoreThan1000 = ResultsViewModel(
-          tfc = Some(1900),
-          location = Location.ENGLAND,
-          hasChildcareCosts = true,
-          hasCostsWithApprovedProvider = true,
-          isAnyoneInPaidEmployment = true,
-          livesWithPartner = true
-        )
+      "User is eligible for ESC scheme" when {
+        "User is eligible for less than £1,000" in {
+          val model = ResultsViewModel(
+            esc = Some(900),
+            location = Location.England,
+            hasChildcareCosts = true,
+            hasCostsWithApprovedProvider = true,
+            isAnyoneInPaidEmployment = true,
+            livesWithPartner = true
+          )
 
-        val viewWithLessThan1000 = asDocument(appResultEligible(modelWithLessThan1000, utils, "england")(messages))
-        val viewWithMoreThan1000 = asDocument(appResultEligible(modelWithMoreThan1000, utils, "england")(messages))
+          val document = asDocument(render(model))
 
-        assertContainsMessages(viewWithLessThan1000, "900")
-        assertContainsMessages(viewWithMoreThan1000, "1,900")
+          assertContainsMessages(document, "900")
+        }
+        "User is eligible for more than £1,000" in {
+          val model = ResultsViewModel(
+            tfc = Some(1900),
+            location = Location.England,
+            hasChildcareCosts = true,
+            hasCostsWithApprovedProvider = true,
+            isAnyoneInPaidEmployment = true,
+            livesWithPartner = true
+          )
+
+          val document = asDocument(render(model))
+
+          assertContainsMessages(document, "1,900")
+        }
+
       }
 
     }
@@ -101,73 +118,76 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
       "location is England and no of hours is 15" in {
         val model = ResultsViewModel(
           freeHours = Some(BigDecimal(15)),
-          location = Location.ENGLAND,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "england")(messages))
 
-        assertContainsMessages(view, "15")
-        assertContainsText(view, messages("result.free.hours.title.3to4"))
-        assertContainsText(view, messages("result.you.could.get.up.to"))
-        assertContainsText(view, messages("result.free.hours.hours"))
-        assertContainsText(view, messages("result.free.hours.period.england", 570))
+        val document = asDocument(render(model))
+
+        assertContainsMessages(document, "15")
+        assertContainsText(document, messages("result.free.hours.title.3to4"))
+        assertContainsText(document, messages("result.you.could.get.up.to"))
+        assertContainsText(document, messages("result.free.hours.hours"))
+        assertContainsText(document, messages("result.free.hours.period.england", 570))
       }
 
       "location is Wales" in {
         val model = ResultsViewModel(
           freeHours = Some(10),
-          location = Location.WALES,
+          location = Location.Wales,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "wales")(messages))
 
-        assertContainsMessages(view, "10")
-        assertContainsText(view, messages("result.free.hours.title.3to4"))
-        assertContainsText(view, messages("result.you.could.get"))
-        assertContainsText(view, messages("result.free.hours.hours"))
-        assertContainsText(view, messages("result.free.hours.period.wales"))
+        val document = asDocument(render(model))
+
+        assertContainsMessages(document, "10")
+        assertContainsText(document, messages("result.free.hours.title.3to4"))
+        assertContainsText(document, messages("result.you.could.get"))
+        assertContainsText(document, messages("result.free.hours.hours"))
+        assertContainsText(document, messages("result.free.hours.period.wales"))
       }
 
       "location is Scotland" in {
         val model = ResultsViewModel(
           freeHours = Some(16),
-          location = Location.SCOTLAND,
+          location = Location.Scotland,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "scotland")(messages))
 
-        assertContainsMessages(view, "16")
-        assertContainsText(view, messages("result.free.hours.title.3to4"))
-        assertContainsText(view, messages("result.you.could.get"))
-        assertContainsText(view, messages("result.free.hours.hours"))
-        assertContainsText(view, messages("result.free.hours.period.scotland"))
+        val document = asDocument(render(model))
+
+        assertContainsMessages(document, "16")
+        assertContainsText(document, messages("result.free.hours.title.3to4"))
+        assertContainsText(document, messages("result.you.could.get"))
+        assertContainsText(document, messages("result.free.hours.hours"))
+        assertContainsText(document, messages("result.free.hours.period.scotland"))
       }
 
       "location is NI" in {
         val model = ResultsViewModel(
           freeHours = Some(12.5),
-          location = Location.NORTHERN_IRELAND,
+          location = Location.NorthernIreland,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "northern-ireland")(messages))
+        val document = asDocument(render(model))
 
-        assertContainsMessages(view, "12 and a half hours")
-        assertContainsText(view, messages("result.free.hours.title.3to4"))
-        assertContainsText(view, messages("result.you.could.get.up.to"))
-        assertContainsText(view, messages("result.free.hours.hours"))
-        assertContainsText(view, messages("result.free.hours.period.northern-ireland"))
+        assertContainsMessages(document, "12 and a half hours")
+        assertContainsText(document, messages("result.free.hours.title.3to4"))
+        assertContainsText(document, messages("result.you.could.get.up.to"))
+        assertContainsText(document, messages("result.free.hours.hours"))
+        assertContainsText(document, messages("result.free.hours.period.northern-ireland"))
       }
     }
 
@@ -176,75 +196,77 @@ class ResultEligibleViewSpec extends NewViewBehaviours {
         val model = ResultsViewModel(
           freeHours = Some(30),
           freeChildcareWorkingParents = true,
-          location = Location.ENGLAND,
-          childrenAgeGroups = Set(TwoYears),
+          location = Location.England,
+          childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "england")(messages))
 
-        assertContainsText(view, messages("result.free.childcare.working.parents.title"))
+        val document = asDocument(render(model))
+
+        assertContainsText(document, messages("result.free.childcare.working.parents.title"))
         assertContainsText(
-          view,
+          document,
           messages("result.free.childcare.working.parents.two.year.old", frontendAppConfig.maxFreeHoursAmount)
         )
-        assertNotContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
+        assertNotContainsText(document, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
       }
 
       "location is England and working parents with just 3 or 4 year old" in {
         val model = ResultsViewModel(
           freeHours = Some(30),
           freeChildcareWorkingParents = true,
-          location = Location.ENGLAND,
-          childrenAgeGroups = Set(ThreeYears),
+          location = Location.England,
+          childrenAgeGroups = Set(ChildAgeGroup.ThreeYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "england")(messages))
 
-        assertContainsText(view, messages("result.free.childcare.working.parents.title"))
-        assertContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
-        assertNotContainsText(view, messages("result.free.childcare.working.parents.two.year.old"))
+        val document = asDocument(render(model))
+
+        assertContainsText(document, messages("result.free.childcare.working.parents.title"))
+        assertContainsText(document, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
+        assertNotContainsText(document, messages("result.free.childcare.working.parents.two.year.old"))
       }
 
       "location is England and working parents with 2 year old and 3 or 4 year old" in {
         val model = ResultsViewModel(
           freeHours = Some(30),
           freeChildcareWorkingParents = true,
-          location = Location.ENGLAND,
-          childrenAgeGroups = Set(TwoYears, ThreeYears, FourYears),
+          location = Location.England,
+          childrenAgeGroups = Set(ChildAgeGroup.TwoYears, ChildAgeGroup.ThreeYears, ChildAgeGroup.FourYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "england")(messages))
+        val document = asDocument(render(model))
 
-        assertContainsText(view, messages("result.free.childcare.working.parents.title"))
+        assertContainsText(document, messages("result.free.childcare.working.parents.title"))
         assertContainsText(
-          view,
+          document,
           messages("result.free.childcare.working.parents.two.year.old", frontendAppConfig.maxFreeHoursAmount)
         )
-        assertContainsText(view, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
+        assertContainsText(document, messages("result.free.childcare.working.parents.threeOrFour.year.old"))
       }
 
       "location is England and not working parents with 2 year old and 3 or 4 year old" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = Location.ENGLAND,
-          childrenAgeGroups = Set(TwoYears, FourYears),
+          location = Location.England,
+          childrenAgeGroups = Set(ChildAgeGroup.TwoYears, ChildAgeGroup.FourYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(appResultEligible(model, utils, "england")(messages))
+        val document = asDocument(render(model))
 
-        assertNotContainsText(view, messages("result.free.childcare.working.parents.title"))
+        assertNotContainsText(document, messages("result.free.childcare.working.parents.title"))
       }
     }
   }

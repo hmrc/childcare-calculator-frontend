@@ -19,58 +19,60 @@ package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.connectors.DataCacheConnector
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.ApprovedProviderId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{YesNoNotSure, YesNoNotYet}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.DataRequest
 import uk.gov.hmrc.childcarecalculatorfrontend.navigation.Navigator
+import uk.gov.hmrc.childcarecalculatorfrontend.services.DataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.approvedProvider
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class ApprovedProviderController @Inject() (
-    appConfig: FrontendAppConfig,
     mcc: MessagesControllerComponents,
-    dataCacheConnector: DataCacheConnector,
+    dataCacheService: DataCacheService,
     navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     approvedProvider: approvedProvider
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = getData.andThen(requireData) { request =>
+    given DataRequest[AnyContent]   = request
     val childcareCostsMaybeInFuture = checkIfUnsureAboutChildcareCosts(request.userAnswers)
 
     val preparedForm = request.userAnswers.approvedProvider match {
       case None        => ApprovedProviderForm()
       case Some(value) => ApprovedProviderForm().fill(value)
     }
-    Ok(approvedProvider(appConfig, preparedForm, childcareCostsMaybeInFuture))
+    Ok(approvedProvider(preparedForm, childcareCostsMaybeInFuture))
   }
 
-  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = getData.andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
     ApprovedProviderForm()
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[String]) => {
+        (formWithErrors: Form[YesNoNotSure]) => {
           val childcareCostsMaybeInFuture = checkIfUnsureAboutChildcareCosts(request.userAnswers)
-          Future.successful(BadRequest(approvedProvider(appConfig, formWithErrors, childcareCostsMaybeInFuture)))
+          Future.successful(BadRequest(approvedProvider(formWithErrors, childcareCostsMaybeInFuture)))
         },
         value =>
-          dataCacheConnector
-            .save[String](request.sessionId, ApprovedProviderId.toString, value)
+          dataCacheService
+            .save(ApprovedProviderId, value)
             .map(cacheMap => Redirect(navigator.nextPage(ApprovedProviderId)(new UserAnswers(cacheMap))))
       )
   }
 
   private def checkIfUnsureAboutChildcareCosts(answers: UserAnswers): Boolean =
-    answers.childcareCosts.getOrElse("no") == YesNoNotYetEnum.NOTYET.toString
+    answers.childcareCosts.getOrElse(YesNoNotYet.No) == YesNoNotYet.NotYet
 
 }

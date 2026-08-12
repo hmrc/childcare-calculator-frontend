@@ -17,54 +17,47 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import org.scalatestplus.mockito.MockitoSugar
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{Location, _}
+import play.twirl.api.Html
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{Earnings, Location}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.result
 
 class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
 
-  val resultView: result = application.injector.instanceOf[result]
+  val view: result = inject[result]
 
-  val locationEngland: Location.Value  = Location.ENGLAND
-  val locationScotland: Location.Value = Location.SCOTLAND
-  val locationWales: Location.Value    = Location.WALES
+  val defaultModel: ResultsViewModel =
+    ResultsViewModel(
+      location = Location.England,
+      hasChildcareCosts = true,
+      hasCostsWithApprovedProvider = true,
+      isAnyoneInPaidEmployment = true,
+      livesWithPartner = true
+    )
 
-  def createView(): () => HtmlFormat.Appendable = () =>
-    resultView(
-      frontendAppConfig: FrontendAppConfig,
-      ResultsViewModel(
-        location = Location.ENGLAND,
-        hasChildcareCosts = true,
-        hasCostsWithApprovedProvider = true,
-        isAnyoneInPaidEmployment = true,
-        livesWithPartner = true
-      ),
-      new Utils
-    )(fakeRequest, messages)
+  def render(model: ResultsViewModel = defaultModel): Html = view(model)(using fakeRequest, messages)
 
   "Result view" must {
 
-    behave.like(normalPage(createView(), "result"))
+    behave.like(normalPage(() => render(), "result"))
 
     "contain two year old section" in {
       val model = ResultsViewModel(
         esc = Some(30),
         tfc = None,
         freeHours = Some(15),
-        location = Location.SCOTLAND,
+        location = Location.Scotland,
         hasChildcareCosts = true,
         hasCostsWithApprovedProvider = true,
         isAnyoneInPaidEmployment = true,
         livesWithPartner = true,
-        childrenAgeGroups = Set(TwoYears)
+        childrenAgeGroups = Set(ChildAgeGroup.TwoYears)
       )
-      val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+      val document = asDocument(render(model))
 
-      assertContainsMessages(view, messages("results.two.years.old.guidance.england.title"))
+      assertContainsMessages(document, messages("results.two.years.old.guidance.england.title"))
     }
 
     "Contain results" when {
@@ -73,15 +66,15 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
           List("This is the first paragraph"),
           freeHours = Some(15),
           tfc = Some(20),
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertContainsMessages(view, "This is the first paragraph")
+        assertContainsMessages(document, "This is the first paragraph")
       }
 
       "With no introductary paragraph" when {
@@ -89,67 +82,69 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
           val model = ResultsViewModel(
             List("This is the first paragraph"),
             freeHours = Some(15),
-            location = locationEngland,
+            location = Location.England,
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = true
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+          val document = asDocument(render(model))
 
-          assertNotContainsText(view, "This is the first paragraph")
+          assertNotContainsText(document, "This is the first paragraph")
         }
 
         "we are not entitled to anything" in {
           val model = ResultsViewModel(
             List("This is the first paragraph"),
-            location = locationEngland,
+            location = Location.England,
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = true
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+          val document = asDocument(render(model))
 
-          assertNotContainsText(view, "This is the first paragraph")
+          assertNotContainsText(document, "This is the first paragraph")
         }
       }
     }
 
     "display correct contents when user is not eligible for any of the schemes" in {
       val model = ResultsViewModel(
-        location = locationEngland,
+        location = Location.England,
         hasChildcareCosts = true,
         hasCostsWithApprovedProvider = true,
         isAnyoneInPaidEmployment = true,
         livesWithPartner = true
       )
-      val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+      val document = asDocument(render(model))
 
-      assertContainsMessages(view, messages("result.heading.not.eligible"))
-      assertNotContainsText(view, messages("result.more.info.title"))
+      assertContainsMessages(document, messages("result.heading.not.eligible"))
+      assertNotContainsText(document, messages("result.more.info.title"))
     }
 
     "display free hours contents" when {
       "user is eligible for free hours scheme" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertRenderedById(view, "freeHours")
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
-        view.getElementById("contactLocalCouncil").attr("href") mustBe messages("result.free.hours.detailPara3.link")
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
+        assertRenderedById(document, "freeHours")
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
+        document.getElementById("contactLocalCouncil").attr("href") mustBe messages(
+          "result.free.hours.detailPara3.link"
+        )
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
       }
     }
 
@@ -157,20 +152,20 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user is not eligible for free hours scheme" in {
         val model = ResultsViewModel(
           freeHours = None,
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertNotRenderedByCssSelector(view, ".freeHours")
-        assertNotContainsText(view, messages("result.free.hours.detail.summary"))
-        assertNotContainsText(view, messages("result.free.hours.detailPara1"))
-        assertNotContainsText(view, messages("result.free.hours.detailPara2"))
-        assertNotContainsText(view, messages("result.free.hours.detailPara3.link.text"))
-        assertNotContainsText(view, messages("result.free.hours.detailPara4"))
+        assertNotRenderedByCssSelector(document, ".freeHours")
+        assertNotContainsText(document, messages("result.free.hours.detail.summary"))
+        assertNotContainsText(document, messages("result.free.hours.detailPara1"))
+        assertNotContainsText(document, messages("result.free.hours.detailPara2"))
+        assertNotContainsText(document, messages("result.free.hours.detailPara3.link.text"))
+        assertNotContainsText(document, messages("result.free.hours.detailPara4"))
       }
     }
 
@@ -178,18 +173,18 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user is eligible for TFC scheme" in {
         val model = ResultsViewModel(
           tfc = Some(2000),
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertRenderedById(view, "tfc")
-        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detail.summary"))
-        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara1"))
-        view.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara2"))
+        assertRenderedById(document, "tfc")
+        document.getElementsByClass("tfc").text().contains(messages("result.tfc.detail.summary"))
+        document.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara1"))
+        document.getElementsByClass("tfc").text().contains(messages("result.tfc.detailPara2"))
       }
     }
 
@@ -197,18 +192,18 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user is not eligible for TFC scheme" in {
         val model = ResultsViewModel(
           tfc = None,
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertNotRenderedByCssSelector(view, ".tfc")
-        assertNotContainsText(view, messages("result.tfc.detail.summary"))
-        assertNotContainsText(view, messages("result.tfc.detailPara1"))
-        assertNotContainsText(view, messages("result.tfc.detailPara2"))
+        assertNotRenderedByCssSelector(document, ".tfc")
+        assertNotContainsText(document, messages("result.tfc.detail.summary"))
+        assertNotContainsText(document, messages("result.tfc.detailPara1"))
+        assertNotContainsText(document, messages("result.tfc.detailPara2"))
       }
     }
 
@@ -216,21 +211,21 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user is eligible for ESC scheme" in {
         val model = ResultsViewModel(
           esc = Some(2000),
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertRenderedById(view, "esc")
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.start"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.link.text"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.end"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
+        assertRenderedById(document, "esc")
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.start"))
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.link.text"))
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detailPara2.end"))
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }
 
@@ -238,22 +233,22 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user is not eligible for ESC scheme" in {
         val model = ResultsViewModel(
           esc = None,
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertNotRenderedByCssSelector(view, ".esc")
-        assertNotContainsText(view, messages("result.esc.detail.summary"))
-        assertNotContainsText(view, messages("result.esc.detailPara1"))
-        assertNotContainsText(view, messages("result.esc.detailPara2.start"))
-        assertNotContainsText(view, messages("result.esc.detailPara2.link.text"))
-        assertNotContainsText(view, messages("result.esc.detailPara2.end"))
-        assertNotContainsText(view, messages("result.esc.detailPara2.link"))
-        assertNotContainsText(view, messages("result.esc.detailPara3"))
+        assertNotRenderedByCssSelector(document, ".esc")
+        assertNotContainsText(document, messages("result.esc.detail.summary"))
+        assertNotContainsText(document, messages("result.esc.detailPara1"))
+        assertNotContainsText(document, messages("result.esc.detailPara2.start"))
+        assertNotContainsText(document, messages("result.esc.detailPara2.link.text"))
+        assertNotContainsText(document, messages("result.esc.detailPara2.end"))
+        assertNotContainsText(document, messages("result.esc.detailPara2.link"))
+        assertNotContainsText(document, messages("result.esc.detailPara3"))
       }
     }
 
@@ -263,76 +258,81 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
           freeHours = Some(15),
           tfc = Some(2300),
           esc = Some(2000),
-          location = locationEngland,
+          location = Location.England,
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertRenderedById(view, "freeHours")
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
-        view.getElementById("contactLocalCouncil").attr("href") mustBe messages("result.free.hours.detailPara3.link")
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
-        view.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
+        assertRenderedById(document, "freeHours")
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detail.summary"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara1"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara2"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.you.can"))
+        document.getElementById("contactLocalCouncil").attr("href") mustBe messages(
+          "result.free.hours.detailPara3.link"
+        )
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara3.link.text"))
+        document.getElementsByClass("freeHours").text().contains(messages("result.free.hours.detailPara4"))
 
-        assertRenderedById(view, "esc")
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
-        view.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
+        assertRenderedById(document, "esc")
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detail.summary"))
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detailPara1"))
+        document.getElementsByClass("esc").text().contains(messages("result.esc.detailPara3"))
       }
     }
 
     "not display more info about the schemes when only eligible to free hours" in {
       val model = ResultsViewModel(
         freeHours = Some(15),
-        location = locationEngland,
+        location = Location.England,
         hasChildcareCosts = true,
         hasCostsWithApprovedProvider = true,
         isAnyoneInPaidEmployment = true,
         livesWithPartner = true
       )
 
-      val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+      val document = asDocument(render(model))
 
-      assertNotContainsText(view, messages("aboutYourResults.more.info.title"))
+      assertNotContainsText(document, messages("aboutYourResults.more.info.title"))
     }
 
     "display guidance for 2 years old" when {
       "user lives in England" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = locationEngland,
-          childrenAgeGroups = Set(TwoYears),
+          location = Location.England,
+          childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
 
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        view
+        document
           .getElementsByClass("twoYearsOld")
           .text()
           .contains(messages("results.two.years.old.guidance.england.two.freehours"))
-        view.getElementsByClass("twoYearsOld").text().contains(messages("results.two.years.old.guidance.england.title"))
-        view
+        document
+          .getElementsByClass("twoYearsOld")
+          .text()
+          .contains(messages("results.two.years.old.guidance.england.title"))
+        document
           .getElementsByClass("twoYearsOld")
           .text()
           .contains(messages("results.two.years.old.guidance.england.text.before.link"))
-        view
+        document
           .getElementsByClass("twoYearsOld")
           .text()
           .contains(messages("results.two.years.old.guidance.england.link.text"))
-        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
+        document.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
           "results.two.years.old.guidance.england.para1.help.link"
         )
-        view
+        document
           .getElementById("twoYearsOldHelp")
           .text()
           .contains(messages("results.two.years.old.guidance.england.text.after.link"))
@@ -343,36 +343,36 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user lives in Scotland" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = Location.SCOTLAND,
-          childrenAgeGroups = Set(TwoYears),
+          location = Location.Scotland,
+          childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
 
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        view
+        document
           .getElementsByClass("twoYearsOld")
           .text()
           .contains(messages("results.two.years.old.guidance.scotland.two.freehours"))
-        view
+        document
           .getElementsByClass("twoYearsOld")
           .text()
           .contains(messages("results.two.years.old.guidance.scotland.title"))
-        view
+        document
           .getElementsByClass("twoYearsOld")
           .text()
           .contains(messages("results.two.years.old.guidance.scotland.text.before.link"))
-        view
+        document
           .getElementsByClass("twoYearsOld")
           .text()
           .contains(messages("results.two.years.old.guidance.scotland.link.text"))
-        view.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
+        document.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
           "results.two.years.old.guidance.scotland.para1.help.link"
         )
-        view
+        document
           .getElementById("twoYearsOldHelp")
           .text()
           .contains(messages("results.two.years.old.guidance.scotland.text.after.link"))
@@ -383,21 +383,21 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user lives in Wales" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = Location.WALES,
-          childrenAgeGroups = Set(TwoYears),
+          location = Location.Wales,
+          childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
 
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertNotRenderedById(view, "twoYearsOldHelp")
-        assertNotContainsText(view, messages("results.two.years.old.guidance.title"))
-        assertNotContainsText(view, messages("results.two.years.old.guidance.text.before.link"))
-        assertNotContainsText(view, messages("results.two.years.old.guidance.link.text"))
-        assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
+        assertNotRenderedById(document, "twoYearsOldHelp")
+        assertNotContainsText(document, messages("results.two.years.old.guidance.title"))
+        assertNotContainsText(document, messages("results.two.years.old.guidance.text.before.link"))
+        assertNotContainsText(document, messages("results.two.years.old.guidance.link.text"))
+        assertNotContainsText(document, messages("results.two.years.old.guidance.text.after.link"))
       }
     }
 
@@ -405,20 +405,20 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "user does not live in England" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = Location.NORTHERN_IRELAND,
-          childrenAgeGroups = Set(TwoYears),
+          location = Location.NorthernIreland,
+          childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
           hasChildcareCosts = true,
           hasCostsWithApprovedProvider = true,
           isAnyoneInPaidEmployment = true,
           livesWithPartner = true
         )
-        val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val document = asDocument(render(model))
 
-        assertNotContainsText(view, messages("results.two.years.old.guidance.title"))
-        assertNotContainsText(view, messages("results.two.years.old.guidance.text.before.link"))
-        assertNotContainsText(view, messages("results.two.years.old.guidance.link.text"))
-        assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
-        assertNotRenderedById(view, "twoYearsOldHelp")
+        assertNotContainsText(document, messages("results.two.years.old.guidance.title"))
+        assertNotContainsText(document, messages("results.two.years.old.guidance.text.before.link"))
+        assertNotContainsText(document, messages("results.two.years.old.guidance.link.text"))
+        assertNotContainsText(document, messages("results.two.years.old.guidance.text.after.link"))
+        assertNotRenderedById(document, "twoYearsOldHelp")
       }
 
       "display guidance for 2 years old" when {
@@ -427,35 +427,35 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
             freeHours = None,
             tfc = None,
             esc = None,
-            location = locationEngland,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.England,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+          val document = asDocument(render(model))
 
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.england.two.freehours"))
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.england.title"))
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.england.text.before.link"))
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.england.link.text"))
-          view.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
+          document.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
             "results.two.years.old.guidance.england.para1.help.link"
           )
-          view
+          document
             .getElementById("twoYearsOldHelp")
             .text()
             .contains(messages("results.two.years.old.guidance.england.text.after.link"))
@@ -468,35 +468,35 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
             freeHours = None,
             tfc = None,
             esc = None,
-            location = Location.SCOTLAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Scotland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = true
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+          val document = asDocument(render(model))
 
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.scotland.two.freehours"))
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.scotland.title"))
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.scotland.text.before.link"))
-          view
+          document
             .getElementsByClass("twoYearsOld")
             .text()
             .contains(messages("results.two.years.old.guidance.scotland.link.text"))
-          view.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
+          document.getElementById("twoYearsOldHelp").attr("href") mustBe messages(
             "results.two.years.old.guidance.scotland.para1.help.link"
           )
-          view
+          document
             .getElementById("twoYearsOldHelp")
             .text()
             .contains(messages("results.two.years.old.guidance.scotland.text.after.link"))
@@ -509,21 +509,21 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
             freeHours = None,
             tfc = None,
             esc = None,
-            location = Location.WALES,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Wales,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = true
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+          val document = asDocument(render(model))
 
-          assertNotRenderedByCssSelector(view, ".twoYearsOld")
-          assertNotContainsText(view, messages("results.two.years.old.guidance.title"))
-          assertNotContainsText(view, messages("results.two.years.old.guidance.text.before.link"))
-          assertNotContainsText(view, messages("results.two.years.old.guidance.link.text"))
-          assertNotContainsText(view, messages("results.two.years.old.guidance.text.after.link"))
-          assertNotRenderedById(view, "twoYearsOldHelp")
+          assertNotRenderedByCssSelector(document, ".twoYearsOld")
+          assertNotContainsText(document, messages("results.two.years.old.guidance.title"))
+          assertNotContainsText(document, messages("results.two.years.old.guidance.text.before.link"))
+          assertNotContainsText(document, messages("results.two.years.old.guidance.link.text"))
+          assertNotContainsText(document, messages("results.two.years.old.guidance.text.after.link"))
+          assertNotRenderedById(document, "twoYearsOldHelp")
         }
       }
     }
@@ -534,13 +534,13 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "eligible for 22 free hours for scotland and not eligible for other schemes" in {
         val model = ResultsViewModel(
           freeHours = Some(22),
-          location = Location.SCOTLAND,
+          location = Location.Scotland,
           isAnyoneInPaidEmployment = true,
           hasChildcareCosts = false,
           livesWithPartner = false,
           hasCostsWithApprovedProvider = false
         )
-        val doc = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val doc = asDocument(render(model))
 
         assertContainsText(doc, messages("freeHoursResult.info.entitled.scotland"))
       }
@@ -548,13 +548,13 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "eligible for 10 free hours for wales and not eligible for other schemes" in {
         val model = ResultsViewModel(
           freeHours = Some(10),
-          location = Location.WALES,
+          location = Location.Wales,
           isAnyoneInPaidEmployment = true,
           hasChildcareCosts = false,
           livesWithPartner = false,
           hasCostsWithApprovedProvider = false
         )
-        val doc = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val doc = asDocument(render(model))
 
         assertContainsText(doc, messages("freeHoursResult.info.entitled.wales"))
       }
@@ -562,13 +562,13 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "eligible for 12.5 free hours for northern-ireland and not eligible for other schemes" in {
         val model = ResultsViewModel(
           freeHours = Some(12.5),
-          location = Location.NORTHERN_IRELAND,
+          location = Location.NorthernIreland,
           isAnyoneInPaidEmployment = true,
           hasChildcareCosts = false,
           livesWithPartner = false,
           hasCostsWithApprovedProvider = false
         )
-        val doc = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val doc = asDocument(render(model))
 
         assertContainsText(doc, messages("freeHoursResult.info.entitled.northern-ireland"))
       }
@@ -576,13 +576,13 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
       "eligible for 15 free hours for England and not eligible for other schemes" in {
         val model = ResultsViewModel(
           freeHours = Some(15),
-          location = Location.ENGLAND,
+          location = Location.England,
           isAnyoneInPaidEmployment = true,
           hasChildcareCosts = false,
           livesWithPartner = false,
           hasCostsWithApprovedProvider = false
         )
-        val doc = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
+        val doc = asDocument(render(model))
 
         assertContainsText(doc, messages("freeHoursResult.info.entitled.england"))
       }
@@ -591,15 +591,15 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         "user reaches the results page" in {
           val model = ResultsViewModel(
             freeHours = Some(15),
-            location = Location.NORTHERN_IRELAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.NorthernIreland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = true
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsText(view, "This is a new service. Help us improve it")
+          val document = asDocument(render(model))
+          assertContainsText(document, "This is a new service. Help us improve it")
 
         }
       }
@@ -608,61 +608,61 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         "the user is unemployed" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.SCOTLAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Scotland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = false,
             livesWithPartner = false
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.1")
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.2")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.1")
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.2")
         }
         "the user earns less than the national minimum wage" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.SCOTLAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Scotland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.LessThanMinimum)
+            yourEarnings = Some(Earnings.LessThanMinimum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.1")
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.2")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.1")
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.2")
         }
         "the user earns more than the national minimum wage and less than £100,000" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.SCOTLAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Scotland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.BetweenMinimumAndMaximum)
+            yourEarnings = Some(Earnings.BetweenMinimumAndMaximum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.1")
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.2")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.1")
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.2")
         }
         "the user earns more than £100,000" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.SCOTLAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Scotland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.GreaterThanMaximum)
+            yourEarnings = Some(Earnings.GreaterThanMaximum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.1")
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.scotland.li.2")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.1")
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.scotland.li.2")
         }
       }
 
@@ -670,57 +670,57 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         "the user is unemployed" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.WALES,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Wales,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = false,
             livesWithPartner = false
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.wales.li.1.notWorking")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.wales.li.1.notWorking")
         }
         "the user earns less than the national minimum wage" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.WALES,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Wales,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.LessThanMinimum)
+            yourEarnings = Some(Earnings.LessThanMinimum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertNotContainsText(view, messages("freeHoursResult.info.extraHelp.heading"))
+          val document = asDocument(render(model))
+          assertNotContainsText(document, messages("freeHoursResult.info.extraHelp.heading"))
         }
         "the user earns more than the national minimum wage and less than £100,000" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.WALES,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Wales,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.BetweenMinimumAndMaximum)
+            yourEarnings = Some(Earnings.BetweenMinimumAndMaximum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.wales.li.1.working")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.wales.li.1.working")
         }
         "the user earns more than £100,000" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.WALES,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.Wales,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.GreaterThanMaximum)
+            yourEarnings = Some(Earnings.GreaterThanMaximum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertNotContainsText(view, messages("freeHoursResult.info.extraHelp.heading"))
+          val document = asDocument(render(model))
+          assertNotContainsText(document, messages("freeHoursResult.info.extraHelp.heading"))
         }
       }
 
@@ -728,57 +728,57 @@ class ResultViewSpec extends NewViewBehaviours with MockitoSugar {
         "the user is unemployed" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.NORTHERN_IRELAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.NorthernIreland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = false,
             livesWithPartner = false
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
         }
         "the user earns less than the national minimum wage" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.NORTHERN_IRELAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.NorthernIreland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.LessThanMinimum)
+            yourEarnings = Some(Earnings.LessThanMinimum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
         }
         "the user earns more than the national minimum wage and less than £100,000" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.NORTHERN_IRELAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.NorthernIreland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.BetweenMinimumAndMaximum)
+            yourEarnings = Some(Earnings.BetweenMinimumAndMaximum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
         }
         "the user earns more than £100,000" in {
           val model = ResultsViewModel(
             freeHours = None,
-            location = Location.NORTHERN_IRELAND,
-            childrenAgeGroups = Set(TwoYears),
+            location = Location.NorthernIreland,
+            childrenAgeGroups = Set(ChildAgeGroup.TwoYears),
             hasChildcareCosts = true,
             hasCostsWithApprovedProvider = true,
             isAnyoneInPaidEmployment = true,
             livesWithPartner = false,
-            yourEarnings = Some(EarningsEnum.GreaterThanMaximum)
+            yourEarnings = Some(Earnings.GreaterThanMaximum)
           )
-          val view = asDocument(resultView(frontendAppConfig, model, new Utils)(fakeRequest, messages))
-          assertContainsMessages(view, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
+          val document = asDocument(render(model))
+          assertContainsMessages(document, "freeHoursResult.info.extraHelp.northern-ireland.li.1")
         }
       }
     }

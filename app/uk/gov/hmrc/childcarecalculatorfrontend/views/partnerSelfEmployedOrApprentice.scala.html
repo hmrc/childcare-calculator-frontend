@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.PartnerSelfEmployedOrApprenticeForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.EmploymentStatus
 
 @this(
     layout: Layout,
@@ -27,10 +27,19 @@
     submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String])(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[EmploymentStatus],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("partnerSelfEmployedOrApprentice.title")) else messages("partnerSelfEmployedOrApprentice.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("partnerSelfEmployedOrApprentice.title"))
+    } else {
+        messages("partnerSelfEmployedOrApprentice.title")
+    }
 }
 
 @layout(
@@ -43,12 +52,7 @@
 
         @inputRadio(
             legend = heading(messages("partnerSelfEmployedOrApprentice.heading")),
-            inputs = PartnerSelfEmployedOrApprenticeForm.options map { radioOptions =>
-                RadioItem(
-                    value = Some(radioOptions.value),
-                    content = HtmlContent(messages(radioOptions.messageKey))
-                )
-            },
+            inputs = PartnerSelfEmployedOrApprenticeForm.options.map(_.toRadioItem),
             field = form("value")
         )
         @submitButton()

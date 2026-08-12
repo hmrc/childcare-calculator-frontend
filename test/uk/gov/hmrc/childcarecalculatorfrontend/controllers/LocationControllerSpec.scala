@@ -17,25 +17,24 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsString
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.LocationId
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.location
 
 class LocationControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[location]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: location    = inject[location]
+  def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new LocationController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -43,8 +42,8 @@ class LocationControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[_] = LocationForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Location] = LocationForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   "Location Controller" must {
 
@@ -56,17 +55,17 @@ class LocationControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(LocationId.toString -> JsString(LocationForm.options.head.value))
+      val validData       = Map(LocationId.withValue(Location.England))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
 
-      contentAsString(result) mustBe viewAsString(LocationForm().fill(Location(0)))
+      contentAsString(result) mustBe viewAsString(LocationForm().fill(Location.England))
     }
 
     "redirect to the next page when valid data is submitted" in {
       val postRequest =
-        fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
+        fakeRequest.withFormUrlEncodedBody(("value", Location.England.toString)).withMethod("POST")
 
       val result = controller().onSubmit()(postRequest)
 
@@ -93,7 +92,7 @@ class LocationControllerSpec extends ControllerSpecBase {
 
     "redirect to the next page when valid data is submitted and no existing data is found" in {
       val postRequest =
-        fakeRequest.withFormUrlEncodedBody(("value", LocationForm.options.head.value)).withMethod("POST")
+        fakeRequest.withFormUrlEncodedBody(("value", Location.England.toString)).withMethod("POST")
       val result = controller(dontGetAnyData).onSubmit()(postRequest)
 
       status(result) mustBe SEE_OTHER

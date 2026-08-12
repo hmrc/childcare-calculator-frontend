@@ -17,11 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsNumber, JsString, JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc.Call
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ExpectedChildcareCostsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
   AboutYourChildId,
@@ -29,9 +29,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{
   ChildcarePayFrequencyId,
   ExpectedChildcareCostsId
 }
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildcarePayFrequency._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoNotYetEnum._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.{AboutYourChild, ChildcarePayFrequency, YesNoNotYetEnum}
+import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{ChildcarePayFrequency, YesNoNotYet}
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.expectedChildcareCosts
@@ -40,14 +39,13 @@ import java.time.LocalDate
 
 class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
-  val view                        = application.injector.instanceOf[expectedChildcareCosts]
-  private val testDate: LocalDate = LocalDate.parse("2019-01-01")
+  val view: expectedChildcareCosts = inject[expectedChildcareCosts]
+  private val testDate: LocalDate  = LocalDate.parse("2019-01-01")
 
   def onwardRoute: Call = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap): ExpectedChildcareCostsController =
     new ExpectedChildcareCostsController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -57,39 +55,37 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
     )
 
   def viewAsString(
-      form: Form[BigDecimal] = ExpectedChildcareCostsForm(WEEKLY, "Foo"),
-      hasCosts: YesNoNotYetEnum.Value,
+      form: Form[BigDecimal] = ExpectedChildcareCostsForm(ChildcarePayFrequency.Weekly, "Foo"),
+      hasCosts: YesNoNotYet,
       id: Int = 0,
-      frequency: ChildcarePayFrequency.Value = WEEKLY,
+      frequency: ChildcarePayFrequency = ChildcarePayFrequency.Weekly,
       name: String = "Foo"
   ): String =
-    view(frontendAppConfig, form, hasCosts, id, frequency, name)(fakeRequest, messages).toString
+    view(form, hasCosts, id, frequency, name)(using fakeRequest, messages).toString
 
   val testNumber: Int = 123
 
-  def requiredData(hasCosts: YesNoNotYetEnum.Value): Map[String, JsValue] = Map(
-    AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", testDate)),
-      "1" -> Json.toJson(AboutYourChild("Bar", testDate))
+  def requiredData(hasCosts: YesNoNotYet): Map[String, JsValue] = Map(
+    AboutYourChildId.withValue(
+      Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
     ),
-    ChildcarePayFrequencyId.toString -> Json.obj(
-      "0" -> JsString(WEEKLY.toString),
-      "1" -> JsString(MONTHLY.toString)
+    ChildcarePayFrequencyId.withValue(
+      Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
     ),
-    ChildcareCostsId.toString -> JsString(hasCosts.toString)
+    ChildcareCostsId.withValue(hasCosts)
   )
 
-  def getRequiredData(hasCosts: YesNoNotYetEnum.Value): DataRetrievalAction =
+  def getRequiredData(hasCosts: YesNoNotYet): DataRetrievalAction =
     new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(hasCosts))), Some(testDate))
 
   def getRequiredData: DataRetrievalAction =
-    getRequiredData(YesNoNotYetEnum.YES)
+    getRequiredData(YesNoNotYet.Yes)
 
   "ExpectedChildcareCosts Controller" must {
 
     Seq(
-      (YES, 0, WEEKLY, "Foo"),
-      (NOTYET, 1, MONTHLY, "Bar")
+      (YesNoNotYet.Yes, 0, ChildcarePayFrequency.Weekly, "Foo"),
+      (YesNoNotYet.NotYet, 1, ChildcarePayFrequency.Monthly, "Bar")
     ).foreach { case (hasCosts, id, frequency, name) =>
 
       s"return OK and the correct view for a GET, for id: $id" in {
@@ -105,9 +101,9 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
       }
 
       s"populate the view correctly on a GET when the question has previously been answered, for id: $id" in {
-        val validData = requiredData(hasCosts) + (ExpectedChildcareCostsId.toString -> Json.obj(
-          id.toString -> JsNumber(testNumber)
-        ))
+        val validData = requiredData(hasCosts) + ExpectedChildcareCostsId.withValue(
+          Map(id -> testNumber)
+        )
         val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)), Some(testDate))
         val result          = controller(getRelevantData).onPageLoad(id)(fakeRequest)
         contentAsString(result) mustBe viewAsString(
@@ -150,11 +146,10 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if no answer exists for `AboutYourChild`" in {
       val data = Map(
-        ChildcarePayFrequency.toString -> Json.obj(
-          "0" -> JsString("weekly"),
-          "1" -> JsString("monthly")
+        ChildcarePayFrequencyId.withValue(
+          Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result  = controller(getData).onPageLoad(0)(fakeRequest)
@@ -163,11 +158,10 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no answers exists for `AboutYourChild`" in {
       val data = Map(
-        ChildcarePayFrequency.toString -> Json.obj(
-          "0" -> JsString("weekly"),
-          "1" -> JsString("monthly")
+        ChildcarePayFrequencyId.withValue(
+          Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
@@ -177,14 +171,13 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if no answer exists for `ChildcarePayFrequency`" in {
       val data = Map(
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", testDate)),
-          "1" -> Json.toJson(AboutYourChild("Bar", testDate))
+        AboutYourChildId.withValue(
+          Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequency.toString -> Json.obj(
-          "1" -> JsString("monthly")
+        ChildcarePayFrequencyId.withValue(
+          Map(1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
       val result  = controller(getData).onPageLoad(0)(fakeRequest)
@@ -193,14 +186,13 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no answer exists for `ChildcarePayFrequency`" in {
       val data = Map(
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", testDate)),
-          "1" -> Json.toJson(AboutYourChild("Bar", testDate))
+        AboutYourChildId.withValue(
+          Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequency.toString -> Json.obj(
-          "1" -> JsString("monthly")
+        ChildcarePayFrequencyId.withValue(
+          Map(1 -> ChildcarePayFrequency.Monthly)
         ),
-        ChildcareCostsId.toString -> JsString(YesNoNotYetEnum.YES.toString)
+        ChildcareCostsId.withValue(YesNoNotYet.Yes)
       )
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
@@ -210,13 +202,11 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if no answer exists for `ChildcareCosts`" in {
       val data = Map(
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", testDate)),
-          "1" -> Json.toJson(AboutYourChild("Bar", testDate))
+        AboutYourChildId.withValue(
+          Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequencyId.toString -> Json.obj(
-          "0" -> JsString(WEEKLY.toString),
-          "1" -> JsString(MONTHLY.toString)
+        ChildcarePayFrequencyId.withValue(
+          Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         )
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)), Some(testDate))
@@ -226,13 +216,11 @@ class ExpectedChildcareCostsControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if no answer exists for `ChildcareCosts`" in {
       val data = Map(
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", testDate)),
-          "1" -> Json.toJson(AboutYourChild("Bar", testDate))
+        AboutYourChildId.withValue(
+          Map(0 -> AboutYourChild("Foo", testDate), 1 -> AboutYourChild("Bar", testDate))
         ),
-        ChildcarePayFrequencyId.toString -> Json.obj(
-          "0" -> JsString(WEEKLY.toString),
-          "1" -> JsString(MONTHLY.toString)
+        ChildcarePayFrequencyId.withValue(
+          Map(0 -> ChildcarePayFrequency.Weekly, 1 -> ChildcarePayFrequency.Monthly)
         )
       )
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", testNumber.toString)).withMethod("POST")

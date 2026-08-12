@@ -20,10 +20,13 @@
 @this(
     layout: Layout,
     pageHeading: playComponents.heading,
-    buttonLink: playComponents.button_link
+    buttonLink: playComponents.button_link,
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @layout(
     pageTitle = messages("whatToTellTheCalculator.title"),
@@ -46,7 +49,10 @@
     </ul>
 
     <h2 class="govuk-heading-m">@messages("whatToTellTheCalculator.uc")</h2>
-    <p class="govuk-body">@messages("whatToTellTheCalculator.p1.a") <a class="govuk-link" href="@ucSchemeGuidanceLinkUrl" rel="external" target="_blank"> @messages("whatToTellTheCalculator.p2.link")</a>.</p>
+    <p class="govuk-body">
+        @messages("whatToTellTheCalculator.p1.a")
+        <a class="govuk-link" href="@ucSchemeGuidanceLinkUrl" rel="external" target="_blank"> @messages("whatToTellTheCalculator.p2.link")</a>.
+    </p>
 
     @buttonLink(
         messageKey = "site.save_and_continue",

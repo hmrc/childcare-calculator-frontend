@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchBothPayPensionForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.HowMuchBothPayPension
@@ -25,24 +26,22 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchBothPayPension
 
 class HowMuchBothPayPensionViewSpec extends NewQuestionViewBehaviours[HowMuchBothPayPension] {
 
-  val view             = application.injector.instanceOf[howMuchBothPayPension]
-  val messageKeyPrefix = "howMuchBothPayPension"
+  val view: howMuchBothPayPension = inject[howMuchBothPayPension]
+  val messageKeyPrefix            = "howMuchBothPayPension"
 
-  def createView = () => view(frontendAppConfig, HowMuchBothPayPensionForm())(fakeRequest, messages)
+  override val form: Form[HowMuchBothPayPension] = HowMuchBothPayPensionForm()
 
-  def createViewUsingForm = (form: Form[HowMuchBothPayPension]) => view(frontendAppConfig, form)(fakeRequest, messages)
-
-  override val form = HowMuchBothPayPensionForm()
+  def render(form: Form[HowMuchBothPayPension] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "HowMuchBothPayPension view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       pageWithTextFields(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.HowMuchBothPayPensionController.onSubmit().url,
         "howMuchYouPayPension",
@@ -51,7 +50,7 @@ class HowMuchBothPayPensionViewSpec extends NewQuestionViewBehaviours[HowMuchBot
     )
 
     "contain the currencySymbol class and £ for parent and partner input text boxes" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
 
       assertRenderedByCssSelector(doc, ".govuk-input__prefix")
 

@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.SurveyDoNotUnderstandForm
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewStringViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.surveyDoNotUnderstand
@@ -25,18 +26,16 @@ class SurveyDoNotUnderstandViewSpec extends NewStringViewBehaviours {
 
   val messageKeyPrefix = "surveyDoNotUnderstand"
 
-  val view = application.injector.instanceOf[surveyDoNotUnderstand]
+  val view: surveyDoNotUnderstand = inject[surveyDoNotUnderstand]
 
-  def createView = () => view(frontendAppConfig, SurveyDoNotUnderstandForm())(fakeRequest, messages)
+  override val form: Form[String] = SurveyDoNotUnderstandForm()
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
-
-  val form = SurveyDoNotUnderstandForm()
+  def render(form: Form[String] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "SurveyDoNotUnderstand view" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
   }
 
 }

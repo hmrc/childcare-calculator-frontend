@@ -16,24 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{DataRequiredAction, DataRetrievalAction}
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.yourIncomeInfo
 
 class YourIncomeInfoControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[yourIncomeInfo]
-  val taxYearInfo = new TaxYearInfo
+  val view: yourIncomeInfo = inject[yourIncomeInfo]
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
-    new YourIncomeInfoController(frontendAppConfig, mcc, dataRetrievalAction, new DataRequiredAction, taxYearInfo, view)
+    new YourIncomeInfoController(mcc, dataRetrievalAction, new DataRequiredAction, view)
 
   "YourIncomeInfo Controller" must {
     "return OK and the correct view for a GET" in {
       val result = controller().onPageLoad(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustBe view(frontendAppConfig, taxYearInfo)(fakeRequest, messages).toString
+      contentAsString(result) mustBe view()(using fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

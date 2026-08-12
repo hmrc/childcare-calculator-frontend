@@ -17,18 +17,18 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours
 
 import play.api.data.{Form, FormError}
-import play.twirl.api.HtmlFormat
+import play.twirl.api.Html
 
 trait NewDateViewBehaviours[A] extends NewViewBehaviours {
 
   val form: Form[A]
 
   def pageWithDateFields(
-      createView: (Form[A]) => HtmlFormat.Appendable,
+      createView: Form[A] => Html,
       messageKeyPrefix: String,
       expectedFormAction: String,
       fields: String*
-  ) =
+  ): Unit =
 
     "behave like a date view page" when {
       for {

@@ -17,35 +17,25 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.DecimalFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
 object YouBenefitsIncomeCYForm extends FormErrorHelper {
 
-  private def youBenefitsIncomeCYFormatter(errorKeyBlank: String, errorKeyInvalid: String): Formatter[BigDecimal] =
-    new Formatter[BigDecimal] {
+  private def youBenefitsIncomeCYFormatter(
+      missingErrorKey: String,
+      invalidValueErrorKey: String
+  ): Formatter[BigDecimal] =
+    DecimalFormatter(missingErrorKey = missingErrorKey, invalidValueErrorKey = invalidValueErrorKey)
 
-      val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-
-      def bind(key: String, data: Map[String, String]) =
-        data.get(key) match {
-          case None                               => produceError(key, errorKeyBlank)
-          case Some("")                           => produceError(key, errorKeyBlank)
-          case Some(s) if s.matches(decimalRegex) => Right(BigDecimal(s))
-          case _                                  => produceError(key, errorKeyInvalid)
-        }
-
-      def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-    }
-
-  def apply(
-      errorKeyBlank: String = youBenefitsIncomeCYRequiredErrorKey,
-      errorKeyInvalid: String = youBenefitsIncomeCYInvalidErrorKey
-  ): Form[BigDecimal] =
+  def apply(): Form[BigDecimal] =
     Form(
       single(
-        "value" -> of(youBenefitsIncomeCYFormatter(errorKeyBlank, errorKeyInvalid))
+        "value" -> of(
+          youBenefitsIncomeCYFormatter(youBenefitsIncomeCYRequiredErrorKey, youBenefitsIncomeCYInvalidErrorKey)
+        )
           .verifying(maximumValue[BigDecimal](9999.99, youBenefitsIncomeCYInvalidErrorKey))
           .verifying(minimumValue[BigDecimal](1, youBenefitsIncomeCYInvalidErrorKey))
       )

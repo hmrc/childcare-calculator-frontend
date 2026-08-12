@@ -17,7 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
 import com.google.inject.{Inject, Singleton}
-import uk.gov.hmrc.childcarecalculatorfrontend.models.NotDetermined
+import uk.gov.hmrc.childcarecalculatorfrontend.models.Eligibility
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
 @Singleton
@@ -25,9 +25,9 @@ class Schemes(val schemes: Scheme*) {
 
   @Inject()
   def this(freeHours: FreeHours, taxFreeChildcare: TaxFreeChildcare) =
-    this(Seq[Scheme](freeHours, taxFreeChildcare): _*)
+    this(Seq[Scheme](freeHours, taxFreeChildcare)*)
 
   def allSchemesDetermined(answers: UserAnswers): Boolean =
-    !schemes.map(_.eligibility(answers)).contains(NotDetermined)
+    !schemes.map(_.eligibility(answers)).contains(Eligibility.NotDetermined)
 
 }

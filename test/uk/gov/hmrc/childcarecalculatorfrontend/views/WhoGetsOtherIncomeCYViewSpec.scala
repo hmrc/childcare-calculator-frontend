@@ -17,29 +17,31 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhoGetsOtherIncomeCYForm
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whoGetsOtherIncomeCY
 
 class WhoGetsOtherIncomeCYViewSpec extends NewViewBehaviours {
 
-  val view             = application.injector.instanceOf[whoGetsOtherIncomeCY]
-  val messageKeyPrefix = "whoGetsOtherIncomeCY"
+  val view: whoGetsOtherIncomeCY = inject[whoGetsOtherIncomeCY]
+  val messageKeyPrefix           = "whoGetsOtherIncomeCY"
 
-  def createView = () => view(frontendAppConfig, WhoGetsOtherIncomeCYForm())(fakeRequest, messages)
+  val form: Form[YouPartnerBoth] = WhoGetsOtherIncomeCYForm()
 
-  def createViewUsingForm = (form: Form[String]) => view(frontendAppConfig, form)(fakeRequest, messages)
+  def render(form: Form[YouPartnerBoth] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "WhoGetsOtherIncomeCY view" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
   }
 
   "WhoGetsOtherIncomeCY view" when {
     "rendered" must {
       "contain radio buttons for the value" in {
-        val doc = asDocument(createViewUsingForm(WhoGetsOtherIncomeCYForm()))
+        val doc = asDocument(render())
         for (option <- WhoGetsOtherIncomeCYForm.options)
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
       }
@@ -48,7 +50,7 @@ class WhoGetsOtherIncomeCYViewSpec extends NewViewBehaviours {
     for (option <- WhoGetsOtherIncomeCYForm.options)
       s"rendered with a value of '${option.value}'" must {
         s"have the '${option.value}' radio button selected" in {
-          val doc = asDocument(createViewUsingForm(WhoGetsOtherIncomeCYForm().bind(Map("value" -> s"${option.value}"))))
+          val doc = asDocument(render(form = form.bind(Map("value" -> s"${option.value}"))))
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
           for (unselectedOption <- WhoGetsOtherIncomeCYForm.options.filterNot(o => o == option))

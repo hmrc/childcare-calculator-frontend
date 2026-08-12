@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.*
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.childcarecalculatorfrontend.SpecBase
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.{YouPartnerBoth, YouPartnerBothNeither}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.schemes.TaxFreeChildcare
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, UserAnswers, Utils}
 
 class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
@@ -34,7 +34,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
   def navigator()           = new OtherIncomeNavigator(new Utils())
 
   def userAnswers(answers: (String, JsValue)*): UserAnswers =
-    new UserAnswers(CacheMap("", Map(answers: _*)))
+    new UserAnswers(CacheMap("", Map(answers*)))
 
   "Current Year Other Income Route Navigation" when {
 
@@ -54,7 +54,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourOtherIncomeThisYear).thenReturn(Some(false))
           when(answers.universalCredit).thenReturn(Some(true))
 
-          when(tfc.eligibility(any())).thenReturn(Eligible)
+          when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
           navigator().nextPage(YourOtherIncomeThisYearId).value(answers) mustBe
             routes.ResultController.onPageLoad()
@@ -66,7 +66,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourOtherIncomeThisYear).thenReturn(Some(false))
           when(answers.universalCredit).thenReturn(Some(false))
 
-          when(tfc.eligibility(any())).thenReturn(NotEligible)
+          when(tfc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
           navigator().nextPage(YourOtherIncomeThisYearId).value(answers) mustBe
             routes.ResultController.onPageLoad()
@@ -78,7 +78,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourOtherIncomeThisYear).thenReturn(Some(true))
           when(answers.universalCredit).thenReturn(Some(false))
 
-          when(tfc.eligibility(any())).thenReturn(NotEligible)
+          when(tfc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
           navigator().nextPage(YourOtherIncomeThisYearId).value(answers) mustBe
             routes.YourOtherIncomeAmountCYController.onPageLoad()
@@ -90,7 +90,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           when(answers.yourOtherIncomeThisYear).thenReturn(Some(false))
           when(answers.universalCredit).thenReturn(Some(true))
 
-          when(tfc.eligibility(any())).thenReturn(Eligible)
+          when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
           navigator().nextPage(YourOtherIncomeThisYearId).value(answers) mustBe
             routes.ResultController.onPageLoad()
@@ -123,7 +123,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.bothOtherIncomeThisYear).thenReturn(Some(false))
             when(answers.universalCredit).thenReturn(Some(true))
 
-            when(tfc.eligibility(any())).thenReturn(Eligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
             navigator().nextPage(BothOtherIncomeThisYearId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -136,7 +136,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(answers.bothOtherIncomeThisYear).thenReturn(Some(false))
               when(answers.universalCredit).thenReturn(Some(false))
 
-              when(tfc.eligibility(any())).thenReturn(NotEligible)
+              when(tfc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
               navigator().nextPage(BothOtherIncomeThisYearId).value(answers) mustBe
                 routes.ResultController.onPageLoad()
@@ -149,7 +149,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
               when(answers.bothOtherIncomeThisYear).thenReturn(Some(true))
               when(answers.universalCredit).thenReturn(Some(false))
 
-              when(tfc.eligibility(any())).thenReturn(NotEligible)
+              when(tfc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
               navigator().nextPage(BothOtherIncomeThisYearId).value(answers) mustBe
                 routes.WhoGetsOtherIncomeCYController.onPageLoad()
@@ -169,7 +169,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
       "Who Gets Other Income CY Route" must {
         "redirects to YourOtherIncomeAmountCY page when user selects you option" in {
           val answers = spy(userAnswers())
-          when(answers.whoGetsOtherIncomeCY).thenReturn(Some("you"))
+          when(answers.whoGetsOtherIncomeCY).thenReturn(Some(YouPartnerBoth.You))
 
           navigator().nextPage(WhoGetsOtherIncomeCYId).value(answers) mustBe
             routes.YourOtherIncomeAmountCYController.onPageLoad()
@@ -177,7 +177,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to PartnerOtherIncomeAmountCY page when user selects partner option" in {
           val answers = spy(userAnswers())
-          when(answers.whoGetsOtherIncomeCY).thenReturn(Some("partner"))
+          when(answers.whoGetsOtherIncomeCY).thenReturn(Some(YouPartnerBoth.Partner))
 
           navigator().nextPage(WhoGetsOtherIncomeCYId).value(answers) mustBe
             routes.PartnerOtherIncomeAmountCYController.onPageLoad()
@@ -185,7 +185,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
         "redirects to OtherIncomeAmountCY page when user selects both option" in {
           val answers = spy(userAnswers())
-          when(answers.whoGetsOtherIncomeCY).thenReturn(Some("both"))
+          when(answers.whoGetsOtherIncomeCY).thenReturn(Some(YouPartnerBoth.Both))
 
           navigator().nextPage(WhoGetsOtherIncomeCYId).value(answers) mustBe
             routes.OtherIncomeAmountCYController.onPageLoad()
@@ -210,7 +210,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(true))
 
-            when(tfc.eligibility(any())).thenReturn(Eligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
             navigator().nextPage(YourOtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -223,7 +223,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(false))
 
-            when(tfc.eligibility(any())).thenReturn(NotEligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
             navigator().nextPage(YourOtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -239,7 +239,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(true))
 
-            when(tfc.eligibility(any())).thenReturn(Eligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
             navigator().nextPage(YourOtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -252,7 +252,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
             when(answers.yourOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(false))
 
-            when(tfc.eligibility(any())).thenReturn(NotEligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.NotEligible)
 
             navigator().nextPage(YourOtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -272,12 +272,12 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
 
           "redirects to results page when user is in receipt of UC, eligible for TFC" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment).thenReturn(Some(both))
+            when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeither.Both))
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
             when(answers.otherIncomeAmountCY).thenReturn(Some(OtherIncomeAmountCY(5, 5)))
             when(answers.universalCredit).thenReturn(Some(true))
 
-            when(tfc.eligibility(any())).thenReturn(Eligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
             navigator().nextPage(OtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -292,11 +292,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "redirects to results page when user is in receipt of UC, eligible for TFC " in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-            when(answers.whoGetsOtherIncomeCY).thenReturn(Some("partner"))
+            when(answers.whoGetsOtherIncomeCY).thenReturn(Some(YouPartnerBoth.Partner))
             when(answers.partnerOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(true))
 
-            when(tfc.eligibility(any())).thenReturn(Eligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -305,11 +305,11 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
           "redirects to BothIncomeInfoCY page when user is not in receipt of UC, eligible for TFC and " in {
             val answers = spy(userAnswers())
             when(answers.doYouLiveWithPartner).thenReturn(Some(true))
-            when(answers.whoGetsOtherIncomeCY).thenReturn(Some("partner"))
+            when(answers.whoGetsOtherIncomeCY).thenReturn(Some(YouPartnerBoth.Partner))
             when(answers.partnerOtherIncomeAmountCY).thenReturn(Some(BigDecimal(23)))
             when(answers.universalCredit).thenReturn(Some(false))
 
-            when(tfc.eligibility(any())).thenReturn(Eligible)
+            when(tfc.eligibility(any())).thenReturn(Eligibility.Eligible)
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()
@@ -320,7 +320,7 @@ class OtherIncomeNavigatorSpec extends SpecBase with MockitoSugar {
         "redirects to SessionExpired page when user provides valid input and " +
           "partner in paid employment" in {
             val answers = spy(userAnswers())
-            when(answers.whoIsInPaidEmployment).thenReturn(Some(you))
+            when(answers.whoIsInPaidEmployment).thenReturn(Some(YouPartnerBothNeither.You))
 
             navigator().nextPage(PartnerOtherIncomeAmountCYId).value(answers) mustBe
               routes.ResultController.onPageLoad()

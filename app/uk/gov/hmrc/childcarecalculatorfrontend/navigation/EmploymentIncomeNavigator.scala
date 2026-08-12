@@ -18,11 +18,12 @@ package uk.gov.hmrc.childcarecalculatorfrontend.navigation
 
 import play.api.mvc.Call
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeither
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.{UserAnswers, Utils}
 
 import javax.inject.{Inject, Singleton}
+import scala.annotation.unused
 
 /** Contains the navigation for current and previous year employment income pages
   */
@@ -53,18 +54,18 @@ private[navigation] class EmploymentIncomeNavigator @Inject() (utils: Utils) ext
     utils.getCall(answers.doYouLiveWithPartner) {
       case true =>
         utils.getCall(answers.whoIsInPaidEmployment) {
-          case You => routes.YouPaidPensionCYController.onPageLoad()
-          case _   => routes.BothPaidPensionCYController.onPageLoad()
+          case YouPartnerBothNeither.You => routes.YouPaidPensionCYController.onPageLoad()
+          case _                         => routes.BothPaidPensionCYController.onPageLoad()
         }
       case false => routes.YouPaidPensionCYController.onPageLoad()
     }
 
   private def partnerEmploymentIncomeCYRoute(answers: UserAnswers) =
     utils.getCall(answers.whoIsInPaidEmployment) {
-      case Partner => routes.PartnerPaidPensionCYController.onPageLoad()
-      case _       => routes.BothPaidPensionCYController.onPageLoad()
+      case YouPartnerBothNeither.Partner => routes.PartnerPaidPensionCYController.onPageLoad()
+      case _                             => routes.BothPaidPensionCYController.onPageLoad()
     }
 
-  private def employmentIncomeCYRoute(answers: UserAnswers) = routes.BothPaidPensionCYController.onPageLoad()
+  private def employmentIncomeCYRoute(@unused answers: UserAnswers) = routes.BothPaidPensionCYController.onPageLoad()
 
 }

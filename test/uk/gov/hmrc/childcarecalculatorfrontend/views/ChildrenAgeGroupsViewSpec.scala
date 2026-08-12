@@ -20,42 +20,42 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.ChildrenAgeGroupsForm
 import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ChildAgeGroup._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.childrenAgeGroups
 
 class ChildrenAgeGroupsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[ChildAgeGroup] {
 
   override val form: Form[Set[ChildAgeGroup]] = ChildrenAgeGroupsForm()
-  val mockView: childrenAgeGroups             = application.injector.instanceOf[childrenAgeGroups]
-  val messageKeyPrefix                        = "childrenAgeGroups"
-  val fieldKey: String                        = ChildrenAgeGroupsForm.formId
-  val errorMessage                            = s"$messageKeyPrefix.error.select"
+  val view: childrenAgeGroups                 = inject[childrenAgeGroups]
+  override val messageKeyPrefix               = "childrenAgeGroups"
+  override val fieldKey: String               = ChildrenAgeGroupsForm.formId
+  override val errorMessage                   = s"$messageKeyPrefix.error.select"
 
-  override val values: Seq[(String, String)] =
+  override val values: Seq[(String, ChildAgeGroup)] =
     Seq(
-      (s"$messageKeyPrefix.$nineTo23Months", nineTo23Months),
-      (s"$messageKeyPrefix.$twoYears", twoYears),
-      (s"$messageKeyPrefix.$threeYears", threeYears),
-      (s"$messageKeyPrefix.$fourYears", fourYears),
-      (s"$messageKeyPrefix.or", "divider"),
-      (s"$messageKeyPrefix.$noneOfThese", noneOfThese)
+      (s"$messageKeyPrefix.${ChildAgeGroup.NineTo23Months}", ChildAgeGroup.NineTo23Months),
+      (s"$messageKeyPrefix.${ChildAgeGroup.TwoYears}", ChildAgeGroup.TwoYears),
+      (s"$messageKeyPrefix.${ChildAgeGroup.ThreeYears}", ChildAgeGroup.ThreeYears),
+      (s"$messageKeyPrefix.${ChildAgeGroup.FourYears}", ChildAgeGroup.FourYears),
+      (s"$messageKeyPrefix.${ChildAgeGroup.NoneOfThese}", ChildAgeGroup.NoneOfThese)
     )
 
-  override def createView(form: Form[Set[ChildAgeGroup]] = form): Html =
-    mockView(form)(fakeRequest, messages)
+  override def render(form: Form[Set[ChildAgeGroup]] = form): Html =
+    view(form)(using fakeRequest, messages)
 
   "ChildrenAgeGroupsView" must {
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(render, messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(render))
 
-    behave.like(checkboxPage())
+    behave.like(checkboxPage(divider = true))
 
     "display correct content when loaded" in {
-      val view = mockView(form)(fakeRequest, messages)
-      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.hint"))
-      assertContainsText(asDocument(view), messages(s"$messageKeyPrefix.or"))
+      val page     = view(form)(using fakeRequest, messages)
+      val document = asDocument(page)
+
+      assertContainsText(document, messages(s"$messageKeyPrefix.hint"))
+      assertContainsText(document, messages(s"$messageKeyPrefix.or"))
     }
   }
 

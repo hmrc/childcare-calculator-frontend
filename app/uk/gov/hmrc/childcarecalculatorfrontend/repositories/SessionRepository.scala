@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.repositories
 
-import org.mongodb.scala.model.Filters._
-import org.mongodb.scala.model.Indexes._
+import org.mongodb.scala.model.Filters.*
+import org.mongodb.scala.model.Indexes.*
 import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions}
 import play.api.libs.json.{Format, JsValue, Json}
 import play.api.{Configuration, Logging}
@@ -34,13 +34,13 @@ import scala.concurrent.{ExecutionContext, Future}
 case class DatedCacheMap(id: String, data: Map[String, JsValue], lastUpdated: Instant = Instant.now())
 
 object DatedCacheMap {
-  implicit val dateFormat: Format[Instant]    = MongoJavatimeFormats.Implicits.jatInstantFormat
-  implicit val formats: Format[DatedCacheMap] = Json.format[DatedCacheMap]
+  given dateFormat: Format[Instant]    = MongoJavatimeFormats.Implicits.jatInstantFormat
+  given formats: Format[DatedCacheMap] = Json.format[DatedCacheMap]
 
   def apply(cacheMap: CacheMap): DatedCacheMap = DatedCacheMap(cacheMap.id, cacheMap.data)
 }
 
-class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(implicit ec: ExecutionContext)
+class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(using ec: ExecutionContext)
     extends PlayMongoRepository[DatedCacheMap](
       collectionName = config.get[String]("appName"),
       mongoComponent = mongo,
@@ -76,7 +76,7 @@ class ReactiveMongoRepository(config: Configuration, mongo: MongoComponent)(impl
 
 @Singleton
 class SessionRepository @Inject() (config: Configuration, mongoComponent: MongoComponent)(
-    implicit ec: ExecutionContext
+    using ec: ExecutionContext
 ) {
 
   private lazy val sessionRepository = new ReactiveMongoRepository(config, mongoComponent)

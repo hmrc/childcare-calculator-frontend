@@ -17,6 +17,7 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
 import play.api.data.Form
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.TaxYearInfo
@@ -29,30 +30,28 @@ class BothOtherIncomeThisYearViewSpec extends NewYesNoViewBehaviours {
 
   val taxYearInfo = new TaxYearInfo
 
-  val view = application.injector.instanceOf[bothOtherIncomeThisYear]
+  val view: bothOtherIncomeThisYear = inject[bothOtherIncomeThisYear]
 
   val messageKeyPrefix = "bothOtherIncomeThisYear"
 
-  def createView = () => view(frontendAppConfig, BooleanForm(), taxYearInfo)(fakeRequest, messages)
-
-  def createViewUsingForm = (form: Form[Boolean]) => view(frontendAppConfig, form, taxYearInfo)(fakeRequest, messages)
+  def render(form: Form[Boolean] = this.form): Html = view(form)(using fakeRequest, messages)
 
   "BothOtherIncomeThisYear view" must {
 
-    behave.like(normalPage(createView, messageKeyPrefix))
+    behave.like(normalPage(() => render(), messageKeyPrefix))
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(() => render()))
 
     behave.like(
       yesNoPage(
-        createViewUsingForm,
+        form => render(form = form),
         messageKeyPrefix,
         routes.BothOtherIncomeThisYearController.onSubmit().url
       )
     )
 
     "contain tax year info" in {
-      val doc = asDocument(createView())
+      val doc = asDocument(render())
       assertContainsText(
         doc,
         messages(

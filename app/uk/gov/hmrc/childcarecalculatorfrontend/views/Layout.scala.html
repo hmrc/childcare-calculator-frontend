@@ -14,14 +14,13 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.{HmrcStandardPageParams, ServiceURLs, TemplateOverrides}
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
+@import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
 
 @this(
     hmrcStandardPage: HmrcStandardPage,
-    hmrcHead: HmrcHead,
     hmrcStandardBetaBanner: StandardBetaBanner,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
     govukBackLink: GovukBackLink,
@@ -32,11 +31,18 @@
     pageTitle: String,
     timeoutEnabled: Boolean = true,
     backLinkEnabled: Boolean = true,
-    accountMenuEnabled: Boolean = true,
-    urBanner: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+    urBanner: Boolean = false,
+)(
+    contentBlock: Html,
+)(
+    using request: RequestHeader,
+    messages: Messages,
+)
 
 @accountMenu = {
-    @if(backLinkEnabled) {@govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)}
+    @if(backLinkEnabled) {
+        @govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)
+    }
 }
 
 @head = {
@@ -52,10 +58,6 @@
     }
 }
 
-@mainContent = {
-    @contentBlock
-}
-
 @hmrcStandardPage(
     HmrcStandardPageParams(
         serviceURLs = ServiceURLs(
@@ -66,8 +68,15 @@
         beforeContentBlock = Some(accountMenu)
     ),
     serviceName = Some(messages("service.name")),
-    banners = Banners(phaseBanner = Some(hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)), userResearchBanner = if (urBanner) {Some(UserResearchBanner(url = appConfig.urBannerUrl))} else None),
+    banners = Banners(
+        phaseBanner = Some(
+            hmrcStandardBetaBanner(url = appConfig.betaFeedbackUnauthenticatedUrl)
+        ),
+        userResearchBanner = Option.when (urBanner) {
+            UserResearchBanner(url = appConfig.urBannerUrl)
+        }
+    ),
     pageTitle = Some(s"""$pageTitle - ${messages("site.service_name")} - GOV.UK"""),
     isWelshTranslationAvailable = appConfig.languageTranslationEnabled
     )
-)(mainContent)
+)(contentBlock)

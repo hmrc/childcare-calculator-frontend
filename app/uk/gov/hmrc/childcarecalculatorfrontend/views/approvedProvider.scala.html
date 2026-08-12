@@ -14,10 +14,9 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.ApprovedProviderForm
-
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YesNoNotSure
 
 @this(
     layout: Layout,
@@ -25,16 +24,30 @@
     errorSummary: playComponents.error_summary,
     heading: playComponents.heading,
     inputRadio: playComponents.input_radio,
-    submitButton: playComponents.submit_button
+    submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[String], childcareCostsMaybeInFuture: Boolean)(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[YesNoNotSure],
+    childcareCostsMaybeInFuture: Boolean,
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
     if(childcareCostsMaybeInFuture) {
-        if(form.errors.nonEmpty) messages("site.title.error", messages("approvedProvider.title.future")) else messages("approvedProvider.title.future")
+        if(form.errors.nonEmpty) {
+            messages("site.title.error", messages("approvedProvider.title.future"))
+        } else {
+            messages("approvedProvider.title.future")
+        }
     } else {
-        if(form.errors.nonEmpty) messages("site.title.error", messages("approvedProvider.title")) else messages("approvedProvider.title")
+        if(form.errors.nonEmpty) {
+            messages("site.title.error", messages("approvedProvider.title"))
+        } else {
+            messages("approvedProvider.title")
+        }
     }
 }
 
@@ -46,14 +59,13 @@
     @formWithCSRF(action = ApprovedProviderController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputRadio(
-            legend =  if(childcareCostsMaybeInFuture) heading(messages("approvedProvider.heading.future")) else heading(messages("approvedProvider.heading")),
-            hint = Some(messages("approvedProvider.hint")),
-            inputs = ApprovedProviderForm.options map { radioOptions =>
-                RadioItem(
-                    value = Some(radioOptions.value),
-                    content = HtmlContent(messages(radioOptions.messageKey))
-                )
+            legend = if(childcareCostsMaybeInFuture) {
+                heading(messages("approvedProvider.heading.future"))
+            } else {
+                heading(messages("approvedProvider.heading"))
             },
+            hint = Some(messages("approvedProvider.hint")),
+            inputs = ApprovedProviderForm.options map(_.toRadioItem),
             field = form("value")
         )
 

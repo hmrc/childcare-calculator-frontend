@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions
 
-import com.google.inject.Inject
+import com.google.inject.{Inject, Singleton}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.{DataRequest, OptionalDataRequest}
@@ -24,7 +24,8 @@ import uk.gov.hmrc.childcarecalculatorfrontend.utils.SessionExpiredRouter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRequiredAction @Inject() ()(implicit val executionContext: ExecutionContext)
+@Singleton
+class DataRequiredAction @Inject() ()(using override val executionContext: ExecutionContext)
     extends ActionRefiner[OptionalDataRequest, DataRequest] {
 
   override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] =

@@ -14,23 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 @import uk.gov.hmrc.childcarecalculatorfrontend.forms.LocationForm
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button,
-        inputRadio: playComponents.input_radio
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    heading: playComponents.heading,
+    submitButton: playComponents.submit_button,
+    inputRadio: playComponents.input_radio,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[_])(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[Location],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("location.title")) else messages("location.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("location.title"))
+    } else {
+        messages("location.title")
+    }
 }
 
 @layout(
@@ -44,12 +53,7 @@
             legend = heading(messages("location.title")),
             legendClass = Some("visually-hidden"),
             hint = Some(messages("location.guidance")),
-            inputs = LocationForm.options map { radioOption =>
-                RadioItem(
-                    value = Some(radioOption.value),
-                    content = HtmlContent(messages(radioOption.messageKey))
-                )
-            },
+            inputs = LocationForm.options.map(_.toRadioItem),
             field = form("value")
         )
 

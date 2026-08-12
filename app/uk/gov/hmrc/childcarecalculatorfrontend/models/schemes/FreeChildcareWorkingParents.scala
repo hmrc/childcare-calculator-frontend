@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.models.schemes
 
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location.ENGLAND
-import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefits._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.models.ParentsBenefit.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.UserAnswers
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
+@Singleton
 class FreeChildcareWorkingParents @Inject() (freeChildcareEligibilityCalculator: FreeChildcareEligibilityCalculator)
     extends Scheme {
 
-  private val eligibleBenefits: Set[ParentsBenefits] = Set(
+  private val eligibleBenefits: Set[ParentsBenefit] = Set(
     CarersAllowance,
     IncapacityBenefit,
     SevereDisablementAllowance,
@@ -37,14 +38,14 @@ class FreeChildcareWorkingParents @Inject() (freeChildcareEligibilityCalculator:
 
   override def eligibility(answers: UserAnswers): Eligibility =
     answers.location match {
-      case Some(ENGLAND) =>
+      case Some(Location.England) =>
         if (hasChildrenInAgeGroups(answers))
           freeChildcareEligibilityCalculator.calculateEligibility(answers, eligibleBenefits)
         else
-          NotEligible
+          Eligibility.NotEligible
 
-      case Some(_) => NotEligible
-      case _       => NotDetermined
+      case Some(_) => Eligibility.NotEligible
+      case _       => Eligibility.NotDetermined
     }
 
   private def hasChildrenInAgeGroups(answers: UserAnswers): Boolean =

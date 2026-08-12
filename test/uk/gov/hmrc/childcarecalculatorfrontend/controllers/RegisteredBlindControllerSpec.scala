@@ -17,10 +17,11 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.{JsBoolean, JsNumber, JsValue, Json}
-import play.api.test.Helpers._
+import play.api.libs.json.JsValue
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.BooleanForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.{AboutYourChildId, NoOfChildrenId, RegisteredBlindId}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
@@ -32,13 +33,12 @@ import java.time.LocalDate
 
 class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
-  val view1       = application.injector.instanceOf[registeredBlind]
-  val view2       = application.injector.instanceOf[childRegisteredBlind]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view1: registeredBlind      = inject[registeredBlind]
+  val view2: childRegisteredBlind = inject[childRegisteredBlind]
+  def onwardRoute: Call           = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new RegisteredBlindController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -48,21 +48,21 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
       view1
     )
 
-  def singleViewAsString(form: Form[Boolean] = BooleanForm()) =
-    view2(frontendAppConfig, form, "Foo")(fakeRequest, messages).toString
+  def singleViewAsString(form: Form[Boolean] = BooleanForm()): String =
+    view2(form, "Foo")(using fakeRequest, messages).toString
 
-  def viewAsString(form: Form[Boolean] = BooleanForm()) =
-    view1(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Boolean] = BooleanForm()): String =
+    view1(form)(using fakeRequest, messages).toString
 
-  def requiredData(number: Int): Map[String, JsValue] = Map(
-    NoOfChildrenId.toString -> JsNumber(number),
-    AboutYourChildId.toString -> Json.obj(
-      "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
+  def requiredData(numberOfChildren: Int): Map[String, JsValue] = Map(
+    NoOfChildrenId.withValue(numberOfChildren),
+    AboutYourChildId.withValue(
+      Map(0 -> AboutYourChild("Foo", LocalDate.of(2026, 7, 27)))
     )
   )
 
-  def getRequiredData(number: Int = 1) =
-    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(number))))
+  def getRequiredData(numberOfChildren: Int = 1) =
+    new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, requiredData(numberOfChildren))))
 
   "RegisteredBlind Controller" must {
 
@@ -79,14 +79,14 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET with a single child when the question has previously been answered" in {
-      val validData       = requiredData(1) + (RegisteredBlindId.toString -> JsBoolean(true))
+      val validData       = requiredData(1) + RegisteredBlindId.withValue(true)
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result          = controller(getRelevantData).onPageLoad()(fakeRequest)
       contentAsString(result) mustBe singleViewAsString(BooleanForm().fill(true))
     }
 
     "populate the view correctly on a GET with multiple children when the question has previously been answered" in {
-      val validData       = requiredData(2) + (RegisteredBlindId.toString -> JsBoolean(true))
+      val validData       = requiredData(2) + RegisteredBlindId.withValue(true)
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
       val result          = controller(getRelevantData).onPageLoad()(fakeRequest)
       contentAsString(result) mustBe viewAsString(BooleanForm().fill(true))
@@ -130,8 +130,8 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a GET if there is no answer for `number of children`" in {
       val data = Map(
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
+        AboutYourChildId.withValue(
+          Map(0 -> AboutYourChild("Foo", LocalDate.of(2026, 7, 27)))
         )
       )
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
@@ -142,8 +142,8 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
 
     "redirect to Session Expired for a POST if there is no answer for `number of children`" in {
       val data = Map(
-        AboutYourChildId.toString -> Json.obj(
-          "0" -> Json.toJson(AboutYourChild("Foo", LocalDate.now))
+        AboutYourChildId.withValue(
+          Map(0 -> AboutYourChild("Foo", LocalDate.of(2026, 7, 27)))
         )
       )
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
@@ -154,7 +154,7 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a GET if there is no answer for `about your child`" in {
-      val data    = Map(NoOfChildrenId.toString -> JsNumber(1))
+      val data    = Map(NoOfChildrenId.withValue(1))
       val getData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
       val result  = controller(getData).onPageLoad()(fakeRequest)
       status(result) mustBe SEE_OTHER
@@ -162,7 +162,7 @@ class RegisteredBlindControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to Session Expired for a POST if there is no answer for `about your child`" in {
-      val data        = Map(NoOfChildrenId.toString -> JsNumber(1))
+      val data        = Map(NoOfChildrenId.withValue(1))
       val getData     = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, data)))
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "true")).withMethod("POST")
       val result      = controller(getData).onSubmit()(postRequest)

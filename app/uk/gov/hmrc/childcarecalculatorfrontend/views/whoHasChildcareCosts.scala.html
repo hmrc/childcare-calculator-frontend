@@ -14,30 +14,30 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 
 @this(
-        layout: Layout,
-        formWithCSRF: FormWithCSRF,
-        errorSummary: playComponents.error_summary,
-        inputCheckBox: playComponents.input_check_box,
-        heading: playComponents.heading,
-        submitButton: playComponents.submit_button
+    layout: Layout,
+    formWithCSRF: FormWithCSRF,
+    errorSummary: playComponents.error_summary,
+    inputCheckBox: playComponents.input_check_box,
+    submitButton: playComponents.submit_button,
 )
 
 @(
-        appConfig: FrontendAppConfig,
-        form: Form[_],
-
-        inputs: Seq[(String, String)]
+    form: Form[Set[Int]],
+    inputs: Seq[(String, Int)],
 )(
-        implicit request: Request[_],
-        messages: Messages
+    using request: Request[?],
+    messages: Messages,
 )
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("whoHasChildcareCosts.title")) else messages("whoHasChildcareCosts.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("whoHasChildcareCosts.title"))
+    } else {
+        messages("whoHasChildcareCosts.title")
+    }
 }
 
 @layout(
@@ -50,12 +50,12 @@
             field = form("value"),
             legend = messages("whoHasChildcareCosts.heading"),
             hint = Some(messages("whichBenefits.select.all")),
-            inputs = inputs.map { checkboxOption =>
+            inputs = inputs.map { case (text, value) =>
                 CheckboxItem(
-                    content = HtmlContent((s"${checkboxOption._1}")),
-                    value = checkboxOption._2.toString
-           )
-        }.toSeq
+                    content = Text(text.capitalize),
+                    value = value.toString,
+                )
+            }
     )
 
         @submitButton()

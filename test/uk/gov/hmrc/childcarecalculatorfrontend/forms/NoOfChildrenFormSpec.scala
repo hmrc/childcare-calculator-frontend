@@ -16,54 +16,55 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import play.api.data.Form
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
 class NoOfChildrenFormSpec extends FormSpec {
 
-  val errorKeyBlank              = "blank"
-  val errorKeyNonNumeric: String = noOfChildrenNotInteger
-  val NoOfChildrenForm           = new NoOfChildrenForm(frontendAppConfig).apply()
+  val missingErrorKey             = "blank"
+  val errorKeyNonNumeric: String  = noOfChildrenNotInteger
+  val noOfChildrenForm: Form[Int] = new NoOfChildrenForm(frontendAppConfig).apply()
 
   "NoOfChildren Form" must {
 
-    "bind positive numbers" in {
-      val form = NoOfChildrenForm.bind(Map("value" -> "1"))
+    "successfully bind positive numbers" in {
+      val form = noOfChildrenForm.bind(Map("value" -> "1"))
       form.get mustBe 1
     }
 
-    "bind positive, max number" in {
+    "fail to bind 20" in {
       val expectedError = error("value", noOfChildrenErrorKey)
-      checkForError(NoOfChildrenForm, Map("value" -> "20"), expectedError)
+      checkForError(noOfChildrenForm, Map("value" -> "20"), expectedError)
     }
 
-    "bind positive, comma separated numbers" in {
+    "fail to bind positive, comma separated numbers" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm, Map("value" -> "1,0"), expectedError)
+      checkForError(noOfChildrenForm, Map("value" -> "1,0"), expectedError)
     }
 
-    "fail to bind zero number" in {
+    "fail to bind 0" in {
       val expectedError = error("value", noOfChildrenErrorKey)
-      checkForError(NoOfChildrenForm, Map("value" -> "0"), expectedError)
+      checkForError(noOfChildrenForm, Map("value" -> "0"), expectedError)
     }
 
     "fail to bind negative numbers" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm, Map("value" -> "-1"), expectedError)
+      checkForError(noOfChildrenForm, Map("value" -> "-1"), expectedError)
     }
 
     "fail to bind non-numerics" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm, Map("value" -> "not a number"), expectedError)
+      checkForError(noOfChildrenForm, Map("value" -> "not a number"), expectedError)
     }
 
     "fail to bind a blank value" in {
       val expectedError = error("value", noOfChildrenRequiredErrorKey)
-      checkForError(NoOfChildrenForm, Map("value" -> ""), expectedError)
+      checkForError(noOfChildrenForm, Map("value" -> ""), expectedError)
     }
 
     "fail to bind decimal numbers" in {
       val expectedError = error("value", errorKeyNonNumeric)
-      checkForError(NoOfChildrenForm, Map("value" -> "1.234"), expectedError)
+      checkForError(noOfChildrenForm, Map("value" -> "1.234"), expectedError)
     }
   }
 

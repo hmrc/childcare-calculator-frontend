@@ -19,7 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms
 import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
 trait FormErrorHelper extends Mappings {
 

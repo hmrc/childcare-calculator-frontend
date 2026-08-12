@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.utils
 
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models._
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.*
 
 import java.time.LocalDate
 
@@ -25,195 +26,186 @@ import java.time.LocalDate
 
 class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils {
 
-  def surveyDoNotUnderstand: Option[String] = cacheMap.getEntry[String](SurveyDoNotUnderstandId.toString)
+  def surveyDoNotUnderstand: Option[String] = cacheMap.getEntry(SurveyDoNotUnderstandId)
 
-  def surveyChildcareSupport: Option[Boolean] = cacheMap.getEntry[Boolean](SurveyChildcareSupportId.toString)
+  def surveyChildcareSupport: Option[Boolean] = cacheMap.getEntry(SurveyChildcareSupportId)
 
   def expectedChildcareCosts(index: Int): Option[BigDecimal] =
     expectedChildcareCosts.flatMap(_.get(index))
 
   def expectedChildcareCosts: Option[Map[Int, BigDecimal]] =
-    cacheMap.getEntry[Map[Int, BigDecimal]](ExpectedChildcareCostsId.toString)
+    cacheMap.getEntry(ExpectedChildcareCostsId)
 
-  def whichDisabilityBenefits: Option[Map[Int, Set[DisabilityBenefits.Value]]] =
-    cacheMap.getEntry[Map[Int, Set[DisabilityBenefits.Value]]](WhichDisabilityBenefitsId.toString)
+  def whichDisabilityBenefits: Option[Map[Int, Set[DisabilityBenefit]]] =
+    cacheMap.getEntry(WhichDisabilityBenefitsId)
 
-  def whichDisabilityBenefits(index: Int): Option[Set[DisabilityBenefits.Value]] =
+  def whichDisabilityBenefits(index: Int): Option[Set[DisabilityBenefit]] =
     whichDisabilityBenefits.flatMap(_.get(index))
 
-  def whoHasChildcareCosts: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhoHasChildcareCostsId.toString)
+  def whoHasChildcareCosts: Option[Set[Int]] = cacheMap.getEntry(WhoHasChildcareCostsId)
 
-  def whichChildrenBlind: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenBlindId.toString)
+  def whichChildrenBlind: Option[Set[Int]] = cacheMap.getEntry(WhichChildrenBlindId)
 
-  def whichChildrenDisability: Option[Set[Int]] = cacheMap.getEntry[Set[Int]](WhichChildrenDisabilityId.toString)
+  def whichChildrenDisability: Option[Set[Int]] = cacheMap.getEntry(WhichChildrenDisabilityId)
 
-  def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](ChildRegisteredBlindId.toString)
+  def childRegisteredBlind: Option[Boolean] = cacheMap.getEntry(ChildRegisteredBlindId)
 
-  def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildrenDisabilityBenefitsId.toString)
+  def childrenDisabilityBenefits: Option[Boolean] = cacheMap.getEntry(ChildrenDisabilityBenefitsId)
 
-  def childcarePayFrequency: Option[Map[Int, ChildcarePayFrequency.Value]] =
-    cacheMap.getEntry[Map[Int, ChildcarePayFrequency.Value]](ChildcarePayFrequencyId.toString)
+  def childcarePayFrequency: Option[Map[Int, ChildcarePayFrequency]] =
+    cacheMap.getEntry(ChildcarePayFrequencyId)
 
-  def childcarePayFrequency(index: Int): Option[ChildcarePayFrequency.Value] =
+  def childcarePayFrequency(index: Int): Option[ChildcarePayFrequency] =
     childcarePayFrequency.flatMap(_.get(index))
 
-  def childDisabilityBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](ChildDisabilityBenefitsId.toString)
+  def childDisabilityBenefits: Option[Boolean] = cacheMap.getEntry(ChildDisabilityBenefitsId)
 
   def howMuchBothPayPension: Option[HowMuchBothPayPension] =
-    cacheMap.getEntry[HowMuchBothPayPension](HowMuchBothPayPensionId.toString)
+    cacheMap.getEntry(HowMuchBothPayPensionId)
 
-  def howMuchPartnerPayPension: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](HowMuchPartnerPayPensionId.toString)
+  def howMuchPartnerPayPension: Option[BigDecimal] = cacheMap.getEntry(HowMuchPartnerPayPensionId)
 
-  def howMuchYouPayPension: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](HowMuchYouPayPensionId.toString)
+  def howMuchYouPayPension: Option[BigDecimal] = cacheMap.getEntry(HowMuchYouPayPensionId)
 
-  def registeredBlind: Option[Boolean] = cacheMap.getEntry[Boolean](RegisteredBlindId.toString)
+  def registeredBlind: Option[Boolean] = cacheMap.getEntry(RegisteredBlindId)
 
-  def benefitsIncomeCY: Option[BenefitsIncomeCY] = cacheMap.getEntry[BenefitsIncomeCY](BenefitsIncomeCYId.toString)
+  def benefitsIncomeCY: Option[BenefitsIncomeCY] = cacheMap.getEntry(BenefitsIncomeCYId)
 
   def employmentIncomeCY: Option[EmploymentIncomeCY] =
-    cacheMap.getEntry[EmploymentIncomeCY](EmploymentIncomeCYId.toString)
+    cacheMap.getEntry(EmploymentIncomeCYId)
 
   def partnerOtherIncomeAmountCY: Option[BigDecimal] =
-    cacheMap.getEntry[BigDecimal](PartnerOtherIncomeAmountCYId.toString)
+    cacheMap.getEntry(PartnerOtherIncomeAmountCYId)
 
-  def yourOtherIncomeAmountCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YourOtherIncomeAmountCYId.toString)
+  def yourOtherIncomeAmountCY: Option[BigDecimal] = cacheMap.getEntry(YourOtherIncomeAmountCYId)
 
   def otherIncomeAmountCY: Option[OtherIncomeAmountCY] =
-    cacheMap.getEntry[OtherIncomeAmountCY](OtherIncomeAmountCYId.toString)
+    cacheMap.getEntry(OtherIncomeAmountCYId)
 
-  def youBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](YouBenefitsIncomeCYId.toString)
+  def youBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry(YouBenefitsIncomeCYId)
 
-  def partnerBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](PartnerBenefitsIncomeCYId.toString)
+  def partnerBenefitsIncomeCY: Option[BigDecimal] = cacheMap.getEntry(PartnerBenefitsIncomeCYId)
 
   def aboutYourChild(index: Int): Option[AboutYourChild] = aboutYourChild.flatMap(_.get(index))
 
   def aboutYourChild: Option[Map[Int, AboutYourChild]] =
-    cacheMap.getEntry[Map[Int, AboutYourChild]](AboutYourChildId.toString)
+    cacheMap.getEntry(AboutYourChildId)
 
-  def bothOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](BothOtherIncomeThisYearId.toString)
+  def bothOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry(BothOtherIncomeThisYearId)
 
-  def bothPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothPaidPensionCYId.toString)
+  def bothPaidPensionCY: Option[Boolean] = cacheMap.getEntry(BothPaidPensionCYId)
 
-  def PartnerPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerPaidPensionCYId.toString)
+  def PartnerPaidPensionCY: Option[Boolean] = cacheMap.getEntry(PartnerPaidPensionCYId)
 
-  def YouPaidPensionCY: Option[Boolean] = cacheMap.getEntry[Boolean](YouPaidPensionCYId.toString)
+  def YouPaidPensionCY: Option[Boolean] = cacheMap.getEntry(YouPaidPensionCYId)
 
-  def whosHadBenefits: Option[YouPartnerBothEnum.Value] =
-    cacheMap.getEntry[YouPartnerBothEnum.Value](WhosHadBenefitsId.toString)
+  def whosHadBenefits: Option[YouPartnerBoth] =
+    cacheMap.getEntry(WhosHadBenefitsId)
 
-  def bothAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry[Boolean](BothAnyTheseBenefitsCYId.toString)
+  def bothAnyTheseBenefitsCY: Option[Boolean] = cacheMap.getEntry(BothAnyTheseBenefitsCYId)
 
-  def youAnyTheseBenefits: Option[Boolean] = cacheMap.getEntry[Boolean](YouAnyTheseBenefitsIdCY.toString)
+  def youAnyTheseBenefits: Option[Boolean] = cacheMap.getEntry(YouAnyTheseBenefitsCYId)
 
   def partnerEmploymentIncomeCY: Option[BigDecimal] =
-    cacheMap.getEntry[BigDecimal](PartnerEmploymentIncomeCYId.toString)
+    cacheMap.getEntry(PartnerEmploymentIncomeCYId)
 
-  def parentEmploymentIncomeCY: Option[BigDecimal] = cacheMap.getEntry[BigDecimal](ParentEmploymentIncomeCYId.toString)
+  def parentEmploymentIncomeCY: Option[BigDecimal] = cacheMap.getEntry(ParentEmploymentIncomeCYId)
 
-  def whoGetsOtherIncomeCY: Option[String] = cacheMap.getEntry[String](WhoGetsOtherIncomeCYId.toString)
+  def whoGetsOtherIncomeCY: Option[YouPartnerBoth] = cacheMap.getEntry(WhoGetsOtherIncomeCYId)
 
-  def partnerPaidWorkCY: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerPaidWorkCYId.toString)
+  def partnerPaidWorkCY: Option[Boolean] = cacheMap.getEntry(PartnerPaidWorkCYId)
 
-  def parentPaidWorkCY: Option[Boolean] = cacheMap.getEntry[Boolean](ParentPaidWorkCYId.toString)
+  def parentPaidWorkCY: Option[Boolean] = cacheMap.getEntry(ParentPaidWorkCYId)
 
-  def whoPaysIntoPension: Option[String] = cacheMap.getEntry[String](WhoPaysIntoPensionId.toString)
+  def whoPaysIntoPension: Option[YouPartnerBoth] = cacheMap.getEntry(WhoPaysIntoPensionId)
 
-  def yourOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry[Boolean](YourOtherIncomeThisYearId.toString)
+  def yourOtherIncomeThisYear: Option[Boolean] = cacheMap.getEntry(YourOtherIncomeThisYearId)
 
-  def eitherOfYouMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](EitherOfYouMaximumEarningsId.toString)
+  def eitherOfYouMaximumEarnings: Option[Boolean] = cacheMap.getEntry(EitherOfYouMaximumEarningsId)
 
-  def noOfChildren: Option[Int] = cacheMap.getEntry[Int](NoOfChildrenId.toString)
+  def noOfChildren: Option[Int] = cacheMap.getEntry(NoOfChildrenId)
 
-  def universalCredit: Option[Boolean] = cacheMap.getEntry[Boolean](UniversalCreditId.toString)
+  def universalCredit: Option[Boolean] = cacheMap.getEntry(UniversalCreditId)
 
-  def partnerMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMaximumEarningsId.toString)
+  def partnerMaximumEarnings: Option[Boolean] = cacheMap.getEntry(PartnerMaximumEarningsId)
 
-  def yourMaximumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](YourMaximumEarningsId.toString)
+  def yourMaximumEarnings: Option[Boolean] = cacheMap.getEntry(YourMaximumEarningsId)
 
-  def yourSelfEmployed: Option[Boolean] = cacheMap.getEntry[Boolean](YourSelfEmployedId.toString)
+  def yourSelfEmployed: Option[Boolean] = cacheMap.getEntry(YourSelfEmployedId)
 
-  def partnerSelfEmployed: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerSelfEmployedId.toString)
+  def partnerSelfEmployed: Option[Boolean] = cacheMap.getEntry(PartnerSelfEmployedId)
 
-  def partnerSelfEmployedOrApprentice: Option[String] =
-    cacheMap.getEntry[String](PartnerSelfEmployedOrApprenticeId.toString)
+  def partnerSelfEmployedOrApprentice: Option[EmploymentStatus] =
+    cacheMap.getEntry(PartnerSelfEmployedOrApprenticeId)
 
-  def areYouSelfEmployedOrApprentice: Option[String] =
-    cacheMap.getEntry[String](AreYouSelfEmployedOrApprenticeId.toString)
+  def areYouSelfEmployedOrApprentice: Option[EmploymentStatus] =
+    cacheMap.getEntry(AreYouSelfEmployedOrApprenticeId)
 
-  def partnerMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerMinimumEarningsId.toString)
+  def partnerMinimumEarnings: Option[Boolean] = cacheMap.getEntry(PartnerMinimumEarningsId)
 
-  def yourMinimumEarnings: Option[Boolean] = cacheMap.getEntry[Boolean](YourMinimumEarningsId.toString)
+  def yourMinimumEarnings: Option[Boolean] = cacheMap.getEntry(YourMinimumEarningsId)
 
-  def yourAge: Option[String] = cacheMap.getEntry[String](YourAgeId.toString)
+  def yourAge: Option[Age] = cacheMap.getEntry(YourAgeId)
 
-  def yourPartnersAge: Option[String] = cacheMap.getEntry[String](YourPartnersAgeId.toString)
+  def yourPartnersAge: Option[Age] = cacheMap.getEntry(YourPartnersAgeId)
 
-  def doYouGetAnyBenefits: Option[Set[ParentsBenefits]] =
-    cacheMap.getEntry[Set[ParentsBenefits]](DoYouGetAnyBenefitsId.toString)
+  def doYouGetAnyBenefits: Option[Set[ParentsBenefit]] =
+    cacheMap.getEntry(DoYouGetAnyBenefitsId)
 
-  def doesYourPartnerGetAnyBenefits: Option[Set[ParentsBenefits]] =
-    cacheMap.getEntry[Set[ParentsBenefits]](DoesYourPartnerGetAnyBenefitsId.toString)
+  def doesYourPartnerGetAnyBenefits: Option[Set[ParentsBenefit]] =
+    cacheMap.getEntry(DoesYourPartnerGetAnyBenefitsId)
 
-  def whoGetsVouchers: Option[String] = cacheMap.getEntry[String](WhoGetsVouchersId.toString)
+  def whoGetsVouchers: Option[YouPartnerBothNeitherNotSure] =
+    cacheMap.getEntry(WhoGetsVouchersId)
 
-  def yourChildcareVouchers: Option[Boolean] = cacheMap.getEntry[Boolean](YourChildcareVouchersId.toString)
+  def yourChildcareVouchers: Option[Boolean] = cacheMap.getEntry(YourChildcareVouchersId)
 
-  def partnerChildcareVouchers: Option[Boolean] = cacheMap.getEntry[Boolean](PartnerChildcareVouchersId.toString)
+  def partnerChildcareVouchers: Option[Boolean] = cacheMap.getEntry(PartnerChildcareVouchersId)
 
-  def whatIsYourTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourTaxCodeId.toString)
+  def whatIsYourTaxCode: Option[String] = cacheMap.getEntry(WhatIsYourTaxCodeId)
 
-  def whatIsYourPartnersTaxCode: Option[String] = cacheMap.getEntry[String](WhatIsYourPartnersTaxCodeId.toString)
+  def whatIsYourPartnersTaxCode: Option[String] = cacheMap.getEntry(WhatIsYourPartnersTaxCodeId)
 
-  def whoIsInPaidEmployment: Option[String] = cacheMap.getEntry[String](WhoIsInPaidEmploymentId.toString)
+  def whoIsInPaidEmployment: Option[YouPartnerBothNeither] =
+    cacheMap.getEntry(WhoIsInPaidEmploymentId)
 
-  def areYouInPaidWork: Option[Boolean] = cacheMap.getEntry[Boolean](AreYouInPaidWorkId.toString)
+  def areYouInPaidWork: Option[Boolean] = cacheMap.getEntry(AreYouInPaidWorkId)
 
-  def doYouLiveWithPartner: Option[Boolean] = cacheMap.getEntry[Boolean](DoYouLiveWithPartnerId.toString)
+  def doYouLiveWithPartner: Option[Boolean] = cacheMap.getEntry(DoYouLiveWithPartnerId)
 
-  def approvedProvider: Option[String] = cacheMap.getEntry[String](ApprovedProviderId.toString)
+  def approvedProvider: Option[YesNoNotSure] = cacheMap.getEntry(ApprovedProviderId)
 
-  def childcareCosts: Option[String] = cacheMap.getEntry[String](ChildcareCostsId.toString)
+  def childcareCosts: Option[YesNoNotYet] = cacheMap.getEntry(ChildcareCostsId)
 
-  def childAgedThreeOrFour: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedThreeOrFourId.toString)
+  def childAgedThreeOrFour: Option[Boolean] = cacheMap.getEntry(ChildAgedThreeOrFourId)
 
-  def childAgedTwo: Option[Boolean] = cacheMap.getEntry[Boolean](ChildAgedTwoId.toString)
+  def childAgedTwo: Option[Boolean] = cacheMap.getEntry(ChildAgedTwoId)
 
   def childrenAgeGroups: Option[Set[ChildAgeGroup]] =
-    cacheMap.getEntry[Set[ChildAgeGroup]](ChildrenAgeGroupsId.toString) match {
+    cacheMap.getEntry(ChildrenAgeGroupsId) match {
       case None =>
         (childAgedTwo, childAgedThreeOrFour) match {
-          case (Some(true), Some(true)) => Some(Set(TwoYears, ThreeYears, FourYears))
-          case (_, Some(true))          => Some(Set(ThreeYears, FourYears))
-          case (Some(true), _)          => Some(Set(TwoYears))
-          case (_, Some(false))         => Some(Set(NoneOfThese))
-          case _                        => None
+          case (Some(true), Some(true)) =>
+            Some(Set(ChildAgeGroup.TwoYears, ChildAgeGroup.ThreeYears, ChildAgeGroup.FourYears))
+          case (_, Some(true))  => Some(Set(ChildAgeGroup.ThreeYears, ChildAgeGroup.FourYears))
+          case (Some(true), _)  => Some(Set(ChildAgeGroup.TwoYears))
+          case (_, Some(false)) => Some(Set(ChildAgeGroup.NoneOfThese))
+          case _                => None
         }
       case option => option
     }
 
-  def isChildAgedTwo: Option[Boolean] = childrenAgeGroups.map(_.contains(TwoYears))
+  def isChildAgedTwo: Option[Boolean] = childrenAgeGroups.map(_.contains(ChildAgeGroup.TwoYears))
 
   def isChildAgedThreeOrFour: Option[Boolean] =
-    childrenAgeGroups.map(_.exists(Set[ChildAgeGroup](ThreeYears, FourYears).contains))
+    childrenAgeGroups.map(_.exists(Set[ChildAgeGroup](ChildAgeGroup.ThreeYears, ChildAgeGroup.FourYears).contains))
 
-  def isChildAgedNineTo23Months: Option[Boolean] = childrenAgeGroups.map(_.contains(NineTo23Months))
+  def isChildAgedNineTo23Months: Option[Boolean] = childrenAgeGroups.map(_.contains(ChildAgeGroup.NineTo23Months))
 
-  def location: Option[Location.Value] = cacheMap.getEntry[Location.Value](LocationId.toString)
+  def location: Option[Location] = cacheMap.getEntry(LocationId)
 
-  def isYouPartnerOrBoth(who: Option[String]): String = {
-    val You: String     = YouPartnerBothEnum.YOU.toString
-    val Partner: String = YouPartnerBothEnum.PARTNER.toString
-    val Both: String    = YouPartnerBothEnum.BOTH.toString
-    val Neither: String = YouPartnerBothNeitherEnum.NEITHER.toString
-
-    who match {
-      case Some(You)     => You
-      case Some(Partner) => Partner
-      case Some(Both)    => Both
-      case Some(Neither) => Neither
-      case _             => You
-    }
-  }
+  def whoIsInPaidEmploymentDefaultYou: YouPartnerBothNeither =
+    whoIsInPaidEmployment.getOrElse(YouPartnerBothNeither.You)
 
   // scalastyle:off cyclomatic.complexity
   def hasChildEligibleForTfc: Boolean = {
@@ -311,7 +303,7 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
       noOfChildren.flatMap { noOfChildren =>
         if (noOfChildren == 1) {
           childcareCosts.map { value =>
-            if (value == YesNoNotYetEnum.YES.toString || value == YesNoNotYetEnum.NOTYET.toString) {
+            if (value == YesNoNotYet.Yes || value == YesNoNotYet.NotYet) {
               Set(0)
             } else {
               Set.empty
@@ -325,10 +317,10 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
 
   def hasApprovedCosts: Option[Boolean] =
     for {
-      costs <- childcareCosts.map(_ != YesNoNotYetEnum.NO.toString)
+      costs <- childcareCosts.map(_ != YesNoNotYet.No)
       approved <-
         if (costs) {
-          approvedProvider.map(_ != YesNoUnsureEnum.NO.toString)
+          approvedProvider.map(_ != YesNoNotSure.No)
         } else {
           Some(false)
         }
@@ -338,15 +330,15 @@ class UserAnswers(val cacheMap: CacheMap) extends MapFormats with DateTimeUtils 
     Seq(yourChildcareVouchers, partnerChildcareVouchers, checkVouchersForBoth).flatten.contains(true)
 
   def checkVouchersForBoth: Option[Boolean] = whoGetsVouchers match {
-    case None            => None
-    case Some("neither") => Some(false)
-    case _               => Some(true)
+    case None                                       => None
+    case Some(YouPartnerBothNeitherNotSure.Neither) => Some(false)
+    case _                                          => Some(true)
   }
 
   def max30HoursEnglandContent: Option[Boolean] =
     (location, hasVouchers) match {
-      case (Some(Location.ENGLAND), true)  => Some(true)
-      case (Some(Location.ENGLAND), false) => Some(false)
+      case (Some(Location.England), true)  => Some(true)
+      case (Some(Location.England), false) => Some(false)
       case (_, _)                          => None
     }
 

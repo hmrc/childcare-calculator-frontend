@@ -17,25 +17,23 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.HowMuchPartnerPayPensionForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.HowMuchPartnerPayPensionId
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.howMuchPartnerPayPension
 
 class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[howMuchPartnerPayPension]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: howMuchPartnerPayPension = inject[howMuchPartnerPayPension]
+  def onwardRoute: Call              = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new HowMuchPartnerPayPensionController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -44,8 +42,8 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[BigDecimal] = HowMuchPartnerPayPensionForm()) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[BigDecimal] = HowMuchPartnerPayPensionForm()): String =
+    view(form)(using fakeRequest, messages).toString
 
   val testNumber = 123
 
@@ -59,7 +57,7 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(HowMuchPartnerPayPensionId.toString -> JsNumber(testNumber))
+      val validData       = Map(HowMuchPartnerPayPensionId.withValue(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)
@@ -79,7 +77,7 @@ class HowMuchPartnerPayPensionControllerSpec extends ControllerSpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
       val postRequest = fakeRequest.withFormUrlEncodedBody(("value", "invalid value")).withMethod("POST")
       val boundForm =
-        HowMuchPartnerPayPensionForm(howMuchPartnerPayPensionInvalidErrorKey).bind(Map("value" -> "invalid value"))
+        HowMuchPartnerPayPensionForm().bind(Map("value" -> "invalid value"))
 
       val result = controller().onSubmit()(postRequest)
 

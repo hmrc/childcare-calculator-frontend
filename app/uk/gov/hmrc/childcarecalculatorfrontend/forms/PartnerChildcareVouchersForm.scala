@@ -17,32 +17,30 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YesNoNotSure
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object PartnerChildcareVouchersForm extends FormErrorHelper {
 
-  def PartnerChildcareVouchersFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, partnerChildcareVouchersErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
-
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
-    Form(single("value" -> of(PartnerChildcareVouchersFormatter)))
-
-  def options = Seq(
-    InputOption("partnerChildcareVouchers", YesNoUnsureEnum.YES.toString),
-    InputOption("partnerChildcareVouchers", YesNoUnsureEnum.NO.toString),
-    InputOption("partnerChildcareVouchers", YesNoUnsureEnum.NOTSURE.toString)
+  private val PartnerChildcareVouchersFormatter: Formatter[YesNoNotSure] = EnumFormatter[YesNoNotSure](
+    missingErrorKey = partnerChildcareVouchersErrorKey,
+    unknownValueErrorKey = unknownErrorKey
   )
 
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
+  def apply(): Form[YesNoNotSure] =
+    Form(single("value" -> of(PartnerChildcareVouchersFormatter)))
+
+  val options: Seq[InputOption] = InputOption.namedFromEnumValues(
+    namePrefix = "partnerChildcareVouchers",
+    values = Seq(
+      YesNoNotSure.Yes,
+      YesNoNotSure.No,
+      YesNoNotSure.NotSure
+    )
+  )
+
 }

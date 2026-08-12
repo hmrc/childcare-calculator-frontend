@@ -14,24 +14,26 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
 @import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes
-@import uk.gov.hmrc.childcarecalculatorfrontend.models._
+@import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
 @import uk.gov.hmrc.childcarecalculatorfrontend.models.views.ResultsViewModel
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.Utils
-@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents._
-@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+@import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
+@import uk.gov.hmrc.childcarecalculatorfrontend.views.html.playComponents.*
 
 @this(
-        layout: Layout,
-        heading: playComponents.heading,
-        resultEligible: resultEligible,
-        resultNotEligible: resultNotEligible,
-        link: link,
-        p: p
+    layout: Layout,
+    heading: playComponents.heading,
+    resultEligible: resultEligible,
+    resultNotEligible: resultNotEligible,
+    p: p,
 )
 
-@(appConfig: FrontendAppConfig, model: ResultsViewModel, utils: Utils)(implicit request: Request[_], messages: Messages)
+@(
+    model: ResultsViewModel,
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
     if(model.noOfEligibleSchemes > 0) {
@@ -71,9 +73,9 @@
     @if(model.noOfEligibleSchemes > 0) {
         <h2 class="govuk-heading-l">@messages("result.eligible.subheading")</h2>
 
-        @resultEligible(model, utils, model.location.toString)
+        @resultEligible(model)
 
-        @if(model.location == Location.ENGLAND) {
+        @if(model.location == Location.England) {
             @if(model.noOfEligibleSchemes > 1) {
                 <h3 class="govuk-heading-m">@messages("result.more.info.title")</h3>
                 @if(moreInfoBulletList.size > 1) {
@@ -108,15 +110,11 @@
 
 @moreInfoBulletList = @{
     Seq(
-        if(model.freeHours.isDefined) {
-            Some(messages("result.schemes.free.hours.eligibility.guidance.bullet"))
-        } else {
-            None
+        Option.when(model.freeHours.isDefined) {
+            messages("result.schemes.free.hours.eligibility.guidance.bullet")
         },
-        if(model.tfc.isDefined && model.esc.isDefined) {
-            Some(messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet"))
-        } else {
-            None
+        Option.when(model.tfc.isDefined && model.esc.isDefined) {
+            messages("result.schemes.tfc.ineligibility.vouchers.guidance.bullet")
         }
     ).flatten
 }
@@ -135,20 +133,20 @@
     <p class="govuk-body">@messages("freeHoursResult.info.extraHelp.para2")</p>
     @{
         model.location match {
-            case Location.SCOTLAND =>
+            case Location.Scotland =>
                 linkList(Seq(
                     (messages("freeHoursResult.info.extraHelp.scotland.li.1"), scotlandExtraHelpLink1),
                     (messages("freeHoursResult.info.extraHelp.scotland.li.2"), scotlandExtraHelpLink2)
                 ))
-            case Location.WALES if !model.isAnyoneInPaidEmployment =>
+            case Location.Wales if !model.isAnyoneInPaidEmployment =>
                 linkList(Seq(
                     (messages(s"freeHoursResult.info.extraHelp.wales.li.1.notWorking"), walesExtraHelpLink1a)
                 ))
-            case Location.WALES =>
+            case Location.Wales =>
                 linkList(Seq(
                     (messages(s"freeHoursResult.info.extraHelp.wales.li.1.working"), walesExtraHelpLink1b)
                 ))
-            case Location.NORTHERN_IRELAND =>
+            case Location.NorthernIreland =>
                 linkList(Seq(
                     (messages("freeHoursResult.info.extraHelp.northern-ireland.li.1"), northernIrelandExtraHelpLink)
                 ))

@@ -14,121 +14,84 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.childcarecalculatorfrontend.connectors
+package uk.gov.hmrc.childcarecalculatorfrontend.services
 
 import com.google.inject.{ImplementedBy, Inject}
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, Reads, Writes}
+import uk.gov.hmrc.childcarecalculatorfrontend.cascadeUpserts.CascadeUpsert
+import uk.gov.hmrc.childcarecalculatorfrontend.models.requests.SessionIdProvider
 import uk.gov.hmrc.childcarecalculatorfrontend.repositories.SessionRepository
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, CascadeUpsert}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheKey, CacheMap}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataCacheConnectorImpl @Inject() (val sessionRepository: SessionRepository, val cascadeUpsert: CascadeUpsert)(
-    implicit ec: ExecutionContext
-) extends DataCacheConnector {
+class DataCacheServiceImpl @Inject() (val sessionRepository: SessionRepository, val cascadeUpsert: CascadeUpsert)(
+    using ec: ExecutionContext
+) extends DataCacheService {
 
-  def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap] =
-    sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
-      val updatedCacheMap = cascadeUpsert(key, value, optionalCacheMap.getOrElse(new CacheMap(cacheId, Map())))
-      sessionRepository().upsert(updatedCacheMap).map(_ => updatedCacheMap)
-    }
+  def save[A](
+      cacheKey: CacheKey[A],
+      value: A
+  )(
+      using writes: Writes[A],
+      request: SessionIdProvider
+  ): Future[CacheMap] = {
+    val cacheId = request.sessionId
 
-  def remove(cacheId: String, key: String): Future[Boolean] =
-    sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
-      optionalCacheMap.fold(Future(false)) { cacheMap =>
-        val newCacheMap = cacheMap.copy(data = cacheMap.data - key)
-        sessionRepository().upsert(newCacheMap)
-      }
-    }
-
-  def fetch(cacheId: String): Future[Option[CacheMap]] =
-    sessionRepository().get(cacheId)
-
-  def getEntry[A](cacheId: String, key: String)(implicit fmt: Format[A]): Future[Option[A]] =
-    fetch(cacheId).map(optionalCacheMap => optionalCacheMap.flatMap(cacheMap => cacheMap.getEntry(key)))
-
-  def addToCollection[A](cacheId: String, collectionKey: String, value: A)(implicit fmt: Format[A]): Future[CacheMap] =
     sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
       val updatedCacheMap =
-        cascadeUpsert.addRepeatedValue(collectionKey, value, optionalCacheMap.getOrElse(new CacheMap(cacheId, Map())))
+        cascadeUpsert(cacheKey, value, optionalCacheMap.getOrElse(new CacheMap(cacheId, Map())))
       sessionRepository().upsert(updatedCacheMap).map(_ => updatedCacheMap)
     }
+  }
 
-  def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(
-      implicit fmt: Format[A]
-  ): Future[CacheMap] =
+  def fetch()(using request: SessionIdProvider): Future[Option[CacheMap]] =
+    sessionRepository().get(request.sessionId)
 
-    sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
-      optionalCacheMap.fold(throw new Exception(s"Couldn't find document with key $cacheId")) { cacheMap =>
-        val newSeq = cacheMap.data(collectionKey).as[Seq[A]].filterNot(x => x == item)
-        val newCacheMap = if (newSeq.isEmpty) {
-          cacheMap.copy(data = cacheMap.data - collectionKey)
-        } else {
-          cacheMap.copy(data = cacheMap.data + (collectionKey -> Json.toJson(newSeq)))
-        }
-        sessionRepository().upsert(newCacheMap).map(_ => newCacheMap)
-      }
-    }
+  def getEntry[A](
+      key: CacheKey[A]
+  )(using reads: Reads[A], request: SessionIdProvider): Future[Option[A]] =
+    fetch().map(optionalCacheMap => optionalCacheMap.flatMap(cacheMap => cacheMap.getEntry(key)))
 
-  def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(
-      implicit fmt: Format[A]
-  ): Future[CacheMap] =
-
-    sessionRepository().get(cacheId).flatMap { optionalCacheMap =>
-      optionalCacheMap.fold(throw new Exception(s"Couldn't find document with key $cacheId")) { cacheMap =>
-        val oldSeq = cacheMap.data.lift(collectionKey).map(_.as[Seq[A]]).getOrElse(Seq.empty)
-        val newSeq = if (index > oldSeq.length - 1) {
-          oldSeq :+ item
-        } else {
-          oldSeq.updated(index, item)
-        }
-        val updatedCacheMap = cacheMap.copy(data = cacheMap.data + (collectionKey -> Json.toJson(newSeq)))
-        sessionRepository().upsert(updatedCacheMap).map(_ => updatedCacheMap)
-      }
-    }
-
-  def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(
-      implicit fmt: Format[Map[K, V]]
-  ): Future[CacheMap] =
+  def saveInMap[K, V](cacheKey: CacheKey[Map[K, V]], key: K, value: V)(
+      using fmt: Format[Map[K, V]],
+      request: SessionIdProvider
+  ): Future[CacheMap] = {
+    val cacheId = request.sessionId
 
     sessionRepository().get(cacheId).flatMap {
       _.map { cacheMap =>
-        val map             = cacheMap.data.get(collectionKey).map(_.as[Map[K, V]]).getOrElse(Map.empty)
+        val map: Map[K, V]  = cacheMap.getEntry(cacheKey).getOrElse(Map.empty)
         val updatedMap      = map + (key -> value)
-        val updatedCacheMap = cacheMap.copy(data = cacheMap.data + (collectionKey -> Json.toJson(updatedMap)))
+        val updatedCacheMap = cacheMap.copy(data = cacheMap.data + (cacheKey.cacheKey -> Json.toJson(updatedMap)))
         sessionRepository().upsert(updatedCacheMap).map(_ => updatedCacheMap)
       }.getOrElse(throw new RuntimeException(s"Couldn't find document with key $cacheId"))
     }
-
-  def updateMap(data: CacheMap): Future[Boolean] =
-    sessionRepository().upsert(data)
+  }
 
 }
 
-@ImplementedBy(classOf[DataCacheConnectorImpl])
-trait DataCacheConnector {
-  def save[A](cacheId: String, key: String, value: A)(implicit fmt: Format[A]): Future[CacheMap]
+@ImplementedBy(classOf[DataCacheServiceImpl])
+trait DataCacheService {
 
-  def updateMap(data: CacheMap): Future[Boolean]
-
-  def remove(cacheId: String, key: String): Future[Boolean]
-
-  def fetch(cacheId: String): Future[Option[CacheMap]]
-
-  def getEntry[A](cacheId: String, key: String)(implicit fmt: Format[A]): Future[Option[A]]
-
-  def addToCollection[A](cacheId: String, collectionKey: String, value: A)(implicit fmt: Format[A]): Future[CacheMap]
-
-  def removeFromCollection[A](cacheId: String, collectionKey: String, item: A)(
-      implicit fmt: Format[A]
+  def save[A](key: CacheKey[A], value: A)(
+      using Writes[A],
+      SessionIdProvider
   ): Future[CacheMap]
 
-  def replaceInSeq[A](cacheId: String, collectionKey: String, index: Int, item: A)(
-      implicit fmt: Format[A]
-  ): Future[CacheMap]
+  def fetch()(using SessionIdProvider): Future[Option[CacheMap]]
 
-  def saveInMap[K, V](cacheId: String, collectionKey: String, key: K, value: V)(
-      implicit fmt: Format[Map[K, V]]
+  def getEntry[A](
+      key: CacheKey[A]
+  )(using Reads[A], SessionIdProvider): Future[Option[A]]
+
+  def saveInMap[K, V](
+      cacheKey: CacheKey[Map[K, V]],
+      key: K,
+      value: V
+  )(
+      using Format[Map[K, V]],
+      SessionIdProvider
   ): Future[CacheMap]
 
 }

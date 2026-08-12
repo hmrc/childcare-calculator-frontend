@@ -19,33 +19,34 @@ package uk.gov.hmrc.childcarecalculatorfrontend.views
 import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.WhichDisabilityBenefitsForm
-import uk.gov.hmrc.childcarecalculatorfrontend.models.DisabilityBenefits
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.DisabilityBenefit
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.{NewCheckboxViewBehaviours, NewViewBehaviours}
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whichDisabilityBenefits
 
 import scala.util.Random
 
-class WhichDisabilityBenefitsViewSpec
-    extends NewViewBehaviours
-    with NewCheckboxViewBehaviours[DisabilityBenefits.Value] {
+class WhichDisabilityBenefitsViewSpec extends NewViewBehaviours with NewCheckboxViewBehaviours[DisabilityBenefit] {
 
-  val view             = application.injector.instanceOf[whichDisabilityBenefits]
-  val messageKeyPrefix = "whichDisabilityBenefits"
-  val fieldKey         = "value"
-  val errorMessage     = "error.invalid"
+  val view: whichDisabilityBenefits = inject[whichDisabilityBenefits]
+  override val messageKeyPrefix     = "whichDisabilityBenefits"
+  override val fieldKey             = "value"
+  override val errorMessage         = "error.invalid"
 
-  val values: Seq[(String, String)] = WhichDisabilityBenefitsForm.options
+  override val values: Seq[(String, DisabilityBenefit)] = Seq(
+    s"whichDisabilityBenefits.${DisabilityBenefit.DisabilityBenefits}" -> DisabilityBenefit.DisabilityBenefits,
+    s"whichDisabilityBenefits.${DisabilityBenefit.HigherDisabilityBenefits}" -> DisabilityBenefit.HigherDisabilityBenefits
+  )
 
-  def form: Form[Set[DisabilityBenefits.Value]] = WhichDisabilityBenefitsForm("Foo")
+  override val form: Form[Set[DisabilityBenefit]] = WhichDisabilityBenefitsForm("Foo")
 
-  def createView(form: Form[Set[DisabilityBenefits.Value]]): Html = createView(form, 0, "Foo")
-
-  def createView(
-      form: Form[Set[DisabilityBenefits.Value]],
-      index: Int,
-      name: String
+  def render(
+      form: Form[Set[DisabilityBenefit]],
+      index: Int = 0,
+      name: String = "Foo"
   ): Html =
-    view(frontendAppConfig, form, index, name)(fakeRequest, messages)
+    view(form, index, name)(using fakeRequest, messages)
+
+  override def render(form: Form[Set[DisabilityBenefit]]): Html = render(form = form, index = 0)
 
   lazy val cases: Seq[(Int, String)] = {
     val names: LazyList[String]     = LazyList.continually(Random.alphanumeric.take(5).mkString)
@@ -55,16 +56,21 @@ class WhichDisabilityBenefitsViewSpec
 
   "WhichDisabilityBenefits view" must {
 
-    behave.like(pageWithBackLink(createView))
+    behave.like(pageWithBackLink(render))
 
-    behave.like(checkboxPage(legend = Some(messages(s"$messageKeyPrefix.heading", "Foo"))))
+    behave.like(
+      checkboxPage(
+        legend = Some(messages(s"$messageKeyPrefix.heading", "Foo")),
+        divider = false
+      )
+    )
 
     cases.foreach { case (index, name) =>
 
       s"data of index: $index, name: $name" when
         behave.like(
           normalPageWithTitleParameters(
-            () => createView(WhichDisabilityBenefitsForm(name), index, name),
+            () => render(WhichDisabilityBenefitsForm(name), index, name),
             messageKeyPrefix,
             messageKeyPostfix = "",
             Seq("help", "types", "dla", "pip", "types.higher", "dla.higher", "pip.higher"),

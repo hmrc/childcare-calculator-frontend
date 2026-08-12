@@ -16,6 +16,10 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.identifiers
 
-case object WhoPaysIntoPensionId extends Identifier {
-  override def toString: String = "whoPaysIntoPension"
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBoth
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheKey
+
+case object WhoPaysIntoPensionId extends Identifier with CacheKey[YouPartnerBoth] {
+  override val toString = "whoPaysIntoPension"
+  override val cacheKey = "whoPaysIntoPension"
 }

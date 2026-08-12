@@ -16,40 +16,29 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import play.api.data.{Form, FormError}
-import play.api.data.Forms._
+import play.api.data.Form
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.models.AgeEnum
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Age
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object YourAgeForm extends FormErrorHelper {
 
-  def YourAgeFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, yourAgeErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
+  private val YourAgeFormatter: Formatter[Age] =
+    EnumFormatter[Age](missingErrorKey = yourAgeErrorKey, unknownValueErrorKey = unknownErrorKey)
 
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
+  def apply(): Form[Age] =
     Form(single("value" -> of(YourAgeFormatter)))
 
-  def options = Seq(
-    yourAgeInputOption("value", AgeEnum.UNDER18.toString),
-    yourAgeInputOption("value-2", AgeEnum.EIGHTEENTOTWENTY.toString),
-    yourAgeInputOption("value-3", AgeEnum.TWENTYONEOROVER.toString)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "yourAge",
+    values = Seq(
+      Age.UnderEighteen,
+      Age.EighteenToTwenty,
+      Age.TwentyOneOrOver
+    )
   )
 
-  private def yourAgeInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"yourAge.$option"
-    )
-
-  def optionIsValid(value: String): Boolean = options.exists(o => o.value == value)
 }

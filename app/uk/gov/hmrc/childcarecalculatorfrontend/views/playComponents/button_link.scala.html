@@ -15,15 +15,17 @@
  *@
 
 @this(
-    govukButton : GovukButton
+    govukButton : GovukButton,
 )
 
 @(
     messageKey: String = "",
     href: Call,
-)(implicit messages: Messages)
+)(
+    using messages: Messages
+)
 
 @govukButton(Button(
     content = Text(messages(messageKey)),
-    href = Some(href.toString)
+    href = Some(href.url)
 ))

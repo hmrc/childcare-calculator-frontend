@@ -16,34 +16,31 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.libs.json.{JsBoolean, JsString}
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
 import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.{
   DataRequiredAction,
   DataRetrievalAction,
   FakeDataRetrievalAction
 }
-import uk.gov.hmrc.childcarecalculatorfrontend.identifiers._
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YouPartnerBothEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.{CacheMap, TaxYearInfo}
+import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.*
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YouPartnerBothNeither
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.CacheMap
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.partnerIncomeInfo
 
 class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[partnerIncomeInfo]
-  val taxYearInfo = new TaxYearInfo
+  val view: partnerIncomeInfo = inject[partnerIncomeInfo]
 
-  def onwardRoute = routes.PartnerPaidWorkCYController.onPageLoad()
+  def onwardRoute: Call = routes.PartnerPaidWorkCYController.onPageLoad()
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new PartnerIncomeInfoController(
-      frontendAppConfig,
       mcc,
       dataRetrievalAction,
       new FakeNavigator(onwardRoute),
       new DataRequiredAction,
-      taxYearInfo,
       view
     )
 
@@ -51,8 +48,8 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
     "return OK and the correct view for a GET" in {
 
       val validData = Map(
-        DoYouLiveWithPartnerId.toString  -> JsBoolean(true),
-        WhoIsInPaidEmploymentId.toString -> JsString(YouPartnerBothEnum.YOU.toString)
+        DoYouLiveWithPartnerId.withValue(true),
+        WhoIsInPaidEmploymentId.withValue(YouPartnerBothNeither.You)
       )
 
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
@@ -60,10 +57,7 @@ class PartnerIncomeInfoControllerSpec extends ControllerSpecBase {
       val result = controller(getRelevantData).onPageLoad(fakeRequest)
       status(result) mustBe OK
       contentAsString(result) mustBe
-        view(frontendAppConfig, routes.PartnerPaidWorkCYController.onPageLoad(), taxYearInfo)(
-          fakeRequest,
-          messages
-        ).toString
+        view(routes.PartnerPaidWorkCYController.onPageLoad())(using fakeRequest, messages).toString
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {

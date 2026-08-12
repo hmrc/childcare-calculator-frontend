@@ -14,22 +14,30 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes._
+@import uk.gov.hmrc.childcarecalculatorfrontend.controllers.routes.*
 
 @this(
     layout: Layout,
     errorSummary: playComponents.error_summary,
     formWithCSRF: FormWithCSRF,
-    heading: playComponents.heading,
     inputCheckBox: playComponents.input_check_box,
-    submitButton: playComponents.submit_button
+    submitButton: playComponents.submit_button,
 )
 
-@(appConfig: FrontendAppConfig, form: Form[_], options: Seq[(String, String)])(implicit request: Request[_], messages: Messages)
+@(
+    form: Form[Set[Int]],
+    options: Seq[(String, Int)],
+)(
+    using request: Request[?],
+    messages: Messages,
+)
 
 @title = @{
-    if(form.errors.nonEmpty) messages("site.title.error", messages("whichChildrenDisability.title")) else messages("whichChildrenDisability.title")
+    if(form.errors.nonEmpty) {
+        messages("site.title.error", messages("whichChildrenDisability.title"))
+    } else {
+        messages("whichChildrenDisability.title")
+    }
 }
 
 @layout(
@@ -44,10 +52,10 @@
             field = form("value"),
             legend = messages("whichChildrenDisability.heading"),
             hint = Some(messages("whichBenefits.select.all")),
-            inputs = options.map { checkboxOption =>
+            inputs = options.map { case(text, value) =>
                 CheckboxItem(
-                    content = HtmlContent((s"${checkboxOption._1}")),
-                    value = checkboxOption._2.toString
+                    content = HtmlContent(text.capitalize),
+                    value = value.toString
                 )
             }
         )

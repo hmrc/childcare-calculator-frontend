@@ -23,7 +23,7 @@ import uk.gov.hmrc.childcarecalculatorfrontend.models.AboutYourChild
 
 import java.time.LocalDate
 
-class AboutYourChildFormSpec extends FormBehaviours {
+class AboutYourChildFormSpec extends FormBehaviours[AboutYourChild] {
 
   val validData: Map[String, String] = Map(
     "name"                     -> "Foo",
@@ -32,7 +32,7 @@ class AboutYourChildFormSpec extends FormBehaviours {
     "aboutYourChild.dob.year"  -> "2017"
   )
 
-  implicit val messages: MessagesImpl = MessagesImpl(Lang("en"), app.injector.instanceOf[MessagesApi])
+  given messages: MessagesImpl = MessagesImpl(Lang("en"), inject[MessagesApi])
 
   val form: Form[AboutYourChild] = AboutYourChildForm()
 

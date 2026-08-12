@@ -16,12 +16,16 @@
 
 @this(govukButton : GovukButton)
 
-@(submitText: String = "site.save_and_continue")(implicit messages: Messages)
+@(
+    submitText: String = "site.save_and_continue",
+)(
+    using messages: Messages,
+)
 
 @govukButton(Button(
- content = Text(messages(submitText)),
- attributes = Map(
-  "id" -> "submit"
- )
+    content = Text(messages(submitText)),
+    attributes = Map(
+        "id" -> "submit"
+    )
 ))
 

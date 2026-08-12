@@ -17,16 +17,20 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.{
+  unknownErrorKey,
+  whichChildrenDisabilityErrorKey
+}
 
 object WhichChildrenDisabilityForm extends FormErrorHelper {
 
   def apply(validValues: Int*): Form[Set[Int]] =
     Form(
       "value" -> set(
-        number.verifying("error.invalid", validValues.toSet.contains _)
+        number.verifying(unknownErrorKey, validValues.toSet.contains _)
       )
-        .verifying("whichChildrenDisability.error.notCompleted", _.nonEmpty)
+        .verifying(whichChildrenDisabilityErrorKey, _.nonEmpty)
     )
 
 }

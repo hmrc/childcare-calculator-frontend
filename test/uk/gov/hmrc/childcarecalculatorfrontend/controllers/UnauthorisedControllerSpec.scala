@@ -16,22 +16,22 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.unauthorised
 
 class UnauthorisedControllerSpec extends ControllerSpecBase {
 
-  val view = application.injector.instanceOf[unauthorised]
+  val view: unauthorised = inject[unauthorised]
 
   "Unauthorised Controller" must {
     "return 200 for a GET" in {
-      val result = new UnauthorisedController(frontendAppConfig, mcc, view).onPageLoad(fakeRequest)
+      val result = new UnauthorisedController(mcc, view).onPageLoad(fakeRequest)
       status(result) mustBe OK
     }
 
     "return the correct view for a GET" in {
-      val result = new UnauthorisedController(frontendAppConfig, mcc, view).onPageLoad(fakeRequest)
-      contentAsString(result) mustBe view(frontendAppConfig)(fakeRequest, messages).toString
+      val result = new UnauthorisedController(mcc, view).onPageLoad(fakeRequest)
+      contentAsString(result) mustBe view()(using fakeRequest, messages).toString
     }
   }
 

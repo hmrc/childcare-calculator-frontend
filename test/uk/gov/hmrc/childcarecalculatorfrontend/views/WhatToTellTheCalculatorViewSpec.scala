@@ -16,19 +16,20 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.views
 
+import play.twirl.api.Html
 import uk.gov.hmrc.childcarecalculatorfrontend.views.behaviours.NewViewBehaviours
 import uk.gov.hmrc.childcarecalculatorfrontend.views.html.whatToTellTheCalculator
 
 class WhatToTellTheCalculatorViewSpec extends NewViewBehaviours {
 
-  val view = application.injector.instanceOf[whatToTellTheCalculator]
+  val view: whatToTellTheCalculator = inject[whatToTellTheCalculator]
 
-  def createView = () => view()(fakeRequest, messages)
+  def render: () => Html = () => view()(using fakeRequest, messages)
 
   "whatToTellTheCalculator view" must
     behave.like(
       normalPage(
-        createView,
+        render,
         "whatToTellTheCalculator",
         "guidanceA",
         "guidanceB",

@@ -17,10 +17,10 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.controllers
 
 import play.api.data.Form
-import play.api.libs.json.JsNumber
-import play.api.test.Helpers._
+import play.api.mvc.Call
+import play.api.test.Helpers.*
 import uk.gov.hmrc.childcarecalculatorfrontend.FakeNavigator
-import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions._
+import uk.gov.hmrc.childcarecalculatorfrontend.controllers.actions.*
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.NoOfChildrenForm
 import uk.gov.hmrc.childcarecalculatorfrontend.identifiers.NoOfChildrenId
 import uk.gov.hmrc.childcarecalculatorfrontend.services.FakeDataCacheService
@@ -29,12 +29,11 @@ import uk.gov.hmrc.childcarecalculatorfrontend.views.html.noOfChildren
 
 class NoOfChildrenControllerSpec extends ControllerSpecBase {
 
-  val view        = application.injector.instanceOf[noOfChildren]
-  def onwardRoute = routes.WhatToTellTheCalculatorController.onPageLoad
+  val view: noOfChildren = inject[noOfChildren]
+  def onwardRoute: Call  = routes.WhatToTellTheCalculatorController.onPageLoad
 
   def controller(dataRetrievalAction: DataRetrievalAction = getEmptyCacheMap) =
     new NoOfChildrenController(
-      frontendAppConfig,
       mcc,
       FakeDataCacheService,
       new FakeNavigator(desiredRoute = onwardRoute),
@@ -44,12 +43,12 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
       view
     )
 
-  def viewAsString(form: Form[Int] = NoOfChildrenForm) =
-    view(frontendAppConfig, form)(fakeRequest, messages).toString
+  def viewAsString(form: Form[Int] = NoOfChildrenForm): String =
+    view(form)(using fakeRequest, messages).toString
 
   val testNumber = 19
 
-  val NoOfChildrenForm = new NoOfChildrenForm(frontendAppConfig).apply()
+  val NoOfChildrenForm: Form[Int] = new NoOfChildrenForm(frontendAppConfig).apply()
 
   "NoOfChildren Controller" must {
 
@@ -61,7 +60,7 @@ class NoOfChildrenControllerSpec extends ControllerSpecBase {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val validData       = Map(NoOfChildrenId.toString -> JsNumber(testNumber))
+      val validData       = Map(NoOfChildrenId.withValue(testNumber))
       val getRelevantData = new FakeDataRetrievalAction(Some(CacheMap(cacheMapId, validData)))
 
       val result = controller(getRelevantData).onPageLoad()(fakeRequest)

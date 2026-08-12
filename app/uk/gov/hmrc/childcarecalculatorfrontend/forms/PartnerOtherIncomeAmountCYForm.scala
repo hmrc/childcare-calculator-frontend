@@ -16,47 +16,33 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
-import javax.inject.{Inject, Singleton}
-
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.FrontendAppConfig
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.config.FrontendAppConfig
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.DecimalFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class PartnerOtherIncomeAmountCYForm @Inject() (appConfig: FrontendAppConfig) extends FormErrorHelper {
 
-  def partnerOtherIncomeAmountCYFormatter(errorKeyBlank: String, errorKeyInvalid: String): Formatter[BigDecimal] =
-    new Formatter[BigDecimal] {
-
-      val minValue: Double = appConfig.minIncome
-      val maxValue: Double = appConfig.maxIncome
-
-      val decimalRegex = """\d+(\.\d{1,2})?""".r.toString()
-
-      def bind(key: String, data: Map[String, String]) =
-        data.get(key) match {
-          case None     => produceError(key, errorKeyBlank)
-          case Some("") => produceError(key, errorKeyBlank)
-          case Some(s) if s.matches(decimalRegex) =>
-            val value = BigDecimal(s)
-
-            if (validateInRange(value, minValue, maxValue)) {
-              Right(value)
-            } else {
-              produceError(key, errorKeyInvalid)
-            }
-          case _ => produceError(key, errorKeyInvalid)
-        }
-
-      def unbind(key: String, value: BigDecimal) = Map(key -> value.toString)
-    }
+  private def partnerOtherIncomeAmountCYFormatter(
+      missingErrorKey: String,
+      invalidValueErrorKey: String
+  ): Formatter[BigDecimal] =
+    DecimalFormatter(missingErrorKey = missingErrorKey, invalidValueErrorKey = invalidValueErrorKey).withRange(
+      minValue = appConfig.minIncome,
+      maxValue = appConfig.maxIncome,
+      tooLowErrorKey = invalidValueErrorKey,
+      tooHighErrorKey = invalidValueErrorKey
+    )
 
   def apply(
-      errorKeyBlank: String = partnerOtherIncomeRequiredErrorKey,
-      errorKeyInvalid: String = partnerOtherIncomeInvalidErrorKey
+      missingErrorKey: String = partnerOtherIncomeRequiredErrorKey,
+      invalidValueErrorKey: String = partnerOtherIncomeInvalidErrorKey
   ): Form[BigDecimal] =
-    Form(single("value" -> of(partnerOtherIncomeAmountCYFormatter(errorKeyBlank, errorKeyInvalid))))
+    Form(single("value" -> of(partnerOtherIncomeAmountCYFormatter(missingErrorKey, invalidValueErrorKey))))
 
 }

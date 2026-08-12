@@ -16,23 +16,24 @@
 
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
+import play.api.data.Form
 import uk.gov.hmrc.childcarecalculatorfrontend.forms.behaviours.FormBehaviours
-import uk.gov.hmrc.childcarecalculatorfrontend.models.Location
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.Location
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 
-class LocationFormSpec extends FormBehaviours {
+class LocationFormSpec extends FormBehaviours[Location] {
 
   val validData: Map[String, String] = Map(
-    "value" -> LocationForm.options.head.value
+    "value" -> Location.England.toString
   )
 
-  val form = LocationForm()
+  val form: Form[Location] = LocationForm()
 
   "Location form" must {
 
-    behave.like(questionForm[Location.Value](Location(0)))
+    behave.like(questionForm(Location.England))
 
-    behave.like(formWithOptionFieldError("value", locationErrorKey, LocationForm.options.map(x => x.value): _*))
+    behave.like(formWithOptionFieldError("value", locationErrorKey, Location.values*))
   }
 
 }

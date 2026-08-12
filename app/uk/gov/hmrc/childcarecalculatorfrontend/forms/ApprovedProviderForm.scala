@@ -17,39 +17,28 @@
 package uk.gov.hmrc.childcarecalculatorfrontend.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters.EnumFormatter
+import uk.gov.hmrc.childcarecalculatorfrontend.models.enums.YesNoNotSure
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.InputOption
-import uk.gov.hmrc.childcarecalculatorfrontend.models.YesNoUnsureEnum
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants._
 
 object ApprovedProviderForm extends FormErrorHelper {
 
-  def ApprovedProviderFormatter = new Formatter[String] {
-    def bind(key: String, data: Map[String, String]) = data.get(key) match {
-      case Some(s) if optionIsValid(s) => Right(s)
-      case None                        => produceError(key, approvedProviderErrorKey)
-      case _                           => produceError(key, unknownErrorKey)
-    }
+  private val ApprovedProviderFormatter: Formatter[YesNoNotSure] =
+    EnumFormatter[YesNoNotSure](missingErrorKey = approvedProviderErrorKey, unknownValueErrorKey = unknownErrorKey)
 
-    def unbind(key: String, value: String) = Map(key -> value)
-  }
-
-  def apply(): Form[String] =
+  def apply(): Form[YesNoNotSure] =
     Form(single("value" -> of(ApprovedProviderFormatter)))
 
-  def options = Seq(
-    approvedProviderInputOption("value", YesNoUnsureEnum.YES.toString),
-    approvedProviderInputOption("value-2", YesNoUnsureEnum.NO.toString),
-    approvedProviderInputOption("value-3", YesNoUnsureEnum.NOTSURE.toString)
+  val options: Seq[InputOption] = InputOption.indexedFromEnumValues(
+    messagePrefix = "approvedProvider",
+    values = Seq(
+      YesNoNotSure.Yes,
+      YesNoNotSure.No,
+      YesNoNotSure.NotSure
+    )
   )
 
-  private def approvedProviderInputOption(id: String, option: String): InputOption =
-    new InputOption(
-      id = id,
-      value = option,
-      messageKey = s"approvedProvider.$option"
-    )
-
-  def optionIsValid(value: String) = options.exists(o => o.value == value)
 }
