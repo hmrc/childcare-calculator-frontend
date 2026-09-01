@@ -402,7 +402,7 @@ yourSelfEmployed.error.notCompleted = Select yes if you’ve been self-employed 
 yourMaximumEarnings.title = Your adjusted net income
 yourMaximumEarnings.heading = Your adjusted net income
 yourMaximumEarnings.para = Adjusted net income is the total pay from all your jobs, or profit from self‑employment, with any pension, trading losses and gift aid contributions taken off.
-yourMaximumEarnings.linkText = Find out more about how to calculate your adjusted net income
+yourMaximumEarnings.linkText = Find out more about how to calculate your adjusted net income (opens in new tab)
 yourMaximumEarnings.form = Will your adjusted net income be more than £100,000 a year?
 yourMaximumEarnings.error.notCompleted = Select yes if you will earn more than £100,000 a year
 
