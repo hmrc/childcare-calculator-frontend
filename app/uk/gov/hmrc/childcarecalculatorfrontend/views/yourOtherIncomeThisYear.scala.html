@@ -50,14 +50,27 @@
 
     @heading(messages("yourOtherIncomeThisYear.heading"))
 
-    <p class="govuk-body">@messages("yourOtherIncomeThisYear.year.start.end.date", taxYearInfo.currentTaxYearStart, taxYearInfo.currentTaxYearEnd)</p>
-
     @formWithCSRF(action = YourOtherIncomeThisYearController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @inputYesNo(
             label = Text(messages("yourOtherIncomeThisYear.heading")),
             labelClass = Some("govuk-visually-hidden"),
-            hint = Some(messages("yourOtherIncomeThisYear.hint.text")),
+            hintHtml = Some(
+            HtmlContent(Html(
+            s"""
+            <p class="govuk-body">
+                ${messages(
+                "yourOtherIncomeThisYear.year.start.end.date",
+                taxYearInfo.currentTaxYearStart,
+                taxYearInfo.currentTaxYearEnd
+                )}
+            </p>
+            <p class="govuk-body">
+                ${messages("yourOtherIncomeThisYear.hint.text")}
+            </p>
+            """
+            ))
+            ),
             field = form("value")
         )
 

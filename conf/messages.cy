@@ -385,7 +385,7 @@ yourSelfEmployed.error.notCompleted=Dewiswch ‘Iawn’ os ydych wedi bod yn hun
 yourMaximumEarnings.title = Eich incwm net wedi’i addasu
 yourMaximumEarnings.heading = Eich incwm net wedi’i addasu
 yourMaximumEarnings.para = Incwm net wedi’i addasu yw cyfanswm y cyflog o’ch holl swyddi, neu elw o hunangyflogaeth, gydag unrhyw gyfraniadau pensiwn, colledion masnachu a chymorth rhodd yn cael eu didynnu.
-yourMaximumEarnings.linkText = Dysgwch ragor am sut i gyfrifo’ch incwm net wedi’i addasu
+yourMaximumEarnings.linkText = Dysgwch ragor am sut i gyfrifo’ch incwm net wedi’i addasu (yn agor tab newydd)
 yourMaximumEarnings.form = A fydd eich incwm net wedi’i addasu yn fwy na £100,000 y flwyddyn?
 yourMaximumEarnings.error.notCompleted = Dewiswch ‘Iawn’ os byddwch yn ennill mwy na £100,000 y flwyddyn
 

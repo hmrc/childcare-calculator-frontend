@@ -23,6 +23,7 @@
 @(
     label: Content,
     hint: Option[String] = None,
+    hintHtml: Option[Content] = None,
     labelClass: Option[String] = None,
     isPageHeading: Boolean = false,
     field: Field,
@@ -38,7 +39,9 @@
             isPageHeading = isPageHeading
         ))
     )),
-    hint = hint.map(hintString => Hint(content = Text(hintString))),
+    hint = hintHtml
+    .map(content => Hint(content = content))
+    .orElse(hint.map(text => Hint(content = Text(text)))),
     items = Seq("yes", "no").map(answer =>
         RadioItem(value = Some((answer == "yes").toString),
             content = Text(messages(s"site.$answer"))
