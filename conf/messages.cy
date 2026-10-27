@@ -80,6 +80,7 @@ site.in.pounds=mewn punnoedd
 site.colon=:
 site.opens.new.tab=(yn agor tab newydd)
 site.title.error = Gwall: {0}
+site.warning = Rhybudd
 
 unauthorised.title=Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 unauthorised.heading=Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
