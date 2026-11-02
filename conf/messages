@@ -81,6 +81,7 @@ site.in.pounds = in pounds
 site.colon = :
 site.opens.new.tab = (opens in new tab)
 site.title.error = Error: {0}
+site.warning = Warning
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
