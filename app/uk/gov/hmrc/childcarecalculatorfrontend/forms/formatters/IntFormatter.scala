@@ -20,26 +20,36 @@ import play.api.data.FormError
 import play.api.data.format.Formatter
 
 case class IntFormatter(
-    missingErrorKey: String,
-    invalidValueErrorKey: String,
-    args: Any*
-) extends Formatter[Int] {
+                         missingErrorKey: String,
+                         invalidValueErrorKey: String,
+                         args: Any*
+                       ) extends Formatter[Int] {
 
   private val baseFormatter = StringFormatter(missingErrorKey, args*)
 
-  override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] =
+  override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
+    val cleanedData = data.map { case (k, v) =>
+      k -> v.replaceAll("\\s+", "")
+    }
+
     baseFormatter
-      .bind(key, data)
+      .bind(key, cleanedData)
       .flatMap { s =>
         s.toIntOption
           .filter(_ >= 0)
           .toRight(Seq(FormError(key, invalidValueErrorKey, args)))
       }
+  }
 
   override def unbind(key: String, value: Int): Map[String, String] =
     baseFormatter.unbind(key, value.toString)
 
-  def withRange(minValue: Int, maxValue: Int, tooLowErrorKey: String, tooHighErrorKey: String): Formatter[Int] =
+  def withRange(
+                 minValue: Int,
+                 maxValue: Int,
+                 tooLowErrorKey: String,
+                 tooHighErrorKey: String
+               ): Formatter[Int] =
     new Formatter[Int] {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] =
@@ -50,7 +60,7 @@ case class IntFormatter(
           case left: Left[?, ?]             => left
         }
 
-      override def unbind(key: String, value: Int): Map[String, String] = IntFormatter.this.unbind(key, value)
+      override def unbind(key: String, value: Int): Map[String, String] =
+        IntFormatter.this.unbind(key, value)
     }
-
 }

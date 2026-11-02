@@ -67,10 +67,14 @@ case class DateFormatter(
   private val yearKey  = s"$key.year"
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
-    // Replaces Some("") with None
-    val optDay   = data.get(s"$key.day").filter(_.nonEmpty)
-    val optMonth = data.get(s"$key.month").filter(_.nonEmpty)
-    val optYear  = data.get(s"$key.year").filter(_.nonEmpty)
+    // Remove all whitespace from the date fields
+    val cleanedData = data.map { case (k, v) =>
+      k -> v.replaceAll("\\s+", "")
+    }
+
+    val optDay   = cleanedData.get(s"$key.day").filter(_.nonEmpty)
+    val optMonth = cleanedData.get(s"$key.month").filter(_.nonEmpty)
+    val optYear  = cleanedData.get(s"$key.year").filter(_.nonEmpty)
 
     for {
       fields <- nonEmptyFields(optDay, optMonth, optYear)
