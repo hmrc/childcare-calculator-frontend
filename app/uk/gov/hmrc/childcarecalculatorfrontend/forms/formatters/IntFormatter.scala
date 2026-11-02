@@ -20,10 +20,10 @@ import play.api.data.FormError
 import play.api.data.format.Formatter
 
 case class IntFormatter(
-                         missingErrorKey: String,
-                         invalidValueErrorKey: String,
-                         args: Any*
-                       ) extends Formatter[Int] {
+    missingErrorKey: String,
+    invalidValueErrorKey: String,
+    args: Any*
+) extends Formatter[Int] {
 
   private val baseFormatter = StringFormatter(missingErrorKey, args*)
 
@@ -45,11 +45,11 @@ case class IntFormatter(
     baseFormatter.unbind(key, value.toString)
 
   def withRange(
-                 minValue: Int,
-                 maxValue: Int,
-                 tooLowErrorKey: String,
-                 tooHighErrorKey: String
-               ): Formatter[Int] =
+      minValue: Int,
+      maxValue: Int,
+      tooLowErrorKey: String,
+      tooHighErrorKey: String
+  ): Formatter[Int] =
     new Formatter[Int] {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] =
@@ -63,4 +63,5 @@ case class IntFormatter(
       override def unbind(key: String, value: Int): Map[String, String] =
         IntFormatter.this.unbind(key, value)
     }
+
 }
