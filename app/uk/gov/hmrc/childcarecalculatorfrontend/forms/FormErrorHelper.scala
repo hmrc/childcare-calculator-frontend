@@ -40,12 +40,18 @@ trait FormErrorHelper extends Mappings {
 
   def validateDecimalInRange(message: String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] =
     Constraint[String](requiredField) { o =>
-      if (o.matches(decimalRegex) && validateInRange(BigDecimal(o), minValue, maxValue)) Valid
+      val cleanedValue = removeSpaces(o)
+      if (cleanedValue.matches(decimalRegex) && validateInRange(BigDecimal(cleanedValue), minValue, maxValue)) Valid
       else Invalid(ValidationError(message))
     }
 
   def validateDecimal(message: String): Constraint[String] =
-    Constraint[String](requiredField)(o => if (o.matches(decimalRegex)) Valid else Invalid(ValidationError(message)))
+    Constraint[String](requiredField) { o =>
+      val cleanedValue = removeSpaces(o)
+
+      if (cleanedValue.matches(decimalRegex)) Valid
+      else Invalid(ValidationError(message))
+    }
 
   def getTaxCodeLetter(value: String): String = {
     val intRegex      = """[0-9]""".r.toString()
@@ -101,8 +107,8 @@ trait FormErrorHelper extends Mappings {
 
       case Some(maxEarnings) =>
 
-        val parentEmpIncomeValue  = boundForm(parentEmpIncomeCYFormField).value.getOrElse("0").toDouble
-        val partnerEmpIncomeValue = boundForm(partnerEmpIncomeCYFormField).value.getOrElse("0").toDouble
+        val parentEmpIncomeValue  =  removeSpaces(boundForm(parentEmpIncomeCYFormField).value.getOrElse("0")).toDouble
+        val partnerEmpIncomeValue =  removeSpaces(boundForm(partnerEmpIncomeCYFormField).value.getOrElse("0")).toDouble
 
         if ((parentEmpIncomeValue >= maxIncome) && (partnerEmpIncomeValue >= maxIncome) && !maxEarnings) {
 
@@ -123,3 +129,6 @@ trait FormErrorHelper extends Mappings {
     }
 
 }
+
+def removeSpaces(value: String): String =
+  Option(value).map(_.replaceAll("\\s+", "")).getOrElse("")
