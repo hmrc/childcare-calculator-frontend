@@ -79,6 +79,9 @@ trait FormErrorHelper extends Mappings {
     }
   }
 
+  def removeSpaces(value: String): String =
+    Option(value).map(_.replaceAll("\\s+", "")).getOrElse("")
+
   def validateMaxIncomeEarnings(
       maximumEarnings: Option[Boolean],
       maxIncome: Double,
@@ -130,5 +133,4 @@ trait FormErrorHelper extends Mappings {
 
 }
 
-def removeSpaces(value: String): String =
-  Option(value).map(_.replaceAll("\\s+", "")).getOrElse("")
+
