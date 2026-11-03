@@ -37,7 +37,7 @@ class FrontendAppConfig @Inject() (config: ServicesConfig) {
     config.baseUrl("cc-eligibility") + loadConfig("microservice.services.cc-eligibility.url")
 
   lazy val betaFeedbackUnauthenticatedUrl =
-    s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
+    s"$contactHost/contact/beta-feedback-unauthenticated?useServiceNavigation&service=$contactFormServiceIdentifier"
 
   lazy val surveyUrl: String         = loadConfig("feedback-survey-frontend.host")
   lazy val surveyThankYouUrl: String = loadConfig("feedback-survey-frontend.thankYou")
