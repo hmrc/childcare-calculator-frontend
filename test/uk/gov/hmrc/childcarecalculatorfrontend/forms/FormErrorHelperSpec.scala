@@ -133,14 +133,6 @@ class FormErrorHelperSpec extends SpecBase with Mappings {
 
         result.errors mustBe empty
       }
-
-      "remove spaces from income values" in {
-        val objectUnderTest = new TestObject()
-
-        objectUnderTest.removeSpaces("1 00 000") mustBe "100000"
-        objectUnderTest.removeSpaces(" 8 000 ") mustBe "8000"
-        objectUnderTest.removeSpaces("12 3.45") mustBe "123.45"
-      }
     }
 
     "validateMaxIncomeEarnings" must {

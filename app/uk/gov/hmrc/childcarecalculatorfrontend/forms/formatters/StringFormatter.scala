@@ -23,8 +23,8 @@ case class StringFormatter(missingErrorKey: String, args: Any*) extends Formatte
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
     data.get(key) match {
-      case None | Some("") => Left(Seq(FormError(key, missingErrorKey, args)))
-      case Some(s)         => Right(s)
+      case Some(s) if s.trim.nonEmpty => Right(s.trim)
+      case _ => Left(Seq(FormError(key, missingErrorKey, args)))
     }
 
   override def unbind(key: String, value: String): Map[String, String] =

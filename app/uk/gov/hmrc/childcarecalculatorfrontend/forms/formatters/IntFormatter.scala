@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters
 
 import play.api.data.FormError
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers.removeSpaces
 
 case class IntFormatter(
     missingErrorKey: String,
@@ -28,12 +29,10 @@ case class IntFormatter(
   private val baseFormatter = StringFormatter(missingErrorKey, args*)
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
-    val cleanedData = data.map { case (k, v) =>
-      k -> v.replaceAll("\\s+", "")
-    }
-
+    
     baseFormatter
-      .bind(key, cleanedData)
+      .bind(key, data)
+      .map(removeSpaces)
       .flatMap { s =>
         s.toIntOption
           .filter(_ >= 0)
