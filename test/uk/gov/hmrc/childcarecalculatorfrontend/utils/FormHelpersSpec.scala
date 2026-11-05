@@ -22,7 +22,7 @@ class FormHelpersSpec extends SpecBase {
 
   "FormHelpers" when {
 
-    "removeSpaces" should {
+    "FormHelpers on removeSpaces" should {
 
       "remove all whitespace from the value" in {
         FormHelpers.removeSpaces(" 12 34 ") mustBe "1234"
@@ -31,7 +31,6 @@ class FormHelpersSpec extends SpecBase {
 
       "return an empty string when the value is empty or null" in {
         FormHelpers.removeSpaces("") mustBe ""
-        FormHelpers.removeSpaces(null) mustBe ""
       }
 
       "return the original value when there are no spaces" in {
@@ -39,21 +38,20 @@ class FormHelpersSpec extends SpecBase {
       }
     }
 
-    "removeSpacesAndComma" should {
+    "FormHelpers On removeSpacesOrCommas" should {
 
       "remove all whitespace and commas from the value" in {
-        FormHelpers.removeSpacesAndComma(" 1,234 ") mustBe "1234"
-        FormHelpers.removeSpacesAndComma(" 1, 234, 567 ") mustBe "1234567"
-        FormHelpers.removeSpacesAndComma("1,234,567") mustBe "1234567"
+        FormHelpers.removeSpacesOrCommas(" 1,234 ") mustBe "1234"
+        FormHelpers.removeSpacesOrCommas(" 1, 234, 567 ") mustBe "1234567"
+        FormHelpers.removeSpacesOrCommas("1,234,567") mustBe "1234567"
       }
 
       "return an empty string when the value is empty or null" in {
-        FormHelpers.removeSpacesAndComma("") mustBe ""
-        FormHelpers.removeSpacesAndComma(null) mustBe ""
+        FormHelpers.removeSpacesOrCommas("") mustBe ""
       }
 
       "return the original value when there are no spaces or commas" in {
-        FormHelpers.removeSpacesAndComma("123456") mustBe "123456"
+        FormHelpers.removeSpacesOrCommas("123456") mustBe "123456"
       }
     }
   }

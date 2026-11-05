@@ -28,8 +28,8 @@ case class IntFormatter(
 
   private val baseFormatter = StringFormatter(missingErrorKey, args*)
 
-  override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] = {
-    
+  override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] =
+
     baseFormatter
       .bind(key, data)
       .map(removeSpaces)
@@ -38,7 +38,6 @@ case class IntFormatter(
           .filter(_ >= 0)
           .toRight(Seq(FormError(key, invalidValueErrorKey, args)))
       }
-  }
 
   override def unbind(key: String, value: Int): Map[String, String] =
     baseFormatter.unbind(key, value.toString)

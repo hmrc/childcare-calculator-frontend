@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters
 
 import play.api.data.FormError
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers.removeSpacesAndComma
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers.removeSpacesOrCommas
 
 import scala.util.control.Exception.nonFatalCatch
 
@@ -28,11 +28,11 @@ case class DecimalFormatter(missingErrorKey: String, invalidValueErrorKey: Strin
   private val baseFormatter = StringFormatter(missingErrorKey, args*)
   private val decimalRegex  = """\d+(\.\d{1,2})?"""
 
-  override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] = {
+  override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], BigDecimal] =
 
     baseFormatter
       .bind(key, data)
-      .map(removeSpacesAndComma)
+      .map(removeSpacesOrCommas)
       .flatMap {
         case s if !s.matches(decimalRegex) =>
           Left(Seq(FormError(key, invalidValueErrorKey, args)))
@@ -42,7 +42,6 @@ case class DecimalFormatter(missingErrorKey: String, invalidValueErrorKey: Strin
             .left
             .map(_ => Seq(FormError(key, invalidValueErrorKey, args)))
       }
-  }
 
   override def unbind(key: String, value: BigDecimal): Map[String, String] =
     Map(key -> value.toString)

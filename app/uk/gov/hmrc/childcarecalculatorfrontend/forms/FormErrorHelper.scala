@@ -93,8 +93,10 @@ trait FormErrorHelper extends Mappings {
 
       case Some(maxEarnings) =>
 
-        val parentEmpIncomeValue  = removeSpacesAndComma(boundForm(parentEmpIncomeCYFormField).value.getOrElse("0")).toDouble
-        val partnerEmpIncomeValue = removeSpacesAndComma(boundForm(partnerEmpIncomeCYFormField).value.getOrElse("0")).toDouble
+        val parentEmpIncomeValue =
+          boundForm(parentEmpIncomeCYFormField).value.map(removeSpacesOrCommas).getOrElse("0").toDouble
+        val partnerEmpIncomeValue =
+          boundForm(partnerEmpIncomeCYFormField).value.map(removeSpacesOrCommas).getOrElse("0").toDouble
 
         if ((parentEmpIncomeValue >= maxIncome) && (partnerEmpIncomeValue >= maxIncome) && !maxEarnings) {
 
