@@ -26,4 +26,10 @@ object FormHelpers {
       case Some(error) => error.message
     }
 
+  def removeSpaces(value: String): String =
+    value.replaceAll("\\s+", "")
+
+  def removeSpacesOrCommas(value: String): String =
+    value.replaceAll("[\\s,]", "")
+
 }

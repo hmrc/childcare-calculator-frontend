@@ -18,6 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters
 
 import play.api.data.FormError
 import play.api.data.format.Formatter
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers.removeSpaces
 
 case class IntFormatter(
     missingErrorKey: String,
@@ -28,8 +29,10 @@ case class IntFormatter(
   private val baseFormatter = StringFormatter(missingErrorKey, args*)
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] =
+
     baseFormatter
       .bind(key, data)
+      .map(removeSpaces)
       .flatMap { s =>
         s.toIntOption
           .filter(_ >= 0)
@@ -39,7 +42,12 @@ case class IntFormatter(
   override def unbind(key: String, value: Int): Map[String, String] =
     baseFormatter.unbind(key, value.toString)
 
-  def withRange(minValue: Int, maxValue: Int, tooLowErrorKey: String, tooHighErrorKey: String): Formatter[Int] =
+  def withRange(
+      minValue: Int,
+      maxValue: Int,
+      tooLowErrorKey: String,
+      tooHighErrorKey: String
+  ): Formatter[Int] =
     new Formatter[Int] {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Int] =
@@ -50,7 +58,8 @@ case class IntFormatter(
           case left: Left[?, ?]             => left
         }
 
-      override def unbind(key: String, value: Int): Map[String, String] = IntFormatter.this.unbind(key, value)
+      override def unbind(key: String, value: Int): Map[String, String] =
+        IntFormatter.this.unbind(key, value)
     }
 
 }

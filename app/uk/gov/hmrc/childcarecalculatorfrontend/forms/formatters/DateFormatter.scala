@@ -19,6 +19,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters
 import play.api.data.FormError
 import play.api.data.format.Formatter
 import play.api.i18n.Messages
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers.removeSpaces
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -67,10 +68,10 @@ case class DateFormatter(
   private val yearKey  = s"$key.year"
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
-    // Replaces Some("") with None
-    val optDay   = data.get(s"$key.day").filter(_.nonEmpty)
-    val optMonth = data.get(s"$key.month").filter(_.nonEmpty)
-    val optYear  = data.get(s"$key.year").filter(_.nonEmpty)
+
+    val optDay   = data.get(s"$key.day").map(removeSpaces).filter(_.nonEmpty)
+    val optMonth = data.get(s"$key.month").map(removeSpaces).filter(_.nonEmpty)
+    val optYear  = data.get(s"$key.year").map(removeSpaces).filter(_.nonEmpty)
 
     for {
       fields <- nonEmptyFields(optDay, optMonth, optYear)

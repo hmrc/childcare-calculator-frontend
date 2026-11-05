@@ -22,9 +22,9 @@ import play.api.data.format.Formatter
 case class StringFormatter(missingErrorKey: String, args: Any*) extends Formatter[String] {
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
-    data.get(key) match {
-      case None | Some("") => Left(Seq(FormError(key, missingErrorKey, args)))
-      case Some(s)         => Right(s)
+    data.get(key).map(_.trim).filter(_.nonEmpty) match {
+      case None    => Left(Seq(FormError(key, missingErrorKey, args)))
+      case Some(s) => Right(s)
     }
 
   override def unbind(key: String, value: String): Map[String, String] =

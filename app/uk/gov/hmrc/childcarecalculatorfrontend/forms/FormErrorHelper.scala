@@ -20,6 +20,7 @@ import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.childcarecalculatorfrontend.models.EmploymentIncomeCY
 import uk.gov.hmrc.childcarecalculatorfrontend.utils.ChildcareConstants.*
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers._
 
 trait FormErrorHelper extends Mappings {
 
@@ -37,15 +38,6 @@ trait FormErrorHelper extends Mappings {
   def valueNonEmpty(message: String): Constraint[String] = Constraint[String](requiredField) { o =>
     if (o != null && o.trim.nonEmpty) Valid else Invalid(ValidationError(message))
   }
-
-  def validateDecimalInRange(message: String, minValue: BigDecimal, maxValue: BigDecimal): Constraint[String] =
-    Constraint[String](requiredField) { o =>
-      if (o.matches(decimalRegex) && validateInRange(BigDecimal(o), minValue, maxValue)) Valid
-      else Invalid(ValidationError(message))
-    }
-
-  def validateDecimal(message: String): Constraint[String] =
-    Constraint[String](requiredField)(o => if (o.matches(decimalRegex)) Valid else Invalid(ValidationError(message)))
 
   def getTaxCodeLetter(value: String): String = {
     val intRegex      = """[0-9]""".r.toString()
@@ -101,8 +93,10 @@ trait FormErrorHelper extends Mappings {
 
       case Some(maxEarnings) =>
 
-        val parentEmpIncomeValue  = boundForm(parentEmpIncomeCYFormField).value.getOrElse("0").toDouble
-        val partnerEmpIncomeValue = boundForm(partnerEmpIncomeCYFormField).value.getOrElse("0").toDouble
+        val parentEmpIncomeValue =
+          boundForm(parentEmpIncomeCYFormField).value.map(removeSpacesOrCommas).getOrElse("0").toDouble
+        val partnerEmpIncomeValue =
+          boundForm(partnerEmpIncomeCYFormField).value.map(removeSpacesOrCommas).getOrElse("0").toDouble
 
         if ((parentEmpIncomeValue >= maxIncome) && (partnerEmpIncomeValue >= maxIncome) && !maxEarnings) {
 
