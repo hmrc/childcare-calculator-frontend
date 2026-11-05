@@ -32,6 +32,4 @@ object FormHelpers {
   def removeSpacesAndComma(value: String): String =
     Option(value).map(_.replaceAll("[\\s,]", "")).getOrElse("")
 
-
-
 }

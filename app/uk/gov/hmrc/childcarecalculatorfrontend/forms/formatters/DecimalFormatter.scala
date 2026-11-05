@@ -18,7 +18,7 @@ package uk.gov.hmrc.childcarecalculatorfrontend.forms.formatters
 
 import play.api.data.FormError
 import play.api.data.format.Formatter
-import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers.{removeSpaces, removeSpacesAndComma}
+import uk.gov.hmrc.childcarecalculatorfrontend.utils.FormHelpers.removeSpacesAndComma
 
 import scala.util.control.Exception.nonFatalCatch
 

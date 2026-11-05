@@ -111,14 +111,14 @@ class FormErrorHelperSpec extends SpecBase with Mappings {
 
         formErrorHelper.validateBothMaxIncomeEarnings(maximumEarnings, maxIncome, inputForm) mustBe inputForm
       }
-      "remove spaces from income values before processing and return form without errors" in {
+      "remove spaces and comma from income values before processing and return form without errors" in {
 
         val objectUnderTest = new TestObject()
         val maximumIncome   = 100000
 
         val formFieldMap = Map(
-          "parentEmploymentIncomeCY"  -> "8 000",
-          "partnerEmploymentIncomeCY" -> "8 000"
+          "parentEmploymentIncomeCY"  -> "8,   000",
+          "partnerEmploymentIncomeCY" -> "8, 000"
         )
 
         val inputForm = new EmploymentIncomeCYForm(frontendAppConfig)
