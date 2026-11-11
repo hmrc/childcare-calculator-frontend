@@ -48,6 +48,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
 
         val result = cascadeUpsert(DoYouLiveWithPartnerId, false, originalCacheMap)
         result.data mustBe Map(
+          DoYouGetAnyBenefitsId.withValue(Set(ParentsBenefit.IncapacityBenefit)),
           DoYouLiveWithPartnerId.withValue(false),
           WhatIsYourTaxCodeId.withValue("1100L"),
           YourChildcareVouchersId.withValue(true),
@@ -66,7 +67,7 @@ class MaximumHoursCascadeUpsertSpec extends SpecBase with CascadeUpsertBase {
         )
 
         val result = cascadeUpsert(DoYouLiveWithPartnerId, true, originalCacheMap)
-        result.data mustBe Map(DoYouLiveWithPartnerId.withValue(true))
+        result.data mustBe Map(DoYouGetAnyBenefitsId.withValue(Set.empty), DoYouLiveWithPartnerId.withValue(true))
       }
     }
   }
