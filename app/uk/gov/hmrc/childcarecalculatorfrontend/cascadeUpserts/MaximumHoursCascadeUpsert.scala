@@ -48,7 +48,6 @@ class MaximumHoursCascadeUpsert @Inject() {
         WhatIsYourPartnersTaxCodeId,
         WhoGetsVouchersId,
         PartnerChildcareVouchersId,
-        DoYouGetAnyBenefitsId,
         DoesYourPartnerGetAnyBenefitsId,
         YourPartnersAgeId,
         PartnerSelfEmployedOrApprenticeId,
@@ -57,7 +56,7 @@ class MaximumHoursCascadeUpsert @Inject() {
         EitherOfYouMaximumEarningsId
       )
     } else if (value.equals(JsBoolean(true))) {
-      cacheMap.removedAll(AreYouInPaidWorkId, DoYouGetAnyBenefitsId)
+      cacheMap.removedAll(AreYouInPaidWorkId)
     } else cacheMap
 
     mapToStore.updated(DoYouLiveWithPartnerId, value)
