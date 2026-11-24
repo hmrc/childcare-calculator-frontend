@@ -18,7 +18,7 @@ lazy val scoverageSettings: Seq[Def.Setting[_]] =
   )
 
 ThisBuild / majorVersion := 1
-ThisBuild / scalaVersion := "3.3.7"
+ThisBuild / scalaVersion := "3.3.9"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins: _*)
